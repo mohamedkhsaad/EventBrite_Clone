@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'event',
     'user',
+    'drf_spectacular',
 
 ]
 
@@ -77,22 +78,22 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'demo',
-#     }
-# }
 DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'demo',
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': 'mongodb+srv://ali:512002@cluster0.bm59g8c.mongodb.net/?retryWrites=true&w=majority'
-            }  
-        }
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'demo',
+    }
 }
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'demo',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#                 'host': 'mongodb+srv://ali:512002@cluster0.bm59g8c.mongodb.net/?retryWrites=true&w=majority'
+#             }  
+#         }
+# }
 
 
 # Password validation
@@ -135,3 +136,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# AUTH_USER_MODEL='eventbrit.User'
+REST_FRAMEWORK={
+    'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',
+}
