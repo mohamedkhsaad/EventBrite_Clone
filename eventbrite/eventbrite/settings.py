@@ -79,10 +79,15 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'demo',
-    }
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'sw-db',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': 'mongodb+srv://ismail:512002@cluster0.lxpcajz.mongodb.net/?retryWrites=true&w=majority'
+            }
+        }
+        
 }
 # DATABASES = {
 #         'default': {
