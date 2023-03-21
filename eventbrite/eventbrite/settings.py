@@ -84,10 +84,11 @@ DATABASES = {
             'NAME': 'sw-db',
             'ENFORCE_SCHEMA': False,
             'CLIENT': {
-                'host': 'mongodb+srv://ismail:512002@cluster0.lxpcajz.mongodb.net/?retryWrites=true&w=majority'
-            }
+
+                'host':'mongodb+srv://ismail:512002@cluster0.lxpcajz.mongodb.net/?retryWrites=true&w=majority'
+           }
         }
-        
+
 }
 # DATABASES = {
 #         'default': {

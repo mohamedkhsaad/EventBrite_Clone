@@ -5,20 +5,19 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class User(AbstractUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    age = models.IntegerField()
-    gender = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
+    password = models.CharField(max_length=20,default='test')
+    email = models.EmailField(unique=True,default='example@example.com')
+    first_name = models.CharField(max_length=100,default='dani')
+    last_name = models.CharField(max_length=100,default='dani')
+    age = models.IntegerField(default=20)
+    gender = models.CharField(max_length=100,default='male')
+    city = models.CharField(max_length=100,default='cairo')
+    country = models.CharField(max_length=100,default='egypt')
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     
     REQUIRED_FIELDS = ['first_name', 'last_name', 'age', 'gender', 'city', 'country']
-
-    
 
     groups = models.ManyToManyField(
         Group,
@@ -52,9 +51,9 @@ class User(AbstractUser, PermissionsMixin):
   
     
     
-class Interests(models.Model):
-  ID=models.IntegerField()
-  TYPE=models.CharField(max_length=20)
-  Name=models.CharField(max_length=20)
-  user_id=models.IntegerField()
-  sub_category_id=models.IntegerField()
+# class Interests(models.Model):
+#   ID=models.IntegerField()
+#   TYPE=models.CharField(max_length=20)
+#   Name=models.CharField(max_length=20)
+#   user_id=models.IntegerField()
+#   sub_category_id=models.IntegerField()
