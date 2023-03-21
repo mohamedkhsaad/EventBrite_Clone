@@ -1,29 +1,55 @@
-# from django.db import models
+from django.db import models
+from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager, Group, Permission
+from django.utils.translation import gettext_lazy as _
 
-# # Create your models here.
-# class user(models.Model):
-#     ID=models.IntegerField()
-#     F_NAME=models.CharField(max_length=20)
-#     L_NAME=models.CharField(max_length=20)
-#     EMAIL=models.EmailField()
-#     PASSWORD=models.CharField(max_length=20)
 
-#     # GENDER =models.Choices("male","female")
-#     AGE =models.IntegerField()
-#     BIRTH_DATE=models.DateField()
-#     PHONE =models.CharField(max_length=20)
+# Create your models here.
+class User(AbstractUser, PermissionsMixin):
+    password = models.CharField(max_length=20,default='test')
+    email = models.EmailField(unique=True,default='example@example.com')
+    first_name = models.CharField(max_length=100,default='dani')
+    last_name = models.CharField(max_length=100,default='dani')
+    age = models.IntegerField(default=20)
+    gender = models.CharField(max_length=100,default='male')
+    city = models.CharField(max_length=100,default='cairo')
+    country = models.CharField(max_length=100,default='egypt')
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
-#     CITY=models.CharField(max_length=20)
-#     COUNTRY=models.CharField(max_length=20)
-#     ADDRESS =models.CharField(max_length=20)
-#     LOCATION_ID =models.IntegerField()
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'age', 'gender', 'city', 'country']
 
-#     DISCOUNT_ID=models.IntegerField()
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name=_('groups'),
+        blank=True,
+        related_name='user_groups'
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name=_('user permissions'),
+        blank=True,
+        related_name='user_permissions_set'
+    )
+
+    def __str__(self):
+        return self.email
+
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    def get_short_name(self):
+        return self.first_name
+
+    DISCOUNT_ID=models.IntegerField()
                               
-#     INTERESTS_ID=list()
-#     EVENT_CREATED=list()
-#     TICKETS_ID=list()
-#     FOLLOWERS=list()
+    INTERESTS_ID=list()
+    EVENT_CREATED=list()
+    TICKETS_ID=list()
+    FOLLOWERS=list()
+
+  
+    
     
 # class Interests(models.Model):
 #   ID=models.IntegerField()

@@ -21,6 +21,8 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from event.views import*
+from user.views import*
+
 urlpatterns = [
     
     path('api/schema/',SpectacularAPIView.as_view(),name='api-schema'),
@@ -36,7 +38,6 @@ urlpatterns = [
     path('events/type/<str:event_type>/', EventListtype.as_view(), name='event-list-by-type'),
     path('events/category/<str:event_Category>/', EventListCategory.as_view(), name='event-list-by-category'),
     path('events/sub_category/<str:event_sub_Category>/', EventListSupCategory.as_view(), name='event-list-by-sub_category'),
-    path('events/venue/<str:event_venue>/', EventListVenue.as_view(), name='event-list-by-venue'),
 
 
 
