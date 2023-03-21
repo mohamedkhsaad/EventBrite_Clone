@@ -22,10 +22,6 @@ from drf_spectacular.views import (
 )
 from event.views import*
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('user/',include('user.urls')),
-    path('events/create/', EventCreateView.as_view(), name='event-create'),
-    path('search', EventSearchView.as_view(), name='event_search'),
     
     path('api/schema/',SpectacularAPIView.as_view(),name='api-schema'),
     path(
@@ -33,5 +29,11 @@ urlpatterns = [
     SpectacularSwaggerView.as_view(url_name='api-schema'),
     name='api-docs',
     ),
+    path('admin/', admin.site.urls),
+    path('user/',include('user.urls')),
+    path('events/create/', EventCreateView.as_view(), name='event-create'),
+    path('events/search', EventSearchView.as_view(), name='event_search'),
+    path('events/<str:event_type>/', EventList.as_view(), name='event-list'),
+
     path('',include('rest_framework.urls')),
 ]
