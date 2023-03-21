@@ -5,8 +5,8 @@ from django.db import models
 class event(models.Model):
     ID = models.IntegerField()
     User_id=models.IntegerField()
-    NAME=models.CharField(max_length=50)
-    DESCRIIPTION=models.CharField(max_length=500)
+    Name=models.CharField(max_length=50)
+    Description=models.CharField(max_length=500)
     TYPE=models.CharField(max_length=20)
     CATEGORY_ID=models.IntegerField()
     SUB_CATEGORY_ID =models.IntegerField()

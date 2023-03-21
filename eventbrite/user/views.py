@@ -16,26 +16,6 @@ user model
 '''
 class userSerializer(serializers.ModelSerializer):
     
-    # first_name=serializers.CharField(max_length=20)
-    # last_name=serializers.CharField(max_length=20)
-    # email=serializers.EmailField()
-    # password=serializers.CharField(max_length=20)
-
-    # username =serializers.CharField(max_length=20)
-    # age =serializers.IntegerField()
-    # # BIRTH_DATE=serializers.DateField()
-    # # PHONE =serializers.CharField(max_length=20)
-
-    # CITY=serializers.CharField(max_length=20)
-    # COUNTRY=serializers.CharField(max_length=20)
-
-    # ADDRESS =serializers.CharField(max_length=20)
-    # LOCATION_ID =serializers.IntegerField()
-    # DISCOUNT_ID=serializers.IntegerField()
-    # INTERESTS_ID=serializers.ListField()
-    # EVENT_CREATED=serializers.ListField()
-    # TICKETS_ID=serializers.ListField()
-    # FOLLOWERS=serializers.ListField()
     class Meta:
         model=User
         fields = ['email','first_name','last_name','password','username'] 

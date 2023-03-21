@@ -1,6 +1,12 @@
 from rest_framework import routers
-from .views import eventViewSet
+from django.urls import path
 
-router=routers.SimpleRouter()
-router.register('',eventViewSet)
-urlpatterns =router.urls
+from .views import *
+
+# router=routers.SimpleRouter()
+# router.register('',EventCreateView)
+# router.register('', EventSearchView),
+
+# urlpatterns = [
+#     path('events/', EventSearchView.as_view(), name='event_search'),
+# ]
