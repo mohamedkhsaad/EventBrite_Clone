@@ -29,11 +29,17 @@ urlpatterns = [
     SpectacularSwaggerView.as_view(url_name='api-schema'),
     name='api-docs',
     ),
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('user/',include('user.urls')),
     path('events/create/', EventCreateView.as_view(), name='event-create'),
-    path('events/search', EventSearchView.as_view(), name='event_search'),
-    path('events/<str:event_type>/', EventList.as_view(), name='event-list'),
+    path('events/search/<str:event_name>', EventSearchView.as_view(), name='event_search'),
+    path('events/type/<str:event_type>/', EventListtype.as_view(), name='event-list-by-type'),
+    path('events/category/<str:event_Category>/', EventListCategory.as_view(), name='event-list-by-category'),
+    path('events/sub_category/<str:event_sub_Category>/', EventListSupCategory.as_view(), name='event-list-by-sub_category'),
+    path('events/venue/<str:event_venue>/', EventListVenue.as_view(), name='event-list-by-venue'),
+
+
 
     path('',include('rest_framework.urls')),
 ]
+
