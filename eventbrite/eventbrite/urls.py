@@ -39,7 +39,7 @@ urlpatterns = [
     path('events/category/<str:event_Category>/', EventListCategory.as_view(), name='event-list-by-category'),
     path('events/sub_category/<str:event_sub_Category>/', EventListSupCategory.as_view(), name='event-list-by-sub_category'),
 
-    path('events/tickets/',TicketList.as_view()),
+    path('booking/',include('booking.urls')),
 
     path('',include('rest_framework.urls')),
 ]

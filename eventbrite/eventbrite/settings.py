@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'event',
     'user',
     'drf_spectacular',
+    'booking',
 
 ]
 

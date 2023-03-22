@@ -13,7 +13,3 @@ class SearchEventSerializer(serializers.ModelSerializer):
         fields =  '__all__' 
         
 
-class TicketSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=Tickets
-        fields =  '__all__' 

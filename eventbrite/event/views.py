@@ -6,7 +6,8 @@ from .serializers import*
 from rest_framework import generics
 from user import*
 
-from .models import event, Tickets
+from .models import event
+
 # Create your views here.
 
 class EventCreateView(generics.CreateAPIView):
@@ -81,8 +82,3 @@ class EventListVenue(generics.ListAPIView):
 #     # queryset = U.venue_name
 
 
-class TicketList(generics.ListCreateAPIView):
-    queryset = Tickets.objects.all()
-    serializer_class = TicketSerializer
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
