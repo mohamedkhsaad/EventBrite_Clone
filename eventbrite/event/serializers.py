@@ -13,4 +13,3 @@ class SearchEventSerializer(serializers.ModelSerializer):
         fields =  '__all__' 
         
 
-    

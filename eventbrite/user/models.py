@@ -13,8 +13,8 @@ class User(AbstractUser, PermissionsMixin):
     gender = models.CharField(max_length=100,default='male')
     city = models.CharField(max_length=100,default='cairo')
     country = models.CharField(max_length=100,default='egypt')
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    # is_staff = models.BooleanField(default=False)
+    # is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'age', 'gender', 'city', 'country']
