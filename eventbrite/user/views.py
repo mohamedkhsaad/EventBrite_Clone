@@ -21,7 +21,7 @@ user model (SIGNUP)
 '''
 class userSerializer(serializers.ModelSerializer):
     """ User serializer for the signup """
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField()
 
     class Meta:
         model = User

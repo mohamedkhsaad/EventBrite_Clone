@@ -90,7 +90,7 @@ DATABASES = {
             'NAME': 'demo',
             'ENFORCE_SCHEMA': False,
             'CLIENT': {
-                'host': 'mongodb+srv://ali:512002@cluster0.bm59g8c.mongodb.net/?retryWrites=true&w=majority'
+                'host': 'mongodb://ali:512002@ac-iqq9ylx-shard-00-00.bm59g8c.mongodb.net:27017,ac-iqq9ylx-shard-00-01.bm59g8c.mongodb.net:27017,ac-iqq9ylx-shard-00-02.bm59g8c.mongodb.net:27017/?ssl=true&replicaSet=atlas-noai0j-shard-0&authSource=admin&retryWrites=true&w=majority'
             }  
         }
 }
