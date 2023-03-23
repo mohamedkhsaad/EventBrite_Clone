@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class User(AbstractUser, PermissionsMixin):
+    id = models.BigAutoField(auto_created=True,primary_key=True, serialize=False, verbose_name='ID')
     email = models.EmailField(unique=True,blank=False,null=False)
     first_name = models.CharField(max_length=100,blank=False,null=False)
     last_name = models.CharField(max_length=100,blank=False,null=False)

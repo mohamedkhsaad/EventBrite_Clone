@@ -53,8 +53,10 @@ class userSerializer(serializers.ModelSerializer):
         return user
 
 
+
+""" api view for the create user function"""
 @api_view(['POST'])
-def create_user(request):
+def create_User(request):
     serializer=userSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -63,12 +65,12 @@ def create_user(request):
         Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-class userViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing user instances.
-    """
-    serializer_class = userSerializer
-    queryset = User.objects.all()
+# class userViewSet(viewsets.ModelViewSet):
+#     """
+#     A viewset for viewing and editing user instances.
+#     """
+#     serializer_class = userSerializer
+#     queryset = User.objects.all()
 
 
 
@@ -89,8 +91,6 @@ class AuthTokenSerializer(serializers.Serializer):
         print(password)
         request=self.context.get('request')
         user=authenticate(
-            request=request,
-            
             email=email,
             password=password,
         )
