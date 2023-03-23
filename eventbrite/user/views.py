@@ -18,6 +18,8 @@ from django.core.mail import send_mail,EmailMessage
 from eventbrite.settings import *
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+import string
+import random
 # Create your views here.
 
 '''
@@ -41,7 +43,10 @@ class userSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'password': e.messages})
         first_name=validated_data['first_name']
         last_name=validated_data['last_name']
-        user = User.objects.create_user(**validated_data, password=password,email=email,username=""+first_name +""+last_name)
+        username = string.ascii_lowercase
+        user = User.objects.create_user(**validated_data, password=password,email=email,
+                                       username=''.join(random.choice(username) for i in range(10)) 
+)
         user.save()
 
         subject = "Welcome to Eventbrite!!"
@@ -89,7 +94,8 @@ class AuthTokenSerializer(serializers.Serializer):
         print(password)
         request=self.context.get('request')
         user=authenticate(
-            request=self.context.get('request'),
+            request=request,
+            
             email=email,
             password=password,
         )

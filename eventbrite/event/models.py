@@ -1,11 +1,12 @@
 from django.db import models
-
+from eventbrite.settings import*
 # Create your models here.
 
 class event(models.Model):
     ID = models.IntegerField()
     User_id=models.IntegerField(blank=False)
     Title=models.CharField(max_length=50)
+    organizer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     organizer=models.CharField(max_length=50)
     Description=models.CharField(max_length=500)
     type=models.CharField(max_length=20)

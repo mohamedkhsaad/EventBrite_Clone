@@ -7,6 +7,7 @@ from rest_framework import generics
 from user import*
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from .models import event
 
@@ -18,6 +19,14 @@ class EventCreateView(generics.CreateAPIView):
     """
     serializer_class = eventSerializer
     queryset = event.objects.all()
+
+class AllEventListView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, format=None):
+        events = event.objects.all()
+        serializer = eventSerializer(events, many=True)
+        return Response(serializer.data)
 
 
 class EventSearchView(generics.ListAPIView):
@@ -75,9 +84,7 @@ class EventListVenue(generics.ListAPIView):
         event_venue = self.kwargs['event_venue']
         return event.objects.filter(venue_name=event_venue)
     
-class ALLEventListAPIView(generics.ListAPIView):
-    queryset = event.objects.all()
-    serializer_class = eventSerializer    
+ 
     
 
 
