@@ -83,7 +83,7 @@ class ALLEventListAPIView(generics.ListAPIView):
 
 class OnlineEventsAPIView(APIView):
     def get(self, request):
-        events = event.objects.filter(ONLINE='t')
+        events = event.objects.filter(online='t')
         serializer = eventSerializer(events, many=True)
         return Response(serializer.data)
 

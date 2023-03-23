@@ -4,7 +4,7 @@ from django.db import models
 
 class event(models.Model):
     ID = models.IntegerField()
-    User_id=models.IntegerField()
+    User_id=models.IntegerField(blank=False)
     Title=models.CharField(max_length=50)
     organizer=models.CharField(max_length=50)
     Description=models.CharField(max_length=500)
@@ -18,12 +18,13 @@ class event(models.Model):
     END_DATE=models.DateField()
     ST_TIME =models.TimeField()
     END_TIME =models.TimeField()
-    # ONLINE=models.BooleanField(default=False)
-    Online_CHOICES = (
+
+    #ONLINE=models.BooleanField(default=False)
+    Online_choises= (
         ('t', 'true'),
         ('f', 'false')
     )
-    ONLINE = models.CharField(max_length=1, choices=Online_CHOICES)
+    online = models.CharField(max_length=1)
     CAPACITY=models.IntegerField()
     PASSWORD =models.CharField(max_length=10)
     # EVENT_PHOTO=models.ImageField()
@@ -34,30 +35,14 @@ class event(models.Model):
     # LIKES =models.ExpressionList([1])
     # CREATED=models.ExpressionList([1])
     STATUS =models.CharField(max_length=20)
+    REQUIRED_FIELDS =['ID', 'Title', 'organizer', 'Description', 'type', 'Category',
+                       'sub_Category','venue_name','ST_DATE','END_DATE','ST_TIME','END_TIME','online',
+                       'CAPACITY','PASSWORD','STATUS',
+                       ]
+
     # TAGS =models.ExpressionList()
-# class user(models.Model):
-#     ID=models.IntegerField()
-#     F_NAME=models.CharField(max_length=20)
-#     L_NAME=models.CharField(max_length=20)
-#     EMAIL=models.EmailField()
-#     PASSWORD=models.CharField(max_length=20)
 
-#     GENDER =models.Choices("male","female")
-#     AGE =models.IntegerField()
-#     BIRTH_DATE=models.DateField()
-#     PHONE =models.CharField(max_length=20)
 
-#     CITY=models.CharField(max_length=20)
-#     COUNTRY=models.CharField(max_length=20)
-#     ADDRESS =models.CharField(max_length=20)
-#     LOCATION_ID =models.IntegerField()
-
-#     DISCOUNT_ID=models.IntegerField()
-                              
-#     INTERESTS_ID=list()
-#     EVENT_CREATED=list()
-#     TICKETS_ID=list()
-#     FOLLOWERS=list()
 
 
 class category(models.Model):
