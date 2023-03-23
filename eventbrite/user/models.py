@@ -5,15 +5,15 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class User(AbstractUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    age = models.IntegerField()
-    gender = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    email = models.EmailField(unique=True,blank=False,null=False)
+    first_name = models.CharField(max_length=100,blank=False,null=False)
+    last_name = models.CharField(max_length=100,blank=False,null=False)
+    age = models.IntegerField(blank=False,null=False)
+    gender = models.CharField(max_length=100,blank=False,null=False)
+    city = models.CharField(max_length=100,blank=False,null=False)
+    country = models.CharField(max_length=100,blank=False,null=False)
+    is_staff = models.BooleanField(default=False,blank=False,null=False)
+    is_active = models.BooleanField(default=True,blank=False,null=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'age', 'gender', 'city', 'country']

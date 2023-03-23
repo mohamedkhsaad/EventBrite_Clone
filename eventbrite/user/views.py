@@ -14,6 +14,10 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from .models import*
+from django.core.mail import send_mail,EmailMessage
+from eventbrite.settings import *
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 # Create your views here.
 
 '''
@@ -21,7 +25,8 @@ user model (SIGNUP)
 '''
 class userSerializer(serializers.ModelSerializer):
     """ User serializer for the signup """
-    password = serializers.CharField()
+    password = serializers.CharField(style={'input_type':'password'},
+                                    trim_whitespace=False)
 
     class Meta:
         model = User
@@ -30,8 +35,21 @@ class userSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         email=validated_data.pop('email')
         password = validated_data.pop('password')
-        user = User.objects.create_user(**validated_data, password=password,email=email,username="default")
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            raise serializers.ValidationError({'password': e.messages})
+        first_name=validated_data['first_name']
+        last_name=validated_data['last_name']
+        user = User.objects.create_user(**validated_data, password=password,email=email,username=""+first_name +" "+last_name)
         user.save()
+
+        subject = "Welcome to Eventbrite!!"
+        message = "Hello " + user.first_name + "!! \n" + "Welcome to Evenbrite !! \nThank you for visiting our website\n. We have also sent you a confirmation email, please confirm your email address. \n\nThanking You\nEventbrite Team"        
+        from_email = EMAIL_HOST_USER
+        to_list = [user.email]
+        send_mail(subject, message, from_email, to_list, fail_silently=False)
+
         return user
 
 
@@ -67,11 +85,17 @@ class AuthTokenSerializer(serializers.Serializer):
         """Validate and authenticate the user"""
         email=attrs.get('email')
         password=attrs.get('password')
+        print(email)
+        print(password)
+        request=self.context.get('request')
         user=authenticate(
-            request=self.context.get('request'),
-            username=email,
+            request=request,
+            
+            email=email,
             password=password,
         )
+        print(user)
+        print(request)
         if not user:
             msg=_('Unable to authenticate with provided credentials')
             raise serializers.ValidationError(msg,code='authorization')

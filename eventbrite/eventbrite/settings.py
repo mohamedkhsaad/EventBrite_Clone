@@ -78,22 +78,29 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'monda',
+    }
+}
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'demo',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#                 'host': 'mongodb://ali:512002@ac-iqq9ylx-shard-00-00.bm59g8c.mongodb.net:27017,ac-iqq9ylx-shard-00-01.bm59g8c.mongodb.net:27017,ac-iqq9ylx-shard-00-02.bm59g8c.mongodb.net:27017/?ssl=true&replicaSet=atlas-noai0j-shard-0&authSource=admin&retryWrites=true&w=majority'
+#             }  
+#         }
+# }
+
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'demo',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'demo',
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': 'mongodb://ali:512002@ac-iqq9ylx-shard-00-00.bm59g8c.mongodb.net:27017,ac-iqq9ylx-shard-00-01.bm59g8c.mongodb.net:27017,ac-iqq9ylx-shard-00-02.bm59g8c.mongodb.net:27017/?ssl=true&replicaSet=atlas-noai0j-shard-0&authSource=admin&retryWrites=true&w=majority'
-            }  
-        }
-}
 
 
 # Password validation
@@ -136,3 +143,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'Daniel.Aziz00@eng-st.cu.edu.eg'
+EMAIL_HOST_PASSWORD = 'Danie7889'
+EMAIL_PORT = 587
