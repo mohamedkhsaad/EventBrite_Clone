@@ -38,6 +38,9 @@ urlpatterns = [
     path('events/type/<str:event_type>/', EventListtype.as_view(), name='event-list-by-type'),
     path('events/category/<str:event_Category>/', EventListCategory.as_view(), name='event-list-by-category'),
     path('events/sub_category/<str:event_sub_Category>/', EventListSupCategory.as_view(), name='event-list-by-sub_category'),
+    path('events/ALL/', ALLEventListAPIView.as_view(), name='event-list-ALL'),
+    path('events/online/', OnlineEventsAPIView.as_view(), name='online-events'),
+
 
     path('booking/',include('booking.urls')),
 

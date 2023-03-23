@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from .serializers import*
 from rest_framework import generics
 from user import*
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import event
 
@@ -72,6 +74,18 @@ class EventListVenue(generics.ListAPIView):
         """
         event_venue = self.kwargs['event_venue']
         return event.objects.filter(venue_name=event_venue)
+    
+class ALLEventListAPIView(generics.ListAPIView):
+    queryset = event.objects.all()
+    serializer_class = eventSerializer    
+    
+
+
+class OnlineEventsAPIView(APIView):
+    def get(self, request):
+        events = event.objects.filter(ONLINE='t')
+        serializer = eventSerializer(events, many=True)
+        return Response(serializer.data)
 
 
 # class user_venue(generics.CreateAPIView):

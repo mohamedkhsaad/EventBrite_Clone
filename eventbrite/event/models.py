@@ -18,7 +18,12 @@ class event(models.Model):
     END_DATE=models.DateField()
     ST_TIME =models.TimeField()
     END_TIME =models.TimeField()
-    ONLINE=models.BooleanField()
+    # ONLINE=models.BooleanField(default=False)
+    Online_CHOICES = (
+        ('t', 'true'),
+        ('f', 'false')
+    )
+    ONLINE = models.CharField(max_length=1, choices=Online_CHOICES)
     CAPACITY=models.IntegerField()
     PASSWORD =models.CharField(max_length=10)
     # EVENT_PHOTO=models.ImageField()

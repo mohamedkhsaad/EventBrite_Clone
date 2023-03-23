@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'testtest',
-        'CLIENT': {
-            'host': 'localhost',
-            'port': 27017,
-        }
+        'NAME': 'ismail',
+        # 'CLIENT': {
+        # 'host': 'localhost',
+        # 'port': 27017,
+        # }
     }
 }
 
