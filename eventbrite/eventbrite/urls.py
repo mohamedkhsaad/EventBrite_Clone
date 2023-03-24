@@ -24,7 +24,6 @@ from event.views import*
 from user.views import*
 
 urlpatterns = [
-    
     path('api/schema/',SpectacularAPIView.as_view(),name='api-schema'),
     path(
     'api/docs/',
@@ -35,9 +34,13 @@ urlpatterns = [
     path('user/',include('user.urls')),
     path('events/create/', EventCreateView.as_view(), name='event-create'),
     path('events/search/<str:event_name>', EventSearchView.as_view(), name='event_search'),
+    path('events/list_user_events/<int:user_id>', UserListEvents.as_view(), name='user_list_events'),
+    path('events/list_user_past_events/<int:user_id>', UserListPastEvents.as_view(), name='user_list_past_events'),
+    path('events/list_user_upcoming_events/<int:user_id>', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
     path('events/type/<str:event_type>/', EventListtype.as_view(), name='event-list-by-type'),
     path('events/category/<str:event_Category>/', EventListCategory.as_view(), name='event-list-by-category'),
     path('events/sub_category/<str:event_sub_Category>/', EventListSupCategory.as_view(), name='event-list-by-sub_category'),
+    # path('events/export_csv/<int:user_id>', ExportCSV, name='export-csv'),
 
 
 
