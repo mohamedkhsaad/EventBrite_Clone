@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>event.views &mdash; eventbrite documntation 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            eventbrite documntation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">eventbrite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">eventbrite documntation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">event.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for event.views</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains several view classes for the events app.</span>
+
+<span class="sd">class:EventCreateView: A viewset for creating an event instance.</span>
+
+<span class="sd">class:AllEventListView: A viewset for retrieving all event instances.</span>
+
+<span class="sd">class:EventSearchView: A viewset for searching event instances by title.</span>
+
+<span class="sd">class:EventListtype: A viewset for retrieving event instances by type.</span>
+
+<span class="sd">class:EventListCategory: A viewset for retrieving event instances by category.</span>
+
+<span class="sd">class:EventListSupCategory: A viewset for retrieving event instances by sub-category.</span>
+
+<span class="sd">class:EventListVenue: A viewset for retrieving event instances by venue.</span>
+
+<span class="sd">class:OnlineEventsAPIView: A viewset for retrieving online event instances.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">JsonResponse</span><span class="p">,</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span>
+<span class="kn">from</span> <span class="nn">user</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
+<span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">event</span>
+
+
+<div class="viewcode-block" id="EventCreateView"><a class="viewcode-back" href="../../event.html#event.views.EventCreateView">[docs]</a><span class="k">class</span> <span class="nc">EventCreateView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for creating an event instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AllEventListView"><a class="viewcode-back" href="../../event.html#event.views.AllEventListView">[docs]</a><span class="k">class</span> <span class="nc">AllEventListView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving all event instances.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="AllEventListView.get"><a class="viewcode-back" href="../../event.html#event.views.AllEventListView.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the events.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">events</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">eventSerializer</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EventSearchView"><a class="viewcode-back" href="../../event.html#event.views.EventSearchView">[docs]</a><span class="k">class</span> <span class="nc">EventSearchView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for searching event instances by title.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+
+<div class="viewcode-block" id="EventSearchView.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventSearchView.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the events</span>
+<span class="sd">        for the title specified in the URL parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;event_name&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Title</span><span class="o">=</span><span class="n">event_name</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EventListtype"><a class="viewcode-back" href="../../event.html#event.views.EventListtype">[docs]</a><span class="k">class</span> <span class="nc">EventListtype</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving event instances by type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="EventListtype.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventListtype.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the events</span>
+<span class="sd">        for the type specified in the URL parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;event_type&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">event_type</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EventListCategory"><a class="viewcode-back" href="../../event.html#event.views.EventListCategory">[docs]</a><span class="k">class</span> <span class="nc">EventListCategory</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving event instances by category.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="EventListCategory.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventListCategory.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the events</span>
+<span class="sd">        for the category specified in the URL parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_Category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;event_Category&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Category</span><span class="o">=</span><span class="n">event_Category</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EventListSupCategory"><a class="viewcode-back" href="../../event.html#event.views.EventListSupCategory">[docs]</a><span class="k">class</span> <span class="nc">EventListSupCategory</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving event instances by sub-category.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="EventListSupCategory.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventListSupCategory.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the events</span>
+<span class="sd">        for the sub-category specified in the URL parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_sub_Category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;event_sub_Category&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">sub_Category</span><span class="o">=</span><span class="n">event_sub_Category</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EventListVenue"><a class="viewcode-back" href="../../event.html#event.views.EventListVenue">[docs]</a><span class="k">class</span> <span class="nc">EventListVenue</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving event instances by venue.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="EventListVenue.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventListVenue.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the events</span>
+<span class="sd">        for the venue specified in the URL parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_venue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;event_venue&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">venue_name</span><span class="o">=</span><span class="n">event_venue</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="OnlineEventsAPIView"><a class="viewcode-back" href="../../event.html#event.views.OnlineEventsAPIView">[docs]</a><span class="k">class</span> <span class="nc">OnlineEventsAPIView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving event which the online is &#39;true&#39; .</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="OnlineEventsAPIView.get"><a class="viewcode-back" href="../../event.html#event.views.OnlineEventsAPIView.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the online events.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">online</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">eventSerializer</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ismail.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

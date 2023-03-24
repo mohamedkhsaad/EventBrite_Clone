@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>event package &mdash; eventbrite documntation 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="event.migrations package" href="event.migrations.html" />
+    <link rel="prev" title="booking.migrations package" href="booking.migrations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            eventbrite documntation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">eventbrite</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="booking.html">booking package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">event package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html">event.migrations package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-event.admin">event.admin module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-event.apps">event.apps module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#event.apps.EventConfig"><code class="docutils literal notranslate"><span class="pre">EventConfig</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-event.models">event.models module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#event.models.Locations"><code class="docutils literal notranslate"><span class="pre">Locations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.models.category"><code class="docutils literal notranslate"><span class="pre">category</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.models.event"><code class="docutils literal notranslate"><span class="pre">event</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.models.sub_category"><code class="docutils literal notranslate"><span class="pre">sub_category</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-event.serializers">event.serializers module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#event.serializers.SearchEventSerializer"><code class="docutils literal notranslate"><span class="pre">SearchEventSerializer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.serializers.eventSerializer"><code class="docutils literal notranslate"><span class="pre">eventSerializer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-event.urls">event.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-event.views">event.views module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.AllEventListView"><code class="docutils literal notranslate"><span class="pre">AllEventListView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.EventCreateView"><code class="docutils literal notranslate"><span class="pre">EventCreateView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.EventListCategory"><code class="docutils literal notranslate"><span class="pre">EventListCategory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.EventListSupCategory"><code class="docutils literal notranslate"><span class="pre">EventListSupCategory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.EventListVenue"><code class="docutils literal notranslate"><span class="pre">EventListVenue</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.EventListtype"><code class="docutils literal notranslate"><span class="pre">EventListtype</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.EventSearchView"><code class="docutils literal notranslate"><span class="pre">EventSearchView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.OnlineEventsAPIView"><code class="docutils literal notranslate"><span class="pre">OnlineEventsAPIView</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-event">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eventManagment.html">eventManagment package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventbrite.html">eventbrite package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user.html">user package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">eventbrite documntation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">eventbrite</a></li>
+      <li class="breadcrumb-item active">event package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/event.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="event-package">
+<h1>event package<a class="headerlink" href="#event-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="event.migrations.html">event.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0001_initial">event.migrations.0001_initial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0001_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0001_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0001_initial.Migration.initial"><code class="docutils literal notranslate"><span class="pre">Migration.initial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0001_initial.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0002_category">event.migrations.0002_category module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0002_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0002_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0002_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0003_sub_category">event.migrations.0003_sub_category module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0003_sub_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0003_sub_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0003_sub_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0004_locations">event.migrations.0004_locations module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0004_locations.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0004_locations.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0004_locations.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0005_discount">event.migrations.0005_discount module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0005_discount.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0005_discount.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0005_discount.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0006_interests">event.migrations.0006_interests module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0006_interests.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0006_interests.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0006_interests.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0007_delete_user">event.migrations.0007_delete_user module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0007_delete_user.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0007_delete_user.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0007_delete_user.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0008_delete_interests">event.migrations.0008_delete_interests module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0008_delete_interests.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0008_delete_interests.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0008_delete_interests.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0009_rename_descriiption_event_description_and_more">event.migrations.0009_rename_descriiption_event_description_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0009_rename_descriiption_event_description_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0009_rename_descriiption_event_description_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0009_rename_descriiption_event_description_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more">event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0011_event_category">event.migrations.0011_event_category module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0011_event_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0011_event_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0011_event_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0012_delete_discount_delete_tickets">event.migrations.0012_delete_discount_delete_tickets module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0012_delete_discount_delete_tickets.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0012_delete_discount_delete_tickets.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0012_delete_discount_delete_tickets.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0013_event_online">event.migrations.0013_event_online module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0013_event_online.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0013_event_online.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0013_event_online.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0014_remove_event_online_event_online">event.migrations.0014_remove_event_online_event_online module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0014_remove_event_online_event_online.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0014_remove_event_online_event_online.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0014_remove_event_online_event_online.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations.0015_alter_event_id">event.migrations.0015_alter_event_id module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event.migrations.html#event.migrations.0015_alter_event_id.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0015_alter_event_id.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.migrations.html#event.migrations.0015_alter_event_id.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event.migrations.html#module-event.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-event.admin">
+<span id="event-admin-module"></span><h2>event.admin module<a class="headerlink" href="#module-event.admin" title="Permalink to this heading"></a></h2>
+<p>Django admin configuration for the event app.</p>
+<p>This module contains the registration of the models in the Django admin site.</p>
+</section>
+<section id="module-event.apps">
+<span id="event-apps-module"></span><h2>event.apps module<a class="headerlink" href="#module-event.apps" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.apps.EventConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.apps.</span></span><span class="sig-name descname"><span class="pre">EventConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/apps.html#EventConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.apps.EventConfig" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.apps.EventConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#event.apps.EventConfig.default_auto_field" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.apps.EventConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'event'</span></em><a class="headerlink" href="#event.apps.EventConfig.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-event.models">
+<span id="event-models-module"></span><h2>event.models module<a class="headerlink" href="#module-event.models" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.models.Locations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.models.</span></span><span class="sig-name descname"><span class="pre">Locations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/models.html#Locations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.models.Locations" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model representing an event location.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="event.models.Locations.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#event.models.Locations.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.EVENT_ID">
+<span class="sig-name descname"><span class="pre">EVENT_ID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#event.models.Locations.EVENT_ID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.ID">
+<span class="sig-name descname"><span class="pre">ID</span></span><a class="headerlink" href="#event.models.Locations.ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="event.models.Locations.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#event.models.Locations.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.USER_ID">
+<span class="sig-name descname"><span class="pre">USER_ID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#event.models.Locations.USER_ID" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.adress">
+<span class="sig-name descname"><span class="pre">adress</span></span><a class="headerlink" href="#event.models.Locations.adress" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.city">
+<span class="sig-name descname"><span class="pre">city</span></span><a class="headerlink" href="#event.models.Locations.city" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.country">
+<span class="sig-name descname"><span class="pre">country</span></span><a class="headerlink" href="#event.models.Locations.country" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#event.models.Locations.id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.latitude">
+<span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#event.models.Locations.latitude" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.longitude">
+<span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#event.models.Locations.longitude" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.Locations.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#event.models.Locations.objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.models.category">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.models.</span></span><span class="sig-name descname"><span class="pre">category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/models.html#category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.models.category" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model representing an event category.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="event.models.category.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#event.models.category.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.category.EVENT_ID">
+<span class="sig-name descname"><span class="pre">EVENT_ID</span></span><a class="headerlink" href="#event.models.category.EVENT_ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.category.ID">
+<span class="sig-name descname"><span class="pre">ID</span></span><a class="headerlink" href="#event.models.category.ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="event.models.category.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#event.models.category.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.category.Name">
+<span class="sig-name descname"><span class="pre">Name</span></span><a class="headerlink" href="#event.models.category.Name" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.category.SUB_CATEGORY_ID">
+<span class="sig-name descname"><span class="pre">SUB_CATEGORY_ID</span></span><a class="headerlink" href="#event.models.category.SUB_CATEGORY_ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.category.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#event.models.category.id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.category.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#event.models.category.objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.models.event">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.models.</span></span><span class="sig-name descname"><span class="pre">event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/models.html#event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.models.event" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model representing an event.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.CAPACITY">
+<span class="sig-name descname"><span class="pre">CAPACITY</span></span><a class="headerlink" href="#event.models.event.CAPACITY" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.CATEGORY_ID">
+<span class="sig-name descname"><span class="pre">CATEGORY_ID</span></span><a class="headerlink" href="#event.models.event.CATEGORY_ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.Category">
+<span class="sig-name descname"><span class="pre">Category</span></span><a class="headerlink" href="#event.models.event.Category" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.Description">
+<span class="sig-name descname"><span class="pre">Description</span></span><a class="headerlink" href="#event.models.event.Description" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="event.models.event.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#event.models.event.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.END_DATE">
+<span class="sig-name descname"><span class="pre">END_DATE</span></span><a class="headerlink" href="#event.models.event.END_DATE" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.END_TIME">
+<span class="sig-name descname"><span class="pre">END_TIME</span></span><a class="headerlink" href="#event.models.event.END_TIME" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.ID">
+<span class="sig-name descname"><span class="pre">ID</span></span><a class="headerlink" href="#event.models.event.ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="event.models.event.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#event.models.event.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.Online_choises">
+<span class="sig-name descname"><span class="pre">Online_choises</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('t',</span> <span class="pre">'true'),</span> <span class="pre">('f',</span> <span class="pre">'false'))</span></em><a class="headerlink" href="#event.models.event.Online_choises" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.PASSWORD">
+<span class="sig-name descname"><span class="pre">PASSWORD</span></span><a class="headerlink" href="#event.models.event.PASSWORD" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.REQUIRED_FIELDS">
+<span class="sig-name descname"><span class="pre">REQUIRED_FIELDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ID',</span> <span class="pre">'Title',</span> <span class="pre">'organizer',</span> <span class="pre">'Description',</span> <span class="pre">'type',</span> <span class="pre">'Category',</span> <span class="pre">'sub_Category',</span> <span class="pre">'venue_name',</span> <span class="pre">'ST_DATE',</span> <span class="pre">'END_DATE',</span> <span class="pre">'ST_TIME',</span> <span class="pre">'END_TIME',</span> <span class="pre">'online',</span> <span class="pre">'CAPACITY',</span> <span class="pre">'PASSWORD',</span> <span class="pre">'STATUS']</span></em><a class="headerlink" href="#event.models.event.REQUIRED_FIELDS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.STATUS">
+<span class="sig-name descname"><span class="pre">STATUS</span></span><a class="headerlink" href="#event.models.event.STATUS" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.ST_DATE">
+<span class="sig-name descname"><span class="pre">ST_DATE</span></span><a class="headerlink" href="#event.models.event.ST_DATE" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.ST_TIME">
+<span class="sig-name descname"><span class="pre">ST_TIME</span></span><a class="headerlink" href="#event.models.event.ST_TIME" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.SUB_CATEGORY_ID">
+<span class="sig-name descname"><span class="pre">SUB_CATEGORY_ID</span></span><a class="headerlink" href="#event.models.event.SUB_CATEGORY_ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.Title">
+<span class="sig-name descname"><span class="pre">Title</span></span><a class="headerlink" href="#event.models.event.Title" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.User_id">
+<span class="sig-name descname"><span class="pre">User_id</span></span><a class="headerlink" href="#event.models.event.User_id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.models.event.get_next_by_END_DATE">
+<span class="sig-name descname"><span class="pre">get_next_by_END_DATE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">END_DATE&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.models.event.get_next_by_END_DATE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.models.event.get_next_by_ST_DATE">
+<span class="sig-name descname"><span class="pre">get_next_by_ST_DATE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">ST_DATE&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.models.event.get_next_by_ST_DATE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.models.event.get_previous_by_END_DATE">
+<span class="sig-name descname"><span class="pre">get_previous_by_END_DATE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">END_DATE&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.models.event.get_previous_by_END_DATE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.models.event.get_previous_by_ST_DATE">
+<span class="sig-name descname"><span class="pre">get_previous_by_ST_DATE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">ST_DATE&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.models.event.get_previous_by_ST_DATE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#event.models.event.id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.locationid">
+<span class="sig-name descname"><span class="pre">locationـid</span></span><a class="headerlink" href="#event.models.event.locationid" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#event.models.event.objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.online">
+<span class="sig-name descname"><span class="pre">online</span></span><a class="headerlink" href="#event.models.event.online" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.organizer">
+<span class="sig-name descname"><span class="pre">organizer</span></span><a class="headerlink" href="#event.models.event.organizer" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.sub_Category">
+<span class="sig-name descname"><span class="pre">sub_Category</span></span><a class="headerlink" href="#event.models.event.sub_Category" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.type">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#event.models.event.type" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.venue_name">
+<span class="sig-name descname"><span class="pre">venue_name</span></span><a class="headerlink" href="#event.models.event.venue_name" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.models.sub_category">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.models.</span></span><span class="sig-name descname"><span class="pre">sub_category</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/models.html#sub_category"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.models.sub_category" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model representing an event sub-category.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="event.models.sub_category.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#event.models.sub_category.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.sub_category.EVENT_ID">
+<span class="sig-name descname"><span class="pre">EVENT_ID</span></span><a class="headerlink" href="#event.models.sub_category.EVENT_ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.sub_category.ID">
+<span class="sig-name descname"><span class="pre">ID</span></span><a class="headerlink" href="#event.models.sub_category.ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="event.models.sub_category.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#event.models.sub_category.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.sub_category.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><a class="headerlink" href="#event.models.sub_category.NAME" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.sub_category.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#event.models.sub_category.id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.sub_category.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#event.models.sub_category.objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-event.serializers">
+<span id="event-serializers-module"></span><h2>event.serializers module<a class="headerlink" href="#module-event.serializers" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.serializers.SearchEventSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.serializers.</span></span><span class="sig-name descname"><span class="pre">SearchEventSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/serializers.html#SearchEventSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.serializers.SearchEventSerializer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for searching the Event model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.serializers.SearchEventSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/event/serializers.html#SearchEventSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.serializers.SearchEventSerializer.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.serializers.SearchEventSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#event.serializers.SearchEventSerializer.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.serializers.SearchEventSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#event.serializers.SearchEventSerializer.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.models.event" title="event.models.event"><code class="xref py py-class docutils literal notranslate"><span class="pre">event</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.serializers.eventSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.serializers.</span></span><span class="sig-name descname"><span class="pre">eventSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/serializers.html#eventSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.serializers.eventSerializer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for the Event model.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.serializers.eventSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/event/serializers.html#eventSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.serializers.eventSerializer.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.serializers.eventSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#event.serializers.eventSerializer.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.serializers.eventSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#event.serializers.eventSerializer.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.models.event" title="event.models.event"><code class="xref py py-class docutils literal notranslate"><span class="pre">event</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-event.urls">
+<span id="event-urls-module"></span><h2>event.urls module<a class="headerlink" href="#module-event.urls" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-event.views">
+<span id="event-views-module"></span><h2>event.views module<a class="headerlink" href="#module-event.views" title="Permalink to this heading"></a></h2>
+<p>This module contains several view classes for the events app.</p>
+<p>class:EventCreateView: A viewset for creating an event instance.</p>
+<p>class:AllEventListView: A viewset for retrieving all event instances.</p>
+<p>class:EventSearchView: A viewset for searching event instances by title.</p>
+<p>class:EventListtype: A viewset for retrieving event instances by type.</p>
+<p>class:EventListCategory: A viewset for retrieving event instances by category.</p>
+<p>class:EventListSupCategory: A viewset for retrieving event instances by sub-category.</p>
+<p>class:EventListVenue: A viewset for retrieving event instances by venue.</p>
+<p>class:OnlineEventsAPIView: A viewset for retrieving online event instances.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.AllEventListView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">AllEventListView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#AllEventListView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.AllEventListView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<p>A viewset for retrieving all event instances.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.AllEventListView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#AllEventListView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.AllEventListView.get" title="Permalink to this definition"></a></dt>
+<dd><p>This view should return a list of all the events.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.AllEventListView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#event.views.AllEventListView.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.EventCreateView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">EventCreateView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventCreateView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventCreateView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<p>A viewset for creating an event instance.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventCreateView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#event.views.EventCreateView.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventCreateView.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#event.views.EventCreateView.queryset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventCreateView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#event.views.EventCreateView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.serializers.eventSerializer" title="event.serializers.eventSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">eventSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.EventListCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">EventListCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventListCategory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventListCategory" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<p>A viewset for retrieving event instances by category.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.EventListCategory.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventListCategory.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventListCategory.get_queryset" title="Permalink to this definition"></a></dt>
+<dd><p>This view should return a list of all the events
+for the category specified in the URL parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventListCategory.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#event.views.EventListCategory.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventListCategory.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#event.views.EventListCategory.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.serializers.eventSerializer" title="event.serializers.eventSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">eventSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.EventListSupCategory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">EventListSupCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventListSupCategory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventListSupCategory" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<p>A viewset for retrieving event instances by sub-category.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.EventListSupCategory.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventListSupCategory.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventListSupCategory.get_queryset" title="Permalink to this definition"></a></dt>
+<dd><p>This view should return a list of all the events
+for the sub-category specified in the URL parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventListSupCategory.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#event.views.EventListSupCategory.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventListSupCategory.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#event.views.EventListSupCategory.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.serializers.eventSerializer" title="event.serializers.eventSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">eventSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.EventListVenue">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">EventListVenue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventListVenue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventListVenue" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<p>A viewset for retrieving event instances by venue.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.EventListVenue.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventListVenue.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventListVenue.get_queryset" title="Permalink to this definition"></a></dt>
+<dd><p>This view should return a list of all the events
+for the venue specified in the URL parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventListVenue.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#event.views.EventListVenue.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventListVenue.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#event.views.EventListVenue.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.serializers.eventSerializer" title="event.serializers.eventSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">eventSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.EventListtype">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">EventListtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventListtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventListtype" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<p>A viewset for retrieving event instances by type.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.EventListtype.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventListtype.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventListtype.get_queryset" title="Permalink to this definition"></a></dt>
+<dd><p>This view should return a list of all the events
+for the type specified in the URL parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventListtype.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#event.views.EventListtype.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventListtype.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#event.views.EventListtype.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.serializers.eventSerializer" title="event.serializers.eventSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">eventSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.EventSearchView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">EventSearchView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventSearchView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventSearchView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<p>A viewset for searching event instances by title.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.EventSearchView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventSearchView.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventSearchView.get_queryset" title="Permalink to this definition"></a></dt>
+<dd><p>This view should return a list of all the events
+for the title specified in the URL parameter.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventSearchView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#event.views.EventSearchView.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventSearchView.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#event.views.EventSearchView.queryset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.EventSearchView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#event.views.EventSearchView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.serializers.eventSerializer" title="event.serializers.eventSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">eventSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.OnlineEventsAPIView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">OnlineEventsAPIView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#OnlineEventsAPIView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.OnlineEventsAPIView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<p>A viewset for retrieving event which the online is ‘true’ .</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.OnlineEventsAPIView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#OnlineEventsAPIView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.OnlineEventsAPIView.get" title="Permalink to this definition"></a></dt>
+<dd><p>This view should return a list of all the online events.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.OnlineEventsAPIView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#event.views.OnlineEventsAPIView.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-event">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-event" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="booking.migrations.html" class="btn btn-neutral float-left" title="booking.migrations package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="event.migrations.html" class="btn btn-neutral float-right" title="event.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ismail.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
