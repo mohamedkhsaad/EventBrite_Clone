@@ -18,7 +18,7 @@ from django.http import Http404
 
 
 
-# TEMP: ticket generics view sets mainly for adding objects into the database
+# TEMP: ticket generics view sets mainly for adding objects into the database and testing
 class TicketList(generics.ListCreateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
@@ -74,6 +74,7 @@ def create_ticket(request):
     return Response(ticket_serializer.errors, status=400)
 
 # DONE 
+# DONE TESTING
 @api_view(['GET'])
 def list_tickets_by_event(request, event_id):
 
@@ -85,7 +86,7 @@ def list_tickets_by_event(request, event_id):
     return Response(serialized_tickets.data)
 
 
-# TEST after inserting users into the database
+# DONE TESTING
 @api_view(['GET'])
 def list_tickets_by_user(request, user_id):
     # get all tickets for this event
@@ -97,7 +98,8 @@ def list_tickets_by_user(request, user_id):
 
 
 
-#DONE
+# DONE
+# DONE TESTING
 @api_view(['GET'])
 def get_ticket(request,ticket_id):
     # /ticket/{ticket_id}
@@ -113,6 +115,7 @@ def get_ticket(request,ticket_id):
 
 
 # check
+# DONE TESTING
 @api_view(['GET'])
 def check_promo_code(request,event_id):
     # /event?promo_code=SAVE123
