@@ -30,6 +30,8 @@ class AllEventListView(APIView):
 
 
 class EventSearchView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+
     queryset = event.objects.all()
     serializer_class = eventSerializer
 
@@ -44,6 +46,7 @@ class EventSearchView(generics.ListAPIView):
     
 class EventListtype(generics.ListAPIView):
     serializer_class = eventSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -55,6 +58,7 @@ class EventListtype(generics.ListAPIView):
     
 class EventListCategory(generics.ListAPIView):
     serializer_class = eventSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -66,6 +70,7 @@ class EventListCategory(generics.ListAPIView):
     
 class EventListSupCategory(generics.ListAPIView):
     serializer_class = eventSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -74,13 +79,11 @@ class EventListSupCategory(generics.ListAPIView):
         """
         event_sub_Category = self.kwargs['event_sub_Category']
         return event.objects.filter(sub_Category=event_sub_Category)
+
 class EventListVenue(generics.ListAPIView):
     serializer_class = eventSerializer
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
-        """
-        This view should return a list of all the events
-        for the type specified in the URL parameter.
-        """
         event_venue = self.kwargs['event_venue']
         return event.objects.filter(venue_name=event_venue)
     
