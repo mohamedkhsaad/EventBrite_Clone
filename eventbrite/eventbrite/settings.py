@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
     'rest_framework',
     'event',
     'user',
     'drf_spectacular',
+    'booking',
 
 ]
 
@@ -78,18 +80,18 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'sw-db',
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': 'localhost',
-            'port': 27017,
+
         }
     }
 }
-
+DATABASES = {
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'Project-DB',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+            'host':'mongodb+srv://ismail:512002@cluster0.jplcyhb.mongodb.net/?retryWrites=true&w=majority'
+            }
 # DATABASES = {
 #         'default': {
 #             'ENGINE': 'djongo',
@@ -143,6 +145,22 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL='eventbrit.User'
-REST_FRAMEWORK={
+REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'django.contrib.auth.backends.ModelBackend', # default authentication backend
+    ],
+    
 }
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'Daniel.Aziz00@eng-st.cu.edu.eg'
+EMAIL_HOST_PASSWORD = 'Danie7889'
+EMAIL_PORT = 587
+
+
+AUTH_USER_MODEL = 'user.user'

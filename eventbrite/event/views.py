@@ -5,12 +5,12 @@ from django.http import JsonResponse, HttpResponse
 from .serializers import*
 from rest_framework import generics
 from user import*
-from datetime import date
-import csv
-
-
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from .models import event
+
 # Create your views here.
 
 class EventCreateView(generics.CreateAPIView):
@@ -20,8 +20,18 @@ class EventCreateView(generics.CreateAPIView):
     serializer_class = eventSerializer
     queryset = event.objects.all()
 
+class AllEventListView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, format=None):
+        events = event.objects.all()
+        serializer = eventSerializer(events, many=True)
+        return Response(serializer.data)
+
 
 class EventSearchView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+
     queryset = event.objects.all()
     serializer_class = eventSerializer
 
@@ -78,6 +88,7 @@ class UserListUpcomingEvents(generics.ListAPIView):
     
 class EventListtype(generics.ListAPIView):
     serializer_class = eventSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -89,6 +100,7 @@ class EventListtype(generics.ListAPIView):
     
 class EventListCategory(generics.ListAPIView):
     serializer_class = eventSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -100,6 +112,7 @@ class EventListCategory(generics.ListAPIView):
     
 class EventListSupCategory(generics.ListAPIView):
     serializer_class = eventSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -108,15 +121,23 @@ class EventListSupCategory(generics.ListAPIView):
         """
         event_sub_Category = self.kwargs['event_sub_Category']
         return event.objects.filter(sub_Category=event_sub_Category)
+
 class EventListVenue(generics.ListAPIView):
     serializer_class = eventSerializer
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
-        """
-        This view should return a list of all the events
-        for the type specified in the URL parameter.
-        """
         event_venue = self.kwargs['event_venue']
         return event.objects.filter(venue_name=event_venue)
+    
+ 
+    
+
+
+class OnlineEventsAPIView(APIView):
+    def get(self, request):
+        events = event.objects.filter(online='t')
+        serializer = eventSerializer(events, many=True)
+        return Response(serializer.data)
 
 # def ExportCSV(request, **kwargs):
 
@@ -139,3 +160,5 @@ class EventListVenue(generics.ListAPIView):
 #     """
 #     serializer_class = eventSerializer
 #     # queryset = U.venue_name
+
+

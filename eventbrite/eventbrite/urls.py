@@ -22,7 +22,6 @@ from drf_spectacular.views import (
 )
 from event.views import*
 from user.views import*
-
 urlpatterns = [
     path('api/schema/',SpectacularAPIView.as_view(),name='api-schema'),
     path(
@@ -40,10 +39,10 @@ urlpatterns = [
     path('events/type/<str:event_type>/', EventListtype.as_view(), name='event-list-by-type'),
     path('events/category/<str:event_Category>/', EventListCategory.as_view(), name='event-list-by-category'),
     path('events/sub_category/<str:event_sub_Category>/', EventListSupCategory.as_view(), name='event-list-by-sub_category'),
-    # path('events/export_csv/<int:user_id>', ExportCSV, name='export-csv'),
-
-
-
+    path('events/ALL/', AllEventListView.as_view(), name='event-list-ALL'),
+    path('events/online/', OnlineEventsAPIView.as_view(), name='online-events'),
+    path('booking/',include('booking.urls')),
+    path('user/login/', CreateTokenView.as_view(), name='login'),
     path('',include('rest_framework.urls')),
 ]
 

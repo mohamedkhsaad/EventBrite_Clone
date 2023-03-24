@@ -1,11 +1,12 @@
 from django.db import models
-
+from eventbrite.settings import*
 # Create your models here.
 
 class event(models.Model):
     ID = models.IntegerField()
-    User_id=models.IntegerField()
+    User_id=models.IntegerField(blank=False)
     Title=models.CharField(max_length=50)
+    organizer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     organizer=models.CharField(max_length=50)
     Description=models.CharField(max_length=500)
     type=models.CharField(max_length=20)
@@ -18,7 +19,13 @@ class event(models.Model):
     END_DATE=models.DateField()
     ST_TIME =models.TimeField()
     END_TIME =models.TimeField()
-    ONLINE=models.BooleanField()
+
+    #ONLINE=models.BooleanField(default=False)
+    Online_choises= (
+        ('t', 'true'),
+        ('f', 'false')
+    )
+    online = models.CharField(max_length=1)
     CAPACITY=models.IntegerField()
     PASSWORD =models.CharField(max_length=10)
     # EVENT_PHOTO=models.ImageField()
@@ -29,38 +36,15 @@ class event(models.Model):
     # LIKES =models.ExpressionList([1])
     # CREATED=models.ExpressionList([1])
     STATUS =models.CharField(max_length=20)
+    REQUIRED_FIELDS =['ID', 'Title', 'organizer', 'Description', 'type', 'Category',
+                       'sub_Category','venue_name','ST_DATE','END_DATE','ST_TIME','END_TIME','online',
+                       'CAPACITY','PASSWORD','STATUS',
+                       ]
+
     # TAGS =models.ExpressionList()
-# class user(models.Model):
-#     ID=models.IntegerField()
-#     F_NAME=models.CharField(max_length=20)
-#     L_NAME=models.CharField(max_length=20)
-#     EMAIL=models.EmailField()
-#     PASSWORD=models.CharField(max_length=20)
 
-#     GENDER =models.Choices("male","female")
-#     AGE =models.IntegerField()
-#     BIRTH_DATE=models.DateField()
-#     PHONE =models.CharField(max_length=20)
 
-#     CITY=models.CharField(max_length=20)
-#     COUNTRY=models.CharField(max_length=20)
-#     ADDRESS =models.CharField(max_length=20)
-#     LOCATION_ID =models.IntegerField()
 
-#     DISCOUNT_ID=models.IntegerField()
-                              
-#     INTERESTS_ID=list()
-#     EVENT_CREATED=list()
-#     TICKETS_ID=list()
-#     FOLLOWERS=list()
-class Tickets(models.Model):
-    ID=models.IntegerField()
-    NAME=models.CharField(max_length=20)
-    PRICE=models.FloatField()
-    EVENT_ID=models.IntegerField()
-    GUEST_ID=models.IntegerField()
-    TICKET_NUM=models.IntegerField()
-    TICKET_TYPE=models.Choices("Free","VIP")
 
 class category(models.Model):
     ID=models.IntegerField()
@@ -86,15 +70,7 @@ class Locations(models.Model):
     latitude=models.CharField(max_length=20)
     longitude=models.CharField(max_length=20)
 
-class Discount(models.Model):
-  ID=models.IntegerField()
-  EVENT_ID=list()
-  percent_off =models.CharField(max_length=20)
-  CODE=models.CharField(max_length=20)
-  start_date=models.DateField()
-  end_date=models.DateField()
-  Quantity_available =models.IntegerField()
-  User_ID=models.IntegerField()
+
 
 # class Interests(models.Model):
 #   ID=models.IntegerField()
