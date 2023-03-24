@@ -1,6 +1,7 @@
 from django.db import models
 
-# Create your models here.
+
+#TODO: you have 2 id attributes
 class Ticket(models.Model):
     ID=models.IntegerField()
     NAME=models.CharField(max_length=20)
@@ -13,7 +14,7 @@ class Ticket(models.Model):
 
 class Discount(models.Model):
   ID=models.IntegerField()
-  EVENT_ID=list()
+  EVENT_ID= models.IntegerField() # should be primary key
   percent_off =models.CharField(max_length=20)
   CODE=models.CharField(max_length=20)
   start_date=models.DateField()
