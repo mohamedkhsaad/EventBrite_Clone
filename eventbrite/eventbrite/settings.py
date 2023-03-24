@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'event',
     'user',
-    'drf_spectacular',
     'booking',
+    'drf_spectacular',
+    'eventManagment'
 
 ]
 
@@ -77,13 +78,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventbrite.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-
-        }
-    }
-}
 DATABASES = {
         'default': {
             'ENGINE': 'djongo',
@@ -92,6 +86,8 @@ DATABASES = {
             'CLIENT': {
             'host':'mongodb+srv://ismail:512002@cluster0.jplcyhb.mongodb.net/?retryWrites=true&w=majority'
             }
+        }
+}
 # DATABASES = {
 #         'default': {
 #             'ENGINE': 'djongo',
