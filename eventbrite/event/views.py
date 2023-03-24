@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework import viewsets
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .serializers import*
 from rest_framework import generics
 from user import*
@@ -43,6 +43,48 @@ class EventSearchView(generics.ListAPIView):
         # return queryset
         event_name = self.kwargs['event_name']
         return event.objects.filter(Title=event_name)
+
+
+class UserListEvents(generics.ListAPIView):
+    queryset = event.objects.all()
+    serializer_class = eventSerializer
+
+    def get_queryset(self):
+        # queryset = event.objects.all()
+        # event_name = self.request.query_params.get('event_name')
+        # if event_name is not None:
+        #     queryset = queryset.filter(Title=event_name)
+        # return queryset
+        user_id = self.kwargs['user_id']
+        return event.objects.filter(User_id=user_id)
+
+class UserListPastEvents(generics.ListAPIView):
+    today = date.today()
+    queryset = event.objects.all()
+    serializer_class = eventSerializer
+
+    def get_queryset(self):
+        # queryset = event.objects.all()
+        # event_name = self.request.query_params.get('event_name')
+        # if event_name is not None:
+        #     queryset = queryset.filter(Title=event_name)
+        # return queryset
+        user_id = self.kwargs['user_id']
+        return event.objects.filter(User_id=user_id).filter(ST_DATE__lt=self.today)
+
+class UserListUpcomingEvents(generics.ListAPIView):
+    today = date.today()
+    queryset = event.objects.all()
+    serializer_class = eventSerializer
+
+    def get_queryset(self):
+        # queryset = event.objects.all()
+        # event_name = self.request.query_params.get('event_name')
+        # if event_name is not None:
+        #     queryset = queryset.filter(Title=event_name)
+        # return queryset
+        user_id = self.kwargs['user_id']
+        return event.objects.filter(User_id=user_id).filter(ST_DATE__gt=self.today)
     
 class EventListtype(generics.ListAPIView):
     serializer_class = eventSerializer
@@ -96,6 +138,20 @@ class OnlineEventsAPIView(APIView):
         events = event.objects.filter(online='t')
         serializer = eventSerializer(events, many=True)
         return Response(serializer.data)
+
+# def ExportCSV(request, **kwargs):
+
+#     response = HttpResponse(content_type='text/csv')
+
+#     writer = csv.writer(response)
+#     writer.writerow(['Title', 'ST_DATE', 'STATUS'])
+#     user_id =  kwargs['user_id']
+#     for x in event.objects.filter(User_id=user_id).values_list('Title', 'ST_DATE', 'STATUS'):
+#         writer.writerow(x)
+
+#     response['Content-Disposition'] = 'attachment; filename="My_Events.csv"'
+
+#     return response
 
 
 # class user_venue(generics.CreateAPIView):

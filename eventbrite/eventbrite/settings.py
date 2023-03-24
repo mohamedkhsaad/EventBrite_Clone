@@ -81,23 +81,9 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'ismail',
-#         # 'CLIENT': {
-#         # 'host': 'localhost',
-#         # 'port': 27017,
-#         # }
-#     }
-# }
-
-# # DATABASES = {
-# #     'default': {
-# #         'ENGINE': 'djongo',
-# #         'NAME': 'demo',
-# #     }
-# # }
+        }
+    }
+}
 DATABASES = {
         'default': {
             'ENGINE': 'djongo',
@@ -105,9 +91,17 @@ DATABASES = {
             'ENFORCE_SCHEMA': False,
             'CLIENT': {
             'host':'mongodb+srv://ismail:512002@cluster0.jplcyhb.mongodb.net/?retryWrites=true&w=majority'
-            }  
-        }
-}
+            }
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'sw-db',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#             'host':'mongodb://ismail:512002@ac-rn9pavh-shard-00-00.lxpcajz.mongodb.net:27017,ac-rn9pavh-shard-00-01.lxpcajz.mongodb.net:27017,ac-rn9pavh-shard-00-02.lxpcajz.mongodb.net:27017/?ssl=true&replicaSet=atlas-ayoj02-shard-0&authSource=admin&retryWrites=true&w=majority'
+#             }  
+#         }
+# }
 
 
 # Password validation
