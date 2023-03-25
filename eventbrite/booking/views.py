@@ -1,3 +1,19 @@
+"""
+This module contains several function based views for the booling app.
+
+function:list_tickets_by_event: A FBV thst Return a list of all tickets for a given event.
+
+function:list_tickets_by_user: A FBV for retrieving list of all tickets for a given user.
+
+function:get_ticket: A FBV that Return a ticket object by ticket ID.
+
+function:check_promo_code: A FBV Check whether a promo code is valid for a given event.
+
+class:discount_list: A view that returns a list of all discounts or creates a new discount.
+
+class:discount_pk: A view that returns a discounts object or update a new discount or delete it.
+"""
+
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.http import Http404
@@ -31,7 +47,13 @@ from user.models import User
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def list_tickets_by_event(request, event_id):
+    """
+    Return a list of all tickets for a given event.
 
+    :param request: HTTP request object.
+    :param event_id: Event ID.
+    :return: A list of JSON objects representing the tickets for the given event.
+    """
     # get all tickets for this event
     tickets = Ticket.objects.filter(EVENT_ID=event_id)
     serialized_tickets = TicketSerializer(tickets, many=True)
@@ -45,7 +67,14 @@ def list_tickets_by_event(request, event_id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def list_tickets_by_user(request, user_id):
-    # get all tickets for this event
+    """
+    Return a list of all tickets for a given user.
+
+    :param request: HTTP request object.
+    :param user_id: User ID.
+    :return: A list of JSON objects representing the tickets for the given user.
+    """
+
     tickets = Ticket.objects.filter(GUEST_ID=user_id)
     serialized_tickets = TicketSerializer(tickets, many=True)
 
@@ -61,7 +90,13 @@ def list_tickets_by_user(request, user_id):
 @permission_classes([IsAuthenticated])
 def get_ticket(request,ticket_id):
     # /ticket/{ticket_id}
+    """
+    Return a ticket object by ticket ID.
 
+    :param request: HTTP request object.
+    :param ticket_id: Ticket ID.
+    :return: A JSON object representing the ticket for the given ID.
+    """
     try:
         print(ticket_id)
         ticket = Ticket.objects.get(id=ticket_id)
@@ -78,8 +113,17 @@ def get_ticket(request,ticket_id):
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def check_promo_code(request,event_id):
+    """
+    Check whether a promo code is valid for a given event.
+
+    :param request: HTTP request object.
+    :param event_id: Event ID.
+    :return: A JSON object indicating whether the promo code is valid.
+    """
     # /event?promo_code=SAVE123
     # search an event's promo codes
+
+
     try:
         promo_code = request.query_params['promo_code']
     except:
@@ -95,12 +139,44 @@ def check_promo_code(request,event_id):
 
 
 class discount_list(generics.ListCreateAPIView):
+    """
+    A view class to list and create Discount objects.
+
+    Attributes:
+        queryset (QuerySet): A QuerySet of all Discount objects.
+        serializer_class (DiscountSerializer): The serializer class for Discount objects.
+        authentication_classes (list): A list of authentication classes used for this view.
+        permission_classes (list): A list of permission classes used for this view.
+
+    Methods:
+        get(self, request, *args, **kwargs):
+            Handle HTTP GET request and retrieve a list of Discount objects.
+        post(self, request, *args, **kwargs):
+            Handle HTTP POST request and create a new Discount object.
+    """
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
 class discount_pk(generics.RetrieveUpdateDestroyAPIView):
+    """
+    A view class to retrieve, update, or delete a Discount object by primary key.
+
+    Attributes:
+        queryset (QuerySet): A QuerySet of all Discount objects.
+        serializer_class (DiscountSerializer): The serializer class for Discount objects.
+        authentication_classes (list): A list of authentication classes used for this view.
+        permission_classes (list): A list of permission classes used for this view.
+
+    Methods:
+        get(self, request, *args, **kwargs):
+            Handle HTTP GET request and retrieve a Discount object by primary key.
+        put(self, request, *args, **kwargs):
+            Handle HTTP PUT request and update a Discount object by primary key.
+        delete(self, request, *args, **kwargs):
+            Handle HTTP DELETE request and delete a Discount object by primary key.
+    """
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
     authentication_classes = [TokenAuthentication]
