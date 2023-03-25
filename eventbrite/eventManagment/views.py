@@ -14,11 +14,13 @@ from user import*
 from datetime import date
 import csv
 from event.models import*
+from rest_framework.permissions import IsAuthenticated
 
 class UserListEvents(generics.ListAPIView):
     """
     A viewset for retrieving all user events by user id.
     """
+    permission_classes = [IsAuthenticated]
     queryset = event.objects.all()
     serializer_class = eventSerializer
 
@@ -34,6 +36,8 @@ class UserListPastEvents(generics.ListAPIView):
     """
     A viewset for retrieving all user past events by user id.
     """
+    permission_classes = [IsAuthenticated]
+
     today = date.today()
     queryset = event.objects.all()
     serializer_class = eventSerializer
@@ -50,6 +54,8 @@ class UserListUpcomingEvents(generics.ListAPIView):
     """
     A viewset for retrieving all user upcoming events by user id.
     """
+    permission_classes = [IsAuthenticated]
+
     today = date.today()
     queryset = event.objects.all()
     serializer_class = eventSerializer

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>booking.tests &mdash; eventbrite documntation 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            eventbrite documntation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">eventbrite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">eventbrite documntation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">booking.tests</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for booking.tests</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span><span class="p">,</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">get_user_model</span>
+
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">status</span>
+<span class="kn">from</span> <span class="nn">rest_framework.test</span> <span class="kn">import</span> <span class="n">APITestCase</span><span class="p">,</span> <span class="n">APIClient</span>
+<span class="kn">from</span> <span class="nn">user.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">rest_framework.authtoken.models</span> <span class="kn">import</span> <span class="n">Token</span>
+
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Ticket</span><span class="p">,</span><span class="n">Discount</span>
+<span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="n">TicketSerializer</span><span class="p">,</span><span class="n">DiscountSerializer</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+
+<div class="viewcode-block" id="GetTicketTestCase"><a class="viewcode-back" href="../../booking.html#booking.tests.GetTicketTestCase">[docs]</a><span class="k">class</span> <span class="nc">GetTicketTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="GetTicketTestCase.setUp"><a class="viewcode-back" href="../../booking.html#booking.tests.GetTicketTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span>
+
+        <span class="c1"># auth credentials</span>
+        <span class="c1"># self.user = User.objects.create_user(</span>
+        <span class="c1">#             email=&#39;test@example.com&#39;,</span>
+        <span class="c1">#             first_name=&#39;ahmed&#39;,</span>
+        <span class="c1">#             last_name=&#39;omar&#39;,</span>
+        <span class="c1">#             age=30,</span>
+        <span class="c1">#             gender=&#39;Male&#39;,</span>
+        <span class="c1">#             city=&#39;cairo&#39;,</span>
+        <span class="c1">#             country=&#39;egypyt&#39;</span>
+        <span class="c1">#             password=&#39;password&#39;,</span>
+        <span class="c1"># )</span>
+        <span class="c1"># self.token = Token.objects.create(user=self.user)</span>
+
+        <span class="c1"># self.client = APIClient()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;testpass&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">Token</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span><span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="s1">&#39;Token &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticket</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;General Admission&#39;</span><span class="p">,</span>
+            <span class="n">PRICE</span><span class="o">=</span><span class="mf">10.99</span><span class="p">,</span>
+            <span class="n">EVENT_ID</span><span class="o">=</span><span class="mi">11111</span><span class="p">,</span>
+            <span class="n">GUEST_ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">TICKET_NUM</span><span class="o">=</span><span class="mi">100</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;get-ticket&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ticket_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticket</span><span class="o">.</span><span class="n">pk</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="GetTicketTestCase.test_get_valid_ticket"><a class="viewcode-back" href="../../booking.html#booking.tests.GetTicketTestCase.test_get_valid_ticket">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_valid_ticket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="n">serialized_data</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ticket</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">serialized_data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GetTicketTestCase.test_get_invalid_ticket"><a class="viewcode-back" href="../../booking.html#booking.tests.GetTicketTestCase.test_get_invalid_ticket">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_invalid_ticket</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;get-ticket&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ticket_id&#39;</span><span class="p">:</span> <span class="mi">999</span><span class="p">})</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">)</span></div></div>
+
+
+
+
+<div class="viewcode-block" id="ListTicketsByEventTestCase"><a class="viewcode-back" href="../../booking.html#booking.tests.ListTicketsByEventTestCase">[docs]</a><span class="k">class</span> <span class="nc">ListTicketsByEventTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="ListTicketsByEventTestCase.setUp"><a class="viewcode-back" href="../../booking.html#booking.tests.ListTicketsByEventTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="c1"># auth credentials</span>
+        <span class="c1"># self.user = User.objects.create_user(</span>
+        <span class="c1">#             email=&#39;test@example.com&#39;,</span>
+        <span class="c1">#             first_name=&#39;ahmed&#39;,</span>
+        <span class="c1">#             last_name=&#39;omar&#39;,</span>
+        <span class="c1">#             age=30,</span>
+        <span class="c1">#             gender=&#39;Male&#39;,</span>
+        <span class="c1">#             city=&#39;cairo&#39;,</span>
+        <span class="c1">#             country=&#39;egypyt&#39;,</span>
+        <span class="c1">#             password=&#39;password&#39;,</span>
+        <span class="c1"># )</span>
+        <span class="c1"># self.client = APIClient()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;testpass&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">Token</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span><span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="s1">&#39;Token &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_id</span> <span class="o">=</span> <span class="mi">12345</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticket1</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;General Admission&#39;</span><span class="p">,</span>
+            <span class="n">PRICE</span><span class="o">=</span><span class="mf">10.99</span><span class="p">,</span>
+            <span class="n">EVENT_ID</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">event_id</span><span class="p">,</span>
+            <span class="n">GUEST_ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">TICKET_NUM</span><span class="o">=</span><span class="mi">100</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticket2</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;VIP&#39;</span><span class="p">,</span>
+            <span class="n">PRICE</span><span class="o">=</span><span class="mf">25.99</span><span class="p">,</span>
+            <span class="n">EVENT_ID</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">event_id</span><span class="p">,</span>
+            <span class="n">GUEST_ID</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">TICKET_NUM</span><span class="o">=</span><span class="mi">50</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;list-tickets-by-event&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;event_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_id</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="ListTicketsByEventTestCase.test_list_tickets_by_event"><a class="viewcode-back" href="../../booking.html#booking.tests.ListTicketsByEventTestCase.test_list_tickets_by_event">[docs]</a>    <span class="k">def</span> <span class="nf">test_list_tickets_by_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="n">serialized_data</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ticket1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticket2</span><span class="p">],</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">serialized_data</span><span class="p">)</span></div></div>
+
+
+
+
+<div class="viewcode-block" id="ListTicketsByUserTestCase"><a class="viewcode-back" href="../../booking.html#booking.tests.ListTicketsByUserTestCase">[docs]</a><span class="k">class</span> <span class="nc">ListTicketsByUserTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="ListTicketsByUserTestCase.setUp"><a class="viewcode-back" href="../../booking.html#booking.tests.ListTicketsByUserTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># self.client = APIClient()</span>
+
+
+        <span class="c1"># auth credentials</span>
+        <span class="c1"># self.user = User.objects.create_user(</span>
+        <span class="c1">#             email=&#39;test@example.com&#39;,</span>
+        <span class="c1">#             first_name=&#39;ahmed&#39;,</span>
+        <span class="c1">#             last_name=&#39;omar&#39;,</span>
+        <span class="c1">#             age=30,</span>
+        <span class="c1">#             gender=&#39;Male&#39;,</span>
+        <span class="c1">#             city=&#39;cairo&#39;,</span>
+        <span class="c1">#             country=&#39;egypyt&#39;</span>
+        <span class="c1">#             password=&#39;password&#39;,</span>
+        <span class="c1"># )</span>
+        <span class="c1"># self.token = Token.objects.create(user=self.user)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;testpass&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">Token</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span><span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="s1">&#39;Token &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="mi">123</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticket1</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;General Admission&#39;</span><span class="p">,</span>
+            <span class="n">PRICE</span><span class="o">=</span><span class="mf">10.99</span><span class="p">,</span>
+            <span class="n">EVENT_ID</span><span class="o">=</span><span class="mi">11111</span><span class="p">,</span>
+            <span class="n">GUEST_ID</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="n">TICKET_NUM</span><span class="o">=</span><span class="mi">100</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ticket2</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">NAME</span><span class="o">=</span><span class="s1">&#39;VIP&#39;</span><span class="p">,</span>
+            <span class="n">PRICE</span><span class="o">=</span><span class="mf">25.99</span><span class="p">,</span>
+            <span class="n">EVENT_ID</span><span class="o">=</span><span class="mi">22222</span><span class="p">,</span>
+            <span class="n">GUEST_ID</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="n">TICKET_NUM</span><span class="o">=</span><span class="mi">50</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;list-tickets-by-user&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="ListTicketsByUserTestCase.test_list_tickets_by_user"><a class="viewcode-back" href="../../booking.html#booking.tests.ListTicketsByUserTestCase.test_list_tickets_by_user">[docs]</a>    <span class="k">def</span> <span class="nf">test_list_tickets_by_user</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="n">serialized_data</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">ticket1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ticket2</span><span class="p">],</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">serialized_data</span><span class="p">)</span></div></div>
+
+
+
+
+<div class="viewcode-block" id="CheckPromoCodeTests"><a class="viewcode-back" href="../../booking.html#booking.tests.CheckPromoCodeTests">[docs]</a><span class="k">class</span> <span class="nc">CheckPromoCodeTests</span><span class="p">(</span><span class="n">APITestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CheckPromoCodeTests.setUp"><a class="viewcode-back" href="../../booking.html#booking.tests.CheckPromoCodeTests.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+
+        <span class="c1"># auth credentials</span>
+        <span class="c1"># self.user = User.objects.create_user(</span>
+        <span class="c1">#             email=&#39;test@example.com&#39;,</span>
+        <span class="c1">#             first_name=&#39;ahmed&#39;,</span>
+        <span class="c1">#             last_name=&#39;omar&#39;,</span>
+        <span class="c1">#             age=30,</span>
+        <span class="c1">#             gender=&#39;Male&#39;,</span>
+        <span class="c1">#             city=&#39;cairo&#39;,</span>
+        <span class="c1">#             country=&#39;egypyt&#39;</span>
+        <span class="c1">#             password=&#39;password&#39;,</span>
+        <span class="c1"># )</span>
+        <span class="c1"># self.token = Token.objects.create(user=self.user)</span>
+         
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;testpass&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">Token</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span><span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="s1">&#39;Token &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
+
+        <span class="c1"># Create a Discount object to use in the test</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discount</span> <span class="o">=</span> <span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">EVENT_ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">percent_off</span><span class="o">=</span><span class="s1">&#39;50&#39;</span><span class="p">,</span>
+            <span class="n">CODE</span><span class="o">=</span><span class="s1">&#39;SAVE50&#39;</span><span class="p">,</span>
+            <span class="n">start_date</span><span class="o">=</span><span class="s1">&#39;2022-01-01&#39;</span><span class="p">,</span>
+            <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;2022-01-31&#39;</span><span class="p">,</span>
+            <span class="n">Quantity_available</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">User_ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckPromoCodeTests.test_check_promo_code_with_valid_code"><a class="viewcode-back" href="../../booking.html#booking.tests.CheckPromoCodeTests.test_check_promo_code_with_valid_code">[docs]</a>    <span class="k">def</span> <span class="nf">test_check_promo_code_with_valid_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that a valid promo code for the specified event returns a 200 OK response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;check-promocode&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;event_id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;promo_code&#39;</span><span class="p">:</span> <span class="s1">&#39;SAVE50&#39;</span><span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;is_promo_code&#39;</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CheckPromoCodeTests.test_check_promo_code_with_missing_param"><a class="viewcode-back" href="../../booking.html#booking.tests.CheckPromoCodeTests.test_check_promo_code_with_missing_param">[docs]</a>    <span class="k">def</span> <span class="nf">test_check_promo_code_with_missing_param</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Test that a missing promo code param returns a 400 Bad Request response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;check-promocode&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;event_id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;json&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;err&#39;</span><span class="p">],</span> <span class="s1">&#39;missing promo_code param&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DiscountListTestCase"><a class="viewcode-back" href="../../booking.html#booking.tests.DiscountListTestCase">[docs]</a><span class="k">class</span> <span class="nc">DiscountListTestCase</span><span class="p">(</span><span class="n">APITestCase</span><span class="p">):</span>
+<div class="viewcode-block" id="DiscountListTestCase.setUp"><a class="viewcode-back" href="../../booking.html#booking.tests.DiscountListTestCase.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+
+        <span class="c1"># auth credentials</span>
+        <span class="c1"># self.user = User.objects.create_user(</span>
+        <span class="c1">#             email=&#39;test@example.com&#39;,</span>
+        <span class="c1">#             first_name=&#39;ahmed&#39;,</span>
+        <span class="c1">#             last_name=&#39;omar&#39;,</span>
+        <span class="c1">#             age=30,</span>
+        <span class="c1">#             gender=&#39;Male&#39;,</span>
+        <span class="c1">#             city=&#39;cairo&#39;,</span>
+        <span class="c1">#             country=&#39;egypyt&#39;</span>
+        <span class="c1">#             password=&#39;password&#39;,</span>
+        <span class="c1"># )</span>
+        <span class="c1"># self.token = Token.objects.create(user=self.user)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">APIClient</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testuser&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;testpass&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">Token</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">credentials</span><span class="p">(</span><span class="n">HTTP_AUTHORIZATION</span><span class="o">=</span><span class="s1">&#39;Token &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>        
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">discount1</span> <span class="o">=</span> <span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">EVENT_ID</span><span class="o">=</span><span class="mi">11111</span><span class="p">,</span>
+            <span class="n">percent_off</span><span class="o">=</span><span class="s1">&#39;20%&#39;</span><span class="p">,</span> <span class="n">CODE</span><span class="o">=</span><span class="s1">&#39;DISCOUNT20&#39;</span><span class="p">,</span>
+            <span class="n">start_date</span><span class="o">=</span><span class="s1">&#39;2022-01-01&#39;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;2022-12-31&#39;</span><span class="p">,</span>
+            <span class="n">Quantity_available</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">User_ID</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discount2</span> <span class="o">=</span> <span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">EVENT_ID</span><span class="o">=</span><span class="mi">11111</span><span class="p">,</span>
+            <span class="n">percent_off</span><span class="o">=</span><span class="s1">&#39;30%&#39;</span><span class="p">,</span> <span class="n">CODE</span><span class="o">=</span><span class="s1">&#39;DISCOUNT30&#39;</span><span class="p">,</span>
+            <span class="n">start_date</span><span class="o">=</span><span class="s1">&#39;2022-01-01&#39;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;2022-12-31&#39;</span><span class="p">,</span>
+            <span class="n">Quantity_available</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">User_ID</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;discount-list&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiscountListTestCase.test_list_discounts"><a class="viewcode-back" href="../../booking.html#booking.tests.DiscountListTestCase.test_list_discounts">[docs]</a>    <span class="k">def</span> <span class="nf">test_list_discounts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">discount1</span><span class="o">.</span><span class="n">ID</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;ID&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">discount2</span><span class="o">.</span><span class="n">ID</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiscountListTestCase.test_create_discount"><a class="viewcode-back" href="../../booking.html#booking.tests.DiscountListTestCase.test_create_discount">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_discount</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;ID&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;EVENT_ID&#39;</span><span class="p">:</span> <span class="mi">11111</span><span class="p">,</span>
+            <span class="s1">&#39;percent_off&#39;</span><span class="p">:</span> <span class="s1">&#39;10%&#39;</span><span class="p">,</span> <span class="s1">&#39;CODE&#39;</span><span class="p">:</span> <span class="s1">&#39;DISCOUNT10&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2022-01-01&#39;</span><span class="p">,</span> <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2022-12-31&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Quantity_available&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;User_ID&#39;</span><span class="p">:</span> <span class="mi">3</span>
+        <span class="p">}</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">serialized_data</span> <span class="o">=</span> <span class="n">DiscountSerializer</span><span class="p">(</span><span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">serialized_data</span><span class="p">)</span></div></div>
+
+
+<span class="c1"># class DiscountPKTestCase(TestCase):</span>
+<span class="c1">#     def setUp(self):</span>
+<span class="c1">#         self.client = APIClient()</span>
+<span class="c1">#         self.discount = Discount.objects.create(</span>
+<span class="c1">#             ID=1,</span>
+<span class="c1">#             EVENT_ID=11111,</span>
+<span class="c1">#             percent_off=&#39;20%&#39;,</span>
+<span class="c1">#             CODE=&#39;DISCOUNT123&#39;,</span>
+<span class="c1">#             start_date=&#39;2023-03-22&#39;,</span>
+<span class="c1">#             end_date=&#39;2023-03-28&#39;,</span>
+<span class="c1">#             Quantity_available=100,</span>
+<span class="c1">#             User_ID=1</span>
+<span class="c1">#         )</span>
+<span class="c1">#         self.url = f&#39;/booking/discount/{self.discount.pk}/&#39;</span>
+
+<span class="c1">#     def test_retrieve_discount(self):</span>
+<span class="c1">#         response = self.client.get(self.url)</span>
+<span class="c1">#         self.assertEqual(response.status_code, status.HTTP_200_OK)</span>
+<span class="c1">#         self.assertEqual(response.data[&#39;ID&#39;], self.discount.ID)</span>
+<span class="c1">#         self.assertEqual(response.data[&#39;EVENT_ID&#39;], self.discount.EVENT_ID)</span>
+<span class="c1">#         self.assertEqual(response.data[&#39;percent_off&#39;], self.discount.percent_off)</span>
+<span class="c1">#         self.assertEqual(response.data[&#39;CODE&#39;], self.discount.CODE)</span>
+<span class="c1">#         self.assertEqual(response.data[&#39;start_date&#39;], str(self.discount.start_date))</span>
+<span class="c1">#         self.assertEqual(response.data[&#39;end_date&#39;], str(self.discount.end_date))</span>
+<span class="c1">#         self.assertEqual(response.data[&#39;Quantity_available&#39;], self.discount.Quantity_available)</span>
+<span class="c1">#         self.assertEqual(response.data[&#39;User_ID&#39;], self.discount.User_ID)</span>
+
+<span class="c1">#     def test_update_discount(self):</span>
+<span class="c1">#         data = {</span>
+<span class="c1">#             &#39;percent_off&#39;: &#39;30%&#39;,</span>
+<span class="c1">#             &#39;CODE&#39;: &#39;NEWCODE123&#39;,</span>
+<span class="c1">#             &#39;Quantity_available&#39;: 50</span>
+<span class="c1">#         }</span>
+<span class="c1">#         response = self.client.patch(self.url, data=data)</span>
+<span class="c1">#         self.assertEqual(response.status_code, status.HTTP_200_OK)</span>
+<span class="c1">#         self.discount.refresh_from_db()</span>
+<span class="c1">#         self.assertEqual(self.discount.percent_off, &#39;30%&#39;)</span>
+<span class="c1">#         self.assertEqual(self.discount.CODE, &#39;NEWCODE123&#39;)</span>
+<span class="c1">#         self.assertEqual(self.discount.Quantity_available, 50)</span>
+
+<span class="c1">#     def test_delete_discount(self):</span>
+<span class="c1">#         response = self.client.delete(self.url)</span>
+<span class="c1">#         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)</span>
+<span class="c1">#         self.assertFalse(Discount.objects.filter(pk=self.discount.pk).exists())</span>
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ismail.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

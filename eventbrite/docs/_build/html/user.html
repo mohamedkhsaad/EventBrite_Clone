@@ -65,6 +65,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-user.tests">user.tests module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#user.tests.AuthTokenSerializerTest"><code class="docutils literal notranslate"><span class="pre">AuthTokenSerializerTest</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user.tests.UserSerializerTest"><code class="docutils literal notranslate"><span class="pre">UserSerializerTest</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-user.urls">user.urls module</a></li>
@@ -469,6 +470,17 @@ object the first time, the query is executed.</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="user.tests.UserSerializerTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.tests.</span></span><span class="sig-name descname"><span class="pre">UserSerializerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/tests.html#UserSerializerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.tests.UserSerializerTest" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user.tests.UserSerializerTest.test_create_user">
+<span class="sig-name descname"><span class="pre">test_create_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/tests.html#UserSerializerTest.test_create_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.tests.UserSerializerTest.test_create_user" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-user.urls">
 <span id="user-urls-module"></span><h2>user.urls module<a class="headerlink" href="#module-user.urls" title="Permalink to this heading"></a></h2>
@@ -526,7 +538,7 @@ object the first time, the query is executed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="user.views.userViewSet.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;User:</span> <span class="pre">ziad&#64;gmail.com&gt;]&gt;</span></em><a class="headerlink" href="#user.views.userViewSet.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;User:</span> <span class="pre">ziad&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">ismailtaw12&#64;gmail.com&gt;]&gt;</span></em><a class="headerlink" href="#user.views.userViewSet.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
