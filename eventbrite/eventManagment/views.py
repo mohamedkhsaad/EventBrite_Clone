@@ -8,12 +8,12 @@ from django.shortcuts import render
 from rest_framework import serializers
 from rest_framework import viewsets
 from django.http import JsonResponse, HttpResponse
-from .serializers import*
+from event.serializers import*
 from rest_framework import generics
 from user import*
 from datetime import date
 import csv
-from .models import event
+from event.models import*
 
 class UserListEvents(generics.ListAPIView):
     """

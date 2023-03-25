@@ -103,7 +103,7 @@
 </li>
       <li><a href="user.html#user.models.User.auth_token">auth_token (user.models.User attribute)</a>
 </li>
-      <li><a href="user.html#user.views.AuthTokenSerializer">AuthTokenSerializer (class in user.views)</a>
+      <li><a href="user.html#user.tests.AuthTokenSerializerTest">AuthTokenSerializerTest (class in user.tests)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -214,14 +214,14 @@
 </li>
       <li><a href="booking.html#booking.views.check_promo_code">check_promo_code() (in module booking.views)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="event.html#event.models.Locations.city">city (event.models.Locations attribute)</a>
 
       <ul>
         <li><a href="user.html#user.models.User.city">(user.models.User attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="booking.html#booking.models.Discount.CODE">CODE (booking.models.Discount attribute)</a>
 </li>
       <li><a href="event.html#event.models.Locations.country">country (event.models.Locations attribute)</a>
@@ -230,11 +230,7 @@
         <li><a href="user.html#user.models.User.country">(user.models.User attribute)</a>
 </li>
       </ul></li>
-      <li><a href="user.html#user.views.userSerializer.create">create() (user.views.userSerializer method)</a>
-</li>
       <li><a href="booking.html#booking.views.create_ticket">create_ticket() (in module booking.views)</a>
-</li>
-      <li><a href="user.html#user.views.create_user">create_user() (in module user.views)</a>
 </li>
       <li><a href="user.html#user.views.CreateTokenView">CreateTokenView (class in user.views)</a>
 </li>
@@ -651,8 +647,6 @@
 </li>
         <li><a href="event.html#event.serializers.SearchEventSerializer.Meta.fields">(event.serializers.SearchEventSerializer.Meta attribute)</a>
 </li>
-        <li><a href="user.html#user.views.userSerializer.Meta.fields">(user.views.userSerializer.Meta attribute)</a>
-</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -881,8 +875,6 @@
         <li><a href="event.html#event.serializers.eventSerializer.Meta.model">(event.serializers.eventSerializer.Meta attribute)</a>
 </li>
         <li><a href="event.html#event.serializers.SearchEventSerializer.Meta.model">(event.serializers.SearchEventSerializer.Meta attribute)</a>
-</li>
-        <li><a href="user.html#user.views.userSerializer.Meta.model">(user.views.userSerializer.Meta attribute)</a>
 </li>
       </ul></li>
       <li>
@@ -1151,12 +1143,6 @@
 </li>
         <li><a href="event.html#event.views.OnlineEventsAPIView.permission_classes">(event.views.OnlineEventsAPIView attribute)</a>
 </li>
-        <li><a href="eventManagment.html#eventManagment.views.UserListEvents.permission_classes">(eventManagment.views.UserListEvents attribute)</a>
-</li>
-        <li><a href="eventManagment.html#eventManagment.views.UserListPastEvents.permission_classes">(eventManagment.views.UserListPastEvents attribute)</a>
-</li>
-        <li><a href="eventManagment.html#eventManagment.views.UserListUpcomingEvents.permission_classes">(eventManagment.views.UserListUpcomingEvents attribute)</a>
-</li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1244,6 +1230,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="user.html#user.tests.AuthTokenSerializerTest.setUp">setUp() (user.tests.AuthTokenSerializerTest method)</a>
+</li>
       <li><a href="event.html#event.models.event.ST_DATE">ST_DATE (event.models.event attribute)</a>
 </li>
       <li><a href="event.html#event.models.event.ST_TIME">ST_TIME (event.models.event attribute)</a>
@@ -1274,6 +1262,8 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="user.html#user.tests.AuthTokenSerializerTest.test_auth_token_creation">test_auth_token_creation() (user.tests.AuthTokenSerializerTest method)</a>
+</li>
       <li><a href="booking.html#booking.models.Ticket">Ticket (class in booking.models)</a>
 </li>
       <li><a href="booking.html#booking.models.Ticket.DoesNotExist">Ticket.DoesNotExist</a>
@@ -1384,6 +1374,8 @@
         <li><a href="user.migrations.html#module-user.migrations.0006_alter_user_age_alter_user_city_alter_user_country_and_more">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     user.migrations.0007_alter_user_username
 
@@ -1391,8 +1383,6 @@
         <li><a href="user.migrations.html#module-user.migrations.0007_alter_user_username">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     user.models
 
@@ -1443,10 +1433,6 @@
 </li>
       <li><a href="user.html#user.models.User.USERNAME_FIELD">USERNAME_FIELD (user.models.User attribute)</a>
 </li>
-      <li><a href="user.html#user.views.userSerializer">userSerializer (class in user.views)</a>
-</li>
-      <li><a href="user.html#user.views.userSerializer.Meta">userSerializer.Meta (class in user.views)</a>
-</li>
       <li><a href="user.html#user.views.userViewSet">userViewSet (class in user.views)</a>
 </li>
   </ul></td>
@@ -1454,10 +1440,6 @@
 
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="user.html#user.views.AuthTokenSerializer.validate">validate() (user.views.AuthTokenSerializer method)</a>
-</li>
-  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="event.html#event.models.event.venue_name">venue_name (event.models.event attribute)</a>
 </li>

@@ -145,32 +145,25 @@
 </section>
 <section id="module-eventManagment.views">
 <span id="eventmanagment-views-module"></span><h2>eventManagment.views module<a class="headerlink" href="#module-eventManagment.views" title="Permalink to this heading"></a></h2>
+<p>This module contains several view classes for the eventmanagement app.
+class:UserListEvents: A viewset for retrieving all user events by user id.
+class:UserListPastEvents: A viewset for retrieving all user past events by user id.
+class:UserListEvents: A viewset for retrieving all user upcoming events by user id.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="eventManagment.views.UserListEvents">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">UserListEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListEvents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListEvents" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<p>A viewset for retrieving all user events by user id.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="eventManagment.views.UserListEvents.get_queryset">
 <span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListEvents.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListEvents.get_queryset" title="Permalink to this definition"></a></dt>
-<dd><p>Get the list of items for this view.
-This must be an iterable, and may be a queryset.
-Defaults to using <cite>self.queryset</cite>.</p>
-<p>This method should always be used rather than accessing <cite>self.queryset</cite>
-directly, as <cite>self.queryset</cite> gets evaluated only once, and those results
-are cached for all subsequent requests.</p>
-<p>You may want to override this if you need to provide different
-querysets depending on the incoming request.</p>
-<p>(Eg. return a list of items that is specific to the user)</p>
+<dd><p>This view should list all the user events
+for the given user id.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="eventManagment.views.UserListEvents.permission_classes">
-<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.permission_classes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -185,28 +178,17 @@ querysets depending on the incoming request.</p>
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">UserListPastEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListPastEvents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListPastEvents" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<p>A viewset for retrieving all user past events by user id.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.get_queryset">
 <span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListPastEvents.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListPastEvents.get_queryset" title="Permalink to this definition"></a></dt>
-<dd><p>Get the list of items for this view.
-This must be an iterable, and may be a queryset.
-Defaults to using <cite>self.queryset</cite>.</p>
-<p>This method should always be used rather than accessing <cite>self.queryset</cite>
-directly, as <cite>self.queryset</cite> gets evaluated only once, and those results
-are cached for all subsequent requests.</p>
-<p>You may want to override this if you need to provide different
-querysets depending on the incoming request.</p>
-<p>(Eg. return a list of items that is specific to the user)</p>
+<dd><p>This view should list all the user past 
+events for the given user id.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.permission_classes">
-<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.permission_classes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -217,7 +199,7 @@ querysets depending on the incoming request.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.today">
-<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">3,</span> <span class="pre">24)</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.today" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">3,</span> <span class="pre">25)</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.today" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -226,28 +208,17 @@ querysets depending on the incoming request.</p>
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">UserListUpcomingEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListUpcomingEvents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<p>A viewset for retrieving all user upcoming events by user id.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.get_queryset">
 <span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListUpcomingEvents.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.get_queryset" title="Permalink to this definition"></a></dt>
-<dd><p>Get the list of items for this view.
-This must be an iterable, and may be a queryset.
-Defaults to using <cite>self.queryset</cite>.</p>
-<p>This method should always be used rather than accessing <cite>self.queryset</cite>
-directly, as <cite>self.queryset</cite> gets evaluated only once, and those results
-are cached for all subsequent requests.</p>
-<p>You may want to override this if you need to provide different
-querysets depending on the incoming request.</p>
-<p>(Eg. return a list of items that is specific to the user)</p>
+<dd><p>This view should list all the user upcoming
+events for the given user id.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.permission_classes">
-<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.permission_classes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -258,7 +229,7 @@ querysets depending on the incoming request.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.today">
-<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">3,</span> <span class="pre">24)</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.today" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">3,</span> <span class="pre">25)</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.today" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>

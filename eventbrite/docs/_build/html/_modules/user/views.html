@@ -67,79 +67,44 @@
            <div itemprop="articleBody">
              
   <h1>Source code for user.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains 2 view classes for the user app.</span>
 
-<span class="c1"># Create your views here.</span>
+<span class="sd">class:userViewSet: A viewset for creating a new user (Signup).</span>
+
+<span class="sd">class:CreateTokenView: A viewset for the authentication and authorization of the user (login).</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">login</span><span class="p">,</span><span class="n">get_user_model</span>
-<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
-<span class="kn">from</span> <span class="nn">rest_framework.authtoken.models</span> <span class="kn">import</span> <span class="n">Token</span>
-<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
-<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span><span class="p">,</span><span class="n">status</span><span class="p">,</span><span class="n">permissions</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span><span class="p">,</span><span class="n">status</span>
 <span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span>
 <span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
-<span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
 <span class="kn">from</span> <span class="nn">rest_framework.authtoken.views</span> <span class="kn">import</span> <span class="n">ObtainAuthToken</span>
 <span class="kn">from</span> <span class="nn">rest_framework.settings</span> <span class="kn">import</span> <span class="n">api_settings</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span><span class="o">*</span>
-<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span><span class="p">,</span><span class="n">EmailMessage</span>
 <span class="kn">from</span> <span class="nn">eventbrite.settings</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">django.contrib.auth.password_validation</span> <span class="kn">import</span> <span class="n">validate_password</span>
-<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
-<span class="kn">import</span> <span class="nn">string</span>
-<span class="kn">import</span> <span class="nn">random</span>
 <span class="c1"># Create your views here.</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="c1"># @api_view([&#39;POST&#39;])</span>
+<span class="c1"># def create_user(request):</span>
+<span class="c1">#     serializer=userSerializer(data=request.data)</span>
+<span class="c1">#     if serializer.is_valid():</span>
+<span class="c1">#         serializer.save()</span>
+<span class="c1">#         return Response(serializer.data,status=status.HTTP_201_CREATED)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)</span>
+<span class="w">        </span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">user model (SIGNUP)</span>
-<span class="sd">&#39;&#39;&#39;</span>
-<div class="viewcode-block" id="userSerializer"><a class="viewcode-back" href="../../user.html#user.views.userSerializer">[docs]</a><span class="k">class</span> <span class="nc">userSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; User serializer for the signup &quot;&quot;&quot;</span>
-    <span class="n">password</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input_type&#39;</span><span class="p">:</span><span class="s1">&#39;password&#39;</span><span class="p">},</span>
-                                    <span class="n">trim_whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<div class="viewcode-block" id="userSerializer.Meta"><a class="viewcode-back" href="../../user.html#user.views.userSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">User</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="userSerializer.create"><a class="viewcode-back" href="../../user.html#user.views.userSerializer.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">validated_data</span><span class="p">):</span>
-        <span class="n">email</span><span class="o">=</span><span class="n">validated_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
-        <span class="n">password</span> <span class="o">=</span> <span class="n">validated_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">validate_password</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">({</span><span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">messages</span><span class="p">})</span>
-        <span class="n">first_name</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">]</span>
-        <span class="n">last_name</span><span class="o">=</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;last_name&#39;</span><span class="p">]</span>
-        <span class="n">username</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="o">**</span><span class="n">validated_data</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span>
-                                       <span class="n">username</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">username</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> 
-<span class="p">)</span>
-        <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-
-        <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Welcome to Eventbrite!!&quot;</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Hello &quot;</span> <span class="o">+</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span> <span class="o">+</span> <span class="s2">&quot;!! </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;Welcome to Evenbrite !! </span><span class="se">\n</span><span class="s2">Thank you for visiting our website</span><span class="se">\n</span><span class="s2">. We have also sent you a confirmation email, please confirm your email address. </span><span class="se">\n\n</span><span class="s2">Thanking You</span><span class="se">\n</span><span class="s2">Eventbrite Team&quot;</span>        
-        <span class="n">from_email</span> <span class="o">=</span> <span class="n">EMAIL_HOST_USER</span>
-        <span class="n">to_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">]</span>
-        <span class="n">send_mail</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span> <span class="n">to_list</span><span class="p">,</span> <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">user</span></div></div>
-
-
-<div class="viewcode-block" id="create_user"><a class="viewcode-back" href="../../user.html#user.views.create_user">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">create_user</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="n">serializer</span><span class="o">=</span><span class="n">userSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
-        <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
-        
-
+<span class="sd">&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="userViewSet"><a class="viewcode-back" href="../../user.html#user.views.userViewSet">[docs]</a><span class="k">class</span> <span class="nc">userViewSet</span><span class="p">(</span><span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A viewset for viewing and editing user instances.</span>
+<span class="sd">    A viewset for signing up new users.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">userSerializer</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
@@ -149,33 +114,6 @@
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">user model (LOGIN)</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<div class="viewcode-block" id="AuthTokenSerializer"><a class="viewcode-back" href="../../user.html#user.views.AuthTokenSerializer">[docs]</a><span class="k">class</span> <span class="nc">AuthTokenSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">Serializer</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Serializer for the user auth Token &quot;&quot;&quot;</span>
-    <span class="n">email</span><span class="o">=</span><span class="n">serializers</span><span class="o">.</span><span class="n">EmailField</span><span class="p">()</span>
-    <span class="n">password</span><span class="o">=</span><span class="n">serializers</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;input_type&#39;</span><span class="p">:</span><span class="s1">&#39;password&#39;</span><span class="p">},</span>
-                                    <span class="n">trim_whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    
-<div class="viewcode-block" id="AuthTokenSerializer.validate"><a class="viewcode-back" href="../../user.html#user.views.AuthTokenSerializer.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">attrs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate and authenticate the user&quot;&quot;&quot;</span>
-        <span class="n">email</span><span class="o">=</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
-        <span class="n">password</span><span class="o">=</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
-        <span class="n">request</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">)</span>
-        <span class="n">user</span><span class="o">=</span><span class="n">authenticate</span><span class="p">(</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
-            
-            <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span>
-            <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
-            <span class="n">msg</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Unable to authenticate with provided credentials&#39;</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;authorization&#39;</span><span class="p">)</span>
-        
-        <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">user</span>
-        <span class="k">return</span> <span class="n">attrs</span></div></div>
 
 <div class="viewcode-block" id="CreateTokenView"><a class="viewcode-back" href="../../user.html#user.views.CreateTokenView">[docs]</a><span class="k">class</span> <span class="nc">CreateTokenView</span><span class="p">(</span><span class="n">ObtainAuthToken</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new auth token for user&quot;&quot;&quot;</span>

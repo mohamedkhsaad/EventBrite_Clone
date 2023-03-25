@@ -67,7 +67,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for eventManagment.views</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains several view classes for the eventmanagement app.</span>
+<span class="sd">class:UserListEvents: A viewset for retrieving all user events by user id.</span>
+<span class="sd">class:UserListPastEvents: A viewset for retrieving all user past events by user id.</span>
+<span class="sd">class:UserListEvents: A viewset for retrieving all user upcoming events by user id.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
@@ -75,37 +80,54 @@
 <span class="kn">from</span> <span class="nn">event.serializers</span> <span class="kn">import</span><span class="o">*</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span>
 <span class="kn">from</span> <span class="nn">user</span> <span class="kn">import</span><span class="o">*</span>
-<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
-<span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
-<span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
-<span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="n">event</span>
-
-
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span><span class="o">*</span>
 
 <div class="viewcode-block" id="UserListEvents"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListEvents">[docs]</a><span class="k">class</span> <span class="nc">UserListEvents</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving all user events by user id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+
 <div class="viewcode-block" id="UserListEvents.get_queryset"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListEvents.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should list all the user events</span>
+<span class="sd">        for the given user id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="UserListPastEvents"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListPastEvents">[docs]</a><span class="k">class</span> <span class="nc">UserListPastEvents</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving all user past events by user id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+
 <div class="viewcode-block" id="UserListPastEvents.get_queryset"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListPastEvents.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should list all the user past </span>
+<span class="sd">        events for the given user id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ST_DATE__lt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="UserListUpcomingEvents"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListUpcomingEvents">[docs]</a><span class="k">class</span> <span class="nc">UserListUpcomingEvents</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving all user upcoming events by user id.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+
 <div class="viewcode-block" id="UserListUpcomingEvents.get_queryset"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListUpcomingEvents.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should list all the user upcoming</span>
+<span class="sd">        events for the given user id.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ST_DATE__gt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="p">)</span></div></div>
     
