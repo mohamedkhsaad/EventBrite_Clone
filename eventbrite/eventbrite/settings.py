@@ -78,15 +78,21 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventbrite.wsgi.application'
 
 
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'Ismail-DB',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#             'host':'mongodb+srv://ismail:512002@cluster0.swohyah.mongodb.net/?retryWrites=true&w=majority'
+#             }
+#         }
+# }
 DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': 'Ismail-DB',
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-            'host':'mongodb+srv://ismail:512002@cluster0.swohyah.mongodb.net/?retryWrites=true&w=majority'
-            }
-        }
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'newdatabase',
+    }
 }
 # DATABASES = {
 #         'default': {
