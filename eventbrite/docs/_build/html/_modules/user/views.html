@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>user.views &mdash; eventbrite documntation 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            eventbrite documntation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">eventbrite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">eventbrite documntation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">user.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for user.views</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains 2 view classes for the user app.</span>
+
+<span class="sd">class:userViewSet: A viewset for creating a new user (Signup).</span>
+
+<span class="sd">class:CreateTokenView: A viewset for the authentication and authorization of the user (login).</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span><span class="p">,</span><span class="n">status</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">rest_framework.authtoken.views</span> <span class="kn">import</span> <span class="n">ObtainAuthToken</span>
+<span class="kn">from</span> <span class="nn">rest_framework.settings</span> <span class="kn">import</span> <span class="n">api_settings</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span><span class="o">*</span>
+<span class="kn">from</span> <span class="nn">eventbrite.settings</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># Create your views here.</span>
+
+
+
+<span class="c1"># @api_view([&#39;POST&#39;])</span>
+<span class="c1"># def create_user(request):</span>
+<span class="c1">#     serializer=userSerializer(data=request.data)</span>
+<span class="c1">#     if serializer.is_valid():</span>
+<span class="c1">#         serializer.save()</span>
+<span class="c1">#         return Response(serializer.data,status=status.HTTP_201_CREATED)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)</span>
+<span class="w">        </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">user model (SIGNUP)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="userViewSet"><a class="viewcode-back" href="../../user.html#user.views.userViewSet">[docs]</a><span class="k">class</span> <span class="nc">userViewSet</span><span class="p">(</span><span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for signing up new users.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">userSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">user model (LOGIN)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="CreateTokenView"><a class="viewcode-back" href="../../user.html#user.views.CreateTokenView">[docs]</a><span class="k">class</span> <span class="nc">CreateTokenView</span><span class="p">(</span><span class="n">ObtainAuthToken</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new auth token for user&quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span><span class="o">=</span><span class="n">AuthTokenSerializer</span>
+    <span class="n">renderer_classes</span><span class="o">=</span><span class="n">api_settings</span><span class="o">.</span><span class="n">DEFAULT_RENDERER_CLASSES</span></div>
+
+
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">user interests model </span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="c1"># class user_interests_Serializer(serializers.ModelSerializer):</span>
+<span class="c1">#     class Meta:</span>
+<span class="c1">#         model=Interests</span>
+<span class="c1">#         fields = &#39;__all__&#39; </span>
+<span class="c1">#     pass</span>
+
+<span class="c1"># class user_interests_ViewSet(viewsets.ModelViewSet):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     A viewset for viewing and editing user instances.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     serializer_class = user_interests_Serializer</span>
+<span class="c1">#     queryset = Interests.objects.all()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ismail.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

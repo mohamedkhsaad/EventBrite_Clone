@@ -1,3 +1,9 @@
+"""
+This module contains 1 model class for the user app.
+
+class:user: A class that contains all fields concerning the user.
+
+"""
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager, Group, Permission
 from django.utils.translation import gettext_lazy as _
@@ -5,19 +11,23 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class User(AbstractUser, PermissionsMixin):
-    password = models.CharField(max_length=20,default='test')
-    email = models.EmailField(unique=True,default='example@example.com')
-    first_name = models.CharField(max_length=100,default='dani')
-    last_name = models.CharField(max_length=100,default='dani')
-    age = models.IntegerField(default=20)
-    gender = models.CharField(max_length=100,default='male')
-    city = models.CharField(max_length=100,default='cairo')
-    country = models.CharField(max_length=100,default='egypt')
-    # is_staff = models.BooleanField(default=False)
-    # is_active = models.BooleanField(default=True)
-
+    """
+    This class contains all the user fields
+    """
+    email = models.EmailField(unique=True,blank=False,null=False)
+    first_name = models.CharField(max_length=100,blank=False,null=False)
+    last_name = models.CharField(max_length=100,blank=False,null=False)
+    age = models.IntegerField(blank=False,null=False)
+    gender = models.CharField(max_length=100,blank=False,null=False)
+    city = models.CharField(max_length=100,blank=False,null=False)
+    country = models.CharField(max_length=100,blank=False,null=False)
+    is_staff = models.BooleanField(default=False,blank=False,null=False)
+    is_active = models.BooleanField(default=True,blank=False,null=False)
+    username = models.CharField(unique=False,blank=False,null=False,max_length=150)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'age', 'gender', 'city', 'country']
+
+    
 
     groups = models.ManyToManyField(
         Group,
