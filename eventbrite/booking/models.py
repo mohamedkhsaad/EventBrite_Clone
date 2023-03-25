@@ -14,7 +14,7 @@ class Ticket(models.Model):
 
 class Discount(models.Model):
   ID=models.IntegerField()
-  EVENT_ID= models.IntegerField() # should be primary key
+  EVENT_ID= models.IntegerField(default=11111) # should be primary key
   percent_off =models.CharField(max_length=20)
   CODE=models.CharField(max_length=20)
   start_date=models.DateField()
