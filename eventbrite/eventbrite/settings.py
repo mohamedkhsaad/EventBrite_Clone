@@ -151,3 +151,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'Daniel.Aziz00@eng-st.cu.edu.eg'
 EMAIL_HOST_PASSWORD = 'Danie7889'
 EMAIL_PORT = 587
+
+AUTH_USER_MODEL = 'user.user'

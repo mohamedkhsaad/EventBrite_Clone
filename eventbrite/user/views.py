@@ -65,12 +65,12 @@ def create_User(request):
         Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-# class userViewSet(viewsets.ModelViewSet):
-#     """
-#     A viewset for viewing and editing user instances.
-#     """
-#     serializer_class = userSerializer
-#     queryset = User.objects.all()
+class userViewSet(viewsets.ModelViewSet):
+    """
+    A viewset for viewing and editing user instances.
+    """
+    serializer_class = userSerializer
+    queryset = User.objects.all()
 
 
 
@@ -87,6 +87,9 @@ class AuthTokenSerializer(serializers.Serializer):
         """Validate and authenticate the user"""
         email=attrs.get('email')
         password=attrs.get('password')
+        if email is None or password is None:
+            raise serializers.ValidationError(
+                'Email and password are required to log in.')
         print(email)
         print(password)
         request=self.context.get('request')
@@ -99,8 +102,8 @@ class AuthTokenSerializer(serializers.Serializer):
         if not user:
             msg=_('Unable to authenticate with provided credentials')
             raise serializers.ValidationError(msg,code='authorization')
-        
         attrs['user']=user
+
         return attrs
 
 class CreateTokenView(ObtainAuthToken):
