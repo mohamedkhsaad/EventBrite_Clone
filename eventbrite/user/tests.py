@@ -8,10 +8,12 @@ class AuthTokenSerializerTest(TestCase):
     def setUp(self):
         self.email = 'testuser@example.com'
         self.password = 'testpassword'
+        self.username='testusername'
         self.user = get_user_model().objects.create_user(
+            username=self.username,
             email=self.email,
             password=self.password,
-            name='Test User'
+            
         )
         self.serializer_data = {
             'email': self.email,
