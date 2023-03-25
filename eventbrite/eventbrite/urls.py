@@ -43,6 +43,7 @@ urlpatterns = [
     path('events/sub_category/<str:event_sub_Category>/', EventListSupCategory.as_view(), name='event-list-by-sub_category'),
     path('events/ALL/', AllEventListView.as_view(), name='event-list-ALL'),
     path('events/online/', OnlineEventsAPIView.as_view(), name='online-events'),
+    path('events/venue/<str:event_venue>/', EventListVenue.as_view(), name='event-list-by-venue'),
 
 
     #event management
