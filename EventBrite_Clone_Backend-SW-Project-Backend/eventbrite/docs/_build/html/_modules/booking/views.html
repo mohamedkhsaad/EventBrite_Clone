@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>booking.views &mdash; eventbrite documntation 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            eventbrite documntation
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">eventbrite</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">eventbrite documntation</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">booking.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for booking.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+
+<span class="kn">from</span> <span class="nn">eventbrite.email_info</span> <span class="kn">import</span> <span class="n">from_email</span>
+
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span>
+<span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">status</span>
+
+<span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="n">TicketSerializer</span><span class="p">,</span> <span class="n">DiscountSerializer</span>
+<span class="kn">from</span> <span class="nn">event.serializers</span> <span class="kn">import</span> <span class="n">eventSerializer</span>
+<span class="c1"># models</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Ticket</span><span class="p">,</span><span class="n">Discount</span>
+<span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="n">event</span> <span class="k">as</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">user.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">Http404</span>
+
+
+
+<span class="c1"># TEMP: generics view sets mainly for adding objects into the database</span>
+<div class="viewcode-block" id="TicketList"><a class="viewcode-back" href="../../booking.html#booking.views.TicketList">[docs]</a><span class="k">class</span> <span class="nc">TicketList</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListCreateAPIView</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TicketSerializer</span></div>
+    <span class="c1"># authentication_classes = [TokenAuthentication]</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
+<div class="viewcode-block" id="DiscountList"><a class="viewcode-back" href="../../booking.html#booking.views.DiscountList">[docs]</a><span class="k">class</span> <span class="nc">DiscountList</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListCreateAPIView</span><span class="p">):</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">DiscountSerializer</span></div>
+    <span class="c1"># authentication_classes = [TokenAuthentication]</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
+
+
+
+<span class="c1"># in-progress</span>
+<span class="c1">#TODO: configer email service backend</span>
+<div class="viewcode-block" id="create_ticket"><a class="viewcode-back" href="../../booking.html#booking.views.create_ticket">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">create_ticket</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+ 
+    <span class="c1"># TODO:</span>
+ 
+    <span class="c1"># create a ticket            DONE</span>
+
+    <span class="c1"># add it to event tickets    not needed</span>
+ 
+    <span class="c1"># add it to user tickets     not needed</span>
+
+    <span class="c1"># update event ticket available number  </span>
+        <span class="c1"># no ticket num attr in event model and it can be calculated without additional attr</span>
+
+    <span class="c1"># send confirmation email </span>
+
+    <span class="n">ticket_serializer</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ticket_serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+
+        <span class="n">ticket_serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># sending confirmation email</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">recipient_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="n">ticket_serializer</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;USER_ID&#39;</span><span class="p">])</span>
+        <span class="n">recipient_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+
+        <span class="c1"># send_mail(subject,message,from_email, recipient_list)</span>
+
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ticket_serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ticket_serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span></div>
+
+<span class="c1"># DONE </span>
+<div class="viewcode-block" id="list_tickets_by_event"><a class="viewcode-back" href="../../booking.html#booking.views.list_tickets_by_event">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">list_tickets_by_event</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+
+    <span class="c1"># get all tickets for this event</span>
+    <span class="n">tickets</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">EVENT_ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+    <span class="n">serialized_tickets</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">(</span><span class="n">tickets</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># return the data as a  list of JSON objects</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_tickets</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<span class="c1"># TEST after inserting users into the database</span>
+<div class="viewcode-block" id="list_tickets_by_user"><a class="viewcode-back" href="../../booking.html#booking.views.list_tickets_by_user">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">list_tickets_by_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+    <span class="c1"># get all tickets for this event</span>
+    <span class="n">tickets</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">USER_ID</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="n">serialized_tickets</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">(</span><span class="n">tickets</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># return the data as a  list of JSON objects</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_tickets</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+
+
+<span class="c1">#DONE</span>
+<div class="viewcode-block" id="get_ticket"><a class="viewcode-back" href="../../booking.html#booking.views.get_ticket">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_ticket</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">ticket_id</span><span class="p">):</span>
+    <span class="c1"># /ticket/{ticket_id}</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ticket_id</span><span class="p">)</span>
+        <span class="n">ticket</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">ticket_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+
+    <span class="n">serialized_ticket</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">(</span><span class="n">ticket</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_ticket</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+<span class="c1"># check</span>
+<div class="viewcode-block" id="check_promo_code"><a class="viewcode-back" href="../../booking.html#booking.views.check_promo_code">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">check_promo_code</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">event_id</span><span class="p">,</span><span class="n">promo_code</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="c1"># /event?promo_code=SAVE123</span>
+    <span class="c1"># search an event&#39;s promo codes</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">promo_code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;promo_code&#39;</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({},</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">EVENT_ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">,</span><span class="n">CODE</span><span class="o">=</span><span class="n">promo_code</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;is_promo_code&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="c1"># return ticket object instead</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;is_promo_code&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Ismail.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
