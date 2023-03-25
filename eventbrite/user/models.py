@@ -1,3 +1,9 @@
+"""
+This module contains 1 model class for the user app.
+
+class:user: A class that contains all fields concerning the user.
+
+"""
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager, Group, Permission
 from django.utils.translation import gettext_lazy as _
@@ -5,6 +11,9 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class User(AbstractUser, PermissionsMixin):
+    """
+    This class contains all the user fields
+    """
     email = models.EmailField(unique=True,blank=False,null=False)
     first_name = models.CharField(max_length=100,blank=False,null=False)
     last_name = models.CharField(max_length=100,blank=False,null=False)
