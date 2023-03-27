@@ -17,5 +17,6 @@ urlpatterns =router.urls
 urlpatterns = [
     path('signup/', userViewSet.as_view({'post': 'create'}), name='signup'),
     path('login/', CreateTokenView.as_view(), name='token'),
+    path('emailCheck/', EmailCheckView.as_view(), name='email-check')
 
 ]
