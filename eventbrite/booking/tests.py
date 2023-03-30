@@ -256,8 +256,8 @@ class DiscountListTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
-        self.assertEqual(response.data[0]['ID'], self.discount1.ID)
-        self.assertEqual(response.data[1]['ID'], self.discount2.ID)
+        self.assertEqual(int(response.data[0]['ID']), self.discount1.ID)
+        self.assertEqual(int(response.data[1]['ID']), self.discount2.ID)
 
     def test_create_discount(self):
         data = {

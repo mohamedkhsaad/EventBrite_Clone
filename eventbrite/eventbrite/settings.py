@@ -91,7 +91,7 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'djongo',
-#         'NAME': 'newdatabase',
+#         'NAME': 'SW-DB',
 #     }
 # }
 
