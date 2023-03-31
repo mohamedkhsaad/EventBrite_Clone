@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
          #   }
       #  }
 #}
- DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'djongo',
          'NAME': 'sw-db',
