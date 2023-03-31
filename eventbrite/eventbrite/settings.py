@@ -92,6 +92,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
          'NAME': 'sw-db',
+        'CLIENT': {
+            'host' : '52.55.220.111'
+        }
      }
  }
 
