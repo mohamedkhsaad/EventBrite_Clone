@@ -93,7 +93,8 @@ DATABASES = {
         'ENGINE': 'djongo',
          'NAME': 'sw-db',
         'CLIENT': {
-            'host' : '52.55.220.111'
+            'host' : '52.55.220.111',
+            'Port':'80'
         }
      }
  }
