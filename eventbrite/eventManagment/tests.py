@@ -21,59 +21,58 @@ class EventManagementTest(APITestCase):
 
     def setUp(self):
         self.user = get_user_model().objects.create_user(
-            username='ismail',
-            email='ziad@gmail.com',
-            password='512002',)
+            username='Abdelrhman',
+            email='Belshahed01@gmail.com',
+            password='000000',)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        self.user_id = 3
+        self.user_id = 1190507
         self.today = date.today()
-        self.past_date = self.today - timedelta(days=7)
-        self.future_date = self.today + timedelta(days=7)
+        self.start_date = date(2023, 3, 5)
+        self.start_date1 = date(2023, 4, 10)
 
         self.event1 = event.objects.create(
-            ID="10111",User_id=self.user_id , Title="Test Event", organizer="test",
+            ID="1",User_id=self.user_id , Title="Test Event", organizer="test",
             Description="test", type="music", Category="test", sub_Category="test", venue_name="test",
-            CATEGORY_ID="5", SUB_CATEGORY_ID="7", ST_DATE=self.past_date,END_DATE=self.today, ST_TIME="05:00:00",
-            END_TIME="09:00:00", online="t", CAPACITY="5000", PASSWORD="512002", locationـid="1", STATUS="test")
+            CATEGORY_ID="5", SUB_CATEGORY_ID="7", ST_DATE=self.start_date,END_DATE=date(2023, 7, 4), ST_TIME="05:00:00",
+            END_TIME="09:00:00", online="t", CAPACITY="5000", PASSWORD="000000", location_id="1", STATUS="test")
         
         self.event2 = event.objects.create(
-            ID="102", User_id="5" , Title="Test Event", organizer="test",
+            ID="2", User_id= self.user_id , Title="Test Event", organizer="test",
             Description="test", type="food", Category="test", sub_Category="test", venue_name="test",
-            CATEGORY_ID="5", SUB_CATEGORY_ID="7", ST_DATE=self.today, END_DATE= self.future_date , ST_TIME="05:00:00",
-            END_TIME="09:00:00", online="t", CAPACITY="5000", PASSWORD="512002", locationـid="1", STATUS="test")
+            CATEGORY_ID="5", SUB_CATEGORY_ID="7", ST_DATE=self.start_date1, END_DATE= date(2023, 5, 4), ST_TIME="05:00:00",
+            END_TIME="09:00:00", online="t", CAPACITY="5000", PASSWORD="000000", location_id="1", STATUS="test")
 
 
     def test_retrieve_all_user_events_by_user_id(self):
         url = reverse('user_list_events', kwargs={'user_id': self.user_id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        event_data = response.data[0]
-        serializer = eventSerializer(self.event1)
+        self.assertEqual(len(response.data), 2)
+        event_data1 = response.data[0]
+        event_data2= response.data[1]
+        serializer1 = eventSerializer(self.event1)
+        serializer2 = eventSerializer(self.event2)
+        self.assertEqual(event_data1, serializer1.data)
+        self.assertEqual(event_data2, serializer2.data)
+
+    def test_retrieve_all_user_past_events_by_user_id(self):
+        url = reverse('user_list_past_events', kwargs={'user_id': self.user_id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        queryset = event.objects.filter(User_id=self.user_id,ST_DATE__lt=self.today)
+        serializer = eventSerializer(queryset, many=True)
+        event_data = response.data
+        # print(response.data)
         self.assertEqual(event_data, serializer.data)
+        
 
-
-    # def test_retrieve_all_user_past_events_by_user_id(self):
-    #     url = reverse('user_list_past_events', kwargs={'user_id': self.user_id})
-    #     response = self.client.get(url)
-    #     print()
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     queryset = event.objects.filter(User_id=self.user_id,ST_DATE=self.today)
-    #     serializer = eventSerializer(queryset, many=True)
-    #     event_data = response.data[0]
-
-    #     self.assertEqual(event_data, serializer.data)
-    #     print(response.data)
-
-#     def test_retrieve_all_user_upcoming_events_by_user_id(self):
-#         self.client = APIClient()
-#         user_id = 1190507
-#         today = date.today()
-#         eventus = event.objects.filter(
-#             User_id=user_id).filter(ST_DATE__gt=today)
-#         serializer = eventSerializer(eventus, many=True)
-#         url = {f'http://127.0.0.1:8000/events/list_user_past_events/{user_id}/'}
-#         response = self.client.get(url, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
-#         self.assertEqual(response, serializer.data)
+    def test_retrieve_all_user_upcoming_events_by_user_id(self):
+        url = reverse('user_list_upcoming_events', kwargs={'user_id': self.user_id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        queryset = event.objects.filter(User_id=self.user_id).filter(ST_DATE__gt=self.today)
+        serializer = eventSerializer(queryset, many=True)
+        event_data = response.data
+        # print(response.data)
+        self.assertEqual(event_data, serializer.data)
