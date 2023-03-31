@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from .models import*
+from rest_framework.views import APIView
 from eventbrite.settings import *
 # Create your views here.
 
@@ -53,6 +54,20 @@ class CreateTokenView(ObtainAuthToken):
 
 
 
+class EmailCheckView(ObtainAuthToken):
+    """
+    View for checking if an email is in the database.
+    """
+    serializer_class = EmailCheckSerializer
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+        
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        Email = serializer.validated_data['email']
+        exists = User.objects.filter(email=Email).exists()
+        return Response({'exists': exists})
 
 '''
 user interests model 
