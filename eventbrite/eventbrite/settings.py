@@ -94,7 +94,7 @@ DATABASES = {
          'NAME': 'sw-db',
         'CLIENT': {
             'host' : '52.55.220.111',
-            'Port':'80'
+            'port':27017
         }
      }
  }
