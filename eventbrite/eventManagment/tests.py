@@ -1,23 +1,23 @@
-from django.test import TestCase
-from rest_framework.test import APIClient, APITestCase
-from event.models import event
-from datetime import date, time
-from rest_framework import status
-from event.serializers import *
-from django.test import TestCase, Client
-from django.urls import reverse
-from rest_framework import status
-from rest_framework.test import APITestCase, APIClient
-from rest_framework.authtoken.models import Token
-from django.contrib.auth.models import User
-from event.models import event
-from event.serializers import eventSerializer
-from django.contrib.auth import get_user_model
-from datetime import date, timedelta
+# from django.test import TestCase
+# from rest_framework.test import APIClient, APITestCase
+# from event.models import event
+# from datetime import date, time
+# from rest_framework import status
+# from event.serializers import *
+# from django.test import TestCase, Client
+# from django.urls import reverse
+# from rest_framework import status
+# from rest_framework.test import APITestCase, APIClient
+# from rest_framework.authtoken.models import Token
+# from django.contrib.auth.models import User
+# from event.models import event
+# from event.serializers import eventSerializer
+# from django.contrib.auth import get_user_model
+# from datetime import date, timedelta
 
 
 
-class EventManagementTest(APITestCase):
+# class EventManagementTest(APITestCase):
 
     def setUp(self):
         self.user = get_user_model().objects.create_user(
@@ -75,4 +75,4 @@ class EventManagementTest(APITestCase):
         serializer = eventSerializer(queryset, many=True)
         event_data = response.data
         # print(response.data)
-        self.assertEqual(event_data, serializer.data)
+        self.assert

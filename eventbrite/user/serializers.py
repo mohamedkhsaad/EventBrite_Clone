@@ -83,3 +83,10 @@ class AuthTokenSerializer(serializers.Serializer):
         
         attrs['user']=user
         return attrs
+
+
+class EmailCheckSerializer(serializers.Serializer):
+    """
+    Serializer for checking if an email is in the database.
+    """
+    email = serializers.EmailField()
