@@ -150,11 +150,11 @@ REST_FRAMEWORK = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'Daniel.Aziz00@eng-st.cu.edu.eg'
-EMAIL_HOST_PASSWORD = 'Danie7889'
+EMAIL_HOST_USER = 'Ismail.ahmed02@eng-st.cu.edu.eg'
+EMAIL_HOST_PASSWORD = 'eng5842054'
 EMAIL_PORT = 587
 
 
 AUTH_USER_MODEL = 'user.user'
-ALLOWED_HOSTS = ['52.55.220.111']
-# ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['52.55.220.111']
+ALLOWED_HOSTS = ['*']
