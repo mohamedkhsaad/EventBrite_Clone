@@ -73,7 +73,7 @@ class EventSearchView(generics.ListAPIView):
         for the title specified in the URL parameter.
         """
         event_name = self.kwargs['event_name']
-        return event.objects.filter(Title=event_name)
+        return event.objects.filter(Title__icontains=event_name)
 
 
 class EventListtype(generics.ListAPIView):
