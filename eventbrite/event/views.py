@@ -156,7 +156,7 @@ class OnlineEventsAPIView(APIView):
         return Response(serializer.data)
 class EventID(generics.ListAPIView):
     """
-    A viewset for retrieving event instances by sub-category.
+    A viewset for retrieving event instances by ID.
     """
     serializer_class = eventSerializer
     permission_classes = [IsAuthenticated]
