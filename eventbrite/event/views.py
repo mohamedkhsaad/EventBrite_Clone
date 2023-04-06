@@ -159,7 +159,7 @@ class EventID(generics.ListAPIView):
     A viewset for retrieving event instances by sub-category.
     """
     serializer_class = eventSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
