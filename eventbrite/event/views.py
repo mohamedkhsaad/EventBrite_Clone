@@ -152,4 +152,19 @@ class OnlineEventsAPIView(APIView):
         """
         events = event.objects.filter(online='t')
         serializer = eventSerializer(events, many=True)
+        
         return Response(serializer.data)
+class EventID(generics.ListAPIView):
+    """
+    A viewset for retrieving event instances by sub-category.
+    """
+    serializer_class = eventSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the events
+        for the sub-category specified in the URL parameter.
+        """
+        event_sub_ID = self.kwargs['event_ID']
+        return event.objects.filter(ID=event_sub_ID)
