@@ -21,18 +21,19 @@ class:OnlineEventsAPIView: A viewset for retrieving online event instances.
 
 
 from django.shortcuts import render
-from rest_framework import serializers
-from rest_framework import viewsets
-from django.http import JsonResponse, HttpResponse
 from .serializers import *
 from rest_framework import generics
 from user import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from datetime import date
 from .models import event
-
+from .serializers import*
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework.generics import CreateAPIView
 
 class EventCreateView(generics.CreateAPIView):
     """
@@ -168,3 +169,43 @@ class EventID(generics.ListAPIView):
         """
         event_sub_ID = self.kwargs['event_ID']
         return event.objects.filter(ID=event_sub_ID)
+    
+
+
+class UserInterestCreateAPIView(CreateAPIView):
+    """
+    A viewset for creating an user Interests instance.
+    """
+    permission_classes = [IsAuthenticated]
+    queryset = UserInterest.objects.all()
+    serializer_class = UserInterestSerializer
+
+
+
+class UserInterestEventsAPIView(APIView):
+    """
+    A viewset for retrieving event instances based on user Interests.
+    """
+    permission_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        # Check if the user is authenticated
+        if not request.user.is_authenticated:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+        # Retrieve user interests
+        user_interests = self.get_user_interests(request.user)
+
+        # Retrieve events related to user interests
+        events = self.get_events(user_interests)
+
+        # Serialize data and return response
+        serializer = eventSerializer(events, many=True)
+        return Response(serializer.data)
+
+    def get_user_interests(self, user):
+        # Custom logic to retrieve user interests
+        return UserInterest.objects.filter(user=user)
+
+    def get_events(self, user_interests):
+        # Custom logic to retrieve events related to user interests
+        return event.objects.filter(category_name__in=[ui.category_name for ui in user_interests])

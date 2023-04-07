@@ -45,6 +45,8 @@ urlpatterns = [
     path('events/online/', OnlineEventsAPIView.as_view(), name='online-events'),
     path('events/venue/<str:event_venue>/', EventListVenue.as_view(), name='event-list-by-venue'),
     path('events/ID/<str:event_ID>/', EventID.as_view(), name='event-list-by-ID'),
+    path('events/interests-create/', UserInterestCreateAPIView.as_view(), name='user_interests_create'),
+    path('events/for-you/', UserInterestEventsAPIView.as_view(), name='user-interests-events'),
 
 
     #event management
@@ -54,7 +56,6 @@ urlpatterns = [
 
     #booking
     path('booking/',include('booking.urls')),
-
     path('',include('rest_framework.urls')),
 ]
 
