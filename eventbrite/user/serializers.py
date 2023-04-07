@@ -17,6 +17,8 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 import string
 import random
+from django.http import HttpResponse
+import requests
 
 class userSerializer(serializers.ModelSerializer):
     """
@@ -30,6 +32,7 @@ class userSerializer(serializers.ModelSerializer):
         fields = ['email', 'first_name', 'last_name', 'password', 'age', 'gender', 'city', 'country']
 
     def create(self, validated_data):
+        # response = requests.get('https://example.com', verify=False)
         email=validated_data.pop('email')
         password = validated_data.pop('password')
         try:
@@ -40,8 +43,7 @@ class userSerializer(serializers.ModelSerializer):
         # last_name=validated_data['last_name']
         username = string.ascii_lowercase
         user = User.objects.create_user(**validated_data, password=password,email=email,
-                                       username=''.join(random.choice(username) for i in range(10)) 
-                                        )
+                                       username=''.join(random.choice(username) for i in range(10)) )
         user.save()
         """
         This part is to send a welcoming email to the new user

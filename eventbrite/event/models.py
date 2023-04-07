@@ -1,6 +1,30 @@
 from django.db import models
 from eventbrite.settings import *
+from user.models import *
 
+
+
+
+# class Interests(models.Model):
+#     category_name = models.CharField(max_length=255)
+#     user_id = models.IntegerField(unique=False)
+
+# class UserInterest(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     interest = models.ForeignKey(Interests, on_delete=models.CASCADE)
+
+#    def __str__(self):
+#         return f"{self.user.email} - {self.interest.category_name}" 
+
+
+class UserInterest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='interests')
+    category_name = models.CharField(max_length=255)
+
+  
+    def __str__(self):
+        return f"{self.user.email} - {self.interest.category_name}" 
+  
 
 class event(models.Model):
     """
@@ -10,10 +34,11 @@ class event(models.Model):
     User_id = models.IntegerField(blank=False)
     Title = models.CharField(max_length=50)
     organizer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     organizer = models.CharField(max_length=50)
     Description = models.CharField(max_length=500)
     type = models.CharField(max_length=20)
-    Category = models.CharField(max_length=10)
+    category_name = models.CharField(max_length=10)
     sub_Category = models.CharField(max_length=10)
     venue_name = models.CharField(max_length=20)
     CATEGORY_ID = models.IntegerField()
@@ -114,9 +139,3 @@ class Locations(models.Model):
         return self.address
 
 
-# class Interests(models.Model):
-#   ID=models.IntegerField()
-#   TYPE=models.CharField(max_length=20)
-#   Name=models.CharField(max_length=20)
-#   user_id=models.IntegerField()
-#   sub_category_id=models.IntegerField()
