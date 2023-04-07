@@ -1,8 +1,7 @@
 from rest_framework import routers
 from django.urls import path
 
-from .views import TicketList,discount_list,discount_pk,list_tickets_by_user, list_tickets_by_event,create_ticket, get_ticket, check_promo_code
-
+from .views import TicketList,discount_list,discount_pk,list_tickets_by_user, list_tickets_by_event,create_ticket, get_ticket, check_promo_code, send_confirmation_email
 
 urlpatterns = [
     path('ticket_generics/', TicketList.as_view(), name='ticket-generics'),
@@ -16,5 +15,7 @@ urlpatterns = [
 
     path('events/<int:event_id>/promocode/',check_promo_code, name='check-promocode'),
     # path('events/<int:event_id>/discounts',list_discounts_by_event, name='list-discount-by-event'),
+
+    path('mail/', send_confirmation_email,name='confirm-mail'),
 
 ]
