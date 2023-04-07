@@ -15,8 +15,12 @@ class:discount_pk: A view that returns a discounts object or update a new discou
 """
 
 from django.shortcuts import render
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
+
+
 from django.http import Http404
+from django.template.loader import render_to_string
+from django.urls import reverse
 
 from eventbrite.email_info import from_email
 
@@ -33,7 +37,7 @@ from .models import Ticket,Discount
 from event.models import event as Event
 from user.models import User
 
-
+from eventbrite.settings import *
 
 
 
@@ -98,7 +102,7 @@ def get_ticket(request,ticket_id):
     :return: A JSON object representing the ticket for the given ID.
     """
     try:
-        print(ticket_id)
+        # print(ticket_id)
         ticket = Ticket.objects.get(id=ticket_id)
     except Ticket.DoesNotExist:
         raise Http404
@@ -184,41 +188,119 @@ class discount_pk(generics.RetrieveUpdateDestroyAPIView):
 
 # in-progress
 #TODO: configer email service backend
+
+
+
 @api_view(['POST'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_ticket(request):
- 
+    # print(request.user)
     # TODO:
  
     # create a ticket            DONE
 
-    # add it to event tickets    not needed
- 
-    # add it to user tickets     not needed
-
-    # update event ticket available number  
-        # no ticket num attr in event model and it can be calculated without additional attr
-
-    # send confirmation email 
+    # send confirmation email    DONE
 
     ticket_serializer = TicketSerializer(data=request.data)
     if ticket_serializer.is_valid():
 
         ticket_serializer.save()
 
-        # sending confirmation email
-        subject = ''
-        message = ''
-        recipient_list = []
 
-        user = User.objects.get(id = ticket_serializer.data['USER_ID'])
-        recipient_list.append(user['email'])
+        #----------- sending conirmation email ---------
+        
+        
+        # Get the currently logged-in user
 
-        # send_mail(subject,message,from_email, recipient_list)
+        user = request.user
+        # print(user.username)
+
+
+        # Generate a confirmation token
+        token = generate_confirmation_token(user.username)
+
+        # Build the confirmation URL
+        confirmation_url = request.build_absolute_uri(reverse('create-ticket'))#, args=[token]))
+
+        # Generate a QR code for the confirmation URL using the Google Charts API
+        qr_code_url = f'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl={confirmation_url}'
+        qr_code_image = requests.get(qr_code_url).content
+
+        # Send the confirmation email
+        subject = 'Confirm your email address'
+        message = f'Hi {user.username}, please click the link below or scan the QR code to confirm your ticket:\n\n {confirmation_url} \n\n'
+        from_email = 'no-reply@example.com'
+        recipient_list = [user.email]
+        mail = EmailMessage(subject, message, from_email,
+                    recipient_list)
+
+        mail.attach(filename='qrcode.png', content=qr_code_image)#,content_type='image/png'
+        mail.send()
+        # send_mail(message=mail, subject=subject,from_email=from_email,recipient_list=recipient_list , html_message=f'<p>{message}</p><img src="cid:qrcode">', fail_silently=False)
+        # Render a response
+
+
 
         return Response(ticket_serializer.data, status=201)
     return Response(ticket_serializer.errors, status=400)
+
+
+
+
+
+
+# for testing
+import requests
+@api_view(['GET'])
+def send_confirmation_email(request):
+    # Get the currently logged-in user
+
+    user = request.user
+    # print(user.username)
+    # Generate a confirmation token
+    token = generate_confirmation_token(user.username)
+
+    # Build the confirmation URL
+    confirmation_url = request.build_absolute_uri(reverse('create-ticket'))#, args=[token]))
+
+    # Generate a QR code for the confirmation URL using the Google Charts API
+    qr_code_url = f'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl={confirmation_url}'
+    qr_code_image = requests.get(qr_code_url).content
+
+    # Send the confirmation email
+    subject = 'Confirm your email address'
+    message = f'Hi {user.username}, please click the link below or scan the QR code to confirm your ticket:\n\n {confirmation_url} \n\n'
+    from_email = 'no-reply@example.com'
+    recipient_list = [user.email]
+    mail = EmailMessage(subject, message, from_email,
+               recipient_list)
+    
+    mail.attach(filename='qrcode.png', content=qr_code_image)#,content_type='image/png'
+    mail.send()
+    # send_mail(message=mail, subject=subject,from_email=from_email,recipient_list=recipient_list , html_message=f'<p>{message}</p><img src="cid:qrcode">', fail_silently=False)
+    # Render a response
+    return Response({'status':201}, status=201)
+
+import itsdangerous
+
+def generate_confirmation_token(user):
+    serializer = itsdangerous.URLSafeTimedSerializer(SECRET_KEY)
+    return serializer.dumps(user)
+
+def confirm_token(token, expiration=3600):
+    serializer = itsdangerous.URLSafeTimedSerializer(SECRET_KEY)
+    try:
+        email = serializer.loads(token, max_age=expiration)
+    except:
+        return False
+    return email
+
+
+
+
+
+
 
 
 # TEMP: ticket generics view sets mainly for adding objects into the database and testing
