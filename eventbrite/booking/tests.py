@@ -1,15 +1,185 @@
 from django.urls import reverse
-from django.test import TestCase, Client
+from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth import get_user_model
+from django.core import mail
 
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from user.models import User
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
 from .models import Ticket,Discount
 from .serializers import TicketSerializer,DiscountSerializer
 import json
+
+from unittest.mock import patch
+
+import logging
+
+# Configure the logging module
+# logging.basicConfig(
+#     level=logging.DEBUG, # Set the logging level
+#     format='%(asctime)s %(levelname)s %(message)s', # Set the logging format
+#     handlers=[
+#         logging.FileHandler('debug.log'), # Log to a file
+#         logging.StreamHandler() # Log to the console
+#     ]
+# )
+
+
+#TODO: problem in len(mail.outbox)
+class CreateTicketAndSendConfirmationEmailTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user = get_user_model().objects.create_user(username='testuser', password='testpass', email='testmail@example.com')
+        self.token = Token.objects.create(user=self.user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)        
+        
+        self.client.login(username='testuser', password='testpassword')
+
+        self.ticket_data = {
+            'ID': 1,
+            'NAME': 'Test Ticket',
+            'PRICE': 10.99,
+            'EVENT_ID': 1,
+            'GUEST_ID': 1,
+            'TICKET_NUM': 100,
+            'TICKET_TYPE': 'FREE'
+        }
+        self.ticket_url = reverse('create-ticket')
+
+    @patch('requests.get')
+    def test_create_ticket_and_send_confirmation_email(self, mock_get):
+        # Mock the Google Charts API response
+        mock_get.return_value.content = b'test_qr_code_image'
+
+        # Send a POST request to create a new ticket
+        response = self.client.post(self.ticket_url, self.ticket_data)
+
+        # Check that the response status code is 201 CREATED
+        self.assertEqual(response.status_code, 201)
+
+        # Check that a new ticket was created with the correct data
+        ticket = Ticket.objects.get(ID=self.ticket_data['ID'])
+        self.assertEqual(ticket.NAME, self.ticket_data['NAME'])
+        self.assertEqual(ticket.PRICE, self.ticket_data['PRICE'])
+        self.assertEqual(ticket.EVENT_ID, self.ticket_data['EVENT_ID'])
+        self.assertEqual(ticket.GUEST_ID, self.ticket_data['GUEST_ID'])
+        self.assertEqual(ticket.TICKET_NUM, self.ticket_data['TICKET_NUM'])
+        # self.assertEqual(ticket.TICKET_TYPE, self.ticket_data['TICKET_TYPE']) 
+
+        # Call the send_confirmation_email function
+        email_url = reverse('confirm-mail')
+        response = self.client.get(email_url)
+
+        # Check that the function returned a successful HTTP response
+        self.assertEqual(response.status_code, 201)
+
+        # Check that the email was sent to the correct recipient
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, [self.user.email])
+
+        # Check that the email contains the correct subject and message
+        self.assertEqual(mail.outbox[0].subject, 'Confirm your email address')
+        self.assertIn('Hi testuser, please click the link below or scan the QR code to confirm your ticket:', mail.outbox[0].body)
+        # self.assertIn(confirmation_url, mail.outbox[0].body)
+
+        # Check that the email contains the QR code image as an attachment
+        self.assertEqual(len(mail.outbox[0].attachments), 1)
+        self.assertEqual(mail.outbox[0].attachments[0][0], 'qrcode.png')
+        self.assertEqual(mail.outbox[0].attachments[0][2], 'image/png')
+        self.assertEqual(mail.outbox[0].attachments[0][1], b'test_qr_code_image')
+
+        # Check that the email contains the QR code image as an inline image
+        # self.assertIn('cid:qrcode', mail.outbox[0].alternatives[0][0])
+
+
+
+class SendConfirmationEmailTest(TestCase):
+    @patch('requests.get')
+    def test_send_confirmation_email(self, mock_get):
+        # Create a user and log them in
+        self.client = APIClient()
+
+        self.user = get_user_model().objects.create_user(username='testuser', password='testpass', email='testmail@example.com')
+        self.token = Token.objects.create(user=self.user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)        
+        
+        
+        self.client.login(username='testuser', password='testpassword')
+
+        # Mock the Google Charts API response
+        mock_get.return_value.content = b'test_qr_code_image'
+
+        # Call the send_confirmation_email function
+        response = self.client.get(reverse('confirm-mail'))
+
+        # Check that the function returned a successful HTTP response
+        self.assertEqual(response.status_code, 201)
+
+        # Check that the email was sent to the correct recipient
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, [self.user.email])
+
+        # Check that the email contains the correct subject and message
+        self.assertEqual(mail.outbox[0].subject, 'Confirm your email address')
+        self.assertIn('Hi testuser, please click the link below or scan the QR code to confirm your ticket:', mail.outbox[0].body)
+        # self.assertIn(confirmation_url, mail.outbox[0].body)
+
+        # Check that the email contains the QR code image as an attachment
+        self.assertEqual(len(mail.outbox[0].attachments), 1)
+        self.assertEqual(mail.outbox[0].attachments[0][0], 'qrcode.png')
+        self.assertEqual(mail.outbox[0].attachments[0][2], 'image/png')
+        self.assertEqual(mail.outbox[0].attachments[0][1], b'test_qr_code_image')
+
+        # Check that the email contains the QR code image as an inline image
+        # self.assertIn('cid:qrcode', mail.outbox[0].alternatives[0][0])
+
+
+#TODO: problem in checking ticket type
+
+class CreateTicketTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user = get_user_model().objects.create_user(username='testuser', password='testpass', email='testmail@example.com')
+        self.token = Token.objects.create(user=self.user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)        
+        
+        
+        self.client.login(username='testuser', password='testpassword')
+
+        self.data = {
+            'ID': 1,
+            'NAME': 'Test Ticket',
+            'PRICE': 10.99,
+            'EVENT_ID': 1,
+            'GUEST_ID': 1,
+            'TICKET_NUM': 100,
+            'TICKET_TYPE': 'FREE'
+        }
+        self.url = reverse('create-ticket')
+
+    def test_create_ticket(self):
+
+        # Send a POST request to create a new ticket
+        response = self.client.post(self.url, self.data)
+
+        # Check that the response status code is 201 CREATED
+        self.assertEqual(response.status_code, 201)
+
+        # Check that a new ticket was created with the correct data
+        ticket = Ticket.objects.get(ID=self.data['ID'])
+        self.assertEqual(ticket.NAME, self.data['NAME'])
+        self.assertEqual(ticket.PRICE, self.data['PRICE'])
+        self.assertEqual(ticket.EVENT_ID, self.data['EVENT_ID'])
+        self.assertEqual(ticket.GUEST_ID, self.data['GUEST_ID'])
+        self.assertEqual(ticket.TICKET_NUM, self.data['TICKET_NUM'])
+        self.assertEqual(ticket.TICKET_TYPE, self.data['TICKET_TYPE']) 
+
+
 
 
 
