@@ -163,14 +163,6 @@ REST_FRAMEWORK = {
 
 }
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'Daniel.Aziz00@eng-st.cu.edu.eg'
-# EMAIL_HOST_PASSWORD = 'Danie7889'
-# EMAIL_PORT = 587
-# EMAIL_USE_SSL = True
-
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
@@ -204,3 +196,6 @@ ALLOWED_HOSTS = ['*']
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+SSL_CERTIFICATE = '/etc/letsencrypt/live/event-us.me/cert.pem'
+SSL_PRIVATE_KEY = '/etc/letsencrypt/live/event-us.me/privkey.pem'
