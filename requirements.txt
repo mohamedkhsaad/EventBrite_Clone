@@ -17,4 +17,4 @@ urllib3==1.26.14
 wincertstore==0.2
 drf_spectacular
 django-sslserver   
-itsdangerous
+itsdangerous-2.1.2
