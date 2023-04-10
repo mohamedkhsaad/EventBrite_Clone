@@ -168,18 +168,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'eventbrite2002@gmail.com'
+EMAIL_HOST_PASSWORD = 'joghzolscsuucebv'
+EMAIL_PORT = 587
 
 AUTH_USER_MODEL = 'user.user'
-
-#ALLOWED_HOSTS = ['52.55.220.111','127.0.0.1']
-# ALLOWED_HOSTS = ['*']
 
 # ALLOWED_HOSTS = ['52.55.220.111']
 ALLOWED_HOSTS = ['*']
 # other settings ...
-
-# AUTHY_API_KEY = 'your_authy_api_key'
-# AUTHY_API_URL = 'https://api.authy.com'
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True

@@ -15,6 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from rest_framework import routers
+from user.views import*
+from django.contrib.auth import views as auth_views
+from django.urls import path,include
 from django.urls import path,include
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -32,8 +36,15 @@ urlpatterns = [
     ),
     # path('admin/', admin.site.urls),
     # user
-    path('user/',include('user.urls')),
-    path('user/login/', CreateTokenView.as_view(), name='login'),
+    path('user/signup/', userViewSet.as_view({'post': 'create'}), name='signup'),
+    path('user/login/', CreateTokenView.as_view(), name='token'),
+    path('user/emailcheck/<str:email>/', EmailCheckView.as_view(), name='email-check'),
+    path('user/reset-password/', auth_views.PasswordResetView.as_view(), name='password-reset'),
+    path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
+    path('user/reset-password-sent/', auth_views.PasswordResetDoneView.as_view(), name='password-reset-done'),
+    path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password-reset-complete'),
+
+
 
     # event
     path('events/create/', EventCreateView.as_view(), name='event-create'),

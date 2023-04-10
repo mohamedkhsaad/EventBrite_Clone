@@ -90,13 +90,23 @@ class AuthTokenSerializer(serializers.Serializer):
         return attrs
 
 
+# class EmailCheckSerializer(serializers.Serializer):
+#     """
+#     Serializer for checking if an email is in the database.
+#     """
+#     email = serializers.EmailField()
+
 class EmailCheckSerializer(serializers.Serializer):
-    """
-    Serializer for checking if an email is in the database.
-    """
+    # Define a single email field to validate
     email = serializers.EmailField()
 
-
+    # def validate_email(self, value):
+    #     """
+    #     Check if the email address is already present in the database.
+    #     """
+    #     if User.objects.filter(email=value).exists():
+    #         raise serializers.ValidationError("Email already exists.")
+    #     return value
 # class ResetPasswordSerializer(serializers.Serializer):
 #     email = serializers.EmailField()
 

@@ -10,14 +10,15 @@ class:CreateTokenView: A viewset for the authentication and authorization of the
 from .serializers import *
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
-from rest_framework import viewsets,status
+from rest_framework import viewsets
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
-from .models import*
+from .models import *
 from eventbrite.settings import *
-
+from django.http import JsonResponse
+from django.views import View
+from django.contrib.auth import get_user_model
 # Create your views here.
 
 # import sys
@@ -34,50 +35,43 @@ from eventbrite.settings import *
 #         return Response(serializer.data,status=status.HTTP_201_CREATED)
 #     else:
 #         Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
 """
 user model (SIGNUP)
 """
+
+
 class userViewSet(viewsets.ModelViewSet):
     """
     A viewset for signing up new users.
     """
     serializer_class = userSerializer
     queryset = User.objects.all()
-    
-
 
 
 '''
 user model (LOGIN)
 '''
 
+
 class CreateTokenView(ObtainAuthToken):
     """Create a new auth token for user"""
-    serializer_class=AuthTokenSerializer
-    renderer_classes=api_settings.DEFAULT_RENDERER_CLASSES
-
+    serializer_class = AuthTokenSerializer
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 
 '''
 user model (EMAIL CHECK)
 '''
-class EmailCheckView(ObtainAuthToken):
-    """
-    View for checking if an email is in the database.
-    """
-    serializer_class = EmailCheckSerializer
-    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-
-        
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        Email = serializer.validated_data['email']
-        exists = User.objects.filter(email=Email).exists()
-        return Response({'exists': exists})
-
-
+user_ = get_user_model()
+class EmailCheckView(View):
+    def get(self, request, email):
+        try:
+            user = user_.objects.get(email=email)
+        except user_.DoesNotExist:
+            return JsonResponse({'email_exists': False})
+        else:
+            return JsonResponse({'email_exists': True})
 
 
 # class ResetPasswordView(FormView):
@@ -116,7 +110,6 @@ class EmailCheckView(ObtainAuthToken):
 #         reset_password_serializer = ResetPasswordSerializer(data=request.data)
 #         reset_password_serializer.is_valid(raise_exception=True)
 #         reset_password_serializer.send_reset_password_email(user)
-
 #         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 '''
 user interests model 
@@ -124,7 +117,7 @@ user interests model
 # class user_interests_Serializer(serializers.ModelSerializer):
 #     class Meta:
 #         model=Interests
-#         fields = '__all__' 
+#         fields = '__all__'
 #     pass
 
 # class user_interests_ViewSet(viewsets.ModelViewSet):
@@ -133,7 +126,6 @@ user interests model
 #     """
 #     serializer_class = user_interests_Serializer
 #     queryset = Interests.objects.all()
-
 
 
 # def google_auth(request):
