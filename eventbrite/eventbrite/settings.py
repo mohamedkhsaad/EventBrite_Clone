@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'booking',
     'drf_spectacular',
     'eventManagment',
+    'sslserver',
     # 'two_factor',
     # 'django_otp',
     # 'django_otp.plugins.otp_totp',
@@ -178,3 +179,6 @@ ALLOWED_HOSTS = ['*']
 # AUTHY_API_KEY = 'your_authy_api_key'
 # AUTHY_API_URL = 'https://api.authy.com'
 
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
