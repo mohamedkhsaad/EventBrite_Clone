@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -43,9 +42,16 @@ INSTALLED_APPS = [
     'user',
     'booking',
     'drf_spectacular',
-    'eventManagment'
+    'eventManagment',
+    'sslserver',
+    # 'two_factor',
+    # 'django_otp',
+    # 'django_otp.plugins.otp_totp',
+    # 'django_otp.plugins.otp_static',
+    # 'django_otp_twilio',
 
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,7 +61,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'django.middleware.security.SecurityMiddleware',
+    # 'django_otp.middleware.OTPMiddleware',
+    # 'two_factor.middleware.threadlocals.ThreadLocals',
+    # 'two_factor.middleware.authy.AuthenticationStatusMiddleware',
+    # 'django_otp.middleware.OTPMiddleware',
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
+
 
 ROOT_URLCONF = 'eventbrite.urls'
 
@@ -91,19 +106,9 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'newdatabase',
+        'NAME': 'Z-DB',
     }
 }
-# DATABASES = {
-#         'default': {
-#             'ENGINE': 'djongo',
-#             'NAME': 'sw-db',
-#             'ENFORCE_SCHEMA': False,
-#             'CLIENT': {
-#             'host':'mongodb://ismail:512002@ac-rn9pavh-shard-00-00.lxpcajz.mongodb.net:27017,ac-rn9pavh-shard-00-01.lxpcajz.mongodb.net:27017,ac-rn9pavh-shard-00-02.lxpcajz.mongodb.net:27017/?ssl=true&replicaSet=atlas-ayoj02-shard-0&authSource=admin&retryWrites=true&w=majority'
-#             }  
-#         }
-# }
 
 
 # Password validation
@@ -148,20 +153,37 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL='eventbrit.User'
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS':'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        'django.contrib.auth.backends.ModelBackend', # default authentication backend
+        'django.contrib.auth.backends.ModelBackend',  # default authentication backend
     ],
-    
+
 }
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'eventbrite2002@gmail.com'
-EMAIL_HOST_PASSWORD = '512002ZIAD'
-EMAIL_PORT = 587
 
 AUTH_USER_MODEL = 'user.user'
+
+#ALLOWED_HOSTS = ['52.55.220.111','127.0.0.1']
+# ALLOWED_HOSTS = ['*']
+
+# ALLOWED_HOSTS = ['52.55.220.111']
+ALLOWED_HOSTS = ['*']
+# other settings ...
+
+# AUTHY_API_KEY = 'your_authy_api_key'
+# AUTHY_API_URL = 'https://api.authy.com'
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SSL_CERTIFICATE = '/etc/letsencrypt/live/event-us.me/cert.pem'
+SSL_PRIVATE_KEY = '/etc/letsencrypt/live/event-us.me/privkey.pem'

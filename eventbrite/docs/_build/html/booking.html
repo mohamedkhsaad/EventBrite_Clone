@@ -64,13 +64,21 @@
 <li class="toctree-l4"><a class="reference internal" href="#booking.serializers.TicketSerializer"><code class="docutils literal notranslate"><span class="pre">TicketSerializer</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-booking.tests">booking.tests module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-booking.tests">booking.tests module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#booking.tests.CheckPromoCodeTests"><code class="docutils literal notranslate"><span class="pre">CheckPromoCodeTests</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.tests.DiscountListTestCase"><code class="docutils literal notranslate"><span class="pre">DiscountListTestCase</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.tests.GetTicketTestCase"><code class="docutils literal notranslate"><span class="pre">GetTicketTestCase</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.tests.ListTicketsByEventTestCase"><code class="docutils literal notranslate"><span class="pre">ListTicketsByEventTestCase</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.tests.ListTicketsByUserTestCase"><code class="docutils literal notranslate"><span class="pre">ListTicketsByUserTestCase</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-booking.urls">booking.urls module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-booking.views">booking.views module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.DiscountList"><code class="docutils literal notranslate"><span class="pre">DiscountList</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#booking.views.TicketList"><code class="docutils literal notranslate"><span class="pre">TicketList</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#booking.views.check_promo_code"><code class="docutils literal notranslate"><span class="pre">check_promo_code()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#booking.views.create_ticket"><code class="docutils literal notranslate"><span class="pre">create_ticket()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.discount_list"><code class="docutils literal notranslate"><span class="pre">discount_list</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.discount_pk"><code class="docutils literal notranslate"><span class="pre">discount_pk</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#booking.views.get_ticket"><code class="docutils literal notranslate"><span class="pre">get_ticket()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#booking.views.list_tickets_by_event"><code class="docutils literal notranslate"><span class="pre">list_tickets_by_event()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#booking.views.list_tickets_by_user"><code class="docutils literal notranslate"><span class="pre">list_tickets_by_user()</span></code></a></li>
@@ -407,29 +415,121 @@ object the first time, the query is executed.</p>
 </section>
 <section id="module-booking.tests">
 <span id="booking-tests-module"></span><h2>booking.tests module<a class="headerlink" href="#module-booking.tests" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.tests.CheckPromoCodeTests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">CheckPromoCodeTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CheckPromoCodeTests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CheckPromoCodeTests" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.CheckPromoCodeTests.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CheckPromoCodeTests.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CheckPromoCodeTests.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.CheckPromoCodeTests.test_check_promo_code_with_missing_param">
+<span class="sig-name descname"><span class="pre">test_check_promo_code_with_missing_param</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CheckPromoCodeTests.test_check_promo_code_with_missing_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CheckPromoCodeTests.test_check_promo_code_with_missing_param" title="Permalink to this definition"></a></dt>
+<dd><p>Test that a missing promo code param returns a 400 Bad Request response.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.CheckPromoCodeTests.test_check_promo_code_with_valid_code">
+<span class="sig-name descname"><span class="pre">test_check_promo_code_with_valid_code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CheckPromoCodeTests.test_check_promo_code_with_valid_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CheckPromoCodeTests.test_check_promo_code_with_valid_code" title="Permalink to this definition"></a></dt>
+<dd><p>Test that a valid promo code for the specified event returns a 200 OK response.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.tests.DiscountListTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">DiscountListTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#DiscountListTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.DiscountListTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.DiscountListTestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#DiscountListTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.DiscountListTestCase.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.DiscountListTestCase.test_create_discount">
+<span class="sig-name descname"><span class="pre">test_create_discount</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#DiscountListTestCase.test_create_discount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.DiscountListTestCase.test_create_discount" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.DiscountListTestCase.test_list_discounts">
+<span class="sig-name descname"><span class="pre">test_list_discounts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#DiscountListTestCase.test_list_discounts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.DiscountListTestCase.test_list_discounts" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.tests.GetTicketTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">GetTicketTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#GetTicketTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.GetTicketTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.GetTicketTestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#GetTicketTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.GetTicketTestCase.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.GetTicketTestCase.test_get_invalid_ticket">
+<span class="sig-name descname"><span class="pre">test_get_invalid_ticket</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#GetTicketTestCase.test_get_invalid_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.GetTicketTestCase.test_get_invalid_ticket" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.GetTicketTestCase.test_get_valid_ticket">
+<span class="sig-name descname"><span class="pre">test_get_valid_ticket</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#GetTicketTestCase.test_get_valid_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.GetTicketTestCase.test_get_valid_ticket" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.tests.ListTicketsByEventTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">ListTicketsByEventTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByEventTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByEventTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.ListTicketsByEventTestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByEventTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByEventTestCase.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.ListTicketsByEventTestCase.test_list_tickets_by_event">
+<span class="sig-name descname"><span class="pre">test_list_tickets_by_event</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByEventTestCase.test_list_tickets_by_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByEventTestCase.test_list_tickets_by_event" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.tests.ListTicketsByUserTestCase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">ListTicketsByUserTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByUserTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByUserTestCase" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.ListTicketsByUserTestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByUserTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByUserTestCase.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.tests.ListTicketsByUserTestCase.test_list_tickets_by_user">
+<span class="sig-name descname"><span class="pre">test_list_tickets_by_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByUserTestCase.test_list_tickets_by_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByUserTestCase.test_list_tickets_by_user" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-booking.urls">
 <span id="booking-urls-module"></span><h2>booking.urls module<a class="headerlink" href="#module-booking.urls" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-booking.views">
 <span id="booking-views-module"></span><h2>booking.views module<a class="headerlink" href="#module-booking.views" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.views.DiscountList">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">DiscountList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#DiscountList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.DiscountList" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListCreateAPIView</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.DiscountList.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#booking.views.DiscountList.queryset" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.DiscountList.serializer_class">
-<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#booking.views.DiscountList.serializer_class" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#booking.serializers.DiscountSerializer" title="booking.serializers.DiscountSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscountSerializer</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
+<p>This module contains several function based views for the booling app.</p>
+<p>function:list_tickets_by_event: A FBV thst Return a list of all tickets for a given event.</p>
+<p>function:list_tickets_by_user: A FBV for retrieving list of all tickets for a given user.</p>
+<p>function:get_ticket: A FBV that Return a ticket object by ticket ID.</p>
+<p>function:check_promo_code: A FBV Check whether a promo code is valid for a given event.</p>
+<p>class:discount_list: A view that returns a list of all discounts or creates a new discount.</p>
+<p>class:discount_pk: A view that returns a discounts object or update a new discount or delete it.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="booking.views.TicketList">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">TicketList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#TicketList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.TicketList" title="Permalink to this definition"></a></dt>
@@ -450,27 +550,161 @@ object the first time, the query is executed.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="booking.views.check_promo_code">
 <span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">check_promo_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#check_promo_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.check_promo_code" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Check whether a promo code is valid for a given event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – HTTP request object.</p></li>
+<li><p><strong>event_id</strong> – Event ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON object indicating whether the promo code is valid.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="booking.views.create_ticket">
 <span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">create_ticket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#create_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.create_ticket" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.views.discount_list">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">discount_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#discount_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.discount_list" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListCreateAPIView</span></code></p>
+<p>A view class to list and create Discount objects.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>queryset (QuerySet): A QuerySet of all Discount objects.
+serializer_class (DiscountSerializer): The serializer class for Discount objects.
+authentication_classes (list): A list of authentication classes used for this view.
+permission_classes (list): A list of permission classes used for this view.</p>
+</dd>
+<dt>Methods:</dt><dd><dl class="simple">
+<dt>get(self, request, <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs):</dt><dd><p>Handle HTTP GET request and retrieve a list of Discount objects.</p>
+</dd>
+<dt>post(self, request, <a href="#id5"><span class="problematic" id="id6">*</span></a>args, <a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs):</dt><dd><p>Handle HTTP POST request and create a new Discount object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.views.discount_list.authentication_classes">
+<span class="sig-name descname"><span class="pre">authentication_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.authentication.TokenAuthentication'&gt;]</span></em><a class="headerlink" href="#booking.views.discount_list.authentication_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.views.discount_list.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#booking.views.discount_list.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.views.discount_list.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#booking.views.discount_list.queryset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.views.discount_list.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#booking.views.discount_list.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#booking.serializers.DiscountSerializer" title="booking.serializers.DiscountSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscountSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.views.discount_pk">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">discount_pk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#discount_pk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.discount_pk" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RetrieveUpdateDestroyAPIView</span></code></p>
+<p>A view class to retrieve, update, or delete a Discount object by primary key.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><p>queryset (QuerySet): A QuerySet of all Discount objects.
+serializer_class (DiscountSerializer): The serializer class for Discount objects.
+authentication_classes (list): A list of authentication classes used for this view.
+permission_classes (list): A list of permission classes used for this view.</p>
+</dd>
+<dt>Methods:</dt><dd><dl class="simple">
+<dt>get(self, request, <a href="#id9"><span class="problematic" id="id10">*</span></a>args, <a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs):</dt><dd><p>Handle HTTP GET request and retrieve a Discount object by primary key.</p>
+</dd>
+<dt>put(self, request, <a href="#id13"><span class="problematic" id="id14">*</span></a>args, <a href="#id15"><span class="problematic" id="id16">**</span></a>kwargs):</dt><dd><p>Handle HTTP PUT request and update a Discount object by primary key.</p>
+</dd>
+<dt>delete(self, request, <a href="#id17"><span class="problematic" id="id18">*</span></a>args, <a href="#id19"><span class="problematic" id="id20">**</span></a>kwargs):</dt><dd><p>Handle HTTP DELETE request and delete a Discount object by primary key.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.views.discount_pk.authentication_classes">
+<span class="sig-name descname"><span class="pre">authentication_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.authentication.TokenAuthentication'&gt;]</span></em><a class="headerlink" href="#booking.views.discount_pk.authentication_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.views.discount_pk.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#booking.views.discount_pk.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.views.discount_pk.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#booking.views.discount_pk.queryset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.views.discount_pk.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#booking.views.discount_pk.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#booking.serializers.DiscountSerializer" title="booking.serializers.DiscountSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscountSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="booking.views.get_ticket">
 <span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">get_ticket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#get_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.get_ticket" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Return a ticket object by ticket ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – HTTP request object.</p></li>
+<li><p><strong>ticket_id</strong> – Ticket ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON object representing the ticket for the given ID.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="booking.views.list_tickets_by_event">
 <span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">list_tickets_by_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#list_tickets_by_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.list_tickets_by_event" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Return a list of all tickets for a given event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – HTTP request object.</p></li>
+<li><p><strong>event_id</strong> – Event ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of JSON objects representing the tickets for the given event.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="booking.views.list_tickets_by_user">
 <span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">list_tickets_by_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#list_tickets_by_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.list_tickets_by_user" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Return a list of all tickets for a given user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – HTTP request object.</p></li>
+<li><p><strong>user_id</strong> – User ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of JSON objects representing the tickets for the given user.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-booking">

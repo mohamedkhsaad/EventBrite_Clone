@@ -16,7 +16,9 @@
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="eventManagment package" href="eventManagment.html" />
+    <link rel="prev" title="event package" href="event.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -38,136 +40,33 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">event.migrations package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-event.migrations.0001_initial">event.migrations.0001_initial module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0001_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0001_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0001_initial.Migration.initial"><code class="docutils literal notranslate"><span class="pre">Migration.initial</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0001_initial.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">eventbrite</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="booking.html">booking package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="event.html">event package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="event.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">event.migrations package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#module-event.admin">event.admin module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#module-event.apps">event.apps module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#module-event.models">event.models module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#module-event.serializers">event.serializers module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#module-event.urls">event.urls module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#module-event.views">event.views module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#module-event">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eventManagment.html">eventManagment package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventbrite.html">eventbrite package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage.html">manage module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user.html">user package</a></li>
 </ul>
 </li>
 </ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0002_category">event.migrations.0002_category module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0002_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0002_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0002_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0003_sub_category">event.migrations.0003_sub_category module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0003_sub_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0003_sub_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0003_sub_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0004_locations">event.migrations.0004_locations module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0004_locations.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0004_locations.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0004_locations.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0005_discount">event.migrations.0005_discount module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0005_discount.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0005_discount.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0005_discount.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0006_interests">event.migrations.0006_interests module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0006_interests.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0006_interests.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0006_interests.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0007_delete_user">event.migrations.0007_delete_user module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0007_delete_user.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0007_delete_user.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0007_delete_user.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0008_delete_interests">event.migrations.0008_delete_interests module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0008_delete_interests.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0008_delete_interests.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0008_delete_interests.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0009_rename_descriiption_event_description_and_more">event.migrations.0009_rename_descriiption_event_description_and_more module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0009_rename_descriiption_event_description_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0009_rename_descriiption_event_description_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0009_rename_descriiption_event_description_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more">event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0010_rename_name_event_title_rename_type_event_type_and_more.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0011_event_category">event.migrations.0011_event_category module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0011_event_category.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0011_event_category.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0011_event_category.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0012_delete_discount_delete_tickets">event.migrations.0012_delete_discount_delete_tickets module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0012_delete_discount_delete_tickets.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0012_delete_discount_delete_tickets.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0012_delete_discount_delete_tickets.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0013_event_online">event.migrations.0013_event_online module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0013_event_online.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0013_event_online.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0013_event_online.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0014_remove_event_online_event_online">event.migrations.0014_remove_event_online_event_online module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0014_remove_event_online_event_online.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0014_remove_event_online_event_online.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0014_remove_event_online_event_online.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations.0015_alter_event_id">event.migrations.0015_alter_event_id module</a><ul>
-<li><a class="reference internal" href="#event.migrations.0015_alter_event_id.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li><a class="reference internal" href="#event.migrations.0015_alter_event_id.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li><a class="reference internal" href="#event.migrations.0015_alter_event_id.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-event.migrations">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -182,6 +81,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">eventbrite</a></li>
+          <li class="breadcrumb-item"><a href="event.html">event package</a></li>
       <li class="breadcrumb-item active">event.migrations package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/event.migrations.rst.txt" rel="nofollow"> View page source</a>
@@ -495,7 +396,10 @@
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="event.html" class="btn btn-neutral float-left" title="event package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="eventManagment.html" class="btn btn-neutral float-right" title="eventManagment package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

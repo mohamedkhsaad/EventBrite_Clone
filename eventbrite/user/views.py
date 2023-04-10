@@ -17,17 +17,14 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from .models import*
 from eventbrite.settings import *
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.urls import reverse_lazy
-from django.views.generic import FormView
-from django.contrib.auth import get_user_model
-from django.shortcuts import redirect
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+
 # Create your views here.
 
-
+# import sys
+# sys.path.append('/path/to/google-auth')
+# importgoogle-api-python-client
+# from google.oauth2.credentials import Credentials
+# from google_auth_oauthlib.flow import Flow
 
 # @api_view(['POST'])
 # def create_user(request):
@@ -47,6 +44,7 @@ class userViewSet(viewsets.ModelViewSet):
     """
     serializer_class = userSerializer
     queryset = User.objects.all()
+    
 
 
 
@@ -135,3 +133,48 @@ user interests model
 #     """
 #     serializer_class = user_interests_Serializer
 #     queryset = Interests.objects.all()
+
+
+
+# def google_auth(request):
+#     flow = Flow.from_client_config(
+#         {
+#             'web': {
+#                 'client_id': GOOGLE_CLIENT_ID,
+#                 'client_secret': GOOGLE_CLIENT_SECRET,
+#                 'redirect_uris': [GOOGLE_REDIRECT_URI],
+#                 'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
+#                 'token_uri': 'https://accounts.google.com/o/oauth2/token',
+#                 'access_type': 'offline',
+#                 'prompt': 'consent',
+#             }
+#         },
+#         scopes=GOOGLE_AUTH_SCOPES,
+#     )
+#     authorization_url, state = flow.authorization_url(prompt='consent')
+#     request.session['google_auth_state'] = state
+#     return redirect(authorization_url)
+
+# def google_auth_callback(request):
+#     state = request.session.pop('google_auth_state', None)
+#     if state is None:
+#         return HttpResponseBadRequest('Invalid state parameter')
+#     flow = Flow.from_client_config(
+#         {
+#             'web': {
+#                 'client_id': GOOGLE_CLIENT_ID,
+#                 'client_secret': GOOGLE_CLIENT_SECRET,
+#                 'redirect_uris': [GOOGLE_REDIRECT_URI],
+#                 'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
+#                 'token_uri': 'https://accounts.google.com/o/oauth2/token',
+#                 'access_type': 'offline',
+#                 'prompt': 'consent',
+#             }
+#         },
+#         scopes=GOOGLE_AUTH_SCOPES,
+#         state=state,
+#     )
+#     flow.fetch_token(authorization_response=request.get_full_path())
+#     credentials = flow.credentials
+#     request.session['google_credentials'] = credentials.to_json()
+#     return HttpResponse('Successfully authorized')

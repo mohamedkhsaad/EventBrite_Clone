@@ -15,3 +15,6 @@ sqlparse==0.2.4
 tzdata==2022.7
 urllib3==1.26.14
 wincertstore==0.2
+drf_spectacular
+django-sslserver   
+itsdangerous-2.1.2

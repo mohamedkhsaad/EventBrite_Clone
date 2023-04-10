@@ -83,7 +83,7 @@
 
 <div class="viewcode-block" id="Discount"><a class="viewcode-back" href="../../booking.html#booking.models.Discount">[docs]</a><span class="k">class</span> <span class="nc">Discount</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
   <span class="n">ID</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
-  <span class="n">EVENT_ID</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span> <span class="c1"># should be primary key</span>
+  <span class="n">EVENT_ID</span><span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">11111</span><span class="p">)</span> <span class="c1"># should be primary key</span>
   <span class="n">percent_off</span> <span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
   <span class="n">CODE</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
   <span class="n">start_date</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
