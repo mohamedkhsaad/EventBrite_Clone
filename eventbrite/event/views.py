@@ -20,8 +20,6 @@ class:OnlineEventsAPIView: A viewset for retrieving online event instances.
 """
 from django.db.models import Q
 import ast
-
-
 from django.shortcuts import render
 from .serializers import *
 from rest_framework import generics
@@ -109,7 +107,7 @@ class EventListCategory(generics.ListAPIView):
         for the category specified in the URL parameter.
         """
         event_Category = self.kwargs['event_Category']
-        return event.objects.filter(Category=event_Category)
+        return event.objects.filter(category_name=event_Category)
 
 
 class EventListSupCategory(generics.ListAPIView):

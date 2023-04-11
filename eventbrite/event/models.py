@@ -26,15 +26,10 @@ class event(models.Model):
     category_name = models.CharField(max_length=10)
     sub_Category = models.CharField(max_length=20)
     venue_name = models.CharField(max_length=20)
-    # CATEGORY_ID = models.IntegerField()
-    # SUB_CATEGORY_ID = models.IntegerField()
     ST_DATE = models.DateField()
     END_DATE = models.DateField()
     ST_TIME = models.TimeField()
-
     END_TIME = models.TimeField()
-
-    # ONLINE=models.BooleanField(default=False)
     Online_choises = (
         ('t', 'true'),
         ('f', 'false')
