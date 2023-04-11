@@ -47,7 +47,12 @@ class userSerializer(serializers.ModelSerializer):
         username = string.ascii_lowercase
         user = User.objects.create_user(**validated_data, password=password,email=email,
                                        username=''.join(random.choice(username) for i in range(10)) )
-        user.save()
+        # if user:
+        #     raise serializers.ValidationError({'email': 'User with this email already exists.'})
+        # else:
+        #     user = User.objects.create_user(**validated_data, password=password, email=email,
+        #                                         username=''.join(random.choice(username) for i in range(10)))
+        # user.save()
         """
         This part is to send a welcoming email to the new user
         """

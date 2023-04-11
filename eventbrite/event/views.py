@@ -18,6 +18,8 @@ class:EventListVenue: A viewset for retrieving event instances by venue.
 class:OnlineEventsAPIView: A viewset for retrieving online event instances.
 
 """
+from django.db.models import Q
+import ast
 
 
 from django.shortcuts import render
@@ -34,6 +36,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
+import json
 
 class EventCreateView(generics.CreateAPIView):
     """
@@ -181,6 +184,19 @@ class UserInterestCreateAPIView(CreateAPIView):
     serializer_class = UserInterestSerializer
 
 
+class UserInterestAPIView(generics.ListAPIView):
+    """
+    A viewset for retrive an user Interests instance.
+    """
+    permission_classes = [IsAuthenticated]
+    queryset = UserInterest.objects.all()
+
+    def list(self, request):
+        queryset = self.get_queryset().filter(user=request.user)
+        serializer = UserInterestSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+
 
 class UserInterestEventsAPIView(APIView):
     """
@@ -208,4 +224,10 @@ class UserInterestEventsAPIView(APIView):
 
     def get_events(self, user_interests):
         # Custom logic to retrieve events related to user interests
-        return event.objects.filter(category_name__in=[ui.category_name for ui in user_interests])
+        categories = [ui.category_name for ui in user_interests]
+        subcategories = [ui.sub_Category for ui in user_interests]
+        return event.objects.filter(category_name__in=categories) 
+                                    #sub_Category__in=subcategories)
+
+   
+

@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+from dotenv import load_dotenv
+import os
 from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -103,10 +105,17 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 #             }
 #         }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'eventbrite-db',
+#     }
+# }
+load_dotenv()
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'Z-DB',
+        'ENGINE': os.environ.get('DATABASE_ENGINE'),
+        'NAME': os.environ.get('DATABASE_NAME'),
     }
 }
 
@@ -133,12 +142,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+LANGUAGE_CODE = os.getenv('LANGUAGE_CODE')
+TIME_ZONE =os.getenv('TIME_ZONE')
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -163,23 +169,25 @@ REST_FRAMEWORK = {
 
 }
 
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'eventbrite2002@gmail.com'
-EMAIL_HOST_PASSWORD = 'joghzolscsuucebv'
-EMAIL_PORT = 587
-
-AUTH_USER_MODEL = 'user.user'
+# Authentication settings
+AUTH_USER_MODEL = os.getenv('AUTH_USER_MODEL')
 
 # ALLOWED_HOSTS = ['52.55.220.111']
 ALLOWED_HOSTS = ['*']
-# other settings ...
+
+# Other settings ...
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-SSL_CERTIFICATE = '/etc/letsencrypt/live/event-us.me/cert.pem'
-SSL_PRIVATE_KEY = '/etc/letsencrypt/live/event-us.me/privkey.pem'
+# SSL settings
+SSL_CERTIFICATE = os.getenv('SSL_CERTIFICATE')
+SSL_PRIVATE_KEY = os.getenv('SSL_PRIVATE_KEY')

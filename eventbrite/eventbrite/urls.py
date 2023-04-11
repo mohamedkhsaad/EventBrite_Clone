@@ -36,13 +36,14 @@ urlpatterns = [
     ),
     # path('admin/', admin.site.urls),
     # user
-    path('user/signup/', userViewSet.as_view({'post': 'create'}), name='signup'),
-    path('user/login/', CreateTokenView.as_view(), name='token'),
-    path('user/emailcheck/<str:email>/', EmailCheckView.as_view(), name='email-check'),
-    path('user/reset-password/', auth_views.PasswordResetView.as_view(), name='password-reset'),
-    path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
-    path('user/reset-password-sent/', auth_views.PasswordResetDoneView.as_view(), name='password-reset-done'),
-    path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password-reset-complete'),
+    path('user/signup/',userViewSet.as_view({'post': 'create'}), name='signup'),
+    path('user/login/',CreateTokenView.as_view(), name='token'),
+    path('user/emailcheck/<str:email>/',EmailCheckView.as_view(), name='email-check'),
+
+    # path('user/reset-password/', auth_views.PasswordResetView.as_view(), name='password-reset'),
+    # path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
+    # path('user/reset-password-sent/', auth_views.PasswordResetDoneView.as_view(), name='password-reset-done'),
+    # path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password-reset-complete'),
 
 
 
@@ -58,6 +59,8 @@ urlpatterns = [
     path('events/ID/<str:event_ID>/', EventID.as_view(), name='event-list-by-ID'),
     path('events/interests-create/', UserInterestCreateAPIView.as_view(), name='user_interests_create'),
     path('events/for-you/', UserInterestEventsAPIView.as_view(), name='user-interests-events'),
+    path('events/getuserinterests/', UserInterestAPIView.as_view(), name='user-interests'),
+
 
 
     #event management

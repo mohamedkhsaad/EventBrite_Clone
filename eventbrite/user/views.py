@@ -11,14 +11,15 @@ from .serializers import *
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from .models import *
 from eventbrite.settings import *
 from django.http import JsonResponse
-from django.views import View
 from django.contrib.auth import get_user_model
+from rest_framework.generics import CreateAPIView
+from rest_framework.views import APIView
+
 # Create your views here.
 
 # import sys
@@ -64,7 +65,7 @@ class CreateTokenView(ObtainAuthToken):
 user model (EMAIL CHECK)
 '''
 user_ = get_user_model()
-class EmailCheckView(View):
+class EmailCheckView(APIView):
     def get(self, request, email):
         try:
             user = user_.objects.get(email=email)
@@ -111,21 +112,6 @@ class EmailCheckView(View):
 #         reset_password_serializer.is_valid(raise_exception=True)
 #         reset_password_serializer.send_reset_password_email(user)
 #         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-'''
-user interests model 
-'''
-# class user_interests_Serializer(serializers.ModelSerializer):
-#     class Meta:
-#         model=Interests
-#         fields = '__all__'
-#     pass
-
-# class user_interests_ViewSet(viewsets.ModelViewSet):
-#     """
-#     A viewset for viewing and editing user instances.
-#     """
-#     serializer_class = user_interests_Serializer
-#     queryset = Interests.objects.all()
 
 
 # def google_auth(request):

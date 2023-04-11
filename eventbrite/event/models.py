@@ -3,27 +3,12 @@ from eventbrite.settings import *
 from user.models import *
 
 
-
-
-# class Interests(models.Model):
-#     category_name = models.CharField(max_length=255)
-#     user_id = models.IntegerField(unique=False)
-
-# class UserInterest(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     interest = models.ForeignKey(Interests, on_delete=models.CASCADE)
-
-#    def __str__(self):
-#         return f"{self.user.email} - {self.interest.category_name}" 
-
-
 class UserInterest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='interests')
     category_name = models.CharField(max_length=255)
-
-  
+    sub_Category = models.CharField(max_length=255)  
     def __str__(self):
-        return f"{self.user.email} - {self.interest.category_name}" 
+        return f"{self.user.email} - {self.interest.category_name} - {self.interest.sub_Category}"
   
 
 class event(models.Model):
@@ -39,7 +24,7 @@ class event(models.Model):
     Description = models.CharField(max_length=500)
     type = models.CharField(max_length=20)
     category_name = models.CharField(max_length=10)
-    sub_Category = models.CharField(max_length=10)
+    sub_Category = models.CharField(max_length=20)
     venue_name = models.CharField(max_length=20)
     # CATEGORY_ID = models.IntegerField()
     # SUB_CATEGORY_ID = models.IntegerField()
