@@ -26,9 +26,6 @@ class User(AbstractUser, PermissionsMixin):
     username = models.CharField(unique=False,blank=False,null=False,max_length=150)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'age', 'gender', 'city', 'country']
-
-    
-
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),

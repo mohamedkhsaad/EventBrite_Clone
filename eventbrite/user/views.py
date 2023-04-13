@@ -156,3 +156,44 @@ class EmailCheckView(APIView):
 #     credentials = flow.credentials
 #     request.session['google_credentials'] = credentials.to_json()
 #     return HttpResponse('Successfully authorized')
+from django.contrib.auth.views import PasswordResetView
+from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.http import HttpResponseRedirect
+
+class CustomPasswordResetView(PasswordResetView):
+    success_url = reverse_lazy('password_reset_done')
+
+    def post(self, request, *args, **kwargs):
+        email = request.POST.get('email')
+        if email:
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                user = None
+            if user is not None:
+                # Generate a one-time use token for the user's email address
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                token = default_token_generator.make_token(user)
+
+                # Construct the reset URL for the user
+                reset_url = request.build_absolute_uri(reverse_lazy('password_reset_confirm', kwargs={
+                    'uidb64': uid,
+                    'token': token,
+                }))
+
+                # Send the password reset email to the user
+                send_mail(
+                    'Password reset for your My App account',
+                    'Please click the following link to reset your password: ' + reset_url,
+                    'noreply@myapp.com',
+                    [user.email],
+                    fail_silently=False,
+                )
+
+        # Redirect to the password reset done page
+        return HttpResponseRedirect(self.success_url)
+

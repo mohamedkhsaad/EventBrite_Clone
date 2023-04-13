@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import*
+from django.contrib.admin import site
+
+from user.models import*
 
 # Register your models here.
 admin.site.register(User)
-# admin.site.register(Interests)
+# admin.site.register(User.admin)

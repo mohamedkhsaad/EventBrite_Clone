@@ -16,11 +16,12 @@ class event(models.Model):
     Model representing an event.
     """
     ID = models.IntegerField(unique=True)
-    # User_id = models.IntegerField(blank=False)
+    User_id = models.IntegerField(blank=False)
     Title = models.CharField(max_length=50)
     organizer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     organizer = models.CharField(max_length=50)
+    Summery = models.CharField(max_length=500)
     Description = models.CharField(max_length=500)
     type = models.CharField(max_length=20)
     category_name = models.CharField(max_length=10)
@@ -45,10 +46,12 @@ class event(models.Model):
     # LIKES =models.ExpressionList([1])
     # CREATED=models.ExpressionList([1])
     STATUS = models.CharField(max_length=20)
-    REQUIRED_FIELDS = ['ID', 'Title', 'organizer', 'Description', 'type', 'Category',
-                       'sub_Category', 'venue_name', 'ST_DATE', 'END_DATE', 'ST_TIME', 'END_TIME', 'online',
-                       'CAPACITY', 'PASSWORD', 'STATUS',
-                       ]
+    image = models.ImageField(upload_to='event_images/')
+
+    # REQUIRED_FIELDS = ['ID', 'Title', 'organizer', 'Description', 'type', 'Category',
+    #                    'sub_Category', 'venue_name', 'ST_DATE', 'END_DATE', 'ST_TIME', 'END_TIME', 'online',
+    #                    'CAPACITY', 'PASSWORD', 'STATUS',
+    #                    ]
 
     class Meta:
         verbose_name = "Event"

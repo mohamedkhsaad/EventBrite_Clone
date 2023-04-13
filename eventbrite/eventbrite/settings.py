@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'eventManagment',
     'sslserver',
+    'storages',
     # 'two_factor',
     # 'django_otp',
     # 'django_otp.plugins.otp_totp',
@@ -191,3 +192,20 @@ CSRF_COOKIE_SECURE = True
 # SSL settings
 SSL_CERTIFICATE = os.getenv('SSL_CERTIFICATE')
 SSL_PRIVATE_KEY = os.getenv('SSL_PRIVATE_KEY')
+
+
+AWS_ACCESS_KEY_ID = '<your_access_key_id>'
+AWS_SECRET_ACCESS_KEY = '<your_secret_access_key>'
+AWS_STORAGE_BUCKET_NAME = '<your_bucket_name>'
+AWS_S3_REGION_NAME = '<your_bucket_region>' 
+AWS_DEFAULT_ACL = 'public-read'
+
+# Optional: add custom domain for serving static and media files
+# AWS_S3_CUSTOM_DOMAIN = '<your_domain_name>'
+# Use the following setting if you want to store static files on S3
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Use the following setting if you want to store media files on S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+PASSWORD_RESET_TIMEOUT_DAYS = 7
