@@ -23,6 +23,7 @@ from django.urls import path,include
 from django.contrib import admin
 from django.contrib import admin
 from django.contrib.admin import site
+from booking.views import *
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView,
@@ -74,8 +75,8 @@ urlpatterns = [
     path('events/today/', TodayEventsList.as_view(), name='today-events'),
     path('events/weekend/', WeekendEventsView.as_view(), name='weekend-events'),
     # path('events/createTicket/', TicketCreateAPIView.as_view(), name='Ticket-create'),
-    path('events/<int:event_id>/tickets/', TicketCreateAPIView.as_view(), name='create_ticket'),
-
+    path('events/<int:event_id>/Tickets/', TicketCreateAPIView.as_view(), name='create_ticket'),
+    path('events/TicketsPrice/<int:event_id>/', EventTicketPrice.as_view(), name='ticket_price_api'),
 
     #event management
     path('eventmanagement/userevents/<int:user_id>', UserListEvents.as_view(), name='user_list_events'),

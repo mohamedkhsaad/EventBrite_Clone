@@ -5,7 +5,7 @@ from .models import Ticket,Discount
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model=Ticket
-        exclude = ['event']
+        exclude = ['event','id']
 
 
 class DiscountSerializer(serializers.ModelSerializer):

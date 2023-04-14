@@ -29,7 +29,7 @@ from user import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from event.models import *
+from event.models import event
 from event.serializers import *
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -53,6 +53,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.pagination import PageNumberPagination
 from booking.models import *
 from booking.serializers import *
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 class EventCreateView(generics.CreateAPIView):
     """
@@ -263,45 +264,6 @@ class UserInterestEventsAPIView(APIView):
         return event.objects.filter(category_name__in=categories)
         # sub_Category__in=subcategories)
 
-
-# class UploadImageView(APIView):
-#     def get(self, request):
-#         form = ImageForm()
-#         return render(request, 'upload_image.html', {'form': form})
-
-#     def post(self, request):
-#         form = ImageForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('home')
-#         else:
-#             return render(request, 'upload_image.html', {'form': form})
-
-
-# class EventImageCreateView(generics.CreateAPIView):
-#     """
-#     A viewset for creating an event image instance.
-#     """
-#     parser_classes = (parsers.MultiPartParser,)
-
-#     def post(self, request, *args, **kwargs):
-#         event_id = request.data.get('event_id')
-#         try:
-#             Event = event.objects.get(ID=event_id)
-#         except event.DoesNotExist:
-#             return Response({'event_id': f'Event with id {event_id} does not exist.'}, status=status.HTTP_404_NOT_FOUND)
-
-#         image_file = request.FILES.get('image')
-#         if not image_file:
-#             return Response({'image': 'This field is required.'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         event.image = image_file
-#         event.save()
-
-#         serializer = eventSerializer(event)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 class TodayEventsList(generics.ListAPIView):
     serializer_class = eventSerializer
 
@@ -325,17 +287,6 @@ class WeekendEventsView(generics.ListAPIView):
         )
         return queryset
 
-
-# class UploadImageView(APIView):
-#     def get(self, request):
-#         form = ImageForm()
-#         return render(request, 'upload.html', {'form': form})
-
-#     def post(self, request):
-#         form = ImageForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#         return render(request, 'eventbrite/templates/event/upload.html.html', {'form': form})
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -361,3 +312,14 @@ class TicketCreateAPIView(generics.CreateAPIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+# class TicketPriceAPIView(generics.ListAPIView):
+#     serializer_class = TicketSerializer
+    
+#     def get_queryset(self):
+#         event_id = self.kwargs['event_id']
+#         queryset = Ticket.objects.filter(EVENT_ID=event_id).values('PRICE')
+#         print(queryset)
+#         return queryset
+
+
