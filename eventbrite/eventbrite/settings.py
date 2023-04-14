@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from dotenv import load_dotenv
 import os
 from pathlib import Path
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -100,35 +102,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'eventbrite.wsgi.application'
 
-
-# DATABASES = {
-#         'default': {
-#             'ENGINE': 'djongo',
-#             'NAME': 'Ismail-DB',
-#             'ENFORCE_SCHEMA': False,
-#             'CLIENT': {
-#             'host':'mongodb+srv://ismail:512002@cluster0.swohyah.mongodb.net/?retryWrites=true&w=majority'
-#             }
-#         }
-# }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': 'eventbrite-db',
-#     }
-# }
-load_dotenv()
+#Glopal Database
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DATABASE_ENGINE'),
-        'NAME': os.environ.get('DATABASE_NAME'),
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
+        'CLIENT': {
+            'host': os.getenv('DB_CLIENT_HOST')
+        }
     }
 }
+# # Local Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.environ.get('DATABASE_ENGINE'),
+#         'NAME': os.environ.get('DATABASE_NAME'),
+#     }
+# }
 
 
 # Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
