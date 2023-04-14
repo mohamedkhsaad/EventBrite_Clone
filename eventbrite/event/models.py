@@ -16,13 +16,13 @@ class event(models.Model):
     Model representing an event.
     """
     ID = models.IntegerField(unique=True)
-    User_id = models.IntegerField(blank=False)
+    User_id = models.IntegerField(blank=False,null=True)
     Title = models.CharField(max_length=50)
     organizer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     organizer = models.CharField(max_length=50)
-    Summery = models.CharField(max_length=500)
-    Description = models.CharField(max_length=500)
+    Summery = models.CharField(max_length=500,null=True)
+    Description = models.CharField(max_length=500,null=True)
     type = models.CharField(max_length=20)
     category_name = models.CharField(max_length=10)
     sub_Category = models.CharField(max_length=20)
@@ -32,13 +32,18 @@ class event(models.Model):
     ST_TIME = models.TimeField()
     END_TIME = models.TimeField()
     Online_choises = (
-        ('t', 'true'),
-        ('f', 'false')
+        ('True', 'True'),
+        ('False', 'False')
     )
-    online = models.CharField(max_length=1)
+    online = models.CharField(max_length=5,choices=Online_choises)
     CAPACITY = models.IntegerField()
-    PASSWORD = models.CharField(max_length=10)
-    STATUS = models.CharField(max_length=20)
+    PASSWORD = models.CharField(max_length=10,null=True)
+    STATUS_choises = (
+        ('Draft', 'Draft'),
+        ('Live', 'Live'),
+        ('Past','Past')
+    )
+    STATUS = models.CharField(max_length=5,choices=STATUS_choises)
     image = models.ImageField(upload_to='events/',)
     
     # image = models.ImageField(upload_to='event_images/')
@@ -55,7 +60,6 @@ class event(models.Model):
     # FOLLOEWRS =models.ExpressionList([1])
     # LIKES =models.ExpressionList([1])
     # CREATED=models.ExpressionList([1])
-
 
     REQUIRED_FIELDS = ['ID','User_id','Title', 'organizer', 'Description', 'type', 'Category',
                        'sub_Category', 'venue_name', 'ST_DATE', 'END_DATE', 'ST_TIME', 'END_TIME', 'online',

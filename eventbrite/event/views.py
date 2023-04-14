@@ -180,7 +180,7 @@ class OnlineEventsAPIView(APIView):
         """
         This view should return a list of all the online events.
         """
-        events = event.objects.filter(online='t')
+        events = event.objects.filter(online='True')
         serializer = eventSerializer(events, many=True)
 
         return Response(serializer.data)
