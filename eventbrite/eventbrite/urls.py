@@ -78,7 +78,7 @@ urlpatterns = [
     path('eventmanagement/userevents/<int:user_id>', UserListEvents.as_view(), name='user_list_events'),
     path('eventmanagement/UserPastEvents/<int:user_id>', UserListPastEvents.as_view(), name='user_list_past_events'),
     path('eventmanagement/UserUpcomingEvents/<int:user_id>', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
-    path('events/upload',UploadImageView.as_view(),name='upload-image'),
+    # path('events/upload',UploadImageView.as_view(),name='upload-image'),
     #booking
     path('booking/',include('booking.urls')),
     path('',include('rest_framework.urls')),

@@ -18,6 +18,8 @@ class:EventListVenue: A viewset for retrieving event instances by venue.
 class:OnlineEventsAPIView: A viewset for retrieving online event instances.
 
 """
+from rest_framework import parsers
+from .forms import *
 from django.db.models import Q
 import ast
 from django.shortcuts import render
@@ -28,7 +30,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from event.models import *
-from event.serializers import*
+from event.serializers import *
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -39,6 +41,8 @@ from django.shortcuts import redirect
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.utils.timezone import now
 from django.utils import timezone
+from PIL import Image
+import os
 # class EventCreateView(generics.CreateAPIView):
 #     """
 #     A viewset for creating an event instance.
@@ -70,6 +74,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import event
 from .serializers import eventSerializer
+from rest_framework.pagination import PageNumberPagination
 
 
 class EventCreateView(generics.CreateAPIView):
@@ -98,22 +103,33 @@ class EventCreateView(generics.CreateAPIView):
 
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework.pagination import PageNumberPagination
 
+class MyPagination(PageNumberPagination):
+    page_size = 10
+
+    def get_paginated_response(self, data):
+        print(self.page)
+        return super().get_paginated_response(data)
 
 class AllEventListView(APIView):
     """
     A viewset for retrieving all event instances.
     """
     permission_classes = [IsAuthenticated]
+    pagination_class = MyPagination
 
     def get(self, request, format=None):
         """
-        This view should return a list of all the events.
+        This view should return a paginated list of all the events.
         """
-
         events = event.objects.all()
-        serializer = eventSerializer(events, many=True)
-        return Response(serializer.data)
+        paginator = self.pagination_class()
+        paginated_events = paginator.paginate_queryset(events, request)
+        serializer = eventSerializer(paginated_events, many=True)
+        response = paginator.get_paginated_response(serializer.data)
+        response['count'] = paginator.page.paginator.count
+        return response
 
 
 class EventSearchView(generics.ListAPIView):
@@ -209,8 +225,10 @@ class OnlineEventsAPIView(APIView):
         """
         events = event.objects.filter(online='t')
         serializer = eventSerializer(events, many=True)
-        
+
         return Response(serializer.data)
+
+
 class EventID(generics.ListAPIView):
     """
     A viewset for retrieving event instances by ID.
@@ -225,7 +243,6 @@ class EventID(generics.ListAPIView):
         """
         event_sub_ID = self.kwargs['event_ID']
         return event.objects.filter(ID=event_sub_ID)
-    
 
 
 class UserInterestCreateAPIView(CreateAPIView):
@@ -248,7 +265,6 @@ class UserInterestAPIView(generics.ListAPIView):
         queryset = self.get_queryset().filter(user=request.user)
         serializer = UserInterestSerializer(queryset, many=True)
         return Response(serializer.data)
-    
 
 
 class UserInterestEventsAPIView(APIView):
@@ -256,6 +272,7 @@ class UserInterestEventsAPIView(APIView):
     A viewset for retrieving event instances based on user Interests.
     """
     permission_classes = [IsAuthenticated]
+
     def get(self, request, format=None):
         # Check if the user is authenticated
         if not request.user.is_authenticated:
@@ -279,19 +296,15 @@ class UserInterestEventsAPIView(APIView):
         # Custom logic to retrieve events related to user interests
         categories = [ui.category_name for ui in user_interests]
         subcategories = [ui.sub_Category for ui in user_interests]
-        return event.objects.filter(category_name__in=categories) 
-                                    #sub_Category__in=subcategories)
+        return event.objects.filter(category_name__in=categories)
+        # sub_Category__in=subcategories)
 
-   
-
-from django.shortcuts import render
-from .forms import *
 
 # class UploadImageView(APIView):
 #     def get(self, request):
 #         form = ImageForm()
 #         return render(request, 'upload_image.html', {'form': form})
-    
+
 #     def post(self, request):
 #         form = ImageForm(request.POST, request.FILES)
 #         if form.is_valid():
@@ -300,8 +313,6 @@ from .forms import *
 #         else:
 #             return render(request, 'upload_image.html', {'form': form})
 
-
-from rest_framework import parsers
 
 # class EventImageCreateView(generics.CreateAPIView):
 #     """
@@ -335,6 +346,7 @@ class TodayEventsList(generics.ListAPIView):
         queryset = event.objects.filter(ST_DATE=today)
         return queryset
 
+
 class WeekendEventsView(generics.ListAPIView):
     serializer_class = eventSerializer
 
@@ -348,15 +360,15 @@ class WeekendEventsView(generics.ListAPIView):
             Q(ST_DATE__gte=friday) & Q(END_DATE__lte=saturday)
         )
         return queryset
-from PIL import Image
-import os
 
-class UploadImageView(APIView):
-    def get(self, request):
-        form = ImageForm()
-        return render(request, 'upload.html', {'form': form})
-    def post(self, request):
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-        return render(request,'eventbrite/templates/event/upload.html.html', {'form': form})
+
+# class UploadImageView(APIView):
+#     def get(self, request):
+#         form = ImageForm()
+#         return render(request, 'upload.html', {'form': form})
+
+#     def post(self, request):
+#         form = ImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#         return render(request, 'eventbrite/templates/event/upload.html.html', {'form': form})
