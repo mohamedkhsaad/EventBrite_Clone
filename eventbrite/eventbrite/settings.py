@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'eventManagment',
     'sslserver',
     'storages',
+    'corsheaders',
     # 'two_factor',
     # 'django_otp',
     # 'django_otp.plugins.otp_totp',
@@ -64,7 +65,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     # 'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.security.SecurityMiddleware',
     # 'django_otp.middleware.OTPMiddleware',
@@ -224,3 +226,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/path/to/images',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True

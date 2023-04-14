@@ -61,7 +61,7 @@ class userSerializer(serializers.ModelSerializer):
         # from_email = EMAIL_HOST_USER
         # to_list = [user.email]
         # send_mail(subject, message, from_email, to_list, fail_silently=False)
-        # return user
+        return user
 
 
 class AuthTokenSerializer(serializers.Serializer):
