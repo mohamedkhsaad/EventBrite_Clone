@@ -81,7 +81,7 @@ class AllEventListView(APIView):
     """
     A viewset for retrieving all event instances.
     """
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     pagination_class = MyPagination
 
     def get(self, request, format=None):
@@ -119,7 +119,7 @@ class EventListtype(generics.ListAPIView):
     A viewset for retrieving event instances by type.
     """
     serializer_class = eventSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -135,7 +135,7 @@ class EventListCategory(generics.ListAPIView):
     A viewset for retrieving event instances by category.
     """
     serializer_class = eventSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -151,7 +151,7 @@ class EventListSupCategory(generics.ListAPIView):
     A viewset for retrieving event instances by sub-category.
     """
     serializer_class = eventSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -167,7 +167,7 @@ class EventListVenue(generics.ListAPIView):
     A viewset for retrieving event instances by venue.
     """
     serializer_class = eventSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -182,7 +182,7 @@ class OnlineEventsAPIView(APIView):
     """
     A viewset for retrieving event which the online is 'true' .
     """
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         """
