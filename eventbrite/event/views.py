@@ -43,37 +43,13 @@ from django.utils.timezone import now
 from django.utils import timezone
 from PIL import Image
 import os
-# class EventCreateView(generics.CreateAPIView):
-#     """
-#     A viewset for creating an event instance.
-#     """
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = eventSerializer
-#     queryset = event.objects.all()
-#     parser_classes = [MultiPartParser, FormParser]
-#     def post(self, request, format=None):
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-#             event = serializer.save()
-#             # Handle image upload
-#             image = request.data.get('image', None)
-#             if image:
-#                 path = '/path/to/event_images/' + str(event.ID) + '.jpg'
-#                 with open(path, 'wb') as f:
-#                     for chunk in image.chunks():
-#                         f.write(chunk)
-#                 event.image = path
-#                 event.save()
-
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-import boto3
 from rest_framework import generics, status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import event
 from .serializers import eventSerializer
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.pagination import PageNumberPagination
 
 
@@ -85,25 +61,12 @@ class EventCreateView(generics.CreateAPIView):
     serializer_class = eventSerializer
     queryset = event.objects.all()
     parser_classes = [MultiPartParser, FormParser]
-
-    # def post(self, request, format=None):
-    #     serializer = self.serializer_class(data=request.data)
-    #     if serializer.is_valid():
-    #         event = serializer.save()
-    #         # Handle image upload
-    #         image = request.data.get('image', None)
-    #         if image:
-    #             bucket_name = '<your_bucket_name>'
-    #             region_name = 'us-east-1'  # Replace with your bucket's region code
-    #             s3 = boto3.client('s3', region_name=region_name)
-    #             key = f'events/{event.ID}.jpg'
-    #             s3.upload_fileobj(image, bucket_name, key)
-    #             event.image = f'https://{bucket_name}.s3.{region_name}.amazonaws.com/{key}'
-    #             event.save()
-
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-from rest_framework.pagination import PageNumberPagination
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class MyPagination(PageNumberPagination):
     page_size = 10

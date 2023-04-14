@@ -39,7 +39,8 @@ class event(models.Model):
     CAPACITY = models.IntegerField()
     PASSWORD = models.CharField(max_length=10)
     STATUS = models.CharField(max_length=20)
-    image = models.ImageField(upload_to='events/')
+    image = models.ImageField(upload_to='events/',)
+    
     # image = models.ImageField(upload_to='event_images/')
     # image = models.ImageField(upload_to='event_images/%Y/%m/%d/')
     # def image_url(self):
@@ -56,10 +57,10 @@ class event(models.Model):
     # CREATED=models.ExpressionList([1])
 
 
-    # REQUIRED_FIELDS = ['ID', 'Title', 'organizer', 'Description', 'type', 'Category',
-    #                    'sub_Category', 'venue_name', 'ST_DATE', 'END_DATE', 'ST_TIME', 'END_TIME', 'online',
-    #                    'CAPACITY', 'PASSWORD', 'STATUS',
-    #                    ]
+    REQUIRED_FIELDS = ['ID','User_id','Title', 'organizer', 'Description', 'type', 'Category',
+                       'sub_Category', 'venue_name', 'ST_DATE', 'END_DATE', 'ST_TIME', 'END_TIME', 'online',
+                       'CAPACITY', 'PASSWORD', 'STATUS','image'
+                       ]
 
     class Meta:
         verbose_name = "Event"

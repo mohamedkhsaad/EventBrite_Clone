@@ -9,13 +9,10 @@ class eventSerializer(serializers.ModelSerializer):
     """
     Serializer for the Event model.
     """
-    # image = serializers.ImageField(max_length=None, allow_empty_file=False, use_url=True)
-    image_url = serializers.ReadOnlyField()
-
-
+    image = serializers.ImageField(max_length=None, use_url=True)
     class Meta:
         model = event
-        exclude = ['user','image']
+        exclude = ['user']
 
 
 class SearchEventSerializer(serializers.ModelSerializer):
