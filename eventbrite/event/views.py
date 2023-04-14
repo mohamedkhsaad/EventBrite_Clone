@@ -342,7 +342,6 @@ class EventTicketPrice(APIView):
     first ticket object associated with the event ID. If the ticket object exists, the ticket price is returned in a 
     success response. Otherwise, an error response is returned indicating that the ticket was not found.
     """
-
     def get(self, request, event_id):
         """
         Returns the ticket price for a given event.
@@ -358,3 +357,23 @@ class EventTicketPrice(APIView):
             return Response(status=200, data={'ticket_price': ticket_price})
         else:
             return Response(status=404, data={'message': 'Ticket not found'})
+
+class FreeTicketEventListView(generics.ListAPIView):
+    serializer_class = eventSerializer
+    def get_queryset(self):
+        return event.objects.filter(ticket_set__TICKET_TYPE='Free').distinct()
+    
+class DraftEventsAPIView(APIView):
+    """
+    A viewset for retrieving Draft events.
+    """
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """
+        This view should return a list of all the draft events.
+        """
+        events = event.objects.filter(STATUS='Draft')
+        serializer = eventSerializer(events, many=True)
+
+        return Response(serializer.data)

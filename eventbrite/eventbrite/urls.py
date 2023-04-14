@@ -77,6 +77,8 @@ urlpatterns = [
     # path('events/createTicket/', TicketCreateAPIView.as_view(), name='Ticket-create'),
     path('events/<int:event_id>/Tickets/', TicketCreateAPIView.as_view(), name='create_ticket'),
     path('events/TicketsPrice/<int:event_id>/', EventTicketPrice.as_view(), name='ticket_price_api'),
+    path('events/free-events/', FreeTicketEventListView.as_view(), name='free_event_list'),
+    path('events/drafte-vents/', DraftEventsAPIView.as_view(), name='Draft_event_list'),
 
     #event management
     path('eventmanagement/userevents/<int:user_id>', UserListEvents.as_view(), name='user_list_events'),
