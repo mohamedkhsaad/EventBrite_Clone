@@ -1,15 +1,30 @@
 from django.db import models
-
+from event.models import *
 
 #TODO: you have 2 id attributes
 class Ticket(models.Model):
+    event = models.ForeignKey(event, on_delete=models.CASCADE)
     ID=models.IntegerField()
     NAME=models.CharField(max_length=20)
     PRICE=models.FloatField()
     EVENT_ID=models.IntegerField()
     GUEST_ID=models.IntegerField()
     TICKET_NUM=models.IntegerField()
-    TICKET_TYPE=models.Choices("Free","VIP")
+    TICKET_TYPE_CHOICES = (
+        ('Free', 'Free'),
+        ('VIP', 'VIP'),
+        ('Donation', 'Donation'),
+    )
+    TICKET_TYPE = models.CharField(max_length=10, choices=TICKET_TYPE_CHOICES)    
+    Sales_start=models.DateField()
+    Sales_end=models.DateField()
+    Start_time=models.DateTimeField()
+    End_time=models.DateTimeField()
+    ABSORB_FEES_CHOICES = (
+        ('t', 'true'),
+        ('f', 'false')
+    )
+    Absorb_fees = models.CharField(max_length=1, choices=ABSORB_FEES_CHOICES)
 
 
 class Discount(models.Model):

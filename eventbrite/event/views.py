@@ -51,7 +51,8 @@ from .models import event
 from .serializers import eventSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.pagination import PageNumberPagination
-
+from booking.models import *
+from booking.serializers import *
 
 class EventCreateView(generics.CreateAPIView):
     """
@@ -335,3 +336,28 @@ class WeekendEventsView(generics.ListAPIView):
 #         if form.is_valid():
 #             form.save()
 #         return render(request, 'eventbrite/templates/event/upload.html.html', {'form': form})
+
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+
+
+class TicketCreateAPIView(generics.CreateAPIView):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketSerializer
+    
+    def post(self, request, event_id):
+        try:
+            Event = event.objects.get(ID=event_id)
+        except event.DoesNotExist:
+            return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+        
+        ticket_data = request.data.copy()
+        ticket_data['event'] = Event.ID
+        serializer = self.serializer_class(data=ticket_data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
