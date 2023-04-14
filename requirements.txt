@@ -19,4 +19,4 @@ drf_spectacular
 django-sslserver   
 itsdangerous-2.1.2
 python-dotenv
-boto3 django-storages
+django-storages
