@@ -69,38 +69,45 @@
   <h1>Source code for event.views</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module contains several view classes for the events app.</span>
-
 <span class="sd">class:EventCreateView: A viewset for creating an event instance.</span>
-
 <span class="sd">class:AllEventListView: A viewset for retrieving all event instances.</span>
-
 <span class="sd">class:EventSearchView: A viewset for searching event instances by title.</span>
-
 <span class="sd">class:EventListtype: A viewset for retrieving event instances by type.</span>
-
 <span class="sd">class:EventListCategory: A viewset for retrieving event instances by category.</span>
-
 <span class="sd">class:EventListSupCategory: A viewset for retrieving event instances by sub-category.</span>
-
 <span class="sd">class:EventListVenue: A viewset for retrieving event instances by venue.</span>
-
 <span class="sd">class:OnlineEventsAPIView: A viewset for retrieving online event instances.</span>
-
+<span class="sd">class:EventID: A viewset for retrieving event instances by ID.</span>
+<span class="sd">class:UserInterestCreateAPIView: A viewset for creating an user Interests instance.</span>
+<span class="sd">class:UserInterestAPIView: A viewset for retrive an user Interests instance.</span>
+<span class="sd">class:UserInterestEventsAPIView: A viewset for retrieving event instances based on user Interests.</span>
+<span class="sd">class:TodayEventsList: A viewset for retrieving event instances for today.</span>
+<span class="sd">class:WeekendEventsView: A viewset for retrieving event instances for weekend.</span>
+<span class="sd">class:TicketCreateAPIView: A viewset for create a new ticket for a given event</span>
+<span class="sd">class:EventTicketPrice: A viewset for retrieve the ticket price for a given event.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
-
+<span class="kn">from</span> <span class="nn">event.forms</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
-<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
-<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
-<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">JsonResponse</span><span class="p">,</span> <span class="n">HttpResponse</span>
-<span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span>
+<span class="kn">from</span> <span class="nn">event.serializers</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">user</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
 <span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
 <span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">event</span>
+<span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="n">event</span>
+<span class="kn">from</span> <span class="nn">event.serializers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span><span class="p">,</span> <span class="n">status</span>
+<span class="kn">from</span> <span class="nn">rest_framework.generics</span> <span class="kn">import</span> <span class="n">CreateAPIView</span>
+<span class="kn">from</span> <span class="nn">rest_framework.parsers</span> <span class="kn">import</span> <span class="n">MultiPartParser</span><span class="p">,</span> <span class="n">FormParser</span>
+<span class="kn">from</span> <span class="nn">django.utils.timezone</span> <span class="kn">import</span> <span class="n">now</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span> <span class="nn">rest_framework.pagination</span> <span class="kn">import</span> <span class="n">PageNumberPagination</span>
+<span class="kn">from</span> <span class="nn">booking.models</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">booking.serializers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">rest_framework.status</span> <span class="kn">import</span> <span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">HTTP_400_BAD_REQUEST</span><span class="p">,</span> <span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">HTTP_400_BAD_REQUEST</span>
+<span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
+<span class="kn">from</span> <span class="nn">booking.models</span> <span class="kn">import</span> <span class="n">event</span><span class="p">,</span> <span class="n">Ticket</span>
+<span class="kn">from</span> <span class="nn">booking.serializers</span> <span class="kn">import</span> <span class="n">TicketSerializer</span>
 
 
 <div class="viewcode-block" id="EventCreateView"><a class="viewcode-back" href="../../event.html#event.views.EventCreateView">[docs]</a><span class="k">class</span> <span class="nc">EventCreateView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIView</span><span class="p">):</span>
@@ -109,23 +116,46 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
-    <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">parser_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">MultiPartParser</span><span class="p">,</span> <span class="n">FormParser</span><span class="p">]</span>
+
+<div class="viewcode-block" id="EventCreateView.post"><a class="viewcode-back" href="../../event.html#event.views.EventCreateView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_serializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perform_create</span><span class="p">(</span><span class="n">serializer</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_success_headers</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MyPagination"><a class="viewcode-back" href="../../event.html#event.views.MyPagination">[docs]</a><span class="k">class</span> <span class="nc">MyPagination</span><span class="p">(</span><span class="n">PageNumberPagination</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A custom pagination class that extends the PageNumberPagination class.</span>
+<span class="sd">    It sets the page size to 10 by default and overrides the get_paginated_response method to include some print statements and return the paginated response data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">page_size</span> <span class="o">=</span> <span class="mi">10</span>
+<div class="viewcode-block" id="MyPagination.get_paginated_response"><a class="viewcode-back" href="../../event.html#event.views.MyPagination.get_paginated_response">[docs]</a>    <span class="k">def</span> <span class="nf">get_paginated_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_paginated_response</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="AllEventListView"><a class="viewcode-back" href="../../event.html#event.views.AllEventListView">[docs]</a><span class="k">class</span> <span class="nc">AllEventListView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A viewset for retrieving all event instances.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
+    <span class="n">pagination_class</span> <span class="o">=</span> <span class="n">MyPagination</span>
 
 <div class="viewcode-block" id="AllEventListView.get"><a class="viewcode-back" href="../../event.html#event.views.AllEventListView.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This view should return a list of all the events.</span>
+<span class="sd">        This view should return a paginated list of all the events.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">events</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-        <span class="n">serializer</span> <span class="o">=</span> <span class="n">eventSerializer</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div></div>
+        <span class="n">paginator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pagination_class</span><span class="p">()</span>
+        <span class="n">paginated_events</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">paginate_queryset</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">eventSerializer</span><span class="p">(</span><span class="n">paginated_events</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_paginated_response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">paginator</span><span class="o">.</span><span class="n">count</span>
+        <span class="k">return</span> <span class="n">response</span></div></div>
 
 
 <div class="viewcode-block" id="EventSearchView"><a class="viewcode-back" href="../../event.html#event.views.EventSearchView">[docs]</a><span class="k">class</span> <span class="nc">EventSearchView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
@@ -142,7 +172,7 @@
 <span class="sd">        for the title specified in the URL parameter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">event_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;event_name&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Title</span><span class="o">=</span><span class="n">event_name</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Title__icontains</span><span class="o">=</span><span class="n">event_name</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="EventListtype"><a class="viewcode-back" href="../../event.html#event.views.EventListtype">[docs]</a><span class="k">class</span> <span class="nc">EventListtype</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
@@ -150,7 +180,7 @@
 <span class="sd">    A viewset for retrieving event instances by type.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
 
 <div class="viewcode-block" id="EventListtype.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventListtype.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -166,7 +196,7 @@
 <span class="sd">    A viewset for retrieving event instances by category.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
 
 <div class="viewcode-block" id="EventListCategory.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventListCategory.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -174,7 +204,7 @@
 <span class="sd">        for the category specified in the URL parameter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">event_Category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;event_Category&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Category</span><span class="o">=</span><span class="n">event_Category</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category_name</span><span class="o">=</span><span class="n">event_Category</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="EventListSupCategory"><a class="viewcode-back" href="../../event.html#event.views.EventListSupCategory">[docs]</a><span class="k">class</span> <span class="nc">EventListSupCategory</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
@@ -182,7 +212,7 @@
 <span class="sd">    A viewset for retrieving event instances by sub-category.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
 
 <div class="viewcode-block" id="EventListSupCategory.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventListSupCategory.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -198,7 +228,7 @@
 <span class="sd">    A viewset for retrieving event instances by venue.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
 
 <div class="viewcode-block" id="EventListVenue.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventListVenue.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -213,7 +243,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A viewset for retrieving event which the online is &#39;true&#39; .</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
 
 <div class="viewcode-block" id="OnlineEventsAPIView.get"><a class="viewcode-back" href="../../event.html#event.views.OnlineEventsAPIView.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -221,7 +251,182 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">events</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">online</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
         <span class="n">serializer</span> <span class="o">=</span> <span class="n">eventSerializer</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EventID"><a class="viewcode-back" href="../../event.html#event.views.EventID">[docs]</a><span class="k">class</span> <span class="nc">EventID</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving event instances by ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="EventID.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.EventID.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the events</span>
+<span class="sd">        for the sub-category specified in the URL parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">event_sub_ID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;event_ID&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">event_sub_ID</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="UserInterestCreateAPIView"><a class="viewcode-back" href="../../event.html#event.views.UserInterestCreateAPIView">[docs]</a><span class="k">class</span> <span class="nc">UserInterestCreateAPIView</span><span class="p">(</span><span class="n">CreateAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for creating an user Interests instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">UserInterest</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">UserInterestSerializer</span></div>
+
+
+<div class="viewcode-block" id="UserInterestAPIView"><a class="viewcode-back" href="../../event.html#event.views.UserInterestAPIView">[docs]</a><span class="k">class</span> <span class="nc">UserInterestAPIView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrive an user Interests instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">UserInterest</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<div class="viewcode-block" id="UserInterestAPIView.list"><a class="viewcode-back" href="../../event.html#event.views.UserInterestAPIView.list">[docs]</a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">UserInterestSerializer</span><span class="p">(</span><span class="n">queryset</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="UserInterestEventsAPIView"><a class="viewcode-back" href="../../event.html#event.views.UserInterestEventsAPIView">[docs]</a><span class="k">class</span> <span class="nc">UserInterestEventsAPIView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving event instances based on user Interests.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function defines a GET request that retrieves a list of events based on the user&#39;s interests. </span>
+<span class="sd">    It first checks whether the user is authenticated, and if not, returns a 401 Unauthorized response. </span>
+<span class="sd">    If the user is authenticated, it retrieves the user&#39;s interests using the get_user_interests method and the events related to those interests using the get_events method. </span>
+<span class="sd">    Finally, it serializes the retrieved events using the eventSerializer class and returns the serialized data as a response using the Response class. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UserInterestEventsAPIView.get"><a class="viewcode-back" href="../../event.html#event.views.UserInterestEventsAPIView.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Check if the user is authenticated</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">)</span>
+        <span class="c1"># Retrieve user interests</span>
+        <span class="n">user_interests</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user_interests</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="c1"># Retrieve events related to user interests</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_events</span><span class="p">(</span><span class="n">user_interests</span><span class="p">)</span>
+        <span class="c1"># Serialize data and return response</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">eventSerializer</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function retrieves the interests of a given user. It takes a user object as input, </span>
+<span class="sd">    and returns a queryset of UserInterest objects that match the given user. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UserInterestEventsAPIView.get_user_interests"><a class="viewcode-back" href="../../event.html#event.views.UserInterestEventsAPIView.get_user_interests">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_interests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="c1"># Logic to retrieve user interests</span>
+        <span class="k">return</span> <span class="n">UserInterest</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function retrieves events related to a given set of user interests. It takes a queryset of UserInterest objects </span>
+<span class="sd">    as input, extracts the category and subcategory names from those objects, and returns a queryset of event objects </span>
+<span class="sd">    that belong to those categories. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UserInterestEventsAPIView.get_events"><a class="viewcode-back" href="../../event.html#event.views.UserInterestEventsAPIView.get_events">[docs]</a>    <span class="k">def</span> <span class="nf">get_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_interests</span><span class="p">):</span>
+        <span class="c1"># Logic to retrieve events related to user interests</span>
+        <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="n">ui</span><span class="o">.</span><span class="n">category_name</span> <span class="k">for</span> <span class="n">ui</span> <span class="ow">in</span> <span class="n">user_interests</span><span class="p">]</span>
+        <span class="n">subcategories</span> <span class="o">=</span> <span class="p">[</span><span class="n">ui</span><span class="o">.</span><span class="n">sub_Category</span> <span class="k">for</span> <span class="n">ui</span> <span class="ow">in</span> <span class="n">user_interests</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">category_name__in</span><span class="o">=</span><span class="n">categories</span><span class="p">)</span></div></div>
+        <span class="c1"># sub_Category__in=subcategories)</span>
+
+
+<div class="viewcode-block" id="TodayEventsList"><a class="viewcode-back" href="../../event.html#event.views.TodayEventsList">[docs]</a><span class="k">class</span> <span class="nc">TodayEventsList</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class defines a GET request that returns a list of events happening today. </span>
+<span class="sd">    It uses the eventSerializer class for serialization. The get_queryset method is used to </span>
+<span class="sd">    retrieve the events happening on the current date and returns a queryset containing those events. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+
+<div class="viewcode-block" id="TodayEventsList.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.TodayEventsList.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">today</span> <span class="o">=</span> <span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ST_DATE</span><span class="o">=</span><span class="n">today</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span></div></div>
+
+
+<div class="viewcode-block" id="WeekendEventsView"><a class="viewcode-back" href="../../event.html#event.views.WeekendEventsView">[docs]</a><span class="k">class</span> <span class="nc">WeekendEventsView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class defines a GET request that returns a list of events happening on the upcoming weekend. </span>
+<span class="sd">    It uses the eventSerializer class for serialization. The get_queryset method is used to retrieve </span>
+<span class="sd">    the events happening between Friday and Saturday of the upcoming weekend and returns a queryset containing those events. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+
+<div class="viewcode-block" id="WeekendEventsView.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.WeekendEventsView.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">today</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="c1"># Find the date of the upcoming Friday</span>
+        <span class="n">friday</span> <span class="o">=</span> <span class="n">today</span> <span class="o">+</span> <span class="n">timezone</span><span class="o">.</span><span class="n">timedelta</span><span class="p">((</span><span class="mi">4</span> <span class="o">-</span> <span class="n">today</span><span class="o">.</span><span class="n">weekday</span><span class="p">())</span> <span class="o">%</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="c1"># Find the date of the upcoming Saturday</span>
+        <span class="n">saturday</span> <span class="o">=</span> <span class="n">friday</span> <span class="o">+</span> <span class="n">timezone</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">Q</span><span class="p">(</span><span class="n">ST_DATE__gte</span><span class="o">=</span><span class="n">friday</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Q</span><span class="p">(</span><span class="n">END_DATE__lte</span><span class="o">=</span><span class="n">saturday</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">queryset</span></div></div>
+
+
+<div class="viewcode-block" id="TicketCreateAPIView"><a class="viewcode-back" href="../../event.html#event.views.TicketCreateAPIView">[docs]</a><span class="k">class</span> <span class="nc">TicketCreateAPIView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class defines a POST request to create a new ticket for a given event. It uses the TicketSerializer for serialization </span>
+<span class="sd">    and the Ticket model for database queries. The post method first checks if the specified event exists in the database, </span>
+<span class="sd">    then adds the event ID to the ticket data and attempts to create a new ticket using the serializer. If the serializer is </span>
+<span class="sd">    valid, the new ticket is saved and a success response is returned. Otherwise, an error response is returned with the </span>
+<span class="sd">    serializer errors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TicketSerializer</span>
+
+<div class="viewcode-block" id="TicketCreateAPIView.post"><a class="viewcode-back" href="../../event.html#event.views.TicketCreateAPIView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A POST request to create a ticket object for a given event ID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Event</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">event</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Event with id </span><span class="si">{</span><span class="n">event_id</span><span class="si">}</span><span class="s1"> does not exist.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+        <span class="n">ticket_data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">ticket_data</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">ID</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">ticket_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="EventTicketPrice"><a class="viewcode-back" href="../../event.html#event.views.EventTicketPrice">[docs]</a><span class="k">class</span> <span class="nc">EventTicketPrice</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class defines a GET request to retrieve the ticket price for a given event. It uses the event and Ticket models </span>
+<span class="sd">    for database queries. The get method first checks if the specified event exists in the database, then retrieves the </span>
+<span class="sd">    first ticket object associated with the event ID. If the ticket object exists, the ticket price is returned in a </span>
+<span class="sd">    success response. Otherwise, an error response is returned indicating that the ticket was not found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EventTicketPrice.get"><a class="viewcode-back" href="../../event.html#event.views.EventTicketPrice.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the ticket price for a given event.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">event_obj</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">event</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Event not found&#39;</span><span class="p">})</span>
+
+        <span class="n">ticket_obj</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">EVENT_ID</span><span class="o">=</span><span class="n">event_obj</span><span class="o">.</span><span class="n">ID</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ticket_obj</span><span class="p">:</span>
+            <span class="n">ticket_price</span> <span class="o">=</span> <span class="n">ticket_obj</span><span class="o">.</span><span class="n">PRICE</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ticket_price&#39;</span><span class="p">:</span> <span class="n">ticket_price</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Ticket not found&#39;</span><span class="p">})</span></div></div>
 </pre></div>
 
            </div>

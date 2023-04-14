@@ -304,27 +304,7 @@ class TicketList(generics.ListCreateAPIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import event, Ticket
-from .serializers import TicketSerializer
 
-class EventTicketPrice(APIView):
-    def get(self, request, event_id):
-        """
-        Returns the ticket price for a given event.
-        """
-        try:
-            event_obj = event.objects.get(ID=event_id)
-        except event.DoesNotExist:
-            return Response(status=404, data={'message': 'Event not found'})
-
-        ticket_obj = Ticket.objects.filter(EVENT_ID=event_obj.ID).first()
-        if ticket_obj:
-            ticket_price = ticket_obj.PRICE
-            return Response(status=200, data={'ticket_price': ticket_price})
-        else:
-            return Response(status=404, data={'message': 'Ticket not found'})
 
 
 

@@ -57,10 +57,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.models">eventManagment.models module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.tests">eventManagment.tests module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#eventManagment.tests.EventManagementTest"><code class="docutils literal notranslate"><span class="pre">EventManagementTest</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.tests">eventManagment.tests module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.views">eventManagment.views module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.UserListEvents"><code class="docutils literal notranslate"><span class="pre">UserListEvents</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.UserListPastEvents"><code class="docutils literal notranslate"><span class="pre">UserListPastEvents</span></code></a></li>
@@ -145,33 +142,6 @@
 </section>
 <section id="module-eventManagment.tests">
 <span id="eventmanagment-tests-module"></span><h2>eventManagment.tests module<a class="headerlink" href="#module-eventManagment.tests" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="eventManagment.tests.EventManagementTest">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.tests.</span></span><span class="sig-name descname"><span class="pre">EventManagementTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/tests.html#EventManagementTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.tests.EventManagementTest" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="eventManagment.tests.EventManagementTest.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/tests.html#EventManagementTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.tests.EventManagementTest.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="eventManagment.tests.EventManagementTest.test_retrieve_all_user_events_by_user_id">
-<span class="sig-name descname"><span class="pre">test_retrieve_all_user_events_by_user_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/tests.html#EventManagementTest.test_retrieve_all_user_events_by_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.tests.EventManagementTest.test_retrieve_all_user_events_by_user_id" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="eventManagment.tests.EventManagementTest.test_retrieve_all_user_past_events_by_user_id">
-<span class="sig-name descname"><span class="pre">test_retrieve_all_user_past_events_by_user_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/tests.html#EventManagementTest.test_retrieve_all_user_past_events_by_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.tests.EventManagementTest.test_retrieve_all_user_past_events_by_user_id" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="eventManagment.tests.EventManagementTest.test_retrieve_all_user_upcoming_events_by_user_id">
-<span class="sig-name descname"><span class="pre">test_retrieve_all_user_upcoming_events_by_user_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/tests.html#EventManagementTest.test_retrieve_all_user_upcoming_events_by_user_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.tests.EventManagementTest.test_retrieve_all_user_upcoming_events_by_user_id" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 </section>
 <section id="module-eventManagment.views">
 <span id="eventmanagment-views-module"></span><h2>eventManagment.views module<a class="headerlink" href="#module-eventManagment.views" title="Permalink to this heading"></a></h2>
@@ -198,7 +168,7 @@ for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">popmusy&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -228,7 +198,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">popmusy&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -239,7 +209,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.today">
-<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">3,</span> <span class="pre">25)</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.today" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">4,</span> <span class="pre">14)</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.today" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -263,7 +233,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">Ramdan&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">popmusy&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -274,7 +244,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.today">
-<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">3,</span> <span class="pre">25)</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.today" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">4,</span> <span class="pre">14)</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.today" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
