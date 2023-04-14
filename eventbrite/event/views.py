@@ -27,14 +27,50 @@ from user import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from .models import event
-from .serializers import*
+from event.models import *
+from event.serializers import*
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 import json
+from django.shortcuts import redirect
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.utils.timezone import now
+from django.utils import timezone
+# class EventCreateView(generics.CreateAPIView):
+#     """
+#     A viewset for creating an event instance.
+#     """
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = eventSerializer
+#     queryset = event.objects.all()
+#     parser_classes = [MultiPartParser, FormParser]
+#     def post(self, request, format=None):
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             event = serializer.save()
+#             # Handle image upload
+#             image = request.data.get('image', None)
+#             if image:
+#                 path = '/path/to/event_images/' + str(event.ID) + '.jpg'
+#                 with open(path, 'wb') as f:
+#                     for chunk in image.chunks():
+#                         f.write(chunk)
+#                 event.image = path
+#                 event.save()
+
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+import boto3
+from rest_framework import generics, status
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import event
+from .serializers import eventSerializer
+
 
 class EventCreateView(generics.CreateAPIView):
     """
@@ -43,6 +79,25 @@ class EventCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = eventSerializer
     queryset = event.objects.all()
+    parser_classes = [MultiPartParser, FormParser]
+
+    # def post(self, request, format=None):
+    #     serializer = self.serializer_class(data=request.data)
+    #     if serializer.is_valid():
+    #         event = serializer.save()
+    #         # Handle image upload
+    #         image = request.data.get('image', None)
+    #         if image:
+    #             bucket_name = '<your_bucket_name>'
+    #             region_name = 'us-east-1'  # Replace with your bucket's region code
+    #             s3 = boto3.client('s3', region_name=region_name)
+    #             key = f'events/{event.ID}.jpg'
+    #             s3.upload_fileobj(image, bucket_name, key)
+    #             event.image = f'https://{bucket_name}.s3.{region_name}.amazonaws.com/{key}'
+    #             event.save()
+
+    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AllEventListView(APIView):
@@ -229,3 +284,79 @@ class UserInterestEventsAPIView(APIView):
 
    
 
+from django.shortcuts import render
+from .forms import *
+
+# class UploadImageView(APIView):
+#     def get(self, request):
+#         form = ImageForm()
+#         return render(request, 'upload_image.html', {'form': form})
+    
+#     def post(self, request):
+#         form = ImageForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('home')
+#         else:
+#             return render(request, 'upload_image.html', {'form': form})
+
+
+from rest_framework import parsers
+
+# class EventImageCreateView(generics.CreateAPIView):
+#     """
+#     A viewset for creating an event image instance.
+#     """
+#     parser_classes = (parsers.MultiPartParser,)
+
+#     def post(self, request, *args, **kwargs):
+#         event_id = request.data.get('event_id')
+#         try:
+#             Event = event.objects.get(ID=event_id)
+#         except event.DoesNotExist:
+#             return Response({'event_id': f'Event with id {event_id} does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+#         image_file = request.FILES.get('image')
+#         if not image_file:
+#             return Response({'image': 'This field is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         event.image = image_file
+#         event.save()
+
+#         serializer = eventSerializer(event)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class TodayEventsList(generics.ListAPIView):
+    serializer_class = eventSerializer
+
+    def get_queryset(self):
+        today = now().date()
+        queryset = event.objects.filter(ST_DATE=today)
+        return queryset
+
+class WeekendEventsView(generics.ListAPIView):
+    serializer_class = eventSerializer
+
+    def get_queryset(self):
+        today = timezone.now().date()
+        # Find the date of the upcoming Friday
+        friday = today + timezone.timedelta((4 - today.weekday()) % 7)
+        # Find the date of the upcoming Saturday
+        saturday = friday + timezone.timedelta(1)
+        queryset = event.objects.filter(
+            Q(ST_DATE__gte=friday) & Q(END_DATE__lte=saturday)
+        )
+        return queryset
+from PIL import Image
+import os
+
+class UploadImageView(APIView):
+    def get(self, request):
+        form = ImageForm()
+        return render(request, 'upload.html', {'form': form})
+    def post(self, request):
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+        return render(request,'eventbrite/templates/event/upload.html.html', {'form': form})

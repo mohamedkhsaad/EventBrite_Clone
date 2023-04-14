@@ -30,6 +30,8 @@ from drf_spectacular.views import (
 from event.views import*
 from user.views import*
 from eventManagment.views import*
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('api/schema/',SpectacularAPIView.as_view(),name='api-schema'),
@@ -68,16 +70,17 @@ urlpatterns = [
     path('events/interests-create/', UserInterestCreateAPIView.as_view(), name='user_interests_create'),
     path('events/for-you/', UserInterestEventsAPIView.as_view(), name='user-interests-events'),
     path('events/getuserinterests/', UserInterestAPIView.as_view(), name='user-interests'),
-
-
+    # path('events/<int:id>/image/', EventCreateView.as_view(), name='event-image-create'),
+    path('events/today/', TodayEventsList.as_view(), name='today-events'),
+    path('events/weekend/', WeekendEventsView.as_view(), name='weekend-events'),
 
     #event management
     path('eventmanagement/userevents/<int:user_id>', UserListEvents.as_view(), name='user_list_events'),
     path('eventmanagement/UserPastEvents/<int:user_id>', UserListPastEvents.as_view(), name='user_list_past_events'),
     path('eventmanagement/UserUpcomingEvents/<int:user_id>', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
-
+    path('events/upload',UploadImageView.as_view(),name='upload-image'),
     #booking
     path('booking/',include('booking.urls')),
     path('',include('rest_framework.urls')),
-]
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

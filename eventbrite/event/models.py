@@ -1,7 +1,7 @@
 from django.db import models
 from eventbrite.settings import *
 from user.models import *
-
+from django.urls import reverse
 
 class UserInterest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='interests')
@@ -38,15 +38,23 @@ class event(models.Model):
     online = models.CharField(max_length=1)
     CAPACITY = models.IntegerField()
     PASSWORD = models.CharField(max_length=10)
-    # event_image=models.ImageField( '/Users/ismailtawfik/Downloads/photo-1492684223066-81342ee5ff30.jpeg')
+    STATUS = models.CharField(max_length=20)
+    image = models.ImageField(upload_to='events/')
+    # image = models.ImageField(upload_to='event_images/')
+    # image = models.ImageField(upload_to='event_images/%Y/%m/%d/')
+    # def image_url(self):
+    #     if self.image:
+    #         return reverse('event_image', args=[str(self.id)])
+    #     else:
+    #         return ''
+
     # locationـid = models.IntegerField()
     # TICKETS=models.ExpressionList([1])
     # GUESTS=models.ExpressionList([1])
     # FOLLOEWRS =models.ExpressionList([1])
     # LIKES =models.ExpressionList([1])
     # CREATED=models.ExpressionList([1])
-    STATUS = models.CharField(max_length=20)
-    image = models.ImageField(upload_to='event_images/')
+
 
     # REQUIRED_FIELDS = ['ID', 'Title', 'organizer', 'Description', 'type', 'Category',
     #                    'sub_Category', 'venue_name', 'ST_DATE', 'END_DATE', 'ST_TIME', 'END_TIME', 'online',

@@ -4,13 +4,18 @@ from .models import *
 from user.serializers import *
 from rest_framework import generics, status,request
 from rest_framework.response import Response
+
 class eventSerializer(serializers.ModelSerializer):
     """
     Serializer for the Event model.
     """
+    # image = serializers.ImageField(max_length=None, allow_empty_file=False, use_url=True)
+    image_url = serializers.ReadOnlyField()
+
+
     class Meta:
         model = event
-        exclude = ['user']
+        exclude = ['user','image']
 
 
 class SearchEventSerializer(serializers.ModelSerializer):
@@ -29,4 +34,5 @@ class UserInterestSerializer(serializers.ModelSerializer):
         model = UserInterest
         fields = ['id', 'user', 'category_name','sub_Category']
         
+
 

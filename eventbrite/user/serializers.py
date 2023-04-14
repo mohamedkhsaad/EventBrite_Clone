@@ -56,12 +56,12 @@ class userSerializer(serializers.ModelSerializer):
         """
         This part is to send a welcoming email to the new user
         """
-        subject = "Welcome to Eventbrite!!"
-        message = "Hello " + user.first_name + "!! \n" + "Welcome to Evenbrite !! \nThank you for visiting our website\n. We have also sent you a confirmation email, please confirm your email address. \n\nThanking You\nEventbrite Team"        
-        from_email = EMAIL_HOST_USER
-        to_list = [user.email]
-        send_mail(subject, message, from_email, to_list, fail_silently=False)
-        return user
+        # subject = "Welcome to Eventbrite!!"
+        # message = "Hello " + user.first_name + "!! \n" + "Welcome to Evenbrite !! \nThank you for visiting our website\n. We have also sent you a confirmation email, please confirm your email address. \n\nThanking You\nEventbrite Team"        
+        # from_email = EMAIL_HOST_USER
+        # to_list = [user.email]
+        # send_mail(subject, message, from_email, to_list, fail_silently=False)
+        # return user
 
 
 class AuthTokenSerializer(serializers.Serializer):
