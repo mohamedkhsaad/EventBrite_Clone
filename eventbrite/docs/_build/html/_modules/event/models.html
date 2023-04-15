@@ -116,7 +116,7 @@
         <span class="p">(</span><span class="s1">&#39;Past&#39;</span><span class="p">,</span> <span class="s1">&#39;Past&#39;</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">STATUS</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS_choises</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s1">&#39;events/&#39;</span><span class="p">,)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s1">&#39;events/&#39;</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># image = models.ImageField(upload_to=&#39;event_images/&#39;)</span>
     <span class="c1"># image = models.ImageField(upload_to=&#39;event_images/%Y/%m/%d/&#39;)</span>

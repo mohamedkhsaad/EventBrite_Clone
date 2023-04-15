@@ -47,7 +47,7 @@ class event(models.Model):
         ('Past', 'Past')
     )
     STATUS = models.CharField(max_length=5, choices=STATUS_choises)
-    image = models.ImageField(upload_to='events/',)
+    image = models.ImageField(upload_to='events/',null=True)
 
     # image = models.ImageField(upload_to='event_images/')
     # image = models.ImageField(upload_to='event_images/%Y/%m/%d/')
