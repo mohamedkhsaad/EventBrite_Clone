@@ -68,6 +68,7 @@ urlpatterns = [
     path('events/weekend/', WeekendEventsView.as_view(), name='weekend-events'),
     path('events/<int:event_id>/Tickets/', TicketCreateAPIView.as_view(), name='create_ticket'),
     path('events/TicketsPrice/<int:event_id>/', EventTicketPrice.as_view(), name='ticket_price_api'),
+    path('events/<int:event_id>/promocode/', PromoCodeCreateAPIView.as_view(), name='create_promocode'),
     path('events/free-events/', FreeTicketEventListView.as_view(), name='free_event_list'),
     path('events/drafte-vents/', DraftEventsAPIView.as_view(), name='Draft_event_list'),
 
