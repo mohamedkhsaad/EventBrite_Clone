@@ -16,6 +16,7 @@ class:TodayEventsList: A viewset for retrieving event instances for today.
 class:WeekendEventsView: A viewset for retrieving event instances for weekend.
 class:TicketCreateAPIView: A viewset for create a new ticket for a given event
 class:EventTicketPrice: A viewset for retrieve the ticket price for a given event.
+class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given event.
 """
 from event.forms import *
 from django.db.models import Q
@@ -377,3 +378,48 @@ class DraftEventsAPIView(APIView):
         serializer = eventSerializer(events, many=True)
 
         return Response(serializer.data)
+    
+    
+class PromoCodeCreateAPIView(generics.CreateAPIView):
+    """
+    A view that creates a promocode for a specific events given the event id
+    """
+    queryset = Discount.objects.all()
+    serializer_class = DiscountSerializer
+
+    def post(self, request, event_id):
+        """
+        a post request to create promocode for an event, and have the option to add a csv file instead of typying the promocode details
+        """
+        try:
+            Event = event.objects.get(ID=event_id)
+        except event.DoesNotExist:
+            return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+        
+        PromoCode_Data = request.data.copy()
+        PromoCode_Data['event'] = Event.ID
+
+        # Check if a CSV file was uploaded
+        if 'file' in request.FILES:
+            csv_file = request.FILES['file']
+            decoded_file = csv_file.read().decode('utf-8').splitlines()
+            reader = csv.DictReader(decoded_file)
+            for row in reader:
+                # Add the event ID to each row of data before saving
+                row['event'] = Event.ID
+                serializer = self.serializer_class(data=row)
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+            
+            return Response({'message': 'Promo codes uploaded successfully.'}, status=HTTP_201_CREATED)
+        
+        # If no CSV file was uploaded, create a single promo code
+        else:
+            serializer = self.serializer_class(data=PromoCode_Data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
