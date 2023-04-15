@@ -18,26 +18,55 @@ class EventListtypeTest(APITestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
         self.event_sub_Category = 'pop'
-
         self.event1 = event.objects.create(
-            ID="478", User_id="3", Title="Test Event", organizer="test",
-            Description="test", type="music", Category="test", sub_Category=self.event_sub_Category , venue_name="test",
-            CATEGORY_ID="5", SUB_CATEGORY_ID="7", ST_DATE="2023-03-23", END_DATE="2023-04-23", ST_TIME="05:00:00",
-            END_TIME="09:00:00", online="t", CAPACITY="5000", PASSWORD="512002", locationـid="1", STATUS="test")
-
+            ID=1,
+            User_id=1,
+            Title='Online Event 1',
+            organizer='Organizer 1',
+            Summery='Summary 1',
+            Description='Description 1',
+            type='Type 1',
+            category_name='Category 1',
+            sub_Category= self.event_sub_Category ,
+            venue_name='Venue 1',
+            ST_DATE='2023-04-15',
+            END_DATE='2023-04-15',
+            ST_TIME='09:00:00',
+            END_TIME='10:00:00',
+            online='True',
+            CAPACITY=50,
+            PASSWORD='password',
+            STATUS='Live',
+            image=None
+        )
         self.event2 = event.objects.create(
-            ID="586", User_id="3", Title="Test Event", organizer="test",
-            Description="test", type="music", Category="test", sub_Category="test", venue_name="test",
-            CATEGORY_ID="5", SUB_CATEGORY_ID="7", ST_DATE="2023-03-23", END_DATE="2023-04-23", ST_TIME="05:00:00",
-            END_TIME="09:00:00", online="t", CAPACITY="5000", PASSWORD="512002", locationـid="1", STATUS="test")
-
+            ID=2,
+            User_id=2,
+            Title='Online Event 2',
+            organizer='Organizer 2',
+            Summery='Summary 2',
+            Description='Description 2',
+            type='Type 2',
+            category_name='Category 2',
+            sub_Category='Sub-category 2',
+            venue_name='Venue 2',
+            ST_DATE='2023-04-16',
+            END_DATE='2023-04-16',
+            ST_TIME='10:00:00',
+            END_TIME='11:00:00',
+            online='False',
+            CAPACITY=100,
+            PASSWORD=None,
+            STATUS='Draft',
+            image=None
+        )
     def test_get_events_by_sub_Category(self):
         """
         Test retrieving events by sub_Category.
         """
         url = reverse('event-list-by-sub_category',
                       kwargs={'event_sub_Category': self.event_sub_Category})
-        response = self.client.get(url)
+        response = self.client.get(url,follow=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
@@ -52,6 +81,6 @@ class EventListtypeTest(APITestCase):
         nonexistent_sub_Category = 'nonexistent sub_Category'
         url = reverse('event-list-by-sub_category',
                       kwargs={'event_sub_Category': nonexistent_sub_Category})
-        response = self.client.get(url)
+        response = self.client.get(url,follow=True)
         self.assertEqual(response.data, [])
         self.assertEqual(response.status_code, status.HTTP_200_OK)

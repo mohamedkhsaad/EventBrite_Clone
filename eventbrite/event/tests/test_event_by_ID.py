@@ -1,16 +1,16 @@
-from django.test import TestCase
-from rest_framework.test import APIRequestFactory
+from django.test import TestCase, Client
+from django.urls import reverse
 from rest_framework import status
+from rest_framework.test import APITestCase, APIClient
+from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
-from event.views import OnlineEventsAPIView
 from event.models import event
 from event.serializers import eventSerializer
 from django.contrib.auth import get_user_model
-from rest_framework.test import APITestCase, APIClient
-from django.test import TestCase, RequestFactory
-from django.urls import reverse
+from rest_framework.test import APIRequestFactory
+from event.views import OnlineEventsAPIView
+from django.test import  RequestFactory
 from rest_framework.test import force_authenticate
-
 
 class EventListtypeTest(APITestCase):
     def setUp(self):
@@ -21,7 +21,6 @@ class EventListtypeTest(APITestCase):
             password='512002',)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        self.event_venue = 'cairo'
         self.event1 = event.objects.create(
             ID=1,
             User_id=1,
@@ -32,7 +31,7 @@ class EventListtypeTest(APITestCase):
             type='Type 1',
             category_name='Category 1',
             sub_Category='Sub-category 1',
-            venue_name='cairo',
+            venue_name='Venue 1',
             ST_DATE='2023-04-15',
             END_DATE='2023-04-15',
             ST_TIME='09:00:00',
@@ -41,7 +40,7 @@ class EventListtypeTest(APITestCase):
             CAPACITY=50,
             PASSWORD='password',
             STATUS='Live',
-            image='eventbrite/media/events/photo-1533450718592-29d45635f0a9_H6X4vcW.jpeg'
+            image=None
         )
         self.event2 = event.objects.create(
             ID=2,
@@ -53,7 +52,7 @@ class EventListtypeTest(APITestCase):
             type='Type 2',
             category_name='Category 2',
             sub_Category='Sub-category 2',
-            venue_name='test',
+            venue_name='Venue 2',
             ST_DATE='2023-04-16',
             END_DATE='2023-04-16',
             ST_TIME='10:00:00',
@@ -62,26 +61,30 @@ class EventListtypeTest(APITestCase):
             CAPACITY=100,
             PASSWORD=None,
             STATUS='Draft',
-            image='eventbrite/media/events/photo-1533450718592-29d45635f0a9_H6X4vcW.jpeg'
+            image=None
         )
+        self.event_ID=1
+
     def test_get_events_by_type(self):
         """
         Test retrieving events by type.
         """
-        url = reverse('event-list-by-venue', kwargs={'event_venue': self.event_venue})
-        response = self.client.get(url)
+        url = reverse('event-list-by-ID', kwargs={'event_ID': self.event_ID})
+        response = self.client.get(url,follow=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['event_venue'], self.event_venue)
 
+        event_data = response.data[0]
+        serializer = eventSerializer(self.event1)
+        self.assertEqual(event_data, serializer.data)
 
-    # def test_get_events_by_non_exist_type(self):
-    #     """
-    #     Test retrieving events by a type that does not exist.
-    #     """
-    #     nonexistent_venue = 'nonexistent venue'
-    #     url = reverse('event-list-by-venue', kwargs={'event_venue': nonexistent_venue})
-    #     response = self.client.get(url)
-    #     self.assertEqual(response.data, [])
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_get_events_by_non_exist_ID(self):
+        """
+        Test retrieving events by a ID that does not exist.
+        """
+        nonexistent_ID = 'nonexistent ID'
+        url = reverse('event-list-by-ID', kwargs={'event_ID': nonexistent_ID})
+        response = self.client.get(url,follow=True)
+        self.assertEqual(response.data, [])
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
