@@ -22,3 +22,4 @@ python-dotenv
 boto3 django-storages
 Pillow
 django-cors-headers 
+django-seed
