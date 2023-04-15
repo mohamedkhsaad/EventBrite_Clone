@@ -79,6 +79,5 @@ urlpatterns = [
     #booking
     path('booking/',include('booking.urls')),
     path('',include('rest_framework.urls')),
-]
-#+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
