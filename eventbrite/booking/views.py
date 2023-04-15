@@ -158,6 +158,21 @@ class discount_pk(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+# in-progress
+#TODO: configer email service backend
+
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
