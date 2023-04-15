@@ -51,13 +51,6 @@ urlpatterns = [
     path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    # path('user/reset-password/', auth_views.PasswordResetView.as_view(), name='password-reset'),
-    # path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
-    # path('user/reset-password-sent/', auth_views.PasswordResetDoneView.as_view(), name='password-reset-done'),
-    # path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password-reset-complete'),
-
-
-
     # event
     path('events/create/', EventCreateView.as_view(), name='event-create'),
     path('events/search/<str:event_name>', EventSearchView.as_view(), name='event_search'),
@@ -71,17 +64,19 @@ urlpatterns = [
     path('events/interests-create/', UserInterestCreateAPIView.as_view(), name='user_interests_create'),
     path('events/for-you/', UserInterestEventsAPIView.as_view(), name='user-interests-events'),
     path('events/getuserinterests/', UserInterestAPIView.as_view(), name='user-interests'),
-    # path('events/<int:id>/image/', EventCreateView.as_view(), name='event-image-create'),
     path('events/today/', TodayEventsList.as_view(), name='today-events'),
     path('events/weekend/', WeekendEventsView.as_view(), name='weekend-events'),
-    # path('events/createTicket/', TicketCreateAPIView.as_view(), name='Ticket-create'),
     path('events/<int:event_id>/Tickets/', TicketCreateAPIView.as_view(), name='create_ticket'),
     path('events/TicketsPrice/<int:event_id>/', EventTicketPrice.as_view(), name='ticket_price_api'),
+    path('events/free-events/', FreeTicketEventListView.as_view(), name='free_event_list'),
+    path('events/drafte-vents/', DraftEventsAPIView.as_view(), name='Draft_event_list'),
 
     #event management
     path('eventmanagement/userevents/<int:user_id>', UserListEvents.as_view(), name='user_list_events'),
     path('eventmanagement/UserPastEvents/<int:user_id>', UserListPastEvents.as_view(), name='user_list_past_events'),
     path('eventmanagement/UserUpcomingEvents/<int:user_id>', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
+    path('eventmanagement/<int:event_id>/promocode/', PromoCodeCreateAPIView.as_view(), name='create_promocode'),
+
     # path('events/upload',UploadImageView.as_view(),name='upload-image'),
     #booking
     path('booking/',include('booking.urls')),

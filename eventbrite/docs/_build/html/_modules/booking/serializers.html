@@ -74,7 +74,7 @@
 <div class="viewcode-block" id="TicketSerializer"><a class="viewcode-back" href="../../booking.html#booking.serializers.TicketSerializer">[docs]</a><span class="k">class</span> <span class="nc">TicketSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
 <div class="viewcode-block" id="TicketSerializer.Meta"><a class="viewcode-back" href="../../booking.html#booking.serializers.TicketSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span><span class="o">=</span><span class="n">Ticket</span>
-        <span class="n">fields</span> <span class="o">=</span>  <span class="s1">&#39;__all__&#39;</span> </div></div>
+        <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">,</span><span class="s1">&#39;id&#39;</span><span class="p">]</span></div></div>
 
 
 <div class="viewcode-block" id="DiscountSerializer"><a class="viewcode-back" href="../../booking.html#booking.serializers.DiscountSerializer">[docs]</a><span class="k">class</span> <span class="nc">DiscountSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>

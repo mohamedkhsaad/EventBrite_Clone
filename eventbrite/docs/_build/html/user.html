@@ -71,6 +71,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-user.urls">user.urls module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-user.views">user.views module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#user.views.CreateTokenView"><code class="docutils literal notranslate"><span class="pre">CreateTokenView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user.views.CustomPasswordResetView"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user.views.EmailCheckView"><code class="docutils literal notranslate"><span class="pre">EmailCheckView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#user.views.userViewSet"><code class="docutils literal notranslate"><span class="pre">userViewSet</span></code></a></li>
 </ul>
 </li>
@@ -310,6 +312,21 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.User.event_set">
+<span class="sig-name descname"><span class="pre">event_set</span></span><a class="headerlink" href="#user.models.User.event_set" title="Permalink to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="user.models.User.first_name">
 <span class="sig-name descname"><span class="pre">first_name</span></span><a class="headerlink" href="#user.models.User.first_name" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
@@ -366,6 +383,21 @@ class built by <code class="docutils literal notranslate"><span class="pre">crea
 <span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#user.models.User.id" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.User.interests">
+<span class="sig-name descname"><span class="pre">interests</span></span><a class="headerlink" href="#user.models.User.interests" title="Permalink to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -484,20 +516,23 @@ object the first time, the query is executed.</p>
 </section>
 <section id="module-user.urls">
 <span id="user-urls-module"></span><h2>user.urls module<a class="headerlink" href="#module-user.urls" title="Permalink to this heading"></a></h2>
-<p>This module contains 2 url calls for the user app.</p>
-<p>userViewSet: a url that calls the class for creating a new user (Signup).</p>
-<p>CreateTokenView: a url that calls the class for the authentication and authorization of the user (login).</p>
 </section>
 <section id="module-user.views">
 <span id="user-views-module"></span><h2>user.views module<a class="headerlink" href="#module-user.views" title="Permalink to this heading"></a></h2>
 <p>This module contains 2 view classes for the user app.</p>
 <p>class:userViewSet: A viewset for creating a new user (Signup).</p>
 <p>class:CreateTokenView: A viewset for the authentication and authorization of the user (login).</p>
+<p>class:EmailCheckView: A viewset to cheack the emeil</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="user.views.CreateTokenView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">CreateTokenView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CreateTokenView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CreateTokenView" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObtainAuthToken</span></code></p>
 <p>Create a new auth token for user</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user.views.CreateTokenView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CreateTokenView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CreateTokenView.post" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="user.views.CreateTokenView.renderer_classes">
 <span class="sig-name descname"><span class="pre">renderer_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.renderers.JSONRenderer'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'rest_framework.renderers.BrowsableAPIRenderer'&gt;]</span></em><a class="headerlink" href="#user.views.CreateTokenView.renderer_classes" title="Permalink to this definition"></a></dt>
@@ -508,6 +543,35 @@ object the first time, the query is executed.</p>
 <span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#user.views.CreateTokenView.serializer_class" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AuthTokenSerializer</span></code></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">CustomPasswordResetView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CustomPasswordResetView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CustomPasswordResetView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PasswordResetView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CustomPasswordResetView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CustomPasswordResetView.post" title="Permalink to this definition"></a></dt>
+<dd><p>Handle POST requests: instantiate a form instance with the passed
+POST variables and then check if it’s valid.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetView.success_url">
+<span class="sig-name descname"><span class="pre">success_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/user/reset-password/done/'</span></em><a class="headerlink" href="#user.views.CustomPasswordResetView.success_url" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="user.views.EmailCheckView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">EmailCheckView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#EmailCheckView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.EmailCheckView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user.views.EmailCheckView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#EmailCheckView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.EmailCheckView.get" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -538,7 +602,7 @@ object the first time, the query is executed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="user.views.userViewSet.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;User:</span> <span class="pre">ziad&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">ismailtaw12&#64;gmail.com&gt;]&gt;</span></em><a class="headerlink" href="#user.views.userViewSet.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;User:</span> <span class="pre">ziad&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">youssef&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">yousssef&#64;gmail.com&gt;]&gt;</span></em><a class="headerlink" href="#user.views.userViewSet.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
