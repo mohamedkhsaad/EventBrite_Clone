@@ -79,18 +79,18 @@
 <div class="viewcode-block" id="AuthTokenSerializerTest.setUp"><a class="viewcode-back" href="../../user.html#user.tests.AuthTokenSerializerTest.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s1">&#39;testuser@example.com&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="s1">&#39;testpassword&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="o">=</span><span class="s1">&#39;testusername&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="s1">&#39;testusername&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
             <span class="n">username</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
             <span class="n">email</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
             <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">,</span>
-            
+
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serializer_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
             <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span>
         <span class="p">}</span></div>
-    
+
 <div class="viewcode-block" id="AuthTokenSerializerTest.test_auth_token_creation"><a class="viewcode-back" href="../../user.html#user.tests.AuthTokenSerializerTest.test_auth_token_creation">[docs]</a>    <span class="k">def</span> <span class="nf">test_auth_token_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">serializer</span> <span class="o">=</span> <span class="n">AuthTokenSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">serializer_data</span><span class="p">)</span>
         <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -125,7 +125,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">city</span><span class="p">,</span> <span class="s2">&quot;New York&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">country</span><span class="p">,</span> <span class="s2">&quot;USA&quot;</span><span class="p">)</span></div></div>
-
 </pre></div>
 
            </div>

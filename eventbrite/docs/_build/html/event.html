@@ -72,6 +72,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-event.urls">event.urls module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-event.views">event.views module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.AllEventListView"><code class="docutils literal notranslate"><span class="pre">AllEventListView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.DraftEventsAPIView"><code class="docutils literal notranslate"><span class="pre">DraftEventsAPIView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.EventCreateView"><code class="docutils literal notranslate"><span class="pre">EventCreateView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.EventID"><code class="docutils literal notranslate"><span class="pre">EventID</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.EventListCategory"><code class="docutils literal notranslate"><span class="pre">EventListCategory</span></code></a></li>
@@ -80,6 +81,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#event.views.EventListtype"><code class="docutils literal notranslate"><span class="pre">EventListtype</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.EventSearchView"><code class="docutils literal notranslate"><span class="pre">EventSearchView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.EventTicketPrice"><code class="docutils literal notranslate"><span class="pre">EventTicketPrice</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event.views.FreeTicketEventListView"><code class="docutils literal notranslate"><span class="pre">FreeTicketEventListView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.MyPagination"><code class="docutils literal notranslate"><span class="pre">MyPagination</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.OnlineEventsAPIView"><code class="docutils literal notranslate"><span class="pre">OnlineEventsAPIView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#event.views.TicketCreateAPIView"><code class="docutils literal notranslate"><span class="pre">TicketCreateAPIView</span></code></a></li>
@@ -548,7 +550,7 @@ object the first time, the query is executed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="event.models.event.Online_choises">
-<span class="sig-name descname"><span class="pre">Online_choises</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('t',</span> <span class="pre">'true'),</span> <span class="pre">('f',</span> <span class="pre">'false'))</span></em><a class="headerlink" href="#event.models.event.Online_choises" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">Online_choises</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('True',</span> <span class="pre">'True'),</span> <span class="pre">('False',</span> <span class="pre">'False'))</span></em><a class="headerlink" href="#event.models.event.Online_choises" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -569,6 +571,11 @@ object the first time, the query is executed.</p>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.models.event.STATUS_choises">
+<span class="sig-name descname"><span class="pre">STATUS_choises</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('Draft',</span> <span class="pre">'Draft'),</span> <span class="pre">('Live',</span> <span class="pre">'Live'),</span> <span class="pre">('Past',</span> <span class="pre">'Past'))</span></em><a class="headerlink" href="#event.models.event.STATUS_choises" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="event.models.event.ST_DATE">
@@ -613,6 +620,11 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="event.models.event.get_STATUS_display">
+<span class="sig-name descname"><span class="pre">get_STATUS_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">STATUS&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.models.event.get_STATUS_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="event.models.event.get_next_by_END_DATE">
 <span class="sig-name descname"><span class="pre">get_next_by_END_DATE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">END_DATE&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.models.event.get_next_by_END_DATE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -620,6 +632,11 @@ object the first time, the query is executed.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="event.models.event.get_next_by_ST_DATE">
 <span class="sig-name descname"><span class="pre">get_next_by_ST_DATE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">ST_DATE&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.models.event.get_next_by_ST_DATE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="event.models.event.get_online_display">
+<span class="sig-name descname"><span class="pre">get_online_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">online&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#event.models.event.get_online_display" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -804,6 +821,7 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="event.serializers.UserInterestSerializer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.serializers.</span></span><span class="sig-name descname"><span class="pre">UserInterestSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/serializers.html#UserInterestSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.serializers.UserInterestSerializer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for UserInterest model.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="event.serializers.UserInterestSerializer.Meta">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/event/serializers.html#UserInterestSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.serializers.UserInterestSerializer.Meta" title="Permalink to this definition"></a></dt>
@@ -869,7 +887,8 @@ class:UserInterestEventsAPIView: A viewset for retrieving event instances based 
 class:TodayEventsList: A viewset for retrieving event instances for today.
 class:WeekendEventsView: A viewset for retrieving event instances for weekend.
 class:TicketCreateAPIView: A viewset for create a new ticket for a given event
-class:EventTicketPrice: A viewset for retrieve the ticket price for a given event.</p>
+class:EventTicketPrice: A viewset for retrieve the ticket price for a given event.
+class:DraftEventsAPIView: A viewset for retrieving Draft events.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="event.views.AllEventListView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">AllEventListView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#AllEventListView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.AllEventListView" title="Permalink to this definition"></a></dt>
@@ -885,6 +904,19 @@ class:EventTicketPrice: A viewset for retrieve the ticket price for a given even
 <dt class="sig sig-object py" id="event.views.AllEventListView.pagination_class">
 <span class="sig-name descname"><span class="pre">pagination_class</span></span><a class="headerlink" href="#event.views.AllEventListView.pagination_class" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <a class="reference internal" href="#event.views.MyPagination" title="event.views.MyPagination"><code class="xref py py-class docutils literal notranslate"><span class="pre">MyPagination</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.DraftEventsAPIView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">DraftEventsAPIView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#DraftEventsAPIView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.DraftEventsAPIView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<p>A viewset for retrieving Draft events.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.DraftEventsAPIView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#DraftEventsAPIView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.DraftEventsAPIView.get" title="Permalink to this definition"></a></dt>
+<dd><p>This view should return a list of all the draft events.</p>
 </dd></dl>
 
 </dd></dl>
@@ -911,7 +943,7 @@ class:EventTicketPrice: A viewset for retrieve the ticket price for a given even
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="event.views.EventCreateView.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">popmusy&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#event.views.EventCreateView.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">rrr&gt;]&gt;</span></em><a class="headerlink" href="#event.views.EventCreateView.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1046,7 +1078,7 @@ for the title specified in the URL parameter.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="event.views.EventSearchView.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">popmusy&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#event.views.EventSearchView.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">rrr&gt;]&gt;</span></em><a class="headerlink" href="#event.views.EventSearchView.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1069,6 +1101,32 @@ success response. Otherwise, an error response is returned indicating that the t
 <dt class="sig sig-object py" id="event.views.EventTicketPrice.get">
 <span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#EventTicketPrice.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.EventTicketPrice.get" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the ticket price for a given event.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="event.views.FreeTicketEventListView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">event.views.</span></span><span class="sig-name descname"><span class="pre">FreeTicketEventListView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#FreeTicketEventListView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.FreeTicketEventListView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="event.views.FreeTicketEventListView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/event/views.html#FreeTicketEventListView.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#event.views.FreeTicketEventListView.get_queryset" title="Permalink to this definition"></a></dt>
+<dd><p>Get the list of items for this view.
+This must be an iterable, and may be a queryset.
+Defaults to using <cite>self.queryset</cite>.</p>
+<p>This method should always be used rather than accessing <cite>self.queryset</cite>
+directly, as <cite>self.queryset</cite> gets evaluated only once, and those results
+are cached for all subsequent requests.</p>
+<p>You may want to override this if you need to provide different
+querysets depending on the incoming request.</p>
+<p>(Eg. return a list of items that is specific to the user)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="event.views.FreeTicketEventListView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#event.views.FreeTicketEventListView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#event.serializers.eventSerializer" title="event.serializers.eventSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">eventSerializer</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -1121,7 +1179,7 @@ serializer errors.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="event.views.TicketCreateAPIView.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(1)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(2)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(3)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(4)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(5)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(6)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(7)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(8)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(9)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(10)&gt;,</span> <span class="pre">&lt;Ticket:</span> <span class="pre">Ticket</span> <span class="pre">object</span> <span class="pre">(11)&gt;]&gt;</span></em><a class="headerlink" href="#event.views.TicketCreateAPIView.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#event.views.TicketCreateAPIView.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

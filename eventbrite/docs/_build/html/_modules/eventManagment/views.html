@@ -72,6 +72,8 @@
 <span class="sd">class:UserListEvents: A viewset for retrieving all user events by user id.</span>
 <span class="sd">class:UserListPastEvents: A viewset for retrieving all user past events by user id.</span>
 <span class="sd">class:UserListEvents: A viewset for retrieving all user upcoming events by user id.</span>
+<span class="sd">class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given event.</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
@@ -84,6 +86,13 @@
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span><span class="o">*</span>
 <span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span> <span class="nn">booking.models</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">booking.serializers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">rest_framework.status</span> <span class="kn">import</span> <span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">HTTP_400_BAD_REQUEST</span><span class="p">,</span> <span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">HTTP_400_BAD_REQUEST</span>
+<span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
+<span class="kn">from</span> <span class="nn">booking.models</span> <span class="kn">import</span> <span class="n">event</span><span class="p">,</span> <span class="n">Ticket</span>
+<span class="kn">from</span> <span class="nn">booking.serializers</span> <span class="kn">import</span> <span class="n">TicketSerializer</span>
+<span class="kn">import</span> <span class="nn">csv</span>
 
 <div class="viewcode-block" id="UserListEvents"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListEvents">[docs]</a><span class="k">class</span> <span class="nc">UserListEvents</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -137,6 +146,49 @@
         <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ST_DATE__gt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="p">)</span></div></div>
     
+<div class="viewcode-block" id="PromoCodeCreateAPIView"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.PromoCodeCreateAPIView">[docs]</a><span class="k">class</span> <span class="nc">PromoCodeCreateAPIView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A view that creates a promocode for a specific events given the event id</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">DiscountSerializer</span>
+
+<div class="viewcode-block" id="PromoCodeCreateAPIView.post"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.PromoCodeCreateAPIView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        a post request to create promocode for an event, and have the option to add a csv file instead of typying the promocode details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Event</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">event</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Event with id </span><span class="si">{</span><span class="n">event_id</span><span class="si">}</span><span class="s1"> does not exist.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        
+        <span class="n">PromoCode_Data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">PromoCode_Data</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">ID</span>
+
+        <span class="c1"># Check if a CSV file was uploaded</span>
+        <span class="k">if</span> <span class="s1">&#39;file&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">:</span>
+            <span class="n">csv_file</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span>
+            <span class="n">decoded_file</span> <span class="o">=</span> <span class="n">csv_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">decoded_file</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="c1"># Add the event ID to each row of data before saving</span>
+                <span class="n">row</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">ID</span>
+                <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">row</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                    <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Promo codes uploaded successfully.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+        
+        <span class="c1"># If no CSV file was uploaded, create a single promo code</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">PromoCode_Data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

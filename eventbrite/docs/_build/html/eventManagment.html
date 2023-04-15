@@ -59,6 +59,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.models">eventManagment.models module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.tests">eventManagment.tests module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.views">eventManagment.views module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.PromoCodeCreateAPIView"><code class="docutils literal notranslate"><span class="pre">PromoCodeCreateAPIView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.UserListEvents"><code class="docutils literal notranslate"><span class="pre">UserListEvents</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.UserListPastEvents"><code class="docutils literal notranslate"><span class="pre">UserListPastEvents</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.UserListUpcomingEvents"><code class="docutils literal notranslate"><span class="pre">UserListUpcomingEvents</span></code></a></li>
@@ -148,7 +149,32 @@
 <p>This module contains several view classes for the eventmanagement app.
 class:UserListEvents: A viewset for retrieving all user events by user id.
 class:UserListPastEvents: A viewset for retrieving all user past events by user id.
-class:UserListEvents: A viewset for retrieving all user upcoming events by user id.</p>
+class:UserListEvents: A viewset for retrieving all user upcoming events by user id.
+class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given event.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="eventManagment.views.PromoCodeCreateAPIView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">PromoCodeCreateAPIView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#PromoCodeCreateAPIView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.PromoCodeCreateAPIView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<p>A view that creates a promocode for a specific events given the event id</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="eventManagment.views.PromoCodeCreateAPIView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#PromoCodeCreateAPIView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.PromoCodeCreateAPIView.post" title="Permalink to this definition"></a></dt>
+<dd><p>a post request to create promocode for an event, and have the option to add a csv file instead of typying the promocode details</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.PromoCodeCreateAPIView.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#eventManagment.views.PromoCodeCreateAPIView.queryset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.PromoCodeCreateAPIView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#eventManagment.views.PromoCodeCreateAPIView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="booking.html#booking.serializers.DiscountSerializer" title="booking.serializers.DiscountSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscountSerializer</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="eventManagment.views.UserListEvents">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">UserListEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListEvents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListEvents" title="Permalink to this definition"></a></dt>
@@ -168,7 +194,7 @@ for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">popmusy&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">rrr&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -198,7 +224,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">popmusy&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">rrr&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -209,7 +235,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.today">
-<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">4,</span> <span class="pre">14)</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.today" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">4,</span> <span class="pre">15)</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.today" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -233,7 +259,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">popmusy&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">tes1&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">rrr&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -244,7 +270,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.today">
-<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">4,</span> <span class="pre">14)</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.today" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">4,</span> <span class="pre">15)</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.today" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>

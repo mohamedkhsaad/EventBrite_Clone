@@ -522,11 +522,17 @@ object the first time, the query is executed.</p>
 <p>This module contains 2 view classes for the user app.</p>
 <p>class:userViewSet: A viewset for creating a new user (Signup).</p>
 <p>class:CreateTokenView: A viewset for the authentication and authorization of the user (login).</p>
+<p>class:EmailCheckView: A viewset to cheack the emeil</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="user.views.CreateTokenView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">CreateTokenView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CreateTokenView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CreateTokenView" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObtainAuthToken</span></code></p>
 <p>Create a new auth token for user</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user.views.CreateTokenView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CreateTokenView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CreateTokenView.post" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="user.views.CreateTokenView.renderer_classes">
 <span class="sig-name descname"><span class="pre">renderer_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.renderers.JSONRenderer'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'rest_framework.renderers.BrowsableAPIRenderer'&gt;]</span></em><a class="headerlink" href="#user.views.CreateTokenView.renderer_classes" title="Permalink to this definition"></a></dt>
@@ -596,7 +602,7 @@ POST variables and then check if it’s valid.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="user.views.userViewSet.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;User:</span> <span class="pre">ziad&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">ziad1&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">daniabdelmesih00&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">eventbrite512002&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">ss&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">ss11&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">ss111&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">ziad512002&#64;gmail.com&gt;]&gt;</span></em><a class="headerlink" href="#user.views.userViewSet.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;User:</span> <span class="pre">ziad&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">youssef&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">yousssef&#64;gmail.com&gt;]&gt;</span></em><a class="headerlink" href="#user.views.userViewSet.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

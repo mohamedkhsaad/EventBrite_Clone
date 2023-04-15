@@ -69,53 +69,34 @@
   <h1>Source code for booking.views</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module contains several function based views for the booling app.</span>
-
 <span class="sd">function:list_tickets_by_event: A FBV thst Return a list of all tickets for a given event.</span>
-
 <span class="sd">function:list_tickets_by_user: A FBV for retrieving list of all tickets for a given user.</span>
-
 <span class="sd">function:get_ticket: A FBV that Return a ticket object by ticket ID.</span>
-
 <span class="sd">function:check_promo_code: A FBV Check whether a promo code is valid for a given event.</span>
-
 <span class="sd">class:discount_list: A view that returns a list of all discounts or creates a new discount.</span>
-
 <span class="sd">class:discount_pk: A view that returns a discounts object or update a new discount or delete it.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">itsdangerous</span>
+<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
 <span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span><span class="p">,</span> <span class="n">EmailMessage</span>
-
-
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">Http404</span>
 <span class="kn">from</span> <span class="nn">django.template.loader</span> <span class="kn">import</span> <span class="n">render_to_string</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
-
 <span class="kn">from</span> <span class="nn">eventbrite.email_info</span> <span class="kn">import</span> <span class="n">from_email</span>
-
 <span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span><span class="p">,</span> <span class="n">authentication_classes</span><span class="p">,</span> <span class="n">permission_classes</span>
 <span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">status</span>
 <span class="kn">from</span> <span class="nn">rest_framework.authentication</span> <span class="kn">import</span> <span class="n">TokenAuthentication</span>
 <span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
-
 <span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="n">TicketSerializer</span><span class="p">,</span> <span class="n">DiscountSerializer</span>
 <span class="kn">from</span> <span class="nn">event.serializers</span> <span class="kn">import</span> <span class="n">eventSerializer</span>
-
-<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Ticket</span><span class="p">,</span><span class="n">Discount</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Ticket</span><span class="p">,</span> <span class="n">Discount</span>
 <span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="n">event</span> <span class="k">as</span> <span class="n">Event</span>
 <span class="kn">from</span> <span class="nn">user.models</span> <span class="kn">import</span> <span class="n">User</span>
-
 <span class="kn">from</span> <span class="nn">eventbrite.settings</span> <span class="kn">import</span> <span class="o">*</span>
 
 
-
-
-
-
-
-<span class="c1"># DONE </span>
-<span class="c1"># DONE TESTING</span>
 <div class="viewcode-block" id="list_tickets_by_event"><a class="viewcode-back" href="../../booking.html#booking.views.list_tickets_by_event">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="nd">@authentication_classes</span><span class="p">([</span><span class="n">TokenAuthentication</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">([</span><span class="n">IsAuthenticated</span><span class="p">])</span>
@@ -135,7 +116,6 @@
     <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_tickets</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
 
 
-<span class="c1"># DONE TESTING</span>
 <div class="viewcode-block" id="list_tickets_by_user"><a class="viewcode-back" href="../../booking.html#booking.views.list_tickets_by_user">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="nd">@authentication_classes</span><span class="p">([</span><span class="n">TokenAuthentication</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">([</span><span class="n">IsAuthenticated</span><span class="p">])</span>
@@ -147,21 +127,16 @@
 <span class="sd">    :param user_id: User ID.</span>
 <span class="sd">    :return: A list of JSON objects representing the tickets for the given user.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">tickets</span> <span class="o">=</span> <span class="n">Ticket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">GUEST_ID</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
     <span class="n">serialized_tickets</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">(</span><span class="n">tickets</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
     <span class="c1"># return the data as a  list of JSON objects</span>
     <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_tickets</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
 
 
-
-<span class="c1"># DONE</span>
-<span class="c1"># DONE TESTING</span>
 <div class="viewcode-block" id="get_ticket"><a class="viewcode-back" href="../../booking.html#booking.views.get_ticket">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="nd">@authentication_classes</span><span class="p">([</span><span class="n">TokenAuthentication</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">([</span><span class="n">IsAuthenticated</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">get_ticket</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">ticket_id</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_ticket</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">ticket_id</span><span class="p">):</span>
     <span class="c1"># /ticket/{ticket_id}</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a ticket object by ticket ID.</span>
@@ -177,15 +152,13 @@
         <span class="k">raise</span> <span class="n">Http404</span>
 
     <span class="n">serialized_ticket</span> <span class="o">=</span> <span class="n">TicketSerializer</span><span class="p">(</span><span class="n">ticket</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_ticket</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_ticket</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
 
 
-<span class="c1"># check</span>
-<span class="c1"># DONE TESTING</span>
 <div class="viewcode-block" id="check_promo_code"><a class="viewcode-back" href="../../booking.html#booking.views.check_promo_code">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="nd">@authentication_classes</span><span class="p">([</span><span class="n">TokenAuthentication</span><span class="p">])</span>
 <span class="nd">@permission_classes</span><span class="p">([</span><span class="n">IsAuthenticated</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">check_promo_code</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">event_id</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">check_promo_code</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check whether a promo code is valid for a given event.</span>
 
@@ -196,19 +169,16 @@
     <span class="c1"># /event?promo_code=SAVE123</span>
     <span class="c1"># search an event&#39;s promo codes</span>
 
-
     <span class="k">try</span><span class="p">:</span>
         <span class="n">promo_code</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">query_params</span><span class="p">[</span><span class="s1">&#39;promo_code&#39;</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;err&#39;</span><span class="p">:</span><span class="s1">&#39;missing promo_code param&#39;</span><span class="p">},</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
-    
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">EVENT_ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">,</span><span class="n">CODE</span><span class="o">=</span><span class="n">promo_code</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;is_promo_code&#39;</span><span class="p">:</span><span class="kc">False</span><span class="p">},</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;err&#39;</span><span class="p">:</span> <span class="s1">&#39;missing promo_code param&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Discount</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">EVENT_ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">,</span> <span class="n">CODE</span><span class="o">=</span><span class="n">promo_code</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;is_promo_code&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
 
     <span class="c1"># return ticket object instead</span>
-    <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;is_promo_code&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
-
-
+    <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;is_promo_code&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="discount_list"><a class="viewcode-back" href="../../booking.html#booking.views.discount_list">[docs]</a><span class="k">class</span> <span class="nc">discount_list</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListCreateAPIView</span><span class="p">):</span>
@@ -231,6 +201,7 @@
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">DiscountSerializer</span>
     <span class="n">authentication_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">TokenAuthentication</span><span class="p">]</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span></div>
+
 
 <div class="viewcode-block" id="discount_pk"><a class="viewcode-back" href="../../booking.html#booking.views.discount_pk">[docs]</a><span class="k">class</span> <span class="nc">discount_pk</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">RetrieveUpdateDestroyAPIView</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -255,10 +226,6 @@
     <span class="n">authentication_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">TokenAuthentication</span><span class="p">]</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span></div>
 
-<span class="c1"># in-progress</span>
-<span class="c1">#TODO: configer email service backend</span>
-
-
 
 <div class="viewcode-block" id="create_ticket"><a class="viewcode-back" href="../../booking.html#booking.views.create_ticket">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="nd">@authentication_classes</span><span class="p">([</span><span class="n">TokenAuthentication</span><span class="p">])</span>
@@ -266,7 +233,7 @@
 <span class="k">def</span> <span class="nf">create_ticket</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="c1"># print(request.user)</span>
     <span class="c1"># TODO:</span>
- 
+
     <span class="c1"># create a ticket            DONE</span>
 
     <span class="c1"># send confirmation email    DONE</span>
@@ -276,21 +243,19 @@
 
         <span class="n">ticket_serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
+        <span class="c1"># ----------- sending conirmation email ---------</span>
 
-        <span class="c1">#----------- sending conirmation email ---------</span>
-        
-        
         <span class="c1"># Get the currently logged-in user</span>
 
         <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
         <span class="c1"># print(user.username)</span>
 
-
         <span class="c1"># Generate a confirmation token</span>
         <span class="n">token</span> <span class="o">=</span> <span class="n">generate_confirmation_token</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
 
         <span class="c1"># Build the confirmation URL</span>
-        <span class="n">confirmation_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">build_absolute_uri</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;create-ticket&#39;</span><span class="p">))</span><span class="c1">#, args=[token]))</span>
+        <span class="n">confirmation_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">build_absolute_uri</span><span class="p">(</span>
+            <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;create-ticket&#39;</span><span class="p">))</span>  <span class="c1"># , args=[token]))</span>
 
         <span class="c1"># Generate a QR code for the confirmation URL using the Google Charts API</span>
         <span class="n">qr_code_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://chart.googleapis.com/chart?chs=150x150&amp;cht=qr&amp;chl=</span><span class="si">{</span><span class="n">confirmation_url</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -302,25 +267,21 @@
         <span class="n">from_email</span> <span class="o">=</span> <span class="s1">&#39;no-reply@example.com&#39;</span>
         <span class="n">recipient_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">]</span>
         <span class="n">mail</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span>
-                    <span class="n">recipient_list</span><span class="p">)</span>
+                            <span class="n">recipient_list</span><span class="p">)</span>
 
-        <span class="n">mail</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;qrcode.png&#39;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">qr_code_image</span><span class="p">)</span><span class="c1">#,content_type=&#39;image/png&#39;</span>
+        <span class="c1"># ,content_type=&#39;image/png&#39;</span>
+        <span class="n">mail</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;qrcode.png&#39;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">qr_code_image</span><span class="p">)</span>
         <span class="n">mail</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
         <span class="c1"># send_mail(message=mail, subject=subject,from_email=from_email,recipient_list=recipient_list , html_message=f&#39;&lt;p&gt;{message}&lt;/p&gt;&lt;img src=&quot;cid:qrcode&quot;&gt;&#39;, fail_silently=False)</span>
         <span class="c1"># Render a response</span>
-
-
 
         <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ticket_serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">ticket_serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span></div>
 
 
-
-
-
-
 <span class="c1"># for testing</span>
-<span class="kn">import</span> <span class="nn">requests</span>
+
+
 <div class="viewcode-block" id="send_confirmation_email"><a class="viewcode-back" href="../../booking.html#booking.views.send_confirmation_email">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">send_confirmation_email</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="c1"># Get the currently logged-in user</span>
@@ -331,7 +292,8 @@
     <span class="n">token</span> <span class="o">=</span> <span class="n">generate_confirmation_token</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
 
     <span class="c1"># Build the confirmation URL</span>
-    <span class="n">confirmation_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">build_absolute_uri</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;create-ticket&#39;</span><span class="p">))</span><span class="c1">#, args=[token]))</span>
+    <span class="n">confirmation_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">build_absolute_uri</span><span class="p">(</span>
+        <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;create-ticket&#39;</span><span class="p">))</span>  <span class="c1"># , args=[token]))</span>
 
     <span class="c1"># Generate a QR code for the confirmation URL using the Google Charts API</span>
     <span class="n">qr_code_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://chart.googleapis.com/chart?chs=150x150&amp;cht=qr&amp;chl=</span><span class="si">{</span><span class="n">confirmation_url</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -343,19 +305,20 @@
     <span class="n">from_email</span> <span class="o">=</span> <span class="s1">&#39;no-reply@example.com&#39;</span>
     <span class="n">recipient_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">]</span>
     <span class="n">mail</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span>
-               <span class="n">recipient_list</span><span class="p">)</span>
-    
-    <span class="n">mail</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;qrcode.png&#39;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">qr_code_image</span><span class="p">)</span><span class="c1">#,content_type=&#39;image/png&#39;</span>
+                        <span class="n">recipient_list</span><span class="p">)</span>
+
+    <span class="c1"># ,content_type=&#39;image/png&#39;</span>
+    <span class="n">mail</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;qrcode.png&#39;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">qr_code_image</span><span class="p">)</span>
     <span class="n">mail</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
     <span class="c1"># send_mail(message=mail, subject=subject,from_email=from_email,recipient_list=recipient_list , html_message=f&#39;&lt;p&gt;{message}&lt;/p&gt;&lt;img src=&quot;cid:qrcode&quot;&gt;&#39;, fail_silently=False)</span>
     <span class="c1"># Render a response</span>
-    <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span><span class="mi">201</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">201</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span></div>
 
-<span class="kn">import</span> <span class="nn">itsdangerous</span>
 
 <div class="viewcode-block" id="generate_confirmation_token"><a class="viewcode-back" href="../../booking.html#booking.views.generate_confirmation_token">[docs]</a><span class="k">def</span> <span class="nf">generate_confirmation_token</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
     <span class="n">serializer</span> <span class="o">=</span> <span class="n">itsdangerous</span><span class="o">.</span><span class="n">URLSafeTimedSerializer</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">serializer</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">user</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="confirm_token"><a class="viewcode-back" href="../../booking.html#booking.views.confirm_token">[docs]</a><span class="k">def</span> <span class="nf">confirm_token</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">expiration</span><span class="o">=</span><span class="mi">3600</span><span class="p">):</span>
     <span class="n">serializer</span> <span class="o">=</span> <span class="n">itsdangerous</span><span class="o">.</span><span class="n">URLSafeTimedSerializer</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">)</span>
@@ -372,11 +335,6 @@
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">TicketSerializer</span></div>
     <span class="c1"># authentication_classes = [TokenAuthentication]</span>
     <span class="c1"># permission_classes = [IsAuthenticated]</span>
-
-
-
-
-
 </pre></div>
 
            </div>

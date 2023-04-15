@@ -351,6 +351,8 @@
 </li>
       <li><a href="booking.html#booking.serializers.DiscountSerializer.Meta">DiscountSerializer.Meta (class in booking.serializers)</a>
 </li>
+      <li><a href="event.html#event.views.DraftEventsAPIView">DraftEventsAPIView (class in event.views)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -703,6 +705,8 @@
 </li>
       <li><a href="user.html#user.models.User.FOLLOWERS">FOLLOWERS (user.models.User attribute)</a>
 </li>
+      <li><a href="event.html#event.views.FreeTicketEventListView">FreeTicketEventListView (class in event.views)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -716,6 +720,8 @@
       <li><a href="event.html#event.views.AllEventListView.get">get() (event.views.AllEventListView method)</a>
 
       <ul>
+        <li><a href="event.html#event.views.DraftEventsAPIView.get">(event.views.DraftEventsAPIView method)</a>
+</li>
         <li><a href="event.html#event.views.EventTicketPrice.get">(event.views.EventTicketPrice method)</a>
 </li>
         <li><a href="event.html#event.views.OnlineEventsAPIView.get">(event.views.OnlineEventsAPIView method)</a>
@@ -748,6 +754,8 @@
       <li><a href="booking.html#booking.models.Discount.get_next_by_start_date">get_next_by_start_date() (booking.models.Discount method)</a>
 </li>
       <li><a href="booking.html#booking.models.Ticket.get_next_by_Start_time">get_next_by_Start_time() (booking.models.Ticket method)</a>
+</li>
+      <li><a href="event.html#event.models.event.get_online_display">get_online_display() (event.models.event method)</a>
 </li>
       <li><a href="event.html#event.views.MyPagination.get_paginated_response">get_paginated_response() (event.views.MyPagination method)</a>
 </li>
@@ -784,6 +792,8 @@
 </li>
         <li><a href="event.html#event.views.EventSearchView.get_queryset">(event.views.EventSearchView method)</a>
 </li>
+        <li><a href="event.html#event.views.FreeTicketEventListView.get_queryset">(event.views.FreeTicketEventListView method)</a>
+</li>
         <li><a href="event.html#event.views.TodayEventsList.get_queryset">(event.views.TodayEventsList method)</a>
 </li>
         <li><a href="event.html#event.views.WeekendEventsView.get_queryset">(event.views.WeekendEventsView method)</a>
@@ -796,6 +806,8 @@
 </li>
       </ul></li>
       <li><a href="user.html#user.models.User.get_short_name">get_short_name() (user.models.User method)</a>
+</li>
+      <li><a href="event.html#event.models.event.get_STATUS_display">get_STATUS_display() (event.models.event method)</a>
 </li>
       <li><a href="booking.html#booking.views.get_ticket">get_ticket() (in module booking.views)</a>
 </li>
@@ -1272,10 +1284,16 @@
       <ul>
         <li><a href="event.html#event.views.TicketCreateAPIView.post">(event.views.TicketCreateAPIView method)</a>
 </li>
+        <li><a href="eventManagment.html#eventManagment.views.PromoCodeCreateAPIView.post">(eventManagment.views.PromoCodeCreateAPIView method)</a>
+</li>
+        <li><a href="user.html#user.views.CreateTokenView.post">(user.views.CreateTokenView method)</a>
+</li>
         <li><a href="user.html#user.views.CustomPasswordResetView.post">(user.views.CustomPasswordResetView method)</a>
 </li>
       </ul></li>
       <li><a href="booking.html#booking.models.Ticket.PRICE">PRICE (booking.models.Ticket attribute)</a>
+</li>
+      <li><a href="eventManagment.html#eventManagment.views.PromoCodeCreateAPIView">PromoCodeCreateAPIView (class in eventManagment.views)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1301,6 +1319,8 @@
         <li><a href="event.html#event.views.UserInterestAPIView.queryset">(event.views.UserInterestAPIView attribute)</a>
 </li>
         <li><a href="event.html#event.views.UserInterestCreateAPIView.queryset">(event.views.UserInterestCreateAPIView attribute)</a>
+</li>
+        <li><a href="eventManagment.html#eventManagment.views.PromoCodeCreateAPIView.queryset">(eventManagment.views.PromoCodeCreateAPIView attribute)</a>
 </li>
         <li><a href="eventManagment.html#eventManagment.views.UserListEvents.queryset">(eventManagment.views.UserListEvents attribute)</a>
 </li>
@@ -1366,6 +1386,8 @@
 </li>
         <li><a href="event.html#event.views.EventSearchView.serializer_class">(event.views.EventSearchView attribute)</a>
 </li>
+        <li><a href="event.html#event.views.FreeTicketEventListView.serializer_class">(event.views.FreeTicketEventListView attribute)</a>
+</li>
         <li><a href="event.html#event.views.TicketCreateAPIView.serializer_class">(event.views.TicketCreateAPIView attribute)</a>
 </li>
         <li><a href="event.html#event.views.TodayEventsList.serializer_class">(event.views.TodayEventsList attribute)</a>
@@ -1373,6 +1395,8 @@
         <li><a href="event.html#event.views.UserInterestCreateAPIView.serializer_class">(event.views.UserInterestCreateAPIView attribute)</a>
 </li>
         <li><a href="event.html#event.views.WeekendEventsView.serializer_class">(event.views.WeekendEventsView attribute)</a>
+</li>
+        <li><a href="eventManagment.html#eventManagment.views.PromoCodeCreateAPIView.serializer_class">(eventManagment.views.PromoCodeCreateAPIView attribute)</a>
 </li>
         <li><a href="eventManagment.html#eventManagment.views.UserListEvents.serializer_class">(eventManagment.views.UserListEvents attribute)</a>
 </li>
@@ -1414,6 +1438,8 @@
       <li><a href="booking.html#booking.models.Ticket.Start_time">Start_time (booking.models.Ticket attribute)</a>
 </li>
       <li><a href="event.html#event.models.event.STATUS">STATUS (event.models.event attribute)</a>
+</li>
+      <li><a href="event.html#event.models.event.STATUS_choises">STATUS_choises (event.models.event attribute)</a>
 </li>
       <li><a href="event.html#event.models.sub_category">sub_category (class in event.models)</a>
 </li>

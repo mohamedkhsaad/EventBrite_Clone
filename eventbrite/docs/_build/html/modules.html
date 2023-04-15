@@ -331,14 +331,17 @@
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.PASSWORD"><code class="docutils literal notranslate"><span class="pre">event.PASSWORD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.REQUIRED_FIELDS"><code class="docutils literal notranslate"><span class="pre">event.REQUIRED_FIELDS</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.STATUS"><code class="docutils literal notranslate"><span class="pre">event.STATUS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.STATUS_choises"><code class="docutils literal notranslate"><span class="pre">event.STATUS_choises</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.ST_DATE"><code class="docutils literal notranslate"><span class="pre">event.ST_DATE</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.ST_TIME"><code class="docutils literal notranslate"><span class="pre">event.ST_TIME</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.Summery"><code class="docutils literal notranslate"><span class="pre">event.Summery</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.Title"><code class="docutils literal notranslate"><span class="pre">event.Title</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.User_id"><code class="docutils literal notranslate"><span class="pre">event.User_id</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.category_name"><code class="docutils literal notranslate"><span class="pre">event.category_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.get_STATUS_display"><code class="docutils literal notranslate"><span class="pre">event.get_STATUS_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.get_next_by_END_DATE"><code class="docutils literal notranslate"><span class="pre">event.get_next_by_END_DATE()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.get_next_by_ST_DATE"><code class="docutils literal notranslate"><span class="pre">event.get_next_by_ST_DATE()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.get_online_display"><code class="docutils literal notranslate"><span class="pre">event.get_online_display()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.get_previous_by_END_DATE"><code class="docutils literal notranslate"><span class="pre">event.get_previous_by_END_DATE()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.get_previous_by_ST_DATE"><code class="docutils literal notranslate"><span class="pre">event.get_previous_by_ST_DATE()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.models.event.id"><code class="docutils literal notranslate"><span class="pre">event.id</span></code></a></li>
@@ -388,6 +391,10 @@
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.views.AllEventListView.pagination_class"><code class="docutils literal notranslate"><span class="pre">AllEventListView.pagination_class</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#event.views.DraftEventsAPIView"><code class="docutils literal notranslate"><span class="pre">DraftEventsAPIView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.html#event.views.DraftEventsAPIView.get"><code class="docutils literal notranslate"><span class="pre">DraftEventsAPIView.get()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="event.html#event.views.EventCreateView"><code class="docutils literal notranslate"><span class="pre">EventCreateView</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.views.EventCreateView.parser_classes"><code class="docutils literal notranslate"><span class="pre">EventCreateView.parser_classes</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.views.EventCreateView.permission_classes"><code class="docutils literal notranslate"><span class="pre">EventCreateView.permission_classes</span></code></a></li>
@@ -431,6 +438,11 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="event.html#event.views.EventTicketPrice"><code class="docutils literal notranslate"><span class="pre">EventTicketPrice</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="event.html#event.views.EventTicketPrice.get"><code class="docutils literal notranslate"><span class="pre">EventTicketPrice.get()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="event.html#event.views.FreeTicketEventListView"><code class="docutils literal notranslate"><span class="pre">FreeTicketEventListView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="event.html#event.views.FreeTicketEventListView.get_queryset"><code class="docutils literal notranslate"><span class="pre">FreeTicketEventListView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html#event.views.FreeTicketEventListView.serializer_class"><code class="docutils literal notranslate"><span class="pre">FreeTicketEventListView.serializer_class</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="event.html#event.views.MyPagination"><code class="docutils literal notranslate"><span class="pre">MyPagination</span></code></a><ul>
@@ -503,6 +515,12 @@
 <li class="toctree-l2"><a class="reference internal" href="eventManagment.html#module-eventManagment.models">eventManagment.models module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eventManagment.html#module-eventManagment.tests">eventManagment.tests module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="eventManagment.html#module-eventManagment.views">eventManagment.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eventManagment.html#eventManagment.views.PromoCodeCreateAPIView"><code class="docutils literal notranslate"><span class="pre">PromoCodeCreateAPIView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="eventManagment.html#eventManagment.views.PromoCodeCreateAPIView.post"><code class="docutils literal notranslate"><span class="pre">PromoCodeCreateAPIView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eventManagment.html#eventManagment.views.PromoCodeCreateAPIView.queryset"><code class="docutils literal notranslate"><span class="pre">PromoCodeCreateAPIView.queryset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="eventManagment.html#eventManagment.views.PromoCodeCreateAPIView.serializer_class"><code class="docutils literal notranslate"><span class="pre">PromoCodeCreateAPIView.serializer_class</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="eventManagment.html#eventManagment.views.UserListEvents"><code class="docutils literal notranslate"><span class="pre">UserListEvents</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="eventManagment.html#eventManagment.views.UserListEvents.get_queryset"><code class="docutils literal notranslate"><span class="pre">UserListEvents.get_queryset()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="eventManagment.html#eventManagment.views.UserListEvents.permission_classes"><code class="docutils literal notranslate"><span class="pre">UserListEvents.permission_classes</span></code></a></li>
@@ -626,6 +644,7 @@
 <li class="toctree-l2"><a class="reference internal" href="user.html#module-user.urls">user.urls module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user.html#module-user.views">user.views module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="user.html#user.views.CreateTokenView"><code class="docutils literal notranslate"><span class="pre">CreateTokenView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user.html#user.views.CreateTokenView.post"><code class="docutils literal notranslate"><span class="pre">CreateTokenView.post()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="user.html#user.views.CreateTokenView.renderer_classes"><code class="docutils literal notranslate"><span class="pre">CreateTokenView.renderer_classes</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="user.html#user.views.CreateTokenView.serializer_class"><code class="docutils literal notranslate"><span class="pre">CreateTokenView.serializer_class</span></code></a></li>
 </ul>

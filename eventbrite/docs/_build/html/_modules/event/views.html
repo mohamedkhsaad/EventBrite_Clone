@@ -85,6 +85,8 @@
 <span class="sd">class:WeekendEventsView: A viewset for retrieving event instances for weekend.</span>
 <span class="sd">class:TicketCreateAPIView: A viewset for create a new ticket for a given event</span>
 <span class="sd">class:EventTicketPrice: A viewset for retrieve the ticket price for a given event.</span>
+<span class="sd">class:DraftEventsAPIView: A viewset for retrieving Draft events.</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">event.forms</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
@@ -249,7 +251,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This view should return a list of all the online events.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">events</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">online</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">online</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
         <span class="n">serializer</span> <span class="o">=</span> <span class="n">eventSerializer</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div></div>
@@ -411,7 +413,6 @@
 <span class="sd">    first ticket object associated with the event ID. If the ticket object exists, the ticket price is returned in a </span>
 <span class="sd">    success response. Otherwise, an error response is returned indicating that the ticket was not found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
 <div class="viewcode-block" id="EventTicketPrice.get"><a class="viewcode-back" href="../../event.html#event.views.EventTicketPrice.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the ticket price for a given event.</span>
@@ -427,6 +428,27 @@
             <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;ticket_price&#39;</span><span class="p">:</span> <span class="n">ticket_price</span><span class="p">})</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Ticket not found&#39;</span><span class="p">})</span></div></div>
+
+<div class="viewcode-block" id="FreeTicketEventListView"><a class="viewcode-back" href="../../event.html#event.views.FreeTicketEventListView">[docs]</a><span class="k">class</span> <span class="nc">FreeTicketEventListView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
+<div class="viewcode-block" id="FreeTicketEventListView.get_queryset"><a class="viewcode-back" href="../../event.html#event.views.FreeTicketEventListView.get_queryset">[docs]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ticket_set__TICKET_TYPE</span><span class="o">=</span><span class="s1">&#39;Free&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span></div></div>
+    
+<div class="viewcode-block" id="DraftEventsAPIView"><a class="viewcode-back" href="../../event.html#event.views.DraftEventsAPIView">[docs]</a><span class="k">class</span> <span class="nc">DraftEventsAPIView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A viewset for retrieving Draft events.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># permission_classes = [IsAuthenticated]</span>
+
+<div class="viewcode-block" id="DraftEventsAPIView.get"><a class="viewcode-back" href="../../event.html#event.views.DraftEventsAPIView.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This view should return a list of all the draft events.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">events</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">STATUS</span><span class="o">=</span><span class="s1">&#39;Draft&#39;</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">eventSerializer</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div></div>
+    
 </pre></div>
 
            </div>
