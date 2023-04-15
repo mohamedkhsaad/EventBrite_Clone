@@ -51,13 +51,6 @@ urlpatterns = [
     path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    # path('user/reset-password/', auth_views.PasswordResetView.as_view(), name='password-reset'),
-    # path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
-    # path('user/reset-password-sent/', auth_views.PasswordResetDoneView.as_view(), name='password-reset-done'),
-    # path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password-reset-complete'),
-
-
-
     # event
     path('events/create/', EventCreateView.as_view(), name='event-create'),
     path('events/search/<str:event_name>', EventSearchView.as_view(), name='event_search'),
@@ -86,5 +79,6 @@ urlpatterns = [
     #booking
     path('booking/',include('booking.urls')),
     path('',include('rest_framework.urls')),
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+#+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -21,6 +21,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from django.utils import timezone
+
 # Create your views here.
 # import sys
 # sys.path.append('/path/to/google-auth')
@@ -180,7 +182,6 @@ from django.http import HttpResponseRedirect
 
 class CustomPasswordResetView(PasswordResetView):
     success_url = reverse_lazy('password_reset_done')
-
     def post(self, request, *args, **kwargs):
         email = request.POST.get('email')
         if email:
@@ -191,23 +192,72 @@ class CustomPasswordResetView(PasswordResetView):
             if user is not None:
                 # Generate a one-time use token for the user's email address
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
-                token = default_token_generator.make_token(user)
+                expiration_time = timezone.now() + timezone.timedelta(minutes=2)
+                token = default_token_generator.make_token(user) + str(int(expiration_time.timestamp()))
+                # token = default_token_generator.make_token(user)
 
                 # Construct the reset URL for the user
                 reset_url = request.build_absolute_uri(reverse_lazy('password_reset_confirm', kwargs={
                     'uidb64': uid,
+                    
                     'token': token,
                 }))
 
                 # Send the password reset email to the user
-                send_mail(
-                    'Password reset for your My App account',
-                    'Please click the following link to reset your password: ' + reset_url,
-                    'noreply@myapp.com',
-                    [user.email],
-                    fail_silently=False,
-                )
+                # send_mail(
+                #     'Password reset for your My App account',
+                #     'Please click the following link to reset your password: ' + reset_url,
+                #     'noreply@myapp.com',
+                #     [user.email],
+                #     fail_silently=False,
+                # )
 
         # Redirect to the password reset done page
         return HttpResponseRedirect(self.success_url)
 
+
+# from django.conf import settings
+# from django.contrib.auth.tokens import default_token_generator
+# from django.core.mail import send_mail
+# from django.urls import reverse_lazy
+# from django.utils.encoding import force_bytes
+# from django.utils.http import urlsafe_base64_encode
+# from django.utils import timezone
+# from django.contrib.auth.forms import PasswordResetForm
+# from django.contrib.auth.views import FormView
+# from django.contrib.auth.forms import PasswordResetForm
+
+# class PasswordResetView(FormView):
+#     template_name = 'password_reset.html'
+#     form_class = PasswordResetForm
+#     success_url = reverse_lazy('password_reset_done')
+#     def form_valid(self, form):
+#         email = form.cleaned_data.get('email')
+#         if email:
+#             try:
+#                 user = User.objects.get(email=email)
+#             except User.DoesNotExist:
+#                 user = None
+#             if user is not None:
+#                 # Generate a one-time use token for the user's email address
+#                 uid = urlsafe_base64_encode(force_bytes(user.pk))
+#                 expiration_time = timezone.now() + timezone.timedelta(seconds=settings.PASSWORD_RESET_TIMEOUT)
+#                 token = default_token_generator.make_token(user) + str(int(expiration_time.timestamp()))
+
+#                 # Construct the reset URL for the user
+#                 reset_url = self.request.build_absolute_uri(reverse_lazy('password_reset_confirm', kwargs={
+#                     'uidb64': uid,
+#                     'token': token,
+#                 }))
+
+#                 # Send the password reset email to the user
+#                 send_mail(
+#                     settings.PASSWORD_RESET_EMAIL_SUBJECT,
+#                     'Please click the following link to reset your password: ' + reset_url,
+#                     settings.PASSWORD_RESET_EMAIL_FROM_ADDRESS,
+#                     [user.email],
+#                     fail_silently=False,
+#                 )
+
+#         # Redirect to the password reset done page
+#         return HttpResponseRedirect(self.success_url)

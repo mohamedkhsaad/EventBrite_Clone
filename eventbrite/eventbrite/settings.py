@@ -69,6 +69,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     # 'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.security.SecurityMiddleware',
     # 'django_otp.middleware.OTPMiddleware',
@@ -103,23 +104,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventbrite.wsgi.application'
 
 #Glopal Database
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
-        'CLIENT': {
-            'host': os.getenv('DB_CLIENT_HOST')
-        }
-    }
-}
-# # Local Database
 # DATABASES = {
 #     'default': {
-#         'ENGINE': os.environ.get('DATABASE_ENGINE'),
-#         'NAME': os.environ.get('DATABASE_NAME'),
+#         'ENGINE': os.getenv('DB_ENGINE'),
+#         'NAME': os.getenv('DB_NAME'),
+#         'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
+#         'CLIENT': {
+#             'host': os.getenv('DB_CLIENT_HOST')
+#         }
 #     }
 # }
+# # Local Database
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DATABASE_ENGINE'),
+        'NAME': os.environ.get('DATABASE_NAME'),
+    }
+}
 
 
 # Password validation
@@ -193,32 +194,17 @@ SSL_CERTIFICATE = os.getenv('SSL_CERTIFICATE')
 SSL_PRIVATE_KEY = os.getenv('SSL_PRIVATE_KEY')
 
 
-# AWS_ACCESS_KEY_ID = '<your_access_key_id>'
-# AWS_SECRET_ACCESS_KEY = '<your_secret_access_key>'
-# AWS_STORAGE_BUCKET_NAME = '<your_bucket_name>'
-# AWS_S3_REGION_NAME = '<your_bucket_region>'
-# AWS_DEFAULT_ACL = 'public-read'
 
-# Optional: add custom domain for serving static and media files
-# AWS_S3_CUSTOM_DOMAIN = '<your_domain_name>'
-# Use the following setting if you want to store static files on S3
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# Use the following setting if you want to store media files on S3
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 PASSWORD_RESET_TIMEOUT_DAYS = 7
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-# MEDIA_ROOT = 'media'
-# MEDIA_URL = '/media/'
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/path/to/images',
 ]
-
 CORS_ORIGIN_ALLOW_ALL = True
+
