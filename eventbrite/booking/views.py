@@ -42,7 +42,7 @@ from eventbrite.settings import *
 
 
 
-
+#TODO: return paginated responses
 
 
 # DONE 
@@ -186,10 +186,23 @@ class discount_pk(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # in-progress
 #TODO: configer email service backend
-
-
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
