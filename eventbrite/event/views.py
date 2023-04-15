@@ -39,6 +39,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CR
 from rest_framework.views import APIView
 from booking.models import event, Ticket
 from booking.serializers import TicketSerializer
+import csv
 
 
 class EventCreateView(generics.CreateAPIView):
