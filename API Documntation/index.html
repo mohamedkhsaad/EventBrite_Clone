@@ -755,7 +755,7 @@
   }
 };
             defs["event"] = {
-  "required" : [ "CAPACITY", "Description", "END_DATE", "END_TIME", "ID", "PASSWORD", "STATUS", "ST_DATE", "ST_TIME", "Summery", "Title", "User_id", "category_name", "id", "image", "online", "organizer", "sub_Category", "type", "venue_name" ],
+  "required" : [ "CAPACITY", "END_DATE", "END_TIME", "ID", "STATUS", "ST_DATE", "ST_TIME", "Title", "category_name", "id", "image", "online", "organizer", "sub_Category", "type", "venue_name" ],
   "type" : "object",
   "properties" : {
     "id" : {
@@ -774,7 +774,8 @@
     "User_id" : {
       "maximum" : 2147483647,
       "minimum" : -2147483648,
-      "type" : "integer"
+      "type" : "integer",
+      "nullable" : true
     },
     "Title" : {
       "maxLength" : 50,
@@ -786,11 +787,13 @@
     },
     "Summery" : {
       "maxLength" : 500,
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "Description" : {
       "maxLength" : 500,
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "type" : {
       "maxLength" : 20,
@@ -825,8 +828,7 @@
       "format" : "time"
     },
     "online" : {
-      "maxLength" : 1,
-      "type" : "string"
+      "$ref" : "#/components/schemas/OnlineEnum"
     },
     "CAPACITY" : {
       "maximum" : 2147483647,
@@ -835,14 +837,19 @@
     },
     "PASSWORD" : {
       "maxLength" : 10,
-      "type" : "string"
+      "type" : "string",
+      "nullable" : true
     },
     "STATUS" : {
-      "maxLength" : 20,
-      "type" : "string"
+      "$ref" : "#/components/schemas/STATUSEnum"
     }
   },
   "description" : "Serializer for the Event model."
+};
+            defs["OnlineEnum"] = {
+  "type" : "string",
+  "description" : "* `True` - True\n* `False` - False",
+  "enum" : [ "True", "False" ]
 };
             defs["PatchedDiscount"] = {
   "type" : "object",
@@ -888,6 +895,11 @@
       "type" : "integer"
     }
   }
+};
+            defs["STATUSEnum"] = {
+  "type" : "string",
+  "description" : "* `Draft` - Draft\n* `Live` - Live\n* `Past` - Past",
+  "enum" : [ "Draft", "Live", "Past" ]
 };
             defs["TICKETTYPEEnum"] = {
   "type" : "string",
@@ -996,7 +1008,8 @@
         "type" : "string"
       }
     }
-  }
+  },
+  "description" : "Serializer for UserInterest model."
 };
   </script>
 
@@ -1062,6 +1075,9 @@
                       <a href="#api-Booking-bookingUserTicketsRetrieve">bookingUserTicketsRetrieve</a>
                     </li>
                   <li class="nav-header" data-group="Eventmanagement"><a href="#api-Eventmanagement">API Methods - Eventmanagement</a></li>
+                    <li data-group="Eventmanagement" data-name="eventmanagementPromocodeCreate" class="">
+                      <a href="#api-Eventmanagement-eventmanagementPromocodeCreate">eventmanagementPromocodeCreate</a>
+                    </li>
                     <li data-group="Eventmanagement" data-name="eventmanagementUserPastEventsList" class="">
                       <a href="#api-Eventmanagement-eventmanagementUserPastEventsList">eventmanagementUserPastEventsList</a>
                     </li>
@@ -1081,8 +1097,14 @@
                     <li data-group="Events" data-name="eventsCreateCreate" class="">
                       <a href="#api-Events-eventsCreateCreate">eventsCreateCreate</a>
                     </li>
+                    <li data-group="Events" data-name="eventsDrafteVentsRetrieve" class="">
+                      <a href="#api-Events-eventsDrafteVentsRetrieve">eventsDrafteVentsRetrieve</a>
+                    </li>
                     <li data-group="Events" data-name="eventsForYouRetrieve" class="">
                       <a href="#api-Events-eventsForYouRetrieve">eventsForYouRetrieve</a>
+                    </li>
+                    <li data-group="Events" data-name="eventsFreeEventsList" class="">
+                      <a href="#api-Events-eventsFreeEventsList">eventsFreeEventsList</a>
                     </li>
                     <li data-group="Events" data-name="eventsGetuserinterestsRetrieve" class="">
                       <a href="#api-Events-eventsGetuserinterestsRetrieve">eventsGetuserinterestsRetrieve</a>
@@ -7704,6 +7726,820 @@ except ApiException as e:
                   </section>
                 <section id="api-Eventmanagement">
                   <h1>Eventmanagement</h1>
+                    <div id="api-Eventmanagement-eventmanagementPromocodeCreate">
+                      <article id="api-Eventmanagement-eventmanagementPromocodeCreate-0" data-group="User" data-name="eventmanagementPromocodeCreate" data-version="0">
+                        <div class="pull-left">
+                          <h1>eventmanagementPromocodeCreate</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">a post request to create promocode for an event, and have the option to add a csv file instead of typying the promocode details</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/eventmanagement/{event_id}/promocode/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementPromocodeCreate-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+ -H "Authorization: Basic [[basicHash]]"\
+\
+-H "Authorization: [[apiKey]]"\
+-H "Accept: application/json"\
+-H "Content-Type: application/json,application/x-www-form-urlencoded,multipart/form-data"\
+"//eventmanagement/{event_id}/promocode/?"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.EventmanagementApi;
+
+import java.io.File;
+import java.util.*;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Configure HTTP basic authorization: basicAuth
+        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
+        basicAuth.setUsername("YOUR USERNAME");
+        basicAuth.setPassword("YOUR PASSWORD");
+
+        // Configure API key authorization: cookieAuth
+        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
+        cookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //cookieAuth.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: tokenAuth
+        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
+        tokenAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //tokenAuth.setApiKeyPrefix("Token");
+
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Discount body = ; // Discount | 
+        Integer eventId = 56; // Integer | 
+        try {
+            Discount result = apiInstance.eventmanagementPromocodeCreate(body, eventId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementPromocodeCreate");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.EventmanagementApi;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Discount body = ; // Discount | 
+        Integer eventId = 56; // Integer | 
+        try {
+            Discount result = apiInstance.eventmanagementPromocodeCreate(body, eventId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementPromocodeCreate");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure HTTP basic authorization (authentication scheme: basicAuth)
+[apiConfig setUsername:@"YOUR_USERNAME"];
+[apiConfig setPassword:@"YOUR_PASSWORD"];
+// Configure API key authorization: (authentication scheme: cookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
+// Configure API key authorization: (authentication scheme: tokenAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
+Discount *body = ; // 
+Integer *eventId = 56; // 
+
+EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
+
+[apiInstance eventmanagementPromocodeCreateWith:body
+    eventId:eventId
+              completionHandler: ^(Discount output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
+var defaultClient = SwaggerJsClient.ApiClient.instance;
+// Configure HTTP basic authorization: basicAuth
+var basicAuth = defaultClient.authentications['basicAuth'];
+basicAuth.username = 'YOUR USERNAME'
+basicAuth.password = 'YOUR PASSWORD'
+
+// Configure API key authorization: cookieAuth
+var cookieAuth = defaultClient.authentications['cookieAuth'];
+cookieAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
+
+// Configure API key authorization: tokenAuth
+var tokenAuth = defaultClient.authentications['tokenAuth'];
+tokenAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
+
+var api = new SwaggerJsClient.EventmanagementApi()
+var body = ; // {{Discount}} 
+var eventId = 56; // {{Integer}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.eventmanagementPromocodeCreate(bodyeventId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class eventmanagementPromocodeCreateExample
+    {
+        public void main()
+        {
+            // Configure HTTP basic authorization: basicAuth
+            Configuration.Default.Username = "YOUR_USERNAME";
+            Configuration.Default.Password = "YOUR_PASSWORD";
+            // Configure API key authorization: cookieAuth
+            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
+            // Configure API key authorization: tokenAuth
+            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
+
+            var apiInstance = new EventmanagementApi();
+            var body = new Discount(); // Discount | 
+            var eventId = 56;  // Integer | 
+
+            try
+            {
+                Discount result = apiInstance.eventmanagementPromocodeCreate(body, eventId);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling EventmanagementApi.eventmanagementPromocodeCreate: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+// Configure HTTP basic authorization: basicAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
+Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
+// Configure API key authorization: cookieAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
+// Configure API key authorization: tokenAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+$api_instance = new Swagger\Client\ApiEventmanagementApi();
+$body = ; // Discount | 
+$eventId = 56; // Integer | 
+
+try {
+    $result = $api_instance->eventmanagementPromocodeCreate($body, $eventId);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling EventmanagementApi->eventmanagementPromocodeCreate: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::EventmanagementApi;
+# Configure HTTP basic authorization: basicAuth
+$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
+$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
+# Configure API key authorization: cookieAuth
+$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
+# Configure API key authorization: tokenAuth
+$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
+
+my $api_instance = WWW::SwaggerClient::EventmanagementApi->new();
+my $body = WWW::SwaggerClient::Object::Discount->new(); # Discount | 
+my $eventId = 56; # Integer | 
+
+eval { 
+    my $result = $api_instance->eventmanagementPromocodeCreate(body => $body, eventId => $eventId);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling EventmanagementApi->eventmanagementPromocodeCreate: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementPromocodeCreate-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+# Configure HTTP basic authorization: basicAuth
+swagger_client.configuration.username = 'YOUR_USERNAME'
+swagger_client.configuration.password = 'YOUR_PASSWORD'
+# Configure API key authorization: cookieAuth
+swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
+# Configure API key authorization: tokenAuth
+swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.EventmanagementApi()
+body =  # Discount | 
+eventId = 56 # Integer | 
+
+try: 
+    api_response = api_instance.eventmanagement_promocode_create(body, eventId)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling EventmanagementApi->eventmanagementPromocodeCreate: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">event_id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_eventId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body <span style="color:red;">*</span></td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Discount"
+      }
+    },
+    "application/x-www-form-urlencoded" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Discount"
+      }
+    },
+    "multipart/form-data" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Discount"
+      }
+    }
+  },
+  "required" : true
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_eventmanagementPromocodeCreate_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_eventmanagementPromocodeCreate_body"></div>
+                                </td>
+                                </tr>
+                            </table>
+
+                            <div class="methodsubtabletitle">Form parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_id">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">ID*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_iD">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">EVENT_ID*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_eVENTID">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">percent_off*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_percentOff">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">CODE*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_cODE">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">start_date*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_startDate">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      date
+                                                  </span>
+                                                      <span class="format">
+                                                          (date)
+                                                      </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">end_date*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_endDate">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      date
+                                                  </span>
+                                                      <span class="format">
+                                                          (date)
+                                                      </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">Quantity_available*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_quantityAvailable">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">User_ID*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_userID">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_id">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">ID*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_iD">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">EVENT_ID*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_eVENTID">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">percent_off*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_percentOff">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">CODE*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_cODE">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">start_date*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_startDate">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      date
+                                                  </span>
+                                                      <span class="format">
+                                                          (date)
+                                                      </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">end_date*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_endDate">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      date
+                                                  </span>
+                                                      <span class="format">
+                                                          (date)
+                                                      </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">Quantity_available*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_quantityAvailable">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr><td style="width:150px;">User_ID*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementPromocodeCreate_userID">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3> Status: 201 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-eventmanagementPromocodeCreate-201-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-eventmanagementPromocodeCreate-201-schema">
+                                  <div id='responses-eventmanagementPromocodeCreate-201-schema-201' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Discount"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-eventmanagementPromocodeCreate-201-schema-data').val(stringify(schema));
+                                        var result = $('#responses-eventmanagementPromocodeCreate-201-schema-201');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-eventmanagementPromocodeCreate-201-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-Eventmanagement-eventmanagementUserPastEventsList">
                       <article id="api-Eventmanagement-eventmanagementUserPastEventsList-0" data-group="User" data-name="eventmanagementUserPastEventsList" data-version="0">
                         <div class="pull-left">
@@ -9675,10 +10511,10 @@ public class EventsApiExample {
         date eNDDATE2 = 2013-10-20; // date | 
         String sTTIME2 = sTTIME_example; // String | 
         String eNDTIME2 = eNDTIME_example; // String | 
-        String online2 = online_example; // String | 
+        OnlineEnum online2 = ; // OnlineEnum | 
         Integer cAPACITY2 = 56; // Integer | 
         String pASSWORD2 = pASSWORD_example; // String | 
-        String sTATUS2 = sTATUS_example; // String | 
+        STATUSEnum sTATUS2 = ; // STATUSEnum | 
         Integer id = 56; // Integer | 
         String image = image_example; // String | 
         Integer iD = 56; // Integer | 
@@ -9695,10 +10531,10 @@ public class EventsApiExample {
         date eNDDATE = 2013-10-20; // date | 
         String sTTIME = sTTIME_example; // String | 
         String eNDTIME = eNDTIME_example; // String | 
-        String online = online_example; // String | 
+        OnlineEnum online = ; // OnlineEnum | 
         Integer cAPACITY = 56; // Integer | 
         String pASSWORD = pASSWORD_example; // String | 
-        String sTATUS = sTATUS_example; // String | 
+        STATUSEnum sTATUS = ; // STATUSEnum | 
         try {
             event result = apiInstance.eventsCreateCreate(id2, image2, iD2, userId2, title2, organizer2, summery2, description2, type2, categoryName2, subCategory2, venueName2, sTDATE2, eNDDATE2, sTTIME2, eNDTIME2, online2, cAPACITY2, pASSWORD2, sTATUS2, id, image, iD, userId, title, organizer, summery, description, type, categoryName, subCategory, venueName, sTDATE, eNDDATE, sTTIME, eNDTIME, online, cAPACITY, pASSWORD, sTATUS);
             System.out.println(result);
@@ -9733,10 +10569,10 @@ public class EventsApiExample {
         date eNDDATE2 = 2013-10-20; // date | 
         String sTTIME2 = sTTIME_example; // String | 
         String eNDTIME2 = eNDTIME_example; // String | 
-        String online2 = online_example; // String | 
+        OnlineEnum online2 = ; // OnlineEnum | 
         Integer cAPACITY2 = 56; // Integer | 
         String pASSWORD2 = pASSWORD_example; // String | 
-        String sTATUS2 = sTATUS_example; // String | 
+        STATUSEnum sTATUS2 = ; // STATUSEnum | 
         Integer id = 56; // Integer | 
         String image = image_example; // String | 
         Integer iD = 56; // Integer | 
@@ -9753,10 +10589,10 @@ public class EventsApiExample {
         date eNDDATE = 2013-10-20; // date | 
         String sTTIME = sTTIME_example; // String | 
         String eNDTIME = eNDTIME_example; // String | 
-        String online = online_example; // String | 
+        OnlineEnum online = ; // OnlineEnum | 
         Integer cAPACITY = 56; // Integer | 
         String pASSWORD = pASSWORD_example; // String | 
-        String sTATUS = sTATUS_example; // String | 
+        STATUSEnum sTATUS = ; // STATUSEnum | 
         try {
             event result = apiInstance.eventsCreateCreate(id2, image2, iD2, userId2, title2, organizer2, summery2, description2, type2, categoryName2, subCategory2, venueName2, sTDATE2, eNDDATE2, sTTIME2, eNDTIME2, online2, cAPACITY2, pASSWORD2, sTATUS2, id, image, iD, userId, title, organizer, summery, description, type, categoryName, subCategory, venueName, sTDATE, eNDDATE, sTTIME, eNDTIME, online, cAPACITY, pASSWORD, sTATUS);
             System.out.println(result);
@@ -9800,10 +10636,10 @@ date *sTDATE2 = 2013-10-20; //
 date *eNDDATE2 = 2013-10-20; // 
 String *sTTIME2 = sTTIME_example; // 
 String *eNDTIME2 = eNDTIME_example; // 
-String *online2 = online_example; // 
+OnlineEnum *online2 = ; // 
 Integer *cAPACITY2 = 56; // 
 String *pASSWORD2 = pASSWORD_example; // 
-String *sTATUS2 = sTATUS_example; // 
+STATUSEnum *sTATUS2 = ; // 
 Integer *id = 56; // 
 String *image = image_example; // 
 Integer *iD = 56; // 
@@ -9820,10 +10656,10 @@ date *sTDATE = 2013-10-20; //
 date *eNDDATE = 2013-10-20; // 
 String *sTTIME = sTTIME_example; // 
 String *eNDTIME = eNDTIME_example; // 
-String *online = online_example; // 
+OnlineEnum *online = ; // 
 Integer *cAPACITY = 56; // 
 String *pASSWORD = pASSWORD_example; // 
-String *sTATUS = sTATUS_example; // 
+STATUSEnum *sTATUS = ; // 
 
 EventsApi *apiInstance = [[EventsApi alloc] init];
 
@@ -9915,10 +10751,10 @@ var sTDATE2 = 2013-10-20; // {{date}}
 var eNDDATE2 = 2013-10-20; // {{date}} 
 var sTTIME2 = sTTIME_example; // {{String}} 
 var eNDTIME2 = eNDTIME_example; // {{String}} 
-var online2 = online_example; // {{String}} 
+var online2 = ; // {{OnlineEnum}} 
 var cAPACITY2 = 56; // {{Integer}} 
 var pASSWORD2 = pASSWORD_example; // {{String}} 
-var sTATUS2 = sTATUS_example; // {{String}} 
+var sTATUS2 = ; // {{STATUSEnum}} 
 var id = 56; // {{Integer}} 
 var image = image_example; // {{String}} 
 var iD = 56; // {{Integer}} 
@@ -9935,10 +10771,10 @@ var sTDATE = 2013-10-20; // {{date}}
 var eNDDATE = 2013-10-20; // {{date}} 
 var sTTIME = sTTIME_example; // {{String}} 
 var eNDTIME = eNDTIME_example; // {{String}} 
-var online = online_example; // {{String}} 
+var online = ; // {{OnlineEnum}} 
 var cAPACITY = 56; // {{Integer}} 
 var pASSWORD = pASSWORD_example; // {{String}} 
-var sTATUS = sTATUS_example; // {{String}} 
+var sTATUS = ; // {{STATUSEnum}} 
 
 var callback = function(error, data, response) {
   if (error) {
@@ -9996,10 +10832,10 @@ namespace Example
             var eNDDATE2 = 2013-10-20;  // date | 
             var sTTIME2 = sTTIME_example;  // String | 
             var eNDTIME2 = eNDTIME_example;  // String | 
-            var online2 = online_example;  // String | 
+            var online2 = new OnlineEnum(); // OnlineEnum | 
             var cAPACITY2 = 56;  // Integer | 
             var pASSWORD2 = pASSWORD_example;  // String | 
-            var sTATUS2 = sTATUS_example;  // String | 
+            var sTATUS2 = new STATUSEnum(); // STATUSEnum | 
             var id = 56;  // Integer | 
             var image = image_example;  // String | 
             var iD = 56;  // Integer | 
@@ -10016,10 +10852,10 @@ namespace Example
             var eNDDATE = 2013-10-20;  // date | 
             var sTTIME = sTTIME_example;  // String | 
             var eNDTIME = eNDTIME_example;  // String | 
-            var online = online_example;  // String | 
+            var online = new OnlineEnum(); // OnlineEnum | 
             var cAPACITY = 56;  // Integer | 
             var pASSWORD = pASSWORD_example;  // String | 
-            var sTATUS = sTATUS_example;  // String | 
+            var sTATUS = new STATUSEnum(); // STATUSEnum | 
 
             try
             {
@@ -10068,10 +10904,10 @@ $sTDATE2 = 2013-10-20; // date |
 $eNDDATE2 = 2013-10-20; // date | 
 $sTTIME2 = sTTIME_example; // String | 
 $eNDTIME2 = eNDTIME_example; // String | 
-$online2 = online_example; // String | 
+$online2 = ; // OnlineEnum | 
 $cAPACITY2 = 56; // Integer | 
 $pASSWORD2 = pASSWORD_example; // String | 
-$sTATUS2 = sTATUS_example; // String | 
+$sTATUS2 = ; // STATUSEnum | 
 $id = 56; // Integer | 
 $image = image_example; // String | 
 $iD = 56; // Integer | 
@@ -10088,10 +10924,10 @@ $sTDATE = 2013-10-20; // date |
 $eNDDATE = 2013-10-20; // date | 
 $sTTIME = sTTIME_example; // String | 
 $eNDTIME = eNDTIME_example; // String | 
-$online = online_example; // String | 
+$online = ; // OnlineEnum | 
 $cAPACITY = 56; // Integer | 
 $pASSWORD = pASSWORD_example; // String | 
-$sTATUS = sTATUS_example; // String | 
+$sTATUS = ; // STATUSEnum | 
 
 try {
     $result = $api_instance->eventsCreateCreate($id2, $image2, $iD2, $userId2, $title2, $organizer2, $summery2, $description2, $type2, $categoryName2, $subCategory2, $venueName2, $sTDATE2, $eNDDATE2, $sTTIME2, $eNDTIME2, $online2, $cAPACITY2, $pASSWORD2, $sTATUS2, $id, $image, $iD, $userId, $title, $organizer, $summery, $description, $type, $categoryName, $subCategory, $venueName, $sTDATE, $eNDDATE, $sTTIME, $eNDTIME, $online, $cAPACITY, $pASSWORD, $sTATUS);
@@ -10135,10 +10971,10 @@ my $sTDATE2 = 2013-10-20; # date |
 my $eNDDATE2 = 2013-10-20; # date | 
 my $sTTIME2 = sTTIME_example; # String | 
 my $eNDTIME2 = eNDTIME_example; # String | 
-my $online2 = online_example; # String | 
+my $online2 = ; # OnlineEnum | 
 my $cAPACITY2 = 56; # Integer | 
 my $pASSWORD2 = pASSWORD_example; # String | 
-my $sTATUS2 = sTATUS_example; # String | 
+my $sTATUS2 = ; # STATUSEnum | 
 my $id = 56; # Integer | 
 my $image = image_example; # String | 
 my $iD = 56; # Integer | 
@@ -10155,10 +10991,10 @@ my $sTDATE = 2013-10-20; # date |
 my $eNDDATE = 2013-10-20; # date | 
 my $sTTIME = sTTIME_example; # String | 
 my $eNDTIME = eNDTIME_example; # String | 
-my $online = online_example; # String | 
+my $online = ; # OnlineEnum | 
 my $cAPACITY = 56; # Integer | 
 my $pASSWORD = pASSWORD_example; # String | 
-my $sTATUS = sTATUS_example; # String | 
+my $sTATUS = ; # STATUSEnum | 
 
 eval { 
     my $result = $api_instance->eventsCreateCreate(id2 => $id2, image2 => $image2, iD2 => $iD2, userId2 => $userId2, title2 => $title2, organizer2 => $organizer2, summery2 => $summery2, description2 => $description2, type2 => $type2, categoryName2 => $categoryName2, subCategory2 => $subCategory2, venueName2 => $venueName2, sTDATE2 => $sTDATE2, eNDDATE2 => $eNDDATE2, sTTIME2 => $sTTIME2, eNDTIME2 => $eNDTIME2, online2 => $online2, cAPACITY2 => $cAPACITY2, pASSWORD2 => $pASSWORD2, sTATUS2 => $sTATUS2, id => $id, image => $image, iD => $iD, userId => $userId, title => $title, organizer => $organizer, summery => $summery, description => $description, type => $type, categoryName => $categoryName, subCategory => $subCategory, venueName => $venueName, sTDATE => $sTDATE, eNDDATE => $eNDDATE, sTTIME => $sTTIME, eNDTIME => $eNDTIME, online => $online, cAPACITY => $cAPACITY, pASSWORD => $pASSWORD, sTATUS => $sTATUS);
@@ -10205,10 +11041,10 @@ sTDATE2 = 2013-10-20 # date |
 eNDDATE2 = 2013-10-20 # date | 
 sTTIME2 = sTTIME_example # String | 
 eNDTIME2 = eNDTIME_example # String | 
-online2 = online_example # String | 
+online2 =  # OnlineEnum | 
 cAPACITY2 = 56 # Integer | 
 pASSWORD2 = pASSWORD_example # String | 
-sTATUS2 = sTATUS_example # String | 
+sTATUS2 =  # STATUSEnum | 
 id = 56 # Integer | 
 image = image_example # String | 
 iD = 56 # Integer | 
@@ -10225,10 +11061,10 @@ sTDATE = 2013-10-20 # date |
 eNDDATE = 2013-10-20 # date | 
 sTTIME = sTTIME_example # String | 
 eNDTIME = eNDTIME_example # String | 
-online = online_example # String | 
+online =  # OnlineEnum | 
 cAPACITY = 56 # Integer | 
 pASSWORD = pASSWORD_example # String | 
-sTATUS = sTATUS_example # String | 
+sTATUS =  # STATUSEnum | 
 
 try: 
     api_response = api_instance.events_create_create(id2, image2, iD2, userId2, title2, organizer2, summery2, description2, type2, categoryName2, subCategory2, venueName2, sTDATE2, eNDDATE2, sTTIME2, eNDTIME2, online2, cAPACITY2, pASSWORD2, sTATUS2, id, image, iD, userId, title, organizer, summery, description, type, categoryName, subCategory, venueName, sTDATE, eNDDATE, sTTIME, eNDTIME, online, cAPACITY, pASSWORD, sTATUS)
@@ -10576,7 +11412,7 @@ except ApiException as e:
                                           <div class="json-schema-view">
                                               <div class="primitive">
                                                   <span class="type">
-                                                      String
+                                                      OnlineEnum
                                                   </span>
                                   
                                               </div>
@@ -10633,7 +11469,7 @@ except ApiException as e:
                                           <div class="json-schema-view">
                                               <div class="primitive">
                                                   <span class="type">
-                                                      String
+                                                      STATUSEnum
                                                   </span>
                                   
                                               </div>
@@ -10971,7 +11807,7 @@ except ApiException as e:
                                           <div class="json-schema-view">
                                               <div class="primitive">
                                                   <span class="type">
-                                                      String
+                                                      OnlineEnum
                                                   </span>
                                   
                                               </div>
@@ -11028,7 +11864,7 @@ except ApiException as e:
                                           <div class="json-schema-view">
                                               <div class="primitive">
                                                   <span class="type">
-                                                      String
+                                                      STATUSEnum
                                                   </span>
                                   
                                               </div>
@@ -11096,6 +11932,311 @@ except ApiException as e:
                                   </div>
                                   <input id='responses-eventsCreateCreate-201-schema-data' type='hidden' value=''></input>
                                 </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Events-eventsDrafteVentsRetrieve">
+                      <article id="api-Events-eventsDrafteVentsRetrieve-0" data-group="User" data-name="eventsDrafteVentsRetrieve" data-version="0">
+                        <div class="pull-left">
+                          <h1>eventsDrafteVentsRetrieve</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">This view should return a list of all the draft events.</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/events/drafte-vents/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Events-eventsDrafteVentsRetrieve-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Events-eventsDrafteVentsRetrieve-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Events-eventsDrafteVentsRetrieve-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+ -H "Authorization: Basic [[basicHash]]"\
+\
+-H "Authorization: [[apiKey]]"\
+"//events/drafte-vents/?"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.EventsApi;
+
+import java.io.File;
+import java.util.*;
+
+public class EventsApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Configure HTTP basic authorization: basicAuth
+        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
+        basicAuth.setUsername("YOUR USERNAME");
+        basicAuth.setPassword("YOUR PASSWORD");
+
+        // Configure API key authorization: cookieAuth
+        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
+        cookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //cookieAuth.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: tokenAuth
+        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
+        tokenAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //tokenAuth.setApiKeyPrefix("Token");
+
+        EventsApi apiInstance = new EventsApi();
+        try {
+            apiInstance.eventsDrafteVentsRetrieve();
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventsApi#eventsDrafteVentsRetrieve");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.EventsApi;
+
+public class EventsApiExample {
+
+    public static void main(String[] args) {
+        EventsApi apiInstance = new EventsApi();
+        try {
+            apiInstance.eventsDrafteVentsRetrieve();
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventsApi#eventsDrafteVentsRetrieve");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure HTTP basic authorization (authentication scheme: basicAuth)
+[apiConfig setUsername:@"YOUR_USERNAME"];
+[apiConfig setPassword:@"YOUR_PASSWORD"];
+// Configure API key authorization: (authentication scheme: cookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
+// Configure API key authorization: (authentication scheme: tokenAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
+
+EventsApi *apiInstance = [[EventsApi alloc] init];
+
+[apiInstance eventsDrafteVentsRetrieveWithCompletionHandler: 
+              ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
+var defaultClient = SwaggerJsClient.ApiClient.instance;
+// Configure HTTP basic authorization: basicAuth
+var basicAuth = defaultClient.authentications['basicAuth'];
+basicAuth.username = 'YOUR USERNAME'
+basicAuth.password = 'YOUR PASSWORD'
+
+// Configure API key authorization: cookieAuth
+var cookieAuth = defaultClient.authentications['cookieAuth'];
+cookieAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
+
+// Configure API key authorization: tokenAuth
+var tokenAuth = defaultClient.authentications['tokenAuth'];
+tokenAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
+
+var api = new SwaggerJsClient.EventsApi()
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.eventsDrafteVentsRetrieve(callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class eventsDrafteVentsRetrieveExample
+    {
+        public void main()
+        {
+            // Configure HTTP basic authorization: basicAuth
+            Configuration.Default.Username = "YOUR_USERNAME";
+            Configuration.Default.Password = "YOUR_PASSWORD";
+            // Configure API key authorization: cookieAuth
+            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
+            // Configure API key authorization: tokenAuth
+            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
+
+            var apiInstance = new EventsApi();
+
+            try
+            {
+                apiInstance.eventsDrafteVentsRetrieve();
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling EventsApi.eventsDrafteVentsRetrieve: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+// Configure HTTP basic authorization: basicAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
+Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
+// Configure API key authorization: cookieAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
+// Configure API key authorization: tokenAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+$api_instance = new Swagger\Client\ApiEventsApi();
+
+try {
+    $api_instance->eventsDrafteVentsRetrieve();
+} catch (Exception $e) {
+    echo 'Exception when calling EventsApi->eventsDrafteVentsRetrieve: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::EventsApi;
+# Configure HTTP basic authorization: basicAuth
+$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
+$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
+# Configure API key authorization: cookieAuth
+$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
+# Configure API key authorization: tokenAuth
+$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
+
+my $api_instance = WWW::SwaggerClient::EventsApi->new();
+
+eval { 
+    $api_instance->eventsDrafteVentsRetrieve();
+};
+if ($@) {
+    warn "Exception when calling EventsApi->eventsDrafteVentsRetrieve: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Events-eventsDrafteVentsRetrieve-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+# Configure HTTP basic authorization: basicAuth
+swagger_client.configuration.username = 'YOUR_USERNAME'
+swagger_client.configuration.password = 'YOUR_PASSWORD'
+# Configure API key authorization: cookieAuth
+swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
+# Configure API key authorization: tokenAuth
+swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.EventsApi()
+
+try: 
+    api_instance.events_drafte_vents_retrieve()
+except ApiException as e:
+    print("Exception when calling EventsApi->eventsDrafteVentsRetrieve: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - No response body </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
                             </div>
 
                         </article>
@@ -11401,6 +12542,365 @@ except ApiException as e:
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Events-eventsFreeEventsList">
+                      <article id="api-Events-eventsFreeEventsList-0" data-group="User" data-name="eventsFreeEventsList" data-version="0">
+                        <div class="pull-left">
+                          <h1>eventsFreeEventsList</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/events/free-events/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Events-eventsFreeEventsList-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Events-eventsFreeEventsList-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Events-eventsFreeEventsList-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Events-eventsFreeEventsList-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Events-eventsFreeEventsList-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Events-eventsFreeEventsList-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Events-eventsFreeEventsList-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Events-eventsFreeEventsList-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Events-eventsFreeEventsList-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Events-eventsFreeEventsList-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Events-eventsFreeEventsList-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Events-eventsFreeEventsList-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+ -H "Authorization: Basic [[basicHash]]"\
+\
+-H "Authorization: [[apiKey]]"\
+-H "Accept: application/json"\
+"//events/free-events/?"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.EventsApi;
+
+import java.io.File;
+import java.util.*;
+
+public class EventsApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Configure HTTP basic authorization: basicAuth
+        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
+        basicAuth.setUsername("YOUR USERNAME");
+        basicAuth.setPassword("YOUR PASSWORD");
+
+        // Configure API key authorization: cookieAuth
+        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
+        cookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //cookieAuth.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: tokenAuth
+        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
+        tokenAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //tokenAuth.setApiKeyPrefix("Token");
+
+        EventsApi apiInstance = new EventsApi();
+        try {
+            array[event] result = apiInstance.eventsFreeEventsList();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventsApi#eventsFreeEventsList");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.EventsApi;
+
+public class EventsApiExample {
+
+    public static void main(String[] args) {
+        EventsApi apiInstance = new EventsApi();
+        try {
+            array[event] result = apiInstance.eventsFreeEventsList();
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventsApi#eventsFreeEventsList");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure HTTP basic authorization (authentication scheme: basicAuth)
+[apiConfig setUsername:@"YOUR_USERNAME"];
+[apiConfig setPassword:@"YOUR_PASSWORD"];
+// Configure API key authorization: (authentication scheme: cookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
+// Configure API key authorization: (authentication scheme: tokenAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
+
+EventsApi *apiInstance = [[EventsApi alloc] init];
+
+[apiInstance eventsFreeEventsListWithCompletionHandler: 
+              ^(array[event] output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
+var defaultClient = SwaggerJsClient.ApiClient.instance;
+// Configure HTTP basic authorization: basicAuth
+var basicAuth = defaultClient.authentications['basicAuth'];
+basicAuth.username = 'YOUR USERNAME'
+basicAuth.password = 'YOUR PASSWORD'
+
+// Configure API key authorization: cookieAuth
+var cookieAuth = defaultClient.authentications['cookieAuth'];
+cookieAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
+
+// Configure API key authorization: tokenAuth
+var tokenAuth = defaultClient.authentications['tokenAuth'];
+tokenAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
+
+var api = new SwaggerJsClient.EventsApi()
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.eventsFreeEventsList(callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class eventsFreeEventsListExample
+    {
+        public void main()
+        {
+            // Configure HTTP basic authorization: basicAuth
+            Configuration.Default.Username = "YOUR_USERNAME";
+            Configuration.Default.Password = "YOUR_PASSWORD";
+            // Configure API key authorization: cookieAuth
+            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
+            // Configure API key authorization: tokenAuth
+            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
+
+            var apiInstance = new EventsApi();
+
+            try
+            {
+                array[event] result = apiInstance.eventsFreeEventsList();
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling EventsApi.eventsFreeEventsList: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+// Configure HTTP basic authorization: basicAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
+Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
+// Configure API key authorization: cookieAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
+// Configure API key authorization: tokenAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+$api_instance = new Swagger\Client\ApiEventsApi();
+
+try {
+    $result = $api_instance->eventsFreeEventsList();
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling EventsApi->eventsFreeEventsList: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::EventsApi;
+# Configure HTTP basic authorization: basicAuth
+$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
+$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
+# Configure API key authorization: cookieAuth
+$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
+# Configure API key authorization: tokenAuth
+$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
+
+my $api_instance = WWW::SwaggerClient::EventsApi->new();
+
+eval { 
+    my $result = $api_instance->eventsFreeEventsList();
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling EventsApi->eventsFreeEventsList: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Events-eventsFreeEventsList-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+# Configure HTTP basic authorization: basicAuth
+swagger_client.configuration.username = 'YOUR_USERNAME'
+swagger_client.configuration.password = 'YOUR_PASSWORD'
+# Configure API key authorization: cookieAuth
+swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
+# Configure API key authorization: tokenAuth
+swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.EventsApi()
+
+try: 
+    api_response = api_instance.events_free_events_list()
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling EventsApi->eventsFreeEventsList: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-eventsFreeEventsList-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-eventsFreeEventsList-200-schema">
+                                  <div id='responses-eventsFreeEventsList-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/event"
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-eventsFreeEventsList-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-eventsFreeEventsList-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-eventsFreeEventsList-200-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>
@@ -13790,7 +15290,7 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">A POST request to create a ticket object for a given event ID</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/events/{event_id}/Tickets/</span></code></pre>
@@ -15076,7 +16576,9 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This class defines a GET request that returns a list of events happening today.
+It uses the eventSerializer class for serialization. The get_queryset method is used to
+retrieve the events happening on the current date and returns a queryset containing those events.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/events/today/</span></code></pre>
@@ -16223,7 +17725,9 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This class defines a GET request that returns a list of events happening on the upcoming weekend.
+It uses the eventSerializer class for serialization. The get_queryset method is used to retrieve
+the events happening between Friday and Saturday of the upcoming weekend and returns a queryset containing those events.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/events/weekend/</span></code></pre>
