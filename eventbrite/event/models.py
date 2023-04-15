@@ -3,26 +3,29 @@ from eventbrite.settings import *
 from user.models import *
 from django.urls import reverse
 
+
 class UserInterest(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='interests')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='interests')
     category_name = models.CharField(max_length=255)
-    sub_Category = models.CharField(max_length=255)  
+    sub_Category = models.CharField(max_length=255)
+
     def __str__(self):
         return f"{self.user.email} - {self.interest.category_name} - {self.interest.sub_Category}"
-  
+
 
 class event(models.Model):
     """
     Model representing an event.
     """
     ID = models.IntegerField(unique=True)
-    User_id = models.IntegerField(blank=False,null=True)
+    User_id = models.IntegerField(blank=False, null=True)
     Title = models.CharField(max_length=50)
     organizer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     organizer = models.CharField(max_length=50)
-    Summery = models.CharField(max_length=500,null=True)
-    Description = models.CharField(max_length=500,null=True)
+    Summery = models.CharField(max_length=500, null=True)
+    Description = models.CharField(max_length=500, null=True)
     type = models.CharField(max_length=20)
     category_name = models.CharField(max_length=10)
     sub_Category = models.CharField(max_length=20)
@@ -35,17 +38,17 @@ class event(models.Model):
         ('True', 'True'),
         ('False', 'False')
     )
-    online = models.CharField(max_length=5,choices=Online_choises)
+    online = models.CharField(max_length=5, choices=Online_choises)
     CAPACITY = models.IntegerField()
-    PASSWORD = models.CharField(max_length=10,null=True)
+    PASSWORD = models.CharField(max_length=10, null=True)
     STATUS_choises = (
         ('Draft', 'Draft'),
         ('Live', 'Live'),
-        ('Past','Past')
+        ('Past', 'Past')
     )
-    STATUS = models.CharField(max_length=5,choices=STATUS_choises)
+    STATUS = models.CharField(max_length=5, choices=STATUS_choises)
     image = models.ImageField(upload_to='events/',)
-    
+
     # image = models.ImageField(upload_to='event_images/')
     # image = models.ImageField(upload_to='event_images/%Y/%m/%d/')
     # def image_url(self):
@@ -61,9 +64,9 @@ class event(models.Model):
     # LIKES =models.ExpressionList([1])
     # CREATED=models.ExpressionList([1])
 
-    REQUIRED_FIELDS = ['ID','User_id','Title', 'organizer', 'Description', 'type', 'Category',
+    REQUIRED_FIELDS = ['ID', 'User_id', 'Title', 'organizer', 'Description', 'type', 'Category',
                        'sub_Category', 'venue_name', 'ST_DATE', 'END_DATE', 'ST_TIME', 'END_TIME', 'online',
-                       'CAPACITY', 'PASSWORD', 'STATUS','image'
+                       'CAPACITY', 'PASSWORD', 'STATUS', 'image'
                        ]
 
     class Meta:
@@ -133,5 +136,3 @@ class Locations(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.address
-
-

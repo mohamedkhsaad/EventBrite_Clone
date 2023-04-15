@@ -10,18 +10,18 @@ class AuthTokenSerializerTest(TestCase):
     def setUp(self):
         self.email = 'testuser@example.com'
         self.password = 'testpassword'
-        self.username='testusername'
+        self.username = 'testusername'
         self.user = get_user_model().objects.create_user(
             username=self.username,
             email=self.email,
             password=self.password,
-            
+
         )
         self.serializer_data = {
             'email': self.email,
             'password': self.password
         }
-    
+
     def test_auth_token_creation(self):
         serializer = AuthTokenSerializer(data=self.serializer_data)
         serializer.is_valid(raise_exception=True)
@@ -56,4 +56,3 @@ class UserSerializerTest(APITestCase):
         self.assertEqual(user.gender, "M")
         self.assertEqual(user.city, "New York")
         self.assertEqual(user.country, "USA")
-
