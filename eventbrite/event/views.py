@@ -377,6 +377,5 @@ class DraftEventsAPIView(APIView):
         """
         events = event.objects.filter(STATUS='Draft')
         serializer = eventSerializer(events, many=True)
-
         return Response(serializer.data)
     

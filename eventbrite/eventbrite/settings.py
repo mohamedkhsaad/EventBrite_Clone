@@ -102,23 +102,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventbrite.wsgi.application'
 
 #Glopal Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': os.getenv('DB_ENGINE'),
-#         'NAME': os.getenv('DB_NAME'),
-#         'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
-#         'CLIENT': {
-#             'host': os.getenv('DB_CLIENT_HOST')
-#         }
-#     }
-# }
-# # Local Database
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DATABASE_ENGINE'),
-        'NAME': os.environ.get('DATABASE_NAME'),
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
+        'CLIENT': {
+            'host': os.getenv('DB_CLIENT_HOST')
+        }
     }
 }
+# # Local Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.environ.get('DATABASE_ENGINE'),
+#         'NAME': os.environ.get('DATABASE_NAME'),
+#     }
+# }
 
 
 # Password validation
