@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
-from .serializers import *
+from ..serializers import *
 from rest_framework.test import APITestCase
 
 
@@ -40,10 +40,13 @@ class UserSerializerTest(APITestCase):
             "first_name": "John",
             "last_name": "Doe",
             "password": "test12345",
+<<<<<<< HEAD:eventbrite/user/tests.py
             "age": None,
             "gender": '',
             "city": '',
             "country": ''
+=======
+>>>>>>> 67fe7d058e987d08bf051b4ff23d94e27f7685f2:eventbrite/user/tests/signup_login_tests.py
         }
         serializer = userSerializer(data=data)
         self.assertTrue(serializer.is_valid())
@@ -52,7 +55,11 @@ class UserSerializerTest(APITestCase):
         self.assertEqual(user.email, "test@example.com")
         self.assertEqual(user.first_name, "John")
         self.assertEqual(user.last_name, "Doe")
+<<<<<<< HEAD:eventbrite/user/tests.py
         self.assertEqual(user.age, None)
         self.assertEqual(user.gender, '')
         self.assertEqual(user.city, '')
         self.assertEqual(user.country, '')
+=======
+        
+>>>>>>> 67fe7d058e987d08bf051b4ff23d94e27f7685f2:eventbrite/user/tests/signup_login_tests.py
