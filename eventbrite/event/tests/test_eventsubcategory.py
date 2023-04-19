@@ -1,15 +1,12 @@
-from django.test import TestCase, Client
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
-from rest_framework.authtoken.models import Token
-from django.contrib.auth.models import User
 from event.models import event
 from event.serializers import eventSerializer
 from django.contrib.auth import get_user_model
 
 
-class EventListtypeTest(APITestCase):
+class EventListSubCategoryTest(APITestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
             username='ismail',

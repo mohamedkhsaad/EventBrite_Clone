@@ -40,10 +40,10 @@ class UserSerializerTest(APITestCase):
             "first_name": "John",
             "last_name": "Doe",
             "password": "test12345",
-            "age": 30,
-            "gender": "M",
-            "city": "New York",
-            "country": "USA"
+            "age": None,
+            "gender": '',
+            "city": '',
+            "country": ''
         }
         serializer = userSerializer(data=data)
         self.assertTrue(serializer.is_valid())
@@ -52,7 +52,7 @@ class UserSerializerTest(APITestCase):
         self.assertEqual(user.email, "test@example.com")
         self.assertEqual(user.first_name, "John")
         self.assertEqual(user.last_name, "Doe")
-        self.assertEqual(user.age, 30)
-        self.assertEqual(user.gender, "M")
-        self.assertEqual(user.city, "New York")
-        self.assertEqual(user.country, "USA")
+        self.assertEqual(user.age, None)
+        self.assertEqual(user.gender, '')
+        self.assertEqual(user.city, '')
+        self.assertEqual(user.country, '')

@@ -1,20 +1,24 @@
-from django.urls import reverse
+from django.test import TestCase
+from rest_framework.test import APIRequestFactory
 from rest_framework import status
-from rest_framework.test import APITestCase, APIClient
+from django.contrib.auth.models import User
+from event.views import OnlineEventsAPIView
 from event.models import event
 from event.serializers import eventSerializer
 from django.contrib.auth import get_user_model
-
-
-class EventListCategoryTest(APITestCase):
+from rest_framework.test import APITestCase, APIClient
+from django.test import TestCase, RequestFactory
+from django.urls import reverse
+from rest_framework.test import force_authenticate
+class DraftEventsAPIViewTestCase(APITestCase):
     def setUp(self):
+        self.factory = RequestFactory()
         self.user = get_user_model().objects.create_user(
             username='ismail',
             email='ziad@gmail.com',
             password='512002',)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        self.event_category = 'music'
         self.event1 = event.objects.create(
             ID=1,
             User_id=1,
@@ -23,8 +27,8 @@ class EventListCategoryTest(APITestCase):
             Summery='Summary 1',
             Description='Description 1',
             type='Type 1',
-            category_name=self.event_category,
-            sub_Category='music',
+            category_name='Category 1',
+            sub_Category='Sub-category 1',
             venue_name='Venue 1',
             ST_DATE='2023-04-15',
             END_DATE='2023-04-15',
@@ -33,8 +37,8 @@ class EventListCategoryTest(APITestCase):
             online='True',
             CAPACITY=50,
             PASSWORD='password',
-            STATUS='Live',
-            image=None
+            STATUS='Draft',
+            image='eventbrite/media/events/photo-1533450718592-29d45635f0a9_H6X4vcW.jpeg'
         )
         self.event2 = event.objects.create(
             ID=2,
@@ -55,29 +59,13 @@ class EventListCategoryTest(APITestCase):
             CAPACITY=100,
             PASSWORD=None,
             STATUS='Draft',
-            image=None
+            image='eventbrite/media/events/photo-1533450718592-29d45635f0a9_H6X4vcW.jpeg'
         )
-
-    def test_get_events_by_category(self):
-        """
-        Test retrieving events by category.
-        """
-        url = reverse('event-list-by-category', kwargs={'event_Category': self.event_category})
-        response = self.client.get(url,follow=True)
+        self.url = reverse('Draft_event_list')
+    def test_get_draft_events(self):
+        request = self.factory.get(self.url)
+        force_authenticate(request, user=self.user)
+        response = OnlineEventsAPIView.as_view()(request)
+        events = event.objects.filter(STATUS='Draft')
+        serializer = eventSerializer(events, many=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-
-        event_data = response.data[0]
-        serializer = eventSerializer(self.event1)
-        self.assertEqual(event_data, serializer.data)
-
-    def test_get_events_by_non_exist_category(self):
-        """
-        Test retrieving events by a category that does not exist.
-        """
-        nonexistent_category = 'nonexistent category'
-        url = reverse('event-list-by-category', kwargs={'event_Category': nonexistent_category})
-        response = self.client.get(url,follow=True)
-        self.assertEqual(response.data, [])
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-

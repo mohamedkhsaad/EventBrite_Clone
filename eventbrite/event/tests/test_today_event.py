@@ -1,20 +1,27 @@
-from django.urls import reverse
+from django.test import TestCase
+from rest_framework.test import APIRequestFactory
 from rest_framework import status
-from rest_framework.test import APITestCase, APIClient
+from django.contrib.auth.models import User
+from event.views import *
 from event.models import event
 from event.serializers import eventSerializer
 from django.contrib.auth import get_user_model
-
-
-class EventListCategoryTest(APITestCase):
+from rest_framework.test import APITestCase, APIClient
+from django.test import TestCase, RequestFactory
+from django.urls import reverse
+from rest_framework.test import force_authenticate
+from django.utils.timezone import now
+from datetime import datetime, date
+class Today_EventsAPIViewTestCase(APITestCase):
     def setUp(self):
+        self.factory = RequestFactory()
         self.user = get_user_model().objects.create_user(
             username='ismail',
             email='ziad@gmail.com',
             password='512002',)
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
-        self.event_category = 'music'
+        self.today = date.today()
         self.event1 = event.objects.create(
             ID=1,
             User_id=1,
@@ -23,10 +30,10 @@ class EventListCategoryTest(APITestCase):
             Summery='Summary 1',
             Description='Description 1',
             type='Type 1',
-            category_name=self.event_category,
-            sub_Category='music',
+            category_name='Category 1',
+            sub_Category='Sub-category 1',
             venue_name='Venue 1',
-            ST_DATE='2023-04-15',
+            ST_DATE=self.today,
             END_DATE='2023-04-15',
             ST_TIME='09:00:00',
             END_TIME='10:00:00',
@@ -47,7 +54,7 @@ class EventListCategoryTest(APITestCase):
             category_name='Category 2',
             sub_Category='Sub-category 2',
             venue_name='Venue 2',
-            ST_DATE='2023-04-16',
+            ST_DATE=self.today,
             END_DATE='2023-04-16',
             ST_TIME='10:00:00',
             END_TIME='11:00:00',
@@ -57,27 +64,14 @@ class EventListCategoryTest(APITestCase):
             STATUS='Draft',
             image=None
         )
-
-    def test_get_events_by_category(self):
-        """
-        Test retrieving events by category.
-        """
-        url = reverse('event-list-by-category', kwargs={'event_Category': self.event_category})
-        response = self.client.get(url,follow=True)
+        self.url1 = reverse('today-events')
+        today = timezone.now().date()
+        friday = today + timezone.timedelta((4 - today.weekday()) % 7)
+        saturday = friday + timezone.timedelta(1)
+    def test_today_get_queryset(self):
+        request = self.factory.get(self.url1)
+        response = TodayEventsList.as_view()(request)
+        serializer = eventSerializer([self.event1, self.event2], many=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-
-        event_data = response.data[0]
-        serializer = eventSerializer(self.event1)
-        self.assertEqual(event_data, serializer.data)
-
-    def test_get_events_by_non_exist_category(self):
-        """
-        Test retrieving events by a category that does not exist.
-        """
-        nonexistent_category = 'nonexistent category'
-        url = reverse('event-list-by-category', kwargs={'event_Category': nonexistent_category})
-        response = self.client.get(url,follow=True)
-        self.assertEqual(response.data, [])
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
 

@@ -62,7 +62,6 @@ class OnlineEventsAPIViewTestCase(APITestCase):
             image='eventbrite/media/events/photo-1533450718592-29d45635f0a9_H6X4vcW.jpeg'
         )
         self.url = reverse('online-events')
-
     def test_get_online_events(self):
         request = self.factory.get(self.url)
         force_authenticate(request, user=self.user)

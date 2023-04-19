@@ -50,11 +50,9 @@ INSTALLED_APPS = [
     'sslserver',
     'storages',
     'corsheaders',
-    # 'two_factor',
-    # 'django_otp',
-    # 'django_otp.plugins.otp_totp',
-    # 'django_otp.plugins.otp_static',
-    # 'django_otp_twilio',
+    'django_seed',
+    'django_extensions',
+    
 
 ]
 
@@ -104,23 +102,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventbrite.wsgi.application'
 
 #Glopal Database
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
-        'CLIENT': {
-            'host': os.getenv('DB_CLIENT_HOST')
-        }
-    }
-}
-# # Local Database
 # DATABASES = {
 #     'default': {
-#         'ENGINE': os.environ.get('DATABASE_ENGINE'),
-#         'NAME': os.environ.get('DATABASE_NAME'),
+#         'ENGINE': os.getenv('DB_ENGINE'),
+#         'NAME': os.getenv('DB_NAME'),
+#         'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
+#         'CLIENT': {
+#             'host': os.getenv('DB_CLIENT_HOST')
+#         }
 #     }
 # }
+# # Local Database
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DATABASE_ENGINE'),
+        'NAME': os.environ.get('DATABASE_NAME'),
+    }
+}
 
 
 # Password validation
@@ -198,6 +196,6 @@ SSL_PRIVATE_KEY = os.getenv('SSL_PRIVATE_KEY')
 
 PASSWORD_RESET_TIMEOUT_DAYS = 7
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '')
 CORS_ORIGIN_ALLOW_ALL = True
