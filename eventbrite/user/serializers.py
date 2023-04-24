@@ -89,3 +89,15 @@ class AuthTokenSerializer(serializers.Serializer):
 
 class EmailCheckSerializer(serializers.Serializer):
     email = serializers.EmailField()
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    password = serializers.CharField(max_length=128, write_only=True)
+    confirm_password = serializers.CharField(max_length=128, write_only=True)
+    user_id = serializers.IntegerField()
+
+    def validate(self, data):
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError("Passwords do not match.")
+        return data
+
