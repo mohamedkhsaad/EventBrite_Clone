@@ -29,7 +29,7 @@ from eventbrite.settings import *
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
+#@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def list_tickets_by_event(request, event_id):
     """
@@ -48,7 +48,7 @@ def list_tickets_by_event(request, event_id):
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
+#@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def list_tickets_by_user(request, user_id):
     """
@@ -65,7 +65,7 @@ def list_tickets_by_user(request, user_id):
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
+#@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def get_ticket(request, ticket_id):
     # /ticket/{ticket_id}
@@ -87,7 +87,7 @@ def get_ticket(request, ticket_id):
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
+#@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def check_promo_code(request, event_id):
     """
@@ -130,7 +130,7 @@ class discount_list(generics.ListCreateAPIView):
     """
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
 
@@ -154,19 +154,8 @@ class discount_pk(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -174,7 +163,7 @@ class discount_pk(generics.RetrieveUpdateDestroyAPIView):
 #TODO: configer email service backend
 
 @api_view(['POST'])
-@authentication_classes([TokenAuthentication])
+#@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create_ticket(request):
     # print(request.user)

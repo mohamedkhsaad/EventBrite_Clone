@@ -10,11 +10,24 @@ class eventSerializer(serializers.ModelSerializer):
     """
     Serializer for the Event model.
     """
-    image = serializers.ImageField(max_length=None, use_url=True)
-
+    # image, image2, image3,image4 = tuple(serializers.ImageField(max_length=None,use_url=True,required=False, allow_null=True)for i in range(4))
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    # user_id = serializers.SerializerMethodField()
+    def get_user_id(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return request.user.id
+        return None
     class Meta:
         model = event
-        exclude = ['user']
+        fields = '__all__'
+
+        # exclude = ['U]
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if instance is not None:
+            data['Title'] = instance.Title or ''
+        return data
 
 
 class SearchEventSerializer(serializers.ModelSerializer):
@@ -39,3 +52,18 @@ class UserInterestSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInterest
         fields = ['id', 'user', 'category_name', 'sub_Category']
+
+
+
+class EventFollowerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventFollower
+        fields = '__all__'
+
+
+class EventLikesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Eventlikes
+        fields = '__all__'
+
+

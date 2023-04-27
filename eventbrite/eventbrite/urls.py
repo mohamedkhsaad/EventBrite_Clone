@@ -43,12 +43,15 @@ urlpatterns = [
     ),
     # path('admin/', admin.site.urls),
     # user
+    path('verify-mail/<uidb64>/<token>/',EmailVerificationQueryView.as_view(),name='verify_mail'),
     path('user/signup/',userViewSet.as_view({'post': 'create'}), name='signup'),
     path('user/login/',CreateTokenView.as_view(), name='token'),
     path('user/emailcheck/<str:email>/', EmailCheckView.as_view(), name='email-check'),
     path('user/reset-password/', CustomPasswordResetView.as_view(), name='password_reset'),
     path('user/reset-password/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    # path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('user/reset-password/check-query/<uidb64>/<token>/', CustomPasswordResetCheckView.as_view(),name='password_reset_check'),
+    path('user/reset-password/change_password/',CustomPasswordResetConfirmView.as_view(),name='password_reset_change'),
     path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     # event
@@ -70,6 +73,26 @@ urlpatterns = [
     path('events/TicketsPrice/<int:event_id>/', EventTicketPrice.as_view(), name='ticket_price_api'),
     path('events/free-events/', FreeTicketEventListView.as_view(), name='free_event_list'),
     path('events/drafte-vents/', DraftEventsAPIView.as_view(), name='Draft_event_list'),
+
+
+    path('events/<int:event_id>/follow/', FollowEventView.as_view(), name='follow_event'),
+    path('events/followed/', UserFollowedEvents.as_view(), name='followed_events'),
+    path('events/following-events-count/',UserFollowedEventsCount.as_view(), name='user-events-following-count'),
+    path('events/event-followers-count/<int:event_id>/', EventFollowersCount.as_view(), name='event-followers-count'),
+    path('events/unfollow_event/<int:event_id>/', UnfollowEventView.as_view(), name='unfollow_event'),
+
+    path('events/<int:event_id>/like/',LikeEventView.as_view(), name='like-event'),
+    path('events/liked/', UserLikedEvents.as_view(), name='user-liked-events'),
+    path('events/Liked-events-count/',UserLikedEventsCount.as_view(), name='user-events-following-count'),
+    path('events/event-likes-count/<int:event_id>/',EventLikesCount.as_view(), name='event-Likes-count'),
+    path('events/unlike_event/<int:event_id>/',UnlikeEventView.as_view(), name='unlike-event'),
+
+
+
+
+
+    # path('book/<int:ticket_id>/',book_ticket, name='book_ticket'),
+
 
     #event management
     path('eventmanagement/userevents/<int:user_id>', UserListEvents.as_view(), name='user_list_events'),

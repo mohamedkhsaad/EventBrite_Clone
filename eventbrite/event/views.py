@@ -24,6 +24,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from event.serializers import *
 from user import *
+from user.models import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -41,7 +42,9 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CR
 from rest_framework.views import APIView
 from booking.models import event, Ticket
 from booking.serializers import TicketSerializer
-
+from django.db import transaction
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 
 class EventCreateView(generics.CreateAPIView):
     """
@@ -55,9 +58,17 @@ class EventCreateView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        # Set the user field to the authenticated user
+        serializer.validated_data['user'] = request.user
+        # Set the User_id field to the ID of the authenticated user
+        serializer.validated_data['User_id'] = request.user.id
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+         # Add user id to response data
+        user_id = request.user.id
+        response_data = serializer.data
+        # response_data['user_id'] = user_id
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class MyPagination(PageNumberPagination):
@@ -169,7 +180,7 @@ class EventListVenue(generics.ListAPIView):
         for the venue specified in the URL parameter.
         """
         event_venue = self.kwargs['event_venue']
-        return event.objects.filter(venue_name=event_venue)
+        return event.objects.filter(venue_name__icontains=event_venue)
 
 
 class OnlineEventsAPIView(APIView):
@@ -378,4 +389,132 @@ class DraftEventsAPIView(APIView):
         events = event.objects.filter(STATUS='Draft')
         serializer = eventSerializer(events, many=True)
         return Response(serializer.data)
+
+
+# followers
+class FollowEventView(APIView):
+    """
+    A viewset for make the user could follow an event by event ID.
+    """
+    def get(self, request,event_id):
+        Event = get_object_or_404(event,ID=event_id)
+        if request.user.is_authenticated:
+            EventFollower.objects.get_or_create(user=request.user,ID=Event.ID)
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'You must be logged in to follow an event.'})
+
+class UserFollowedEvents(APIView):
+    """
+    A viewset for GET the events that the user follow by the user authentication.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            event_followers = request.user.event_followers.all()
+            events = [get_object_or_404(event, ID=event_follower.ID) for event_follower in event_followers]
+            serializer = eventSerializer(events, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'status': 'error', 'message': 'You must be logged in to see followed events.'})
+        
+class UserFollowedEventsCount(APIView):
+    """
+    A viewset for count the events that the user follow by the user authentication.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            count = request.user.event_followers.count()
+            return Response({'status': 'success', 'count': count})
+        else:
+            return Response({'status': 'error', 'message': 'You must be logged in to see followed events count.'})
+        
+class EventFollowersCount(APIView):
+    """
+    A viewset for count the users that follow an event by event ID.
+    """
+    serializer_class = EventFollowerSerializer
+
+    def get(self, request, event_id):
+        try:
+            event_followers = EventFollower.objects.filter(ID=event_id)
+            count = event_followers.count()
+            return Response({'status': 'success', 'count': count})
+        except event.DoesNotExist:
+            return Response({'status': 'error', 'message': 'Event does not exist.'})
     
+class UnfollowEventView(APIView):
+    """
+    A viewset for unfollow an event by event ID.
+    """
+    permission_classes = [IsAuthenticated]
+    def delete(self, request, event_id):
+        event_follower = get_object_or_404(EventFollower, user=request.user, ID=event_id)
+        num_deleted, _ = event_follower.__class__.objects.filter(user=request.user, ID=event_id).delete()
+        if num_deleted > 0:
+            return Response({'status': 'success'})
+        else:
+            return Response({'status': 'error', 'message': 'Could not unfollow event.'})
+# likes
+class LikeEventView(APIView):
+    """
+    A viewset for make the user could like an event by event ID.
+    """
+    def get(self, request,event_id):
+        Event = get_object_or_404(event,ID=event_id)
+        if request.user.is_authenticated:
+            Eventlikes.objects.get_or_create(user=request.user,ID=Event.ID)
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'You must be logged in to follow an event.'})
+
+class UserLikedEvents(APIView):
+    """
+    A viewset for GET the events that the user liked by the user authentication.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            event_Likes = request.user.event_Likes.all()
+            events = [get_object_or_404(event,ID=event_like.ID) for event_like in event_Likes]
+            serializer = eventSerializer(events, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'status': 'error', 'message': 'You must be logged in to see followed events.'})
+        
+class UserLikedEventsCount(APIView):
+    """
+    A viewset for count the events that the user follow by the user authentication.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            count = request.user.event_Likes.count()
+            return Response({'status': 'success', 'count': count})
+        else:
+            return Response({'status': 'error', 'message': 'You must be logged in to see followed events count.'})
+        
+class EventLikesCount(APIView):
+    """
+    A viewset for count the users that follow an event by event ID.
+    """
+    serializer_class = EventFollowerSerializer
+
+    def get(self, request, event_id):
+        try:
+            event_Likes = Eventlikes.objects.filter(ID=event_id)
+            count = event_Likes.count()
+            return Response({'status': 'success', 'count': count})
+        except event.DoesNotExist:
+            return Response({'status': 'error', 'message': 'Event does not exist.'})
+    
+class UnlikeEventView(APIView):
+    """
+    A viewset for unlike an event by event ID.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, event_id):
+        event_like = get_object_or_404(Eventlikes, user=request.user, ID=event_id)
+        num_deleted, _ = event_like.__class__.objects.filter(user=request.user, ID=event_id).delete()
+        if num_deleted > 0:
+            return Response({'status': 'success'})
+        else:
+            return Response({'status': 'error', 'message': 'Could not unfollow event.'})

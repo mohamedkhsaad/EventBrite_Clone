@@ -11,8 +11,10 @@ client = MongoClient()
 db = client['eventbrite-db']
 
 
-media_root = 'media/'
-events_dir = os.path.join(media_root, 'events')
+media_root = ''
+# create a directory for event images if it doesn't exist
+
+events_dir = os.path.join(media_root, 'events/')
 if not os.path.exists(events_dir):
     os.makedirs(events_dir)
 
@@ -25,10 +27,15 @@ if not os.path.exists(events_dir):
 #         )
 #     settings.configure()
 
-# create a directory for event images if it doesn't exist
-events_dir = os.path.join(media_root, 'events')
-if not os.path.exists(events_dir):
-    os.makedirs(events_dir)
+user = {
+    "email": "johndoe@example.com",
+    "password": "password123",
+    "first_name": "John",
+    "last_name": "Doe"
+}
+
+db.user_user.insert_one(user)
+
 
 
 def random_image_url():
@@ -47,7 +54,7 @@ sub_categories = {
     'Sports': ['Football', 'Basketball', 'Tennis', 'Swimming'],
     'Arts': ['Painting', 'Sculpture', 'Photography', 'Architecture']
 }
-for i in range(50):
+for i in range(10):
     image_url = random_image_url()
     filename = str(uuid.uuid4()) + '.jpg'
     full_path = os.path.join(media_root, 'events', filename)
@@ -55,9 +62,8 @@ for i in range(50):
         f.write(requests.get(image_url).content)
 
     event = {
-        "id": str(uuid.uuid4()),
         "ID": str(uuid.uuid4()),
-        "User_id": None,
+        "User_id":None,  
         "Title": random_string(10),
         "organizer": random_string(8),
         "Summary": random_string(50),
@@ -72,13 +78,14 @@ for i in range(50):
         "END_TIME": "12:15:15",
         "online": "True",
         "CAPACITY": random.randint(50, 200),
-        "PASSWORD": None,
         "STATUS": "Draft",
         "image": full_path
     }
     db.event_event.insert_one(event)
-print('MEDIA_ROOT:', settings.MEDIA_ROOT)
-print('full_path:', full_path)
+    db.user_user.insert_one(user)
+
+# print('MEDIA_ROOT:', settings.MEDIA_ROOT)
+# print('full_path:', full_path)
 
 # import requests
 # import uuid

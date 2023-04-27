@@ -10,7 +10,7 @@ class Ticket(models.Model):
     NAME = models.CharField(max_length=20)
     PRICE = models.FloatField()
     EVENT_ID = models.IntegerField()
-    GUEST_ID = models.IntegerField()
+    GUEST_ID = models.IntegerField(null=True)
     TICKET_NUM = models.IntegerField()
     TICKET_TYPE_CHOICES = (
         ('Free', 'Free'),
@@ -27,7 +27,11 @@ class Ticket(models.Model):
         ('f', 'false')
     )
     Absorb_fees = models.CharField(max_length=1, choices=ABSORB_FEES_CHOICES)
-
+class Booking(models.Model):
+    event = models.ForeignKey(event, on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
 
 class Discount(models.Model):
     ID = models.IntegerField()
@@ -38,3 +42,5 @@ class Discount(models.Model):
     end_date = models.DateField()
     Quantity_available = models.IntegerField()
     User_ID = models.IntegerField()
+
+

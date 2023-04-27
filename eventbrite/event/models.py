@@ -2,7 +2,12 @@ from django.db import models
 from eventbrite.settings import *
 from user.models import *
 from django.urls import reverse
+import random
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.http import HttpResponseBadRequest
 
+from django.http import JsonResponse
 
 class UserInterest(models.Model):
     user = models.ForeignKey(
@@ -14,60 +19,113 @@ class UserInterest(models.Model):
         return f"{self.user.email} - {self.interest.category_name} - {self.interest.sub_Category}"
 
 
+CATEGORY_CHOICES = (
+    ('Category', 'Category'),
+    ('Auto, Boat & Air', 'Auto, Boat & Air'),
+    ('Business & Professional', 'Business & Professional'),
+    ('Charity & Causes', 'Charity & Causes'),
+    ('Community & Culture', 'Community & Culture'),
+    ('Family & Education', 'Family & Education'),
+    ('Fashion & Beauty', 'Fashion & Beauty'),
+    ('Film, Media & Entertainment', 'Film, Media & Entertainment'),
+    ('Food & Drink', 'Food & Drink'),
+    ('Government & Politics', 'Government & Politics'),
+    ('Health & Wellness', 'Health & Wellness'),
+    ('Hobbies & Special Interest', 'Hobbies & Special Interest'),
+    ('Home & Lifestyle', 'Home & Lifestyle'),
+    ('Music', 'Music'),
+    ('Performing & Visual Arts', 'Performing & Visual Arts'),
+    ('Religion & Spitituality', 'Religion & Spitituality'),
+    ('School Activities', 'School Activities'),
+    ('Science & Technology', 'Science & Technology'),
+    ('Seasonal & Holiday', 'Seasonal & Holiday'),
+    ('Sports & Fitness', 'Sports & Fitness'),
+    ('Travel & Outdoor', 'Travel & Outdoor'),
+    ('Other', 'Other'),
+)
+TYPE_CHOICES = [
+    ('Type', 'Type'),
+    ('Appearance or Singing', 'Appearance or Singing'),
+    ('Attraction', 'Attraction'),
+    ('Camp, Trip, or Retreat', 'Camp, Trip, or Retreat'),
+    ('Class, Training, or Workshop', 'Class, Training, or Workshop'),
+    ('Concert or Performance', 'Concert or Performance'),
+    ('Conference', 'Conference'),
+    ('Convention', 'Convention'),
+    ('Dinner or Gala', 'Dinner or Gala'),
+    ('Festival or fair', 'Festival or fair'),
+    ('Game or Competition', 'Game or Competition'),
+    ('Meeting or Networking Event', 'Meeting or Networking Event'),
+    ('Party or Social Gathering', 'Party or Social Gathering'),
+    ('Race or Endurance Event', 'Race or Endurance Event'),
+    ('Rally', 'Rally'),
+    ('Screening', 'Screening'),
+    ('Seminar or Talk', 'Seminar or Talk'),
+    ('Tour', 'Tour'),
+    ('Tournment', 'Tournment'),
+    ('Tradeshow, Consumer Show, or Expo', 'Tradeshow, Consumer Show, or Expo'),
+    ('Other', 'Other'),
+]
+Online_choises = (
+    ('True', 'True'),
+    ('False', 'False')
+)
+STATUS_choises = (
+    ('Draft', 'Draft'),
+    ('Live', 'Live'),
+    ('Past', 'Past')
+)
+Publish_choises = (
+    ('Private', 'Private'),
+    ('Public', 'Public'),
+)
+
+
+def generate_unique_id():
+    while True:
+        # Generate a random integer between 1 and 9999
+        new_id = random.randint(1, 9999)
+        # Check if an event with this ID already exists in the database
+        if not event.objects.filter(ID=new_id).exists():
+            return new_id
+
+
 class event(models.Model):
     """
     Model representing an event.
     """
-    ID = models.IntegerField(unique=True)
-    User_id = models.IntegerField(blank=False, null=True)
+    ID = models.IntegerField(unique=True, default=generate_unique_id)
+    User_id = models.IntegerField(blank=True, null=True)
     Title = models.CharField(max_length=50)
     organizer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     organizer = models.CharField(max_length=50)
     Summery = models.CharField(max_length=500, null=True)
     Description = models.CharField(max_length=500, null=True)
-    type = models.CharField(max_length=20)
-    category_name = models.CharField(max_length=10)
-    sub_Category = models.CharField(max_length=20)
-    venue_name = models.CharField(max_length=20)
+    type = models.CharField(
+        max_length=50, choices=TYPE_CHOICES, default='Type')
+    category_name = models.CharField(
+        max_length=50, choices=CATEGORY_CHOICES, default='Category')
+    sub_Category = models.CharField(max_length=20,null=True,blank=True)
+    venue_name = models.CharField(max_length=20,blank=True)
     ST_DATE = models.DateField()
     END_DATE = models.DateField()
     ST_TIME = models.TimeField()
     END_TIME = models.TimeField()
-    Online_choises = (
-        ('True', 'True'),
-        ('False', 'False')
-    )
     online = models.CharField(max_length=5, choices=Online_choises)
     CAPACITY = models.IntegerField()
-    PASSWORD = models.CharField(max_length=10, null=True)
-    STATUS_choises = (
-        ('Draft', 'Draft'),
-        ('Live', 'Live'),
-        ('Past', 'Past')
-    )
-    STATUS = models.CharField(max_length=5, choices=STATUS_choises)
-    image = models.ImageField(upload_to='events/',null=True)
+    STATUS = models.CharField(max_length=5,choices=STATUS_choises)
+    # Publish = models.CharField(max_length=10, choices=Publish_choises)
+    # PASSWORD = models.CharField(max_length=10, null=True)
+    def save(self, *args, **kwargs):
+        if self.online == 'False' and not self.venue_name:
+            response_data = {'error': 'Venue name is required for non-online events.'}
+            raise ValidationError(response_data)
+        elif self.online == 'True':
+            self.venue_name = ''
 
-    # image = models.ImageField(upload_to='event_images/')
-    # image = models.ImageField(upload_to='event_images/%Y/%m/%d/')
-    # def image_url(self):
-    #     if self.image:
-    #         return reverse('event_image', args=[str(self.id)])
-    #     else:
-    #         return ''
-
-    # locationـid = models.IntegerField()
-    # TICKETS=models.ExpressionList([1])
-    # GUESTS=models.ExpressionList([1])
-    # FOLLOEWRS =models.ExpressionList([1])
-    # LIKES =models.ExpressionList([1])
-    # CREATED=models.ExpressionList([1])
-
-    REQUIRED_FIELDS = ['ID', 'User_id', 'Title', 'organizer', 'Description', 'type', 'Category',
-                       'sub_Category', 'venue_name', 'ST_DATE', 'END_DATE', 'ST_TIME', 'END_TIME', 'online',
-                       'CAPACITY', 'PASSWORD', 'STATUS', 'image'
-                       ]
+        else:
+            super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Event"
@@ -136,3 +194,40 @@ class Locations(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.address
+
+
+def add_image_fields(count):
+    # Add first image field as 'image'
+    event.add_to_class('image', models.ImageField(
+        upload_to='events/', blank=True, null=True, verbose_name='image'))
+    # Add remaining image fields with field names 'image2', 'image3', ...
+    for i in range(2, count+1):
+        field_name = f"image{i}"
+        field = models.ImageField(
+            upload_to='events/', blank=True, null=True, verbose_name=field_name)
+        event.add_to_class(field_name, field)
+
+
+add_image_fields(5)
+
+
+class EventFollower(models.Model):
+    """
+    Model representing a user following an event.
+    """
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='event_followers')
+    event = models.ForeignKey(event, on_delete=models.CASCADE,null=True,blank=True)
+    followed_date = models.DateTimeField(auto_now_add=True)
+    ID = models.IntegerField()
+
+
+class Eventlikes(models.Model):
+    """
+    Model representing a user following an event.
+    """
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='event_Likes')
+    event = models.ForeignKey(event, on_delete=models.CASCADE)
+    followed_date = models.DateTimeField(auto_now_add=True)
+    ID = models.IntegerField()
