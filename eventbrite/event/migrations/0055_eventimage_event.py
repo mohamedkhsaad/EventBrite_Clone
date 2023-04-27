@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='eventimage',
             name='event',
-            field=models.ForeignKey(default='image', on_delete=django.db.models.deletion.CASCADE, related_name='images', to='event.event'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='images', to='event.event'),
             preserve_default=False,
         ),
     ]
