@@ -92,7 +92,7 @@ class AllEventListView(APIView):
     A viewset for retrieving all event instances.
     """
     #authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     pagination_class = MyPagination
     def get(self, request, format=None):
         """
