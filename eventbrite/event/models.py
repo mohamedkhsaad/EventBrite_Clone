@@ -9,15 +9,6 @@ from django.http import HttpResponseBadRequest
 
 from django.http import JsonResponse
 
-class UserInterest(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='interests')
-    category_name = models.CharField(max_length=255)
-    sub_Category = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f"{self.user.email} - {self.interest.category_name} - {self.interest.sub_Category}"
-
 
 CATEGORY_CHOICES = (
     ('Category', 'Category'),
@@ -89,6 +80,18 @@ def generate_unique_id():
         if not event.objects.filter(ID=new_id).exists():
             return new_id
 
+
+
+
+class UserInterest(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='interests')
+    User_id = models.IntegerField(blank=True, null=True)
+    category_name = models.CharField(max_length=255)
+    sub_Category = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.User_id
 
 class event(models.Model):
     """
@@ -208,7 +211,7 @@ def add_image_fields(count):
         event.add_to_class(field_name, field)
 
 
-add_image_fields(5)
+add_image_fields(10)
 
 
 class EventFollower(models.Model):

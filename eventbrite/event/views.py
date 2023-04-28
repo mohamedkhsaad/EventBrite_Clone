@@ -45,6 +45,8 @@ from booking.serializers import TicketSerializer
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
 class EventCreateView(generics.CreateAPIView):
     """
@@ -54,8 +56,11 @@ class EventCreateView(generics.CreateAPIView):
     serializer_class = eventSerializer
     queryset = event.objects.all()
     parser_classes = [MultiPartParser, FormParser]
+    # authentication_classes = [TokenAuthentication]
+
 
     def post(self, request, *args, **kwargs):
+        print("hiiiii")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         # Set the user field to the authenticated user
@@ -86,9 +91,9 @@ class AllEventListView(APIView):
     """
     A viewset for retrieving all event instances.
     """
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     pagination_class = MyPagination
-
     def get(self, request, format=None):
         """
         This view should return a paginated list of all the events.
@@ -214,15 +219,30 @@ class EventID(generics.ListAPIView):
         event_sub_ID = self.kwargs['event_ID']
         return event.objects.filter(ID=event_sub_ID)
 
-
 class UserInterestCreateAPIView(CreateAPIView):
     """
     A viewset for creating an user Interests instance.
     """
-    permission_classes = [IsAuthenticated]
-    queryset = UserInterest.objects.all()
+    # permission_classes = [IsAuthenticated]
     serializer_class = UserInterestSerializer
+    queryset = event.objects.all()
+    parser_classes = [MultiPartParser, FormParser]
+    # authentication_classes = [TokenAuthentication]
 
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # Set the user field to the authenticated user
+        serializer.validated_data['user'] = request.user
+        # Set the User_id field to the ID of the authenticated user
+        serializer.validated_data['User_id'] = request.user.id
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+         # Add user id to response data
+        user_id = request.user.id
+        response_data = serializer.data
+        # response_data['user_id'] = user_id
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
 
 class UserInterestAPIView(generics.ListAPIView):
     """

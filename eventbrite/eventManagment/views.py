@@ -24,6 +24,8 @@ from rest_framework.views import APIView
 from booking.models import event, Ticket
 from booking.serializers import TicketSerializer
 import csv
+from eventManagment.models import *
+from eventManagment.serializers import Publish_InfoSerializer
 
 class UserListEvents(generics.ListAPIView):
     """
@@ -120,3 +122,49 @@ class PromoCodeCreateAPIView(generics.CreateAPIView):
                 return Response(serializer.data, status=HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+class EventPublishView(generics.CreateAPIView):
+    serializer_class = Publish_InfoSerializer
+    queryset = Publish_Info.objects.all()
+    permission_classes = [IsAuthenticated]
+    def validate_password(password):
+        if len(password) < 8:
+            return False
+        if not re.search(r'[a-z]', password):
+            return False
+        if not re.search(r'[A-Z]', password):
+            return False
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+            return False
+        return True
+
+    def post(self, request,event_id):
+        try:
+            Event = event.objects.get(ID=event_id)
+        except event.DoesNotExist:
+            return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+        if Publish_Info.objects.filter(Event_ID=event_id):
+            return Response({'error': f'Event with id {event_id} already is published.'}, status=HTTP_400_BAD_REQUEST)
+        if request.data.get('Event_Status') == 'Private':
+            password = request.data.get('Audience_Password')
+            if not request.data.get('Audience_Password'):
+                return Response({'error': 'Audience Password is required for private events.'}, status=HTTP_400_BAD_REQUEST)
+            if validate_password(password):
+                return Response({'error': 'Password must contain at least 8 characters, including upper and lower case letters, at least one digit, and at least one special character.'}, status=HTTP_400_BAD_REQUEST)
+            if request.data.get('Keep_Private') and request.data.get('Publication_Date'):
+                return Response({'error': 'Do not add date, as your event will be kept private'}, status=HTTP_400_BAD_REQUEST)
+            if not request.data.get('Keep_Private') and not request.data.get('Publication_Date'):
+                return Response({'error': 'Please Provide a Publish Date.'}, status=HTTP_400_BAD_REQUEST)
+        
+        Publish_Data = request.data.copy()
+        Publish_Data['Event_ID'] = event_id
+        serializer = self.serializer_class(data=Publish_Data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            errors = serializer.errors
+            error_msgs = []
+            for field, errors in errors.items():
+                error_msgs.append(f"{field}: {', '.join(errors)}")
+            return Response({'error': error_msgs, 'data': request.data}, status=HTTP_400_BAD_REQUEST)

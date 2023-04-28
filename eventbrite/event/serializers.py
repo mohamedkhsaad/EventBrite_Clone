@@ -43,15 +43,20 @@ class UserInterestSerializer(serializers.ModelSerializer):
     """
     Serializer for UserInterest model.
     """
-    user = serializers.SlugRelatedField(
-        slug_field='email', queryset=User.objects.all())
-    category_name = serializers.CharField(max_length=255)
-    sub_Category = serializers.ListField(
-        child=serializers.CharField(max_length=255), allow_empty=True)
+    # user = serializers.SlugRelatedField(
+    #     slug_field='email', queryset=User.objects.all())
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    # user_id = serializers.SerializerMethodField()
+    def get_user_id(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return request.user.id
+        return None
+  
 
     class Meta:
         model = UserInterest
-        fields = ['id', 'user', 'category_name', 'sub_Category']
+        fields = '__all__'
 
 
 

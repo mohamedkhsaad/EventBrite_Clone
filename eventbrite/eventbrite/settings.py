@@ -206,3 +206,18 @@ PASSWORD_RESET_TIMEOUT_DAYS = 7
 MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+
+CELERY_BROKER_URL = 'mongodb://localhost:27017/eventbrite'
+CELERY_RESULT_BACKEND = 'mongodb://localhost:27017/eventbrite'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_BEAT_SCHEDULE = {
+    'update_event_status': {
+        'task': 'eventbrite.celery.update_event_status',
+        'schedule': 60 * 60 * 24, # run once per day
+    },
+}
