@@ -54,23 +54,23 @@ class userSerializer(serializers.ModelSerializer):
         """
         This part is to send a welcoming email to the new user
         """
-        uid = urlsafe_base64_encode(force_bytes(user.email))
-        token = default_token_generator.make_token(user)
+        # uid = urlsafe_base64_encode(force_bytes(user.email))
+        # # token = default_token_generator.make_token(user)
 
-                # Construct the reset URL for the user
-        reset_url = reverse_lazy('verify_mail', args={'uid': uid, 'token': token})
-        print(uid)
-        print(token)
+        #         # Construct the reset URL for the user
+        # reset_url = reverse_lazy('verify_mail', args={'uid': uid, 'token': token})
+        # print(uid)
+        # # print(token)
         
 
-                # Send the password reset email to the user
-        send_mail(
-            'Password reset for your My App account',
-            'Please click the following link to reset your password: ' + reset_url,
-            EMAIL_HOST_USER,
-            [user.email],
-            fail_silently=False,
-                )
+        #         # Send the password reset email to the user
+        # send_mail(
+        #     'Password reset for your My App account',
+        #     'Please click the following link to reset your password: ' + reset_url,
+        #     EMAIL_HOST_USER,
+        #     [user.email],
+        #     fail_silently=False,
+        #         )
         return user
 
 
@@ -181,3 +181,7 @@ def delete_user(email):
     
     # Return True if the user was deleted successfully, False otherwise
     return result.deleted_count > 0
+# class CustomTokenSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CustomToken
+#         fields = ('key',)

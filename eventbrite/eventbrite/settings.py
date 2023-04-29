@@ -164,7 +164,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'django.contrib.auth.backends.ModelBackend',  # default authentication backend
+        'user.authentication.CustomTokenAuthentication'
     ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
 
 }
 

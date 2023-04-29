@@ -45,7 +45,9 @@ urlpatterns = [
     # user
     path('verify-mail/<uidb64>/<token>/',EmailVerificationQueryView.as_view(),name='verify_mail'),
     path('user/signup/',userViewSet.as_view({'post': 'create'}), name='signup'),
-    path('user/login/',CreateTokenView.as_view(), name='token'),
+    path('user/login/',CustomTokenLoginView.as_view(), name='token'),
+    # path('ProtectedView/',ProtectedView.as_view(), name='ProtectedView'),
+
     path('user/emailcheck/<str:email>/', EmailCheckView.as_view(), name='email-check'),
     path('user/reset-password/', CustomPasswordResetView.as_view(), name='password_reset'),
     path('user/reset-password/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
