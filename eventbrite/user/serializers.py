@@ -58,7 +58,7 @@ class userSerializer(serializers.ModelSerializer):
         token = default_token_generator.make_token(user)
 
         #         # Construct the reset URL for the user
-         reset_url = reverse_lazy('verify_mail', args={'uid': uid, 'token': token})
+        reset_url = reverse_lazy('verify_mail', args={'uid': uid, 'token': token})
          #print(uid)
          # print(token)
         
