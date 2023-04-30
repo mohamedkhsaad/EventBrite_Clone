@@ -54,9 +54,9 @@ class Order(models.Model):
 
     # ticket_classes = models.ManyToManyField(TicketClass, through='OrderItem', related_name='orders')
     
-    full_price = models.DecimalField(max_digits=8, decimal_places=2,null=True)
-    fee = models.DecimalField(max_digits=8, decimal_places=2,null=True)
-    total = models.DecimalField(max_digits=8, decimal_places=2,null=True)
+    full_price = models.FloatField(null=True)
+    fee = models.FloatField(null=True)
+    total = models.FloatField(null=True)
 
     # date_created = models.DateTimeField(auto_now_add=True)
 
@@ -68,7 +68,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE,null=True)
     ticket_class = models.ForeignKey(TicketClass, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    ticket_price = models.DecimalField(max_digits=8, decimal_places=2,null=True)
+    ticket_price = models.FloatField(null=True)
     currency = models.CharField(default='USD', max_length=10)
 
 

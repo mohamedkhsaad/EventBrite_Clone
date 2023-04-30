@@ -40,7 +40,7 @@ from booking.serializers import *
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from booking.models import event, TicketClass
-from booking.serializers import TicketSerializer
+from booking.serializers import TicketClassSerializer
 
 
 class EventCreateView(generics.CreateAPIView):
@@ -308,14 +308,14 @@ class WeekendEventsView(generics.ListAPIView):
 
 class TicketCreateAPIView(generics.CreateAPIView):
     """
-    This class defines a POST request to create a new ticket for a given event. It uses the TicketSerializer for serialization 
+    This class defines a POST request to create a new ticket for a given event. It uses the TicketC;assSerializer for serialization 
     and the Ticket model for database queries. The post method first checks if the specified event exists in the database, 
     then adds the event ID to the ticket data and attempts to create a new ticket using the serializer. If the serializer is 
     valid, the new ticket is saved and a success response is returned. Otherwise, an error response is returned with the 
     serializer errors.
     """
     queryset = TicketClass.objects.all()
-    serializer_class = TicketSerializer
+    serializer_class = TicketClassSerializer
 
     def post(self, request, event_id):
         """
