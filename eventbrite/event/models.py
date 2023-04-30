@@ -81,8 +81,6 @@ def generate_unique_id():
             return new_id
 
 
-
-
 class UserInterest(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='interests')
@@ -120,16 +118,6 @@ class event(models.Model):
     STATUS = models.CharField(max_length=5,choices=STATUS_choises)
     # Publish = models.CharField(max_length=10, choices=Publish_choises)
     # PASSWORD = models.CharField(max_length=10, null=True)
-    def save(self, *args, **kwargs):
-        if self.online == 'False' and not self.venue_name:
-            response_data = {'error': 'Venue name is required for non-online events.'}
-            raise ValidationError(response_data)
-        elif self.online == 'True':
-            self.venue_name = ''
-
-        else:
-            super().save(*args, **kwargs)
-
     class Meta:
         verbose_name = "Event"
         verbose_name_plural = "Events"

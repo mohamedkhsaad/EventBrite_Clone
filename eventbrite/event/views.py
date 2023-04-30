@@ -40,8 +40,8 @@ from booking.models import *
 from booking.serializers import *
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from booking.models import event, Ticket
-from booking.serializers import TicketSerializer
+from booking.models import event, TicketClass
+from booking.serializers import *
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
@@ -339,12 +339,12 @@ class TicketCreateAPIView(generics.CreateAPIView):
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
-    queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
+    queryset = TicketClass.objects.all()
+    serializer_class = TicketClassSerializer
     def post(self, request, event_id):
         """
         A POST request to create a ticket object for a given event ID
-        """
+        """    
         try:
             Event = event.objects.get(ID=event_id)
         except event.DoesNotExist:
@@ -352,8 +352,16 @@ class TicketCreateAPIView(generics.CreateAPIView):
 
         ticket_data = request.data.copy()
         ticket_data['event'] = Event.ID
-        serializer = self.serializer_class(data=ticket_data)
+        ticket_data['EVENT_ID'] = Event.ID
 
+      
+        ticket_data['user'] = request.user
+        ticket_data['User_id'] = request.user.id
+
+        if ticket_data.get('TICKET_TYPE') == 'Free':
+            ticket_data['PRICE'] = 0
+
+        serializer = self.serializer_class(data=ticket_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
@@ -377,7 +385,7 @@ class EventTicketPrice(APIView):
         except event.DoesNotExist:
             return Response(status=404, data={'message': 'Event not found'})
 
-        ticket_obj = Ticket.objects.filter(EVENT_ID=event_obj.ID).first()
+        ticket_obj = TicketClass.objects.filter(EVENT_ID=event_obj.ID).first()
         if ticket_obj:
             ticket_price = ticket_obj.PRICE
             return Response(status=200, data={'ticket_price': ticket_price})

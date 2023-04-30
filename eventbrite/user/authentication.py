@@ -10,7 +10,7 @@ class CustomTokenAuthentication(BaseAuthentication):
     keyword = 'CustomToken'
     def authenticate(self, request):
         auth_header = get_authorization_header(request).split()
-        print(f"auth header: {auth_header}")
+        # print(f"auth header: {auth_header}")
         if not auth_header or auth_header[0].lower() != self.keyword.lower().encode():
             return None
         if len(auth_header) == 1:

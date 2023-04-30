@@ -185,3 +185,11 @@ def delete_user(email):
 #     class Meta:
 #         model = CustomToken
 #         fields = ('key',)
+
+
+# serializers.py
+from rest_framework import serializers
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()

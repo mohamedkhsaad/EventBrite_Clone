@@ -90,19 +90,35 @@ from rest_framework.status import HTTP_400_BAD_REQUEST
 #         return Response({'message': 'Token is valid.'})
 
 
-class CustomTokenLoginView(APIView):  
+# class CustomTokenLoginView(APIView):  
+#     def post(self, request, format=None):
+#         email = request.data.get('email')
+#         password = request.data.get('password')
+#         try:
+#             user = User.objects.get(email=email)
+#         except User.DoesNotExist:
+#             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+#         if user.check_password(password):
+#             custom_token = CustomToken.objects.create(user=user)
+#             return Response({'token': custom_token.key}, status=status.HTTP_200_OK) 
+#         else:
+#             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+class CustomTokenLoginView(APIView):
+    serializer_class = LoginSerializer
     def post(self, request, format=None):
-        email = request.data.get('email')
-        password = request.data.get('password')
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        if user.check_password(password):
-            custom_token = CustomToken.objects.create(user=user)
-            return Response({'token': custom_token.key}, status=status.HTTP_200_OK) 
-        else:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            password = serializer.validated_data['password']
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            if user.check_password(password):
+                custom_token = CustomToken.objects.create(user=user)
+                return Response({'token': custom_token.key}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # token_value = '2c210171bf0d4df879a8b844905fdfa697b32500'
