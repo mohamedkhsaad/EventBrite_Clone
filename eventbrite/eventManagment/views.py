@@ -21,7 +21,7 @@ from booking.models import *
 from booking.serializers import *
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from booking.models import event, Ticket
+from booking.models import event, TicketClass
 from booking.serializers import TicketSerializer
 import csv
 

@@ -39,7 +39,7 @@ from booking.models import *
 from booking.serializers import *
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
-from booking.models import event, Ticket
+from booking.models import event, TicketClass
 from booking.serializers import TicketSerializer
 
 
@@ -314,7 +314,7 @@ class TicketCreateAPIView(generics.CreateAPIView):
     valid, the new ticket is saved and a success response is returned. Otherwise, an error response is returned with the 
     serializer errors.
     """
-    queryset = Ticket.objects.all()
+    queryset = TicketClass.objects.all()
     serializer_class = TicketSerializer
 
     def post(self, request, event_id):
@@ -353,7 +353,7 @@ class EventTicketPrice(APIView):
         except event.DoesNotExist:
             return Response(status=404, data={'message': 'Event not found'})
 
-        ticket_obj = Ticket.objects.filter(EVENT_ID=event_obj.ID).first()
+        ticket_obj = TicketClass.objects.filter(EVENT_ID=event_obj.ID).first()
         if ticket_obj:
             ticket_price = ticket_obj.PRICE
             return Response(status=200, data={'ticket_price': ticket_price})
