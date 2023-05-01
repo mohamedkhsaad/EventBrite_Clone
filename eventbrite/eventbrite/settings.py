@@ -121,6 +121,14 @@ DATABASES = {
 #     }
 # }
 
+# # Local Database
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DATABASE_ENGINE'),
+        'NAME': os.environ.get('DATABASE_NAME'),
+    }
+}
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

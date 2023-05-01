@@ -1,19 +1,25 @@
 from django.db import models
 from event.models import *
-from event.models import *
+from bson import ObjectId
 # TODO: you have 2 id attributes
 
 
 class TicketClass(models.Model):
-    event = models.ForeignKey(event, on_delete=models.CASCADE)
+    # id = models.IntegerField(primary_key=True)
+
     ID = models.IntegerField(default=generate_unique_id,unique=True)
+
+    event = models.ForeignKey(event, on_delete=models.CASCADE)
     EVENT_ID = models.IntegerField()
+
     User_id = models.IntegerField(blank=True, null=True)
+
     NAME = models.CharField(max_length=20,blank=True,null=True)
     PRICE = models.FloatField()
-    # GUEST_ID = models.IntegerField(null=True)
-    capacity = models.IntegerField()
-    quantity_sold = models.IntegerField()
+
+    capacity = models.IntegerField()# Number of this Ticket Class available for sale.
+    quantity_sold = models.IntegerField()# Number of this Ticket Class items that has been sold so far
+
     TICKET_TYPE_CHOICES = (
         ('Free', 'Free'),
         ('Paid', 'Paid'),
@@ -49,17 +55,17 @@ class Order(models.Model):
     event = models.ForeignKey(event, on_delete=models.CASCADE, null=True)
     discount = models.ForeignKey(Discount, on_delete=models.CASCADE, null=True)
     # ticket_classes = models.ManyToManyField(TicketClass, through='OrderItem', related_name='orders')
-    full_price = models.DecimalField(max_digits=8, decimal_places=2,null=True)
-    fee = models.DecimalField(max_digits=8, decimal_places=2,null=True)
-    total = models.DecimalField(max_digits=8, decimal_places=2,null=True)
+    full_price = models.FloatField(null=True)
+    fee = models.FloatField(null=True)
+    total = models.FloatField(null=True)
     # date_created = models.DateTimeField(auto_now_add=True)
     is_validated = models.BooleanField(default=False)
 
 class OrderItem(models.Model):
-    # id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     ID = models.IntegerField(default=generate_unique_id,unique=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE,null=True)
     ticket_class = models.ForeignKey(TicketClass, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    ticket_price = models.DecimalField(max_digits=8, decimal_places=2,null=True)
+    ticket_price = models.FloatField(null=True)
     currency = models.CharField(default='USD', max_length=10)

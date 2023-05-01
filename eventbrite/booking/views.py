@@ -28,8 +28,14 @@ from .models import *
 from event.models import event as Event
 from user.models import User
 from eventbrite.settings import *
+from rest_framework.authtoken.models import Token
 
 
+
+from django.urls import reverse
+from django.core.signing import TimestampSigner
+
+from eventbrite.settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 
 @api_view(['GET'])
@@ -43,6 +49,8 @@ def list_ticket_classes_by_event(request, event_id):
     :param event_id: Event ID.
     :return: A list of JSON objects representing the bookings for the given event.
     """
+
+    
     # get all bookings for this event
     ticket_classes = TicketClass.objects.filter(EVENT_ID=event_id)
     serialized_Ticket_classes = TicketClassSerializer(ticket_classes, many=True)
@@ -55,7 +63,7 @@ def list_ticket_classes_by_event(request, event_id):
 @api_view(['GET'])
 # @authentication_classes([TokenAuthentication])
 # @permission_classes([IsAuthenticated])
-def check_promo_code(request, event_id):
+def check_promocode(request, event_id):
     """
     Check whether a promo code is valid for a given event.
 
@@ -63,52 +71,29 @@ def check_promo_code(request, event_id):
     :param event_id: Event ID.
     :return: A JSON object indicating whether the promo code is valid.
     """
-    # /event?promo_code=SAVE123
+    # /event?promocode=SAVE123
     # search an event's promo codes
 
     try:
-        promo_code = request.query_params['promo_code']
+        promocode = request.query_params['promocode']
     except:
-        return Response({'err': 'missing promo_code param'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'err': 'missing promocode param'}, status=status.HTTP_400_BAD_REQUEST)
 
-    discount = Discount.objects.filter(EVENT_ID=event_id, CODE=promo_code).first()
+    discount = Discount.objects.filter(EVENT_ID=event_id, CODE=promocode).first()
     if not discount:
-        return Response({'is_promo_code': False}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'is_promocode': False}, status=status.HTTP_400_BAD_REQUEST)
     
-    return Response({'is_promo_code': True}, status=status.HTTP_200_OK)
+    return Response({'is_promocode': True}, status=status.HTTP_200_OK)
 
 
 
 
-# user 
+# fees 
 @api_view(['POST'])
 def create_order(request):
 
     """
-    recieved data will look like this
-
-        {
-            "id" : 1
-            "user" : 1
-            "event" : 1
-
-            "order_items":
-            [
-                {
-                "ticket_class" : 1,	
-                "quantity": 3 
-                },
-                {
-                "ticket_class" : 2,	
-                "quantity": 1 
-                }
-            ],
-            full_price : 450
-            discount : 200
-            fee : 50,
-            total: 300,
-            is_validated : True
-        }
+    request data should look like this
 
         {
             "order_items":
@@ -127,18 +112,37 @@ def create_order(request):
 
         }
     """
-    
+
     order = Order(user = request.user) # create empty order so that orderitem can point to it
     order.save()
     print("-------1--------")
 
     # Retrieve the request data
-
+  
     order_items = request.data.get('order_items')
     data = request.data
+    print(data)
+    if not order_items:
+        return Response({"details":"""sent data should look like this {
+            "order_items":
+            [
+                {
+                "ticket_class" : 1,	
+                "quantity": 3 
+                },
+                {
+                "ticket_class" : 2,	
+                "quantity": 1 
+                }
+            ], 
+            "promocode" : "DISCOUNT25",
+            "event" : 1
+
+        }"""}, status=status.HTTP_400_BAD_REQUEST)
+
     data['order'] = order
     print(data)
-    
+
 
     # Calculate the order
     tickets_costs = [] # a list of ticket cost info object
@@ -151,6 +155,8 @@ def create_order(request):
         item['order'] = order.id
         from random import randint
         item['id'] = randint(1,200000)
+        item['ticket_price'] = 999
+        
         print(item)
         order_item_serializer = OrderItemSerializer(data=item)        
         
@@ -162,13 +168,14 @@ def create_order(request):
         print("-----3----------")
 
 
-        ticket_class = order_item_serializer.instance.ticket_class
+        ticket_class = TicketClass.objects.get(ID=order_item_serializer.instance.ticket_class_id)
+        print(ticket_class.PRICE)
         quantity = order_item_serializer.instance.quantity
         print(quantity)
         if ticket_class.capacity - ticket_class.quantity_sold < quantity:
             return Response({"details":f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class.id}"}, status=status.HTTP_400_BAD_REQUEST)
 
-        subtotal += ticket_class.price * quantity
+        subtotal += ticket_class.PRICE * quantity
         
         ticket_class.quantity_sold += quantity
         ticket_class.save()
@@ -199,7 +206,7 @@ def create_order(request):
 
     # Create the order
     order_response = {
-        'tickets':tickets_costs,
+        'tickets':order_items,
         'full_price' : subtotal,
         'amount_off' : amount_off,
         'fee' : fee,
@@ -213,55 +220,91 @@ def create_order(request):
     order.fee = fee
     order.save()
 
+    send_confirmation_email(request._request,order)
+
     return Response(order_response,status=status.HTTP_201_CREATED)
 
 
+def send_confirmation_email(request,order):
 
-@api_view(['GET'])
-def send_confirmation_email(request):
-    # Get the currently logged-in user
+    """ this function should construct the url with a token and send the link by mail to the user """
 
+
+    print("======confirmation mail=======")
     user = request.user
-    # print(user.username)
+
     # Generate a confirmation token
-    token = generate_confirmation_token(user.username)
+    signer = TimestampSigner()
+    token = signer.sign(str(order.id))
+    # token = generate_confirmation_token(order.id)
+
+    print(token)
+
+    confirmation_url = request.build_absolute_uri(reverse('confirm-order', args=[token]))
+
+
+    print("======1=======")
 
     # Build the confirmation URL
     # confirmation_url = request.build_absolute_uri(
     #     reverse('create-booking'))  # , args=[token]))
-    confirmation_url = 'google.com'
+    
+    # token, created = Token.objects.get_or_create(user=user)
+    # confirmation_url = 'google.com'
+    # confirmation_url = f"https://example.com/confirm-email/?token={token.key}"
+
+
+
+
     # Generate a QR code for the confirmation URL using the Google Charts API
     qr_code_url = f'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl={confirmation_url}'
     qr_code_image = requests.get(qr_code_url).content
+    print("======2=======")
 
     # Send the confirmation email
     subject = 'Confirm your email address'
     message = f'Hi {user.username}, please click the link below or scan the QR code to confirm your booking:\n\n {confirmation_url} \n\n'
     from_email = 'no-reply@example.com'
     recipient_list = [user.email]
+    print(recipient_list)
     mail = EmailMessage(subject, message, from_email,
                         recipient_list)
+    print(EMAIL_HOST_USER)
+    send_mail(subject=subject, message=message,
+            from_email=from_email,
+            fail_silently=False,
+            recipient_list = ["to@example.com"])
+    print("======3=======")
 
     # ,content_type='image/png'
     mail.attach(filename='qrcode.png', content=qr_code_image)
     mail.send()
     # send_mail(message=mail, subject=subject,from_email=from_email,recipient_list=recipient_list , html_message=f'<p>{message}</p><img src="cid:qrcode">', fail_silently=False)
     # Render a response
+    print("====== end of function =======")
+
     return Response({'status': 201}, status=201)
 
 
-def generate_confirmation_token(user):
-    serializer = itsdangerous.URLSafeTimedSerializer(SECRET_KEY)
-    return serializer.dumps(user)
+@api_view(['GET'])
+def confirm_order(request, token):
+    print("=-=-=-=-= start confirm order==-=--=---=")
 
-
-def confirm_token(token, expiration=3600):
-    serializer = itsdangerous.URLSafeTimedSerializer(SECRET_KEY)
+    signer = TimestampSigner()
     try:
-        email = serializer.loads(token, max_age=expiration)
-    except:
-        return False
-    return email
+        order_id = signer.unsign(token, max_age=86400) # 86400 seconds = 1 day
+    except signer.BadSignature:
+        return Response({'details':'Invalid token'})
+
+    print("=-=-=-=-= mid confirm order==-=--=---=")
+    print(id)
+    order = Order.objects.get(id=order_id)
+    order.is_validated = True
+    order.save()
+    print("=-=-=-=-= end confirm order==-=--=---=")
+
+    return Response({"is_validated":True},status=status.HTTP_200_OK)
+
 
 
 
@@ -269,8 +312,8 @@ def confirm_token(token, expiration=3600):
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def list_orders_by_user(request, user_id):
     """
     Return a list of all bookings for a given user.
@@ -281,159 +324,11 @@ def list_orders_by_user(request, user_id):
     """
     orders = Order.objects.filter(user_id=user_id)
     serialized_orders = OrderSerializer(orders, many=True)
-    # return the data as a  list of JSON objects
+    # for i in range(orders):
+    # get order items and but them in a list
+    # merger list with order and send it
     return Response(serialized_orders.data)
 
 
 
-
-
-# @api_view(['POST'])
-# def create_order(request):
-#     serializer = OrderSerializer(data=request.data)
-#     if serializer.is_valid():
-#         order = serializer.save()
-#         order_items = request.data['items']
-#         for item in order_items:
-#             item['order'] = order.id
-#             item_serializer = OrderItemSerializer(data=item)
-#             if item_serializer.is_valid():
-#                 item_serializer.save()
-#             else:
-#                 order.delete()
-#                 return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-#############################################################  should be get ticket classes
-# @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# def get_booking(request, booking_id):
-#     # /booking/{booking_id}
-#     """
-#     Return a booking object by booking ID.
-
-#     :param request: HTTP request object.
-#     :param booking_id: booking ID.
-#     :return: A JSON object representing the booking for the given ID.
-#     """
-#     try:
-#         # print(booking_id)
-#         booking = Booking.objects.get(id=booking_id)
-#     except Booking.DoesNotExist:
-#         raise Http404
-
-#     serialized_booking = BookingSerializer(booking, many=False)
-#     return Response(serialized_booking.data, status=status.HTTP_200_OK)
-
-
-
-# class discount_list(generics.ListCreateAPIView):
-#     """
-#     A view class to list and create Discount objects.
-
-#     Attributes:
-#         queryset (QuerySet): A QuerySet of all Discount objects.
-#         serializer_class (DiscountSerializer): The serializer class for Discount objects.
-#         authentication_classes (list): A list of authentication classes used for this view.
-#         permission_classes (list): A list of permission classes used for this view.
-
-#     Methods:
-#         get(self, request, *args, **kwargs):
-#             Handle HTTP GET request and retrieve a list of Discount objects.
-#         post(self, request, *args, **kwargs):
-#             Handle HTTP POST request and create a new Discount object.
-#     """
-#     queryset = Discount.objects.all()
-#     serializer_class = DiscountSerializer
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-
-# class discount_pk(generics.RetrieveUpdateDestroyAPIView):
-#     """
-#     A view class to retrieve, update, or delete a Discount object by primary key.
-
-#     Attributes:
-#         queryset (QuerySet): A QuerySet of all Discount objects.
-#         serializer_class (DiscountSerializer): The serializer class for Discount objects.
-#         authentication_classes (list): A list of authentication classes used for this view.
-#         permission_classes (list): A list of permission classes used for this view.
-
-#     Methods:
-#         get(self, request, *args, **kwargs):
-#             Handle HTTP GET request and retrieve a Discount object by primary key.
-#         put(self, request, *args, **kwargs):
-#             Handle HTTP PUT request and update a Discount object by primary key.
-#         delete(self, request, *args, **kwargs):
-#             Handle HTTP DELETE request and delete a Discount object by primary key.
-#     """
-#     queryset = Discount.objects.all()
-#     serializer_class = DiscountSerializer
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# in-progress
-#TODO: configer email service backend
-
-
-
-# def test_send_confirmation_mail(request):
-
-#     # ----------- sending conirmation email ---------
-
-#     # Get the currently logged-in user
-
-#     user = request.user
-#     # print(user.username)
-
-#     # Generate a confirmation token
-#     token = generate_confirmation_token(user.username)
-
-#     # Build the confirmation URL
-#     confirmation_url = request.build_absolute_uri(
-#         reverse('create-booking'))  # , args=[token]))
-
-#     # Generate a QR code for the confirmation URL using the Google Charts API
-#     qr_code_url = f'https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl={confirmation_url}'
-#     qr_code_image = requests.get(qr_code_url).content
-
-#     # Send the confirmation email
-#     subject = 'Confirm your email address'
-#     message = f'Hi {user.username}, please click the link below or scan the QR code to confirm your booking:\n\n {confirmation_url} \n\n'
-#     from_email = 'no-reply@example.com'
-#     recipient_list = [user.email]
-#     mail = EmailMessage(subject, message, from_email,
-#                         recipient_list)
-
-#     # ,content_type='image/png'
-#     mail.attach(filename='qrcode.png', content=qr_code_image)
-#     mail.send()
-#     # send_mail(message=mail, subject=subject,from_email=from_email,recipient_list=recipient_list , html_message=f'<p>{message}</p><img src="cid:qrcode">', fail_silently=False)
-#     # Render a response
-
-
-# for testing
-
-
-
-
-
-
-# pricing functions
 

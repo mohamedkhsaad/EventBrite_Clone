@@ -331,7 +331,7 @@ class WeekendEventsView(generics.ListAPIView):
 
 class TicketCreateAPIView(generics.CreateAPIView):
     """
-    This class defines a POST request to create a new ticket for a given event. It uses the TicketSerializer for serialization 
+    This class defines a POST request to create a new ticket for a given event. It uses the TicketC;assSerializer for serialization 
     and the Ticket model for database queries. The post method first checks if the specified event exists in the database, 
     then adds the event ID to the ticket data and attempts to create a new ticket using the serializer. If the serializer is 
     valid, the new ticket is saved and a success response is returned. Otherwise, an error response is returned with the 

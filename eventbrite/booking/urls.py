@@ -1,19 +1,21 @@
 from rest_framework import routers
 from django.urls import path
+
 from .views import *
 
 urlpatterns = [
 
-    path('events/<int:event_id>/bookings/', list_ticket_classes_by_event, name='list-bookings-by-event'),
+    path('events/<int:event_id>/ticket-classes/', list_ticket_classes_by_event, name='list-bookings-by-event'),
 
 
-    path('events/<int:event_id>/promocode/',check_promo_code, name='check-promocode'),
+    path('events/<int:event_id>/promocode/',check_promocode, name='check-promocode'),
 
 
     path('orders/', create_order, name='create_order'),
 
 
     path('mail/', send_confirmation_email,name='confirm-mail'),
+    path('confirm-order/<str:token>/',confirm_order,name='confirm-order'),
 
 
     path('user/<int:user_id>/bookings/', list_orders_by_user, name='list-bookings-by-user'),

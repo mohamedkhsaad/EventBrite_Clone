@@ -20,7 +20,7 @@ class DiscountSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = '__all__'  # ('ticket_class', 'quantity','order')
+        fields = ('id','ticket_class', 'quantity','order')
 
     # def create(self, validated_data):
     #     ticket_class = validated_data.get('ticket_class')
@@ -32,7 +32,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
     #                                            order=order,
     #                                            ticket_price=ticket_price)
     #     return order_item
-
+    
     # def get_ticket_class(self,obj):
     #     ticket_class_data = obj.ticket_class
     #     print(ticket_class_data)
@@ -46,7 +46,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
     #             raise serializers.ValidationError('Invalid ticket class')
     #     else:
     #         raise serializers.ValidationError('Invalid ticket class')
-
 
 class OrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(many=True)
