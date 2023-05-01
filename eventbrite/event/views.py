@@ -54,7 +54,7 @@ class EventCreateView(generics.CreateAPIView):
     A viewset for creating an event instance.
     """
     permission_classes = [IsAuthenticated]
-    # authentication_classes = [CustomTokenAuthentication]
+    authentication_classes = [CustomTokenAuthentication]
     serializer_class = eventSerializer
     queryset = event.objects.all()
     parser_classes = [MultiPartParser, FormParser]
