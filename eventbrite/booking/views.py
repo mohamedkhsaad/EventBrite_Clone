@@ -52,7 +52,7 @@ def list_ticket_classes_by_event(request, event_id):
 
     
     # get all bookings for this event
-    ticket_classes = TicketClass.objects.filter(event_id=event_id)
+    ticket_classes = TicketClass.objects.filter(EVENT_ID=event_id)
     serialized_Ticket_classes = TicketClassSerializer(ticket_classes, many=True)
 
     # return the data as a  list of JSON objects
@@ -63,7 +63,7 @@ def list_ticket_classes_by_event(request, event_id):
 @api_view(['GET'])
 # @authentication_classes([TokenAuthentication])
 # @permission_classes([IsAuthenticated])
-def check_promo_code(request, event_id):
+def check_promocode(request, event_id):
     """
     Check whether a promo code is valid for a given event.
 
@@ -71,19 +71,19 @@ def check_promo_code(request, event_id):
     :param event_id: Event ID.
     :return: A JSON object indicating whether the promo code is valid.
     """
-    # /event?promo_code=SAVE123
+    # /event?promocode=SAVE123
     # search an event's promo codes
 
     try:
-        promo_code = request.query_params['promo_code']
+        promocode = request.query_params['promocode']
     except:
-        return Response({'err': 'missing promo_code param'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'err': 'missing promocode param'}, status=status.HTTP_400_BAD_REQUEST)
 
-    discount = Discount.objects.filter(EVENT_ID=event_id, CODE=promo_code).first()
+    discount = Discount.objects.filter(EVENT_ID=event_id, CODE=promocode).first()
     if not discount:
-        return Response({'is_promo_code': False}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'is_promocode': False}, status=status.HTTP_400_BAD_REQUEST)
     
-    return Response({'is_promo_code': True}, status=status.HTTP_200_OK)
+    return Response({'is_promocode': True}, status=status.HTTP_200_OK)
 
 
 
@@ -142,7 +142,7 @@ def create_order(request):
 
     data['order'] = order
     print(data)
-    
+
 
     # Calculate the order
     tickets_costs = [] # a list of ticket cost info object
@@ -155,6 +155,8 @@ def create_order(request):
         item['order'] = order.id
         from random import randint
         item['id'] = randint(1,200000)
+        item['ticket_price'] = 999
+        
         print(item)
         order_item_serializer = OrderItemSerializer(data=item)        
         
@@ -166,13 +168,14 @@ def create_order(request):
         print("-----3----------")
 
 
-        ticket_class = order_item_serializer.instance.ticket_class
+        ticket_class = TicketClass.objects.get(ID=order_item_serializer.instance.ticket_class_id)
+        print(ticket_class.PRICE)
         quantity = order_item_serializer.instance.quantity
         print(quantity)
         if ticket_class.capacity - ticket_class.quantity_sold < quantity:
             return Response({"details":f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class.id}"}, status=status.HTTP_400_BAD_REQUEST)
 
-        subtotal += ticket_class.price * quantity
+        subtotal += ticket_class.PRICE * quantity
         
         ticket_class.quantity_sold += quantity
         ticket_class.save()

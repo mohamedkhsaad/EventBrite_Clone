@@ -20,7 +20,7 @@ class DiscountSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = '__all__'  # ('ticket_class', 'quantity','order')
+        fields = ('id','ticket_class', 'quantity','order')
 
     # def create(self, validated_data):
     #     ticket_class = validated_data.get('ticket_class')

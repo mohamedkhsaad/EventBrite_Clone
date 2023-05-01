@@ -5,13 +5,18 @@ from bson import ObjectId
 
 
 class TicketClass(models.Model):
-    event = models.ForeignKey(event, on_delete=models.CASCADE)
+    # id = models.IntegerField(primary_key=True)
+
     ID = models.IntegerField(default=generate_unique_id,unique=True)
+
+    event = models.ForeignKey(event, on_delete=models.CASCADE)
     EVENT_ID = models.IntegerField()
+
     User_id = models.IntegerField(blank=True, null=True)
+
     NAME = models.CharField(max_length=20,blank=True,null=True)
     PRICE = models.FloatField()
-    # GUEST_ID = models.IntegerField(null=True)
+
     capacity = models.IntegerField()# Number of this Ticket Class available for sale.
     quantity_sold = models.IntegerField()# Number of this Ticket Class items that has been sold so far
 
@@ -57,7 +62,7 @@ class Order(models.Model):
     is_validated = models.BooleanField(default=False)
 
 class OrderItem(models.Model):
-    # id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     ID = models.IntegerField(default=generate_unique_id,unique=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE,null=True)
     ticket_class = models.ForeignKey(TicketClass, on_delete=models.CASCADE)

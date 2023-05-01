@@ -8,7 +8,7 @@ urlpatterns = [
     path('events/<int:event_id>/ticket-classes/', list_ticket_classes_by_event, name='list-bookings-by-event'),
 
 
-    path('events/<int:event_id>/promocode/',check_promo_code, name='check-promocode'),
+    path('events/<int:event_id>/promocode/',check_promocode, name='check-promocode'),
 
 
     path('orders/', create_order, name='create_order'),
