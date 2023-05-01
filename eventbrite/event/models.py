@@ -6,9 +6,8 @@ import random
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseBadRequest
-
 from django.http import JsonResponse
-
+from django_resized import ResizedImageField
 
 CATEGORY_CHOICES = (
     ('Category', 'Category'),
@@ -189,19 +188,14 @@ class Locations(models.Model):
 
 def add_image_fields(count):
     # Add first image field as 'image'
-    event.add_to_class('image', models.ImageField(
-        upload_to='events/', blank=True, null=True, verbose_name='image'))
+    event.add_to_class('image', ResizedImageField(size=[512, 256],  crop=['middle', 'center'],
+    upload_to='events/', blank=True, null=True, verbose_name='image'))
     # Add remaining image fields with field names 'image2', 'image3', ...
-    for i in range(2, count+1):
+    for i in range(1, count+1):
         field_name = f"image{i}"
-        field = models.ImageField(
-            upload_to='events/', blank=True, null=True, verbose_name=field_name)
+        field = ResizedImageField(size=[512, 256],crop=['middle', 'center'],upload_to='events/', blank=True, null=True, verbose_name=field_name)
         event.add_to_class(field_name, field)
-
-
-add_image_fields(10)
-
-
+add_image_fields(5)
 class EventFollower(models.Model):
     """
     Model representing a user following an event.

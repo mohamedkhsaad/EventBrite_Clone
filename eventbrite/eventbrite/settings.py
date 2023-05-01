@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_seed',
     'django_extensions',
+    'django_resized',
     
 
 ]
@@ -102,23 +103,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventbrite.wsgi.application'
 
 #Glopal Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': os.getenv('DB_ENGINE'),
-#         'NAME': os.getenv('DB_NAME'),
-#         'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
-#         'CLIENT': {
-#             'host': os.getenv('DB_CLIENT_HOST')
-#         }
-#     }
-# }
-# # Local Database
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DATABASE_ENGINE'),
-        'NAME': os.environ.get('DATABASE_NAME'),
+        'ENGINE': os.getenv('DB_ENGINE'),
+        'NAME': os.getenv('DB_NAME'),
+        'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
+        'CLIENT': {
+            'host': os.getenv('DB_CLIENT_HOST')
+        }
     }
 }
+# # Local Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.environ.get('DATABASE_ENGINE'),
+#         'NAME': os.environ.get('DATABASE_NAME'),
+#     }
+# }
 
 
 # Password validation
@@ -225,3 +226,13 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': 60 * 60 * 24, # run once per day
     },
 }
+
+
+# image resize settings using django_resized
+DJANGORESIZED_DEFAULT_SIZE =os.getenv('DJANGORESIZED_DEFAULT_SIZE')
+DJANGORESIZED_DEFAULT_SCALE = os.getenv('DJANGORESIZED_DEFAULT_SCALE')
+DJANGORESIZED_DEFAULT_QUALITY = os.getenv('DJANGORESIZED_DEFAULT_QUALITY')
+DJANGORESIZED_DEFAULT_KEEP_META = os.getenv('DJANGORESIZED_DEFAULT_KEEP_META')
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = os.getenv('DJANGORESIZED_DEFAULT_FORCE_FORMAT')
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = os.getenv('DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS')
+DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = os.getenv('DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION')

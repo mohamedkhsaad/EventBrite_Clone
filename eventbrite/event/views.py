@@ -54,15 +54,11 @@ class EventCreateView(generics.CreateAPIView):
     A viewset for creating an event instance.
     """
     permission_classes = [IsAuthenticated]
-    authentication_classes = [CustomTokenAuthentication]
+    # authentication_classes = [CustomTokenAuthentication]
     serializer_class = eventSerializer
     queryset = event.objects.all()
     parser_classes = [MultiPartParser, FormParser]
-    # authentication_classes = [TokenAuthentication]
-
-
     def post(self, request, *args, **kwargs):
-        print("hiiiii")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         # Set the user field to the authenticated user
@@ -74,6 +70,10 @@ class EventCreateView(generics.CreateAPIView):
          # Add user id to response data
         user_id = request.user.id
         response_data = serializer.data
+        if response_data.get('online') =='True':
+            response_data['venue_name'] = ""
+        elif response_data.get('online') =='False' and response_data.get('venue_name') =='':
+            return Response({'You have to determine a venue name'})
         # response_data['user_id'] = user_id
         return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -539,3 +539,4 @@ class UnlikeEventView(APIView):
             return Response({'status': 'success'})
         else:
             return Response({'status': 'error', 'message': 'Could not unfollow event.'})
+

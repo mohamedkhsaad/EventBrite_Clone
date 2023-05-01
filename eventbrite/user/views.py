@@ -116,10 +116,15 @@ class CustomTokenLoginView(APIView):
                 return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
             if user.check_password(password):
                 custom_token = CustomToken.objects.create(user=user)
-                return Response({'token': custom_token.key}, status=status.HTTP_200_OK)
+                user_id = user.id
+
+                response_data = {
+                'id':user_id,
+                'email': user.email,
+                'token': custom_token.key 
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 # token_value = '2c210171bf0d4df879a8b844905fdfa697b32500'
 # token = CustomToken.objects.filter(key=token_value).first()
