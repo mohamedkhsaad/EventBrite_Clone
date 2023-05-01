@@ -24,6 +24,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from event.serializers import *
 from user import *
+from user.models import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -40,24 +41,41 @@ from booking.serializers import *
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 from booking.models import event, TicketClass
-from booking.serializers import TicketClassSerializer
-
+from booking.serializers import *
+from django.db import transaction
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from user.authentication import CustomTokenAuthentication
 
 class EventCreateView(generics.CreateAPIView):
     """
     A viewset for creating an event instance.
     """
     permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
     serializer_class = eventSerializer
     queryset = event.objects.all()
     parser_classes = [MultiPartParser, FormParser]
+    # authentication_classes = [TokenAuthentication]
+
 
     def post(self, request, *args, **kwargs):
+        print("hiiiii")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        # Set the user field to the authenticated user
+        serializer.validated_data['user'] = request.user
+        # Set the User_id field to the ID of the authenticated user
+        serializer.validated_data['User_id'] = request.user.id
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+         # Add user id to response data
+        user_id = request.user.id
+        response_data = serializer.data
+        # response_data['user_id'] = user_id
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class MyPagination(PageNumberPagination):
@@ -70,15 +88,16 @@ class MyPagination(PageNumberPagination):
         print(self.page)
         return super().get_paginated_response(data)
 
-
 class AllEventListView(APIView):
     """
     A viewset for retrieving all event instances.
     """
     # permission_classes = [IsAuthenticated]
+    # authentication_classes = [CustomTokenAuthentication]
     pagination_class = MyPagination
-
     def get(self, request, format=None):
+        print(f"authentication classes: {self.authentication_classes}")
+        print(f"permission classes: {self.permission_classes}")
         """
         This view should return a paginated list of all the events.
         """
@@ -95,7 +114,6 @@ class EventSearchView(generics.ListAPIView):
     """
     A viewset for searching event instances by title.
     """
-    permission_classes = [IsAuthenticated]
     queryset = event.objects.all()
     serializer_class = eventSerializer
 
@@ -113,7 +131,6 @@ class EventListtype(generics.ListAPIView):
     A viewset for retrieving event instances by type.
     """
     serializer_class = eventSerializer
-    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
@@ -129,8 +146,6 @@ class EventListCategory(generics.ListAPIView):
     A viewset for retrieving event instances by category.
     """
     serializer_class = eventSerializer
-    # permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
         """
         This view should return a list of all the events
@@ -145,8 +160,6 @@ class EventListSupCategory(generics.ListAPIView):
     A viewset for retrieving event instances by sub-category.
     """
     serializer_class = eventSerializer
-    # permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
         """
         This view should return a list of all the events
@@ -161,23 +174,19 @@ class EventListVenue(generics.ListAPIView):
     A viewset for retrieving event instances by venue.
     """
     serializer_class = eventSerializer
-    # permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
         """
         This view should return a list of all the events
         for the venue specified in the URL parameter.
         """
         event_venue = self.kwargs['event_venue']
-        return event.objects.filter(venue_name=event_venue)
+        return event.objects.filter(venue_name__icontains=event_venue)
 
 
 class OnlineEventsAPIView(APIView):
     """
     A viewset for retrieving event which the online is 'true' .
     """
-    # permission_classes = [IsAuthenticated]
-
     def get(self, request):
         """
         This view should return a list of all the online events.
@@ -194,7 +203,7 @@ class EventID(generics.ListAPIView):
     """
     serializer_class = eventSerializer
     permission_classes = [IsAuthenticated]
-
+    authentication_classes = [CustomTokenAuthentication]
     def get_queryset(self):
         """
         This view should return a list of all the events
@@ -203,21 +212,36 @@ class EventID(generics.ListAPIView):
         event_sub_ID = self.kwargs['event_ID']
         return event.objects.filter(ID=event_sub_ID)
 
-
 class UserInterestCreateAPIView(CreateAPIView):
     """
     A viewset for creating an user Interests instance.
     """
     permission_classes = [IsAuthenticated]
-    queryset = UserInterest.objects.all()
+    authentication_classes = [CustomTokenAuthentication]
     serializer_class = UserInterestSerializer
-
+    queryset = event.objects.all()
+    parser_classes = [MultiPartParser, FormParser]
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # Set the user field to the authenticated user
+        serializer.validated_data['user'] = request.user
+        # Set the User_id field to the ID of the authenticated user
+        serializer.validated_data['User_id'] = request.user.id
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+         # Add user id to response data
+        user_id = request.user.id
+        response_data = serializer.data
+        # response_data['user_id'] = user_id
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
 
 class UserInterestAPIView(generics.ListAPIView):
     """
     A viewset for retrive an user Interests instance.
     """
     permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
     queryset = UserInterest.objects.all()
 
     def list(self, request):
@@ -230,14 +254,14 @@ class UserInterestEventsAPIView(APIView):
     """
     A viewset for retrieving event instances based on user Interests.
     """
-    permission_classes = [IsAuthenticated]
     """
     This function defines a GET request that retrieves a list of events based on the user's interests. 
     It first checks whether the user is authenticated, and if not, returns a 401 Unauthorized response. 
     If the user is authenticated, it retrieves the user's interests using the get_user_interests method and the events related to those interests using the get_events method. 
     Finally, it serializes the retrieved events using the eventSerializer class and returns the serialized data as a response using the Response class. 
     """
-
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
     def get(self, request, format=None):
         # Check if the user is authenticated
         if not request.user.is_authenticated:
@@ -279,7 +303,6 @@ class TodayEventsList(generics.ListAPIView):
     retrieve the events happening on the current date and returns a queryset containing those events. 
     """
     serializer_class = eventSerializer
-
     def get_queryset(self):
         today = now().date()
         queryset = event.objects.filter(ST_DATE=today)
@@ -314,13 +337,14 @@ class TicketCreateAPIView(generics.CreateAPIView):
     valid, the new ticket is saved and a success response is returned. Otherwise, an error response is returned with the 
     serializer errors.
     """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
     queryset = TicketClass.objects.all()
     serializer_class = TicketClassSerializer
-
     def post(self, request, event_id):
         """
         A POST request to create a ticket object for a given event ID
-        """
+        """    
         try:
             Event = event.objects.get(ID=event_id)
         except event.DoesNotExist:
@@ -328,8 +352,16 @@ class TicketCreateAPIView(generics.CreateAPIView):
 
         ticket_data = request.data.copy()
         ticket_data['event'] = Event.ID
-        serializer = self.serializer_class(data=ticket_data)
+        ticket_data['EVENT_ID'] = Event.ID
 
+      
+        ticket_data['user'] = request.user
+        ticket_data['User_id'] = request.user.id
+
+        if ticket_data.get('TICKET_TYPE') == 'Free':
+            ticket_data['PRICE'] = 0
+
+        serializer = self.serializer_class(data=ticket_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
@@ -370,7 +402,6 @@ class DraftEventsAPIView(APIView):
     A viewset for retrieving Draft events.
     """
     # permission_classes = [IsAuthenticated]
-
     def get(self, request):
         """
         This view should return a list of all the draft events.
@@ -378,4 +409,133 @@ class DraftEventsAPIView(APIView):
         events = event.objects.filter(STATUS='Draft')
         serializer = eventSerializer(events, many=True)
         return Response(serializer.data)
+
+
+# followers
+class FollowEventView(APIView):
+    """
+    A viewset for make the user could follow an event by event ID.
+    """
+    def get(self, request,event_id):
+        Event = get_object_or_404(event,ID=event_id)
+        if request.user.is_authenticated:
+            EventFollower.objects.get_or_create(user=request.user,ID=Event.ID)
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'You must be logged in to follow an event.'})
+
+class UserFollowedEvents(APIView):
+    """
+    A viewset for GET the events that the user follow by the user authentication.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            event_followers = request.user.event_followers.all()
+            events = [get_object_or_404(event, ID=event_follower.ID) for event_follower in event_followers]
+            serializer = eventSerializer(events, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'status': 'error', 'message': 'You must be logged in to see followed events.'})
+        
+class UserFollowedEventsCount(APIView):
+    """
+    A viewset for count the events that the user follow by the user authentication.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            count = request.user.event_followers.count()
+            return Response({'status': 'success', 'count': count})
+        else:
+            return Response({'status': 'error', 'message': 'You must be logged in to see followed events count.'})
+        
+class EventFollowersCount(APIView):
+    """
+    A viewset for count the users that follow an event by event ID.
+    """
+    serializer_class = EventFollowerSerializer
+
+    def get(self, request, event_id):
+        try:
+            event_followers = EventFollower.objects.filter(ID=event_id)
+            count = event_followers.count()
+            return Response({'status': 'success', 'count': count})
+        except event.DoesNotExist:
+            return Response({'status': 'error', 'message': 'Event does not exist.'})
     
+class UnfollowEventView(APIView):
+    """
+    A viewset for unfollow an event by event ID.
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+    def delete(self, request, event_id):
+        event_follower = get_object_or_404(EventFollower, user=request.user, ID=event_id)
+        num_deleted, _ = event_follower.__class__.objects.filter(user=request.user, ID=event_id).delete()
+        if num_deleted > 0:
+            return Response({'status': 'success'})
+        else:
+            return Response({'status': 'error', 'message': 'Could not unfollow event.'})
+# likes
+class LikeEventView(APIView):
+    """
+    A viewset for make the user could like an event by event ID.
+    """
+    def get(self, request,event_id):
+        Event = get_object_or_404(event,ID=event_id)
+        if request.user.is_authenticated:
+            Eventlikes.objects.get_or_create(user=request.user,ID=Event.ID)
+            return JsonResponse({'status': 'success'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'You must be logged in to follow an event.'})
+
+class UserLikedEvents(APIView):
+    """
+    A viewset for GET the events that the user liked by the user authentication.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            event_Likes = request.user.event_Likes.all()
+            events = [get_object_or_404(event,ID=event_like.ID) for event_like in event_Likes]
+            serializer = eventSerializer(events, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'status': 'error', 'message': 'You must be logged in to see followed events.'})
+        
+class UserLikedEventsCount(APIView):
+    """
+    A viewset for count the events that the user follow by the user authentication.
+    """
+    def get(self, request):
+        if request.user.is_authenticated:
+            count = request.user.event_Likes.count()
+            return Response({'status': 'success', 'count': count})
+        else:
+            return Response({'status': 'error', 'message': 'You must be logged in to see followed events count.'})
+        
+class EventLikesCount(APIView):
+    """
+    A viewset for count the users that follow an event by event ID.
+    """
+    serializer_class = EventFollowerSerializer
+
+    def get(self, request, event_id):
+        try:
+            event_Likes = Eventlikes.objects.filter(ID=event_id)
+            count = event_Likes.count()
+            return Response({'status': 'success', 'count': count})
+        except event.DoesNotExist:
+            return Response({'status': 'error', 'message': 'Event does not exist.'})
+    
+class UnlikeEventView(APIView):
+    """
+    A viewset for unlike an event by event ID.
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+    def delete(self, request, event_id):
+        event_like = get_object_or_404(Eventlikes, user=request.user, ID=event_id)
+        num_deleted, _ = event_like.__class__.objects.filter(user=request.user, ID=event_id).delete()
+        if num_deleted > 0:
+            return Response({'status': 'success'})
+        else:
+            return Response({'status': 'error', 'message': 'Could not unfollow event.'})

@@ -112,6 +112,13 @@ WSGI_APPLICATION = 'eventbrite.wsgi.application'
 #         }
 #     }
 # }
+# # Local Database
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DATABASE_ENGINE'),
+        'NAME': os.environ.get('DATABASE_NAME'),
+    }
+}
 
 # # Local Database
 DATABASES = {
@@ -165,7 +172,11 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'django.contrib.auth.backends.ModelBackend',  # default authentication backend
+        'user.authentication.CustomTokenAuthentication'
     ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
 
 }
 
@@ -176,6 +187,13 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 
+
+# EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_USE_TLS=True
+# EMAIL_HOST='smtp.gmail.com'
+# EMAIL_HOST_USER='eventus201@gmail.com'
+# EMAIL_HOST_PASSWORD='adevsgoqzaixfobh'
+# EMAIL_PORT=587
 # Authentication settings
 AUTH_USER_MODEL = os.getenv('AUTH_USER_MODEL')
 
@@ -200,3 +218,18 @@ PASSWORD_RESET_TIMEOUT_DAYS = 7
 MEDIA_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+
+CELERY_BROKER_URL = 'mongodb://localhost:27017/eventbrite'
+CELERY_RESULT_BACKEND = 'mongodb://localhost:27017/eventbrite'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+CELERY_BEAT_SCHEDULE = {
+    'update_event_status': {
+        'task': 'eventbrite.celery.update_event_status',
+        'schedule': 60 * 60 * 24, # run once per day
+    },
+}

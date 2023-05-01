@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('ID', models.IntegerField()),
-                ('percent_off', models.CharField(max_length=20)),
+                ('percent_off', models.IntegerField()),
                 ('CODE', models.CharField(max_length=20)),
                 ('start_date', models.DateField()),
                 ('end_date', models.DateField()),

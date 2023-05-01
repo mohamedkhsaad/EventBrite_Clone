@@ -1,30 +1,27 @@
 
 from rest_framework import serializers
-from .models import *
+from booking.models import *
+
 
 class TicketClassSerializer(serializers.ModelSerializer):
+
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
-        model=TicketClass
-        exclude = ['event','id']
+        model = TicketClass
+        exclude = ['event', 'id']
 
 
 class DiscountSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Discount
-        fields =  '__all__' 
-
-
-# class BookingSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model=Booking
-#         fields =  '__all__' 
+        model = Discount
+        fields = '__all__'
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = '__all__' #('ticket_class', 'quantity','order')
-        
+        fields = '__all__'  # ('ticket_class', 'quantity','order')
+
     # def create(self, validated_data):
     #     ticket_class = validated_data.get('ticket_class')
     #     quantity = validated_data.get('quantity')
@@ -55,7 +52,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('id', 'user', 'event', 'discount', 'order_items', 'full_price', 'fee', 'total', 'date_created', 'is_validated')
+        fields = ('id', 'user', 'event', 'discount', 'order_items',
+                  'full_price', 'fee', 'total', 'date_created', 'is_validated')
 
     def create(self, validated_data):
         order_items_data = validated_data.pop('order_items')
@@ -63,9 +61,3 @@ class OrderSerializer(serializers.ModelSerializer):
         for order_item_data in order_items_data:
             OrderItem.objects.create(order=order, **order_item_data)
         return order
-
-
-
-
-
-
