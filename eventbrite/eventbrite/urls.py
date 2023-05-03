@@ -89,7 +89,7 @@ urlpatterns = [
     path('events/event-likes-count/<int:event_id>/',EventLikesCount.as_view(), name='event-Likes-count'),
     path('events/unlike_event/<int:event_id>/',UnlikeEventView.as_view(), name='unlike-event'),
 
-    path('events/<int:event_id>/add-attendee/', EventAttendeeView.as_view(), name='add_attendee'),
+    # path('events/<int:event_id>/add-attendee/', EventAttendeeView.as_view(), name='add_attendee'),
 
 
 
