@@ -195,7 +195,7 @@ def add_image_fields(count):
         field_name = f"image{i}"
         field = ResizedImageField(size=[512, 256],crop=['middle', 'center'],upload_to='events/', blank=True, null=True, verbose_name=field_name)
         event.add_to_class(field_name, field)
-add_image_fields(5)
+# add_image_fields(5)
 class EventFollower(models.Model):
     """
     Model representing a user following an event.
@@ -216,3 +216,10 @@ class Eventlikes(models.Model):
     event = models.ForeignKey(event, on_delete=models.CASCADE)
     followed_date = models.DateTimeField(auto_now_add=True)
     ID = models.IntegerField()
+
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from django.core.validators import EmailValidator
+
+
+

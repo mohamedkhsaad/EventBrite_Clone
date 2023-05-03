@@ -17,12 +17,12 @@ urllib3==1.26.14
 wincertstore==0.2
 drf_spectacular
 django-sslserver   
-itsdangerous-2.1.2
+itsdangerous
 python-dotenv
-boto3 django-storages
+django-storages
 Pillow
 django-cors-headers 
 django-seed
 Faker
-django-extensions-3.2.1
+django-extensions==3.2.1
 django-resized

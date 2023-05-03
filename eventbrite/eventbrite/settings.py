@@ -103,24 +103,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'eventbrite.wsgi.application'
 
 #Glopal Database
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
-        'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
-        'CLIENT': {
-            'host': os.getenv('DB_CLIENT_HOST')
-        }
-    }
-}
-# # Local Database
 # DATABASES = {
 #     'default': {
-#         'ENGINE': os.environ.get('DATABASE_ENGINE'),
-#         'NAME': os.environ.get('DATABASE_NAME'),
+#         'ENGINE': os.getenv('DB_ENGINE'),
+#         'NAME': os.getenv('DB_NAME'),
+#         'ENFORCE_SCHEMA': os.getenv('DB_ENFORCE_SCHEMA'),
+#         'CLIENT': {
+#             'host': os.getenv('DB_CLIENT_HOST')
+#         }
 #     }
 # }
-
 # # Local Database
 DATABASES = {
     'default': {
@@ -128,6 +120,14 @@ DATABASES = {
         'NAME': os.environ.get('DATABASE_NAME'),
     }
 }
+
+# # Local Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': os.environ.get('DATABASE_ENGINE'),
+#         'NAME': os.environ.get('DATABASE_NAME'),
+#     }
+# }
 
 
 # Password validation
@@ -188,12 +188,11 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
 
-
 # EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_USE_TLS=True
 # EMAIL_HOST='smtp.gmail.com'
-# EMAIL_HOST_USER='eventus201@gmail.com'
-# EMAIL_HOST_PASSWORD='adevsgoqzaixfobh'
+# EMAIL_HOST_USER='eventusme8000@gmail.com'
+# EMAIL_HOST_PASSWORD='rdxyqihcoxxnjouj'
 # EMAIL_PORT=587
 # Authentication settings
 AUTH_USER_MODEL = os.getenv('AUTH_USER_MODEL')
@@ -210,9 +209,6 @@ CSRF_COOKIE_SECURE = True
 # SSL settings
 SSL_CERTIFICATE = os.getenv('SSL_CERTIFICATE')
 SSL_PRIVATE_KEY = os.getenv('SSL_PRIVATE_KEY')
-
-
-
 
 PASSWORD_RESET_TIMEOUT_DAYS = 7
 
@@ -244,3 +240,19 @@ DJANGORESIZED_DEFAULT_KEEP_META = os.getenv('DJANGORESIZED_DEFAULT_KEEP_META')
 DJANGORESIZED_DEFAULT_FORCE_FORMAT = os.getenv('DJANGORESIZED_DEFAULT_FORCE_FORMAT')
 DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = os.getenv('DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS')
 DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = os.getenv('DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION')
+# print(DJANGORESIZED_DEFAULT_SIZE)
+# print(DJANGORESIZED_DEFAULT_SCALE)
+# print(DJANGORESIZED_DEFAULT_QUALITY)
+# print(DJANGORESIZED_DEFAULT_KEEP_META)
+# print(DJANGORESIZED_DEFAULT_FORCE_FORMAT)
+# print(DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS)
+# print(DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION)
+
+DJANGORESIZED_DEFAULT_SIZE =[512,256]
+# DJANGORESIZED_DEFAULT_SIZE =[600,300]
+DJANGORESIZED_DEFAULT_SCALE = 1
+DJANGORESIZED_DEFAULT_QUALITY = 75
+DJANGORESIZED_DEFAULT_KEEP_META = True
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
+DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True

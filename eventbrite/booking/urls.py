@@ -11,7 +11,7 @@ urlpatterns = [
     path('events/<int:event_id>/promocode/',check_promocode, name='check-promocode'),
 
 
-    path('orders/', create_order, name='create_order'),
+    path('event/<int:event_id>/orders/', create_order, name='create_order'),
 
 
     path('mail/', send_confirmation_email,name='confirm-mail'),

@@ -52,7 +52,7 @@ def list_ticket_classes_by_event(request, event_id):
 
     
     # get all bookings for this event
-    ticket_classes = TicketClass.objects.filter(EVENT_ID=event_id)
+    ticket_classes = TicketClass.objects.filter(event_id=event_id)
     serialized_Ticket_classes = TicketClassSerializer(ticket_classes, many=True)
 
     # return the data as a  list of JSON objects
@@ -90,7 +90,7 @@ def check_promocode(request, event_id):
 
 # fees 
 @api_view(['POST'])
-def create_order(request):
+def create_order(request,event_id):
 
     """
     request data should look like this
@@ -99,21 +99,20 @@ def create_order(request):
             "order_items":
             [
                 {
-                "ticket_class" : 1,	
+                "ticket_class_id" : 1,	
                 "quantity": 3 
                 },
                 {
-                "ticket_class" : 2,	
+                "ticket_class_id" : 2,	
                 "quantity": 1 
                 }
             ], 
-            "promocode" : "DISCOUNT25",
-            "event" : 1
+            "promocode" : "DISCOUNT25"
 
         }
     """
 
-    order = Order(user = request.user) # create empty order so that orderitem can point to it
+    order = Order(user_id = request.user.id) # create empty order so that orderitem can point to it
     order.save()
     print("-------1--------")
 
@@ -127,11 +126,11 @@ def create_order(request):
             "order_items":
             [
                 {
-                "ticket_class" : 1,	
+                "ticket_class_id" : 1,	
                 "quantity": 3 
                 },
                 {
-                "ticket_class" : 2,	
+                "ticket_class_id" : 2,	
                 "quantity": 1 
                 }
             ], 
@@ -140,21 +139,18 @@ def create_order(request):
 
         }"""}, status=status.HTTP_400_BAD_REQUEST)
 
-    data['order'] = order
-    print(data)
+    # data['order_id'] = order.ID
+    # print(data)
 
 
-    # Calculate the order
-    tickets_costs = [] # a list of ticket cost info object
+    # for Calculate the order 
     subtotal = 0.0
     amount_off = 0.0
     print("--------2-------")
 
     for item in order_items:
         print(item)
-        item['order'] = order.id
-        from random import randint
-        item['id'] = randint(1,200000)
+        item['order_id'] = order.ID
         item['ticket_price'] = 999
         
         print(item)
@@ -172,27 +168,27 @@ def create_order(request):
         print(ticket_class.PRICE)
         quantity = order_item_serializer.instance.quantity
         print(quantity)
+        
         if ticket_class.capacity - ticket_class.quantity_sold < quantity:
             return Response({"details":f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class.id}"}, status=status.HTTP_400_BAD_REQUEST)
 
         subtotal += ticket_class.PRICE * quantity
         
         ticket_class.quantity_sold += quantity
-        ticket_class.save()
+        # ticket_class.save()
 
     fee = 0
     total = subtotal - amount_off + fee
 
 
 
-    event = request.data.get('event')
-    if not event:
-        return Response({"details":"event wasnt provided"}, status=status.HTTP_400_BAD_REQUEST)
+    if not event.objects.filter(ID = event_id):
+        return Response({"details":"no event exist with this ID"}, status=status.HTTP_400_BAD_REQUEST)
 
 
     promocode = request.data.get('promocode')
 
-    discount = Discount.objects.filter(CODE=promocode, EVENT_ID=event).first()
+    discount = Discount.objects.filter(CODE=promocode, EVENT_ID=event_id).first()
     if not discount:
         return Response({"details":"there isnt any discount with this promocode and event id"}, status=status.HTTP_400_BAD_REQUEST)
     amount_off = float(discount.percent_off)/100 * subtotal
@@ -213,10 +209,10 @@ def create_order(request):
         'total': total
     }
     order.full_price = subtotal
-    # order.amount_off = amount_off
+    order.amount_off = amount_off
     order.total = total
-    order.discount = discount
-    order.event_id = event
+    order.discount_id = discount.ID
+    order.event_id = event_id
     order.fee = fee
     order.save()
 
@@ -328,6 +324,7 @@ def list_orders_by_user(request, user_id):
     # get order items and but them in a list
     # merger list with order and send it
     return Response(serialized_orders.data)
+
 
 
 

@@ -38,7 +38,7 @@ from django.utils import timezone
 from rest_framework.pagination import PageNumberPagination
 from booking.models import *
 from booking.serializers import *
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST,HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 from booking.models import event, TicketClass
 from booking.serializers import *
@@ -202,8 +202,8 @@ class EventID(generics.ListAPIView):
     A viewset for retrieving event instances by ID.
     """
     serializer_class = eventSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [CustomTokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [CustomTokenAuthentication]
     def get_queryset(self):
         """
         This view should return a list of all the events
@@ -349,14 +349,21 @@ class TicketCreateAPIView(generics.CreateAPIView):
             Event = event.objects.get(ID=event_id)
         except event.DoesNotExist:
             return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-
+    
         ticket_data = request.data.copy()
         ticket_data['event'] = Event.ID
-        ticket_data['EVENT_ID'] = Event.ID
-
-      
+        ticket_data['event_id'] = Event.ID
         ticket_data['user'] = request.user
         ticket_data['User_id'] = request.user.id
+        print(type(Event.User_id))
+        print(type(request.user.id))
+
+         # Check if the user creating the ticket is the same user who created the event
+        # if request.user.id != str(Event.User_id):
+        #     return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
+        if str(request.user.id) != str(Event.User_id):
+            return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
+
 
         if ticket_data.get('TICKET_TYPE') == 'Free':
             ticket_data['PRICE'] = 0
@@ -539,4 +546,62 @@ class UnlikeEventView(APIView):
             return Response({'status': 'success'})
         else:
             return Response({'status': 'error', 'message': 'Could not unfollow event.'})
+
+
+
+
+# manage attendee:
+from django.core.mail import send_mail
+
+from rest_framework import serializers
+from booking.models import *
+
+from booking.serializers import *
+class EventAttendeeView(APIView):
+    def post(self, request, event_id):
+        # Retrieve event and ticket classes
+        ticket_classes = TicketClass.objects.filter(EVENT_ID=event_id)
+        # Determine ticket quantities and calculate total price
+        ticket_quantities = []
+        total_price = 0.0
+        for ticket_class in ticket_classes:
+            quantity = ticket_class.capacity
+            print(quantity)
+            if quantity:
+                quantity = int(quantity)
+                if quantity > 0:
+                    total_price += ticket_class.PRICE * quantity
+        # Create order
+        Event = event.objects.get(ID=event_id)
+        order = Order.objects.create(event=Event, full_price=total_price)
+        # Create order items and attendees
+        for i, ticket_class in enumerate(ticket_classes):
+            if i < len(ticket_quantities):
+                quantity = ticket_quantities[i]
+                if quantity > 0:
+                    order_item = OrderItem.objects.create(order=order, ticket_class=ticket_class, quantity=quantity, ticket_price=ticket_class.PRICE)
+                    for j in range(quantity):
+                        attendee_data = request.data.get(f'ticket_class_{ticket_class.id}_attendee_{j}')
+                        if attendee_data:
+                            serializer = AttendeeSerializer(data=attendee_data)
+                            serializer.is_valid(raise_exception=True)
+                            attendee = serializer.save()
+                            order_item.attendees.add(attendee)
+
+        return Response({'message': 'Order placed and invitations sent!'})
+
+
+        # Send email invitation to attendees
+        # for order_item in order.order_items.all():
+        #     for attendee in order_item.attendees.all():
+        #         send_mail(
+        #             f'Invitation to {event.name}',
+        #             f'Dear {attendee.first_name},\n\nYou have been invited to attend {event.name}! Please present this email at the event check-in to gain access.\n\nBest regards,\n{event.organizer}',
+        #             'noreply@example.com',
+        #             [attendee.email],
+        #             fail_silently=False,
+        #         )
+
+        # Return success response
+        return HttpResponse('Order placed and invitations sent!')
 

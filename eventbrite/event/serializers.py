@@ -22,12 +22,12 @@ class eventSerializer(serializers.ModelSerializer):
         model = event
         fields = '__all__'
 
-        # exclude = ['U]
     def to_representation(self, instance):
         data = super().to_representation(instance)
         if instance is not None:
             data['Title'] = instance.Title or ''
         return data
+    add_image_fields(5)
 
 
 class SearchEventSerializer(serializers.ModelSerializer):
@@ -37,7 +37,6 @@ class SearchEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = event
         fields = '__all__'
-
 
 class UserInterestSerializer(serializers.ModelSerializer):
     """
