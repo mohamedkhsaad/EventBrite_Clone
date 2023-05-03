@@ -18,9 +18,7 @@ wincertstore==0.2
 drf_spectacular
 django-sslserver   
 itsdangerous
-itsdangerous
 python-dotenv
-django-storages
 django-storages
 Pillow
 django-cors-headers 
