@@ -18,7 +18,8 @@ urlpatterns = [
     path('confirm-order/<str:token>/',confirm_order,name='confirm-order'),
 
 
-    path('user/<int:user_id>/bookings/', list_orders_by_user, name='list-bookings-by-user'),
+    path('user/<int:user_id>/orders/', list_orders_by_user, name='list-orders-by-user'),
+    path('order/<int:order_id>/order-items/', list_orderitem_by_order, name='list-order-items-by-user'),
 
     # path('events/<int:event_id>/discounts',list_discounts_by_event, name='list-discount-by-event'),
     # path('booking_generics/', bookingList.as_view(), name='booking-generics'),

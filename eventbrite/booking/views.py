@@ -312,7 +312,7 @@ def confirm_order(request, token):
 # @permission_classes([IsAuthenticated])
 def list_orders_by_user(request, user_id):
     """
-    Return a list of all bookings for a given user.
+    Return a list of all orders for a given user.
 
     :param request: HTTP request object.
     :param user_id: User ID.
@@ -320,11 +320,17 @@ def list_orders_by_user(request, user_id):
     """
     orders = Order.objects.filter(user_id=user_id)
     serialized_orders = OrderSerializer(orders, many=True)
-    # for i in range(orders):
-    # get order items and but them in a list
-    # merger list with order and send it
     return Response(serialized_orders.data)
 
 
+@api_view(['GET'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def list_orderitem_by_order(request, order_id):
+    """
 
+    """
+    order_items = OrderItem.objects.filter(order_id=order_id)
+    serialized_orderitems = OrderItemSerializer(order_items, many=True)
+    return Response(serialized_orderitems.data)
 
