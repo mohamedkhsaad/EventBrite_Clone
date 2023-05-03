@@ -58,6 +58,8 @@ urlpatterns = [
 
     # event
     path('events/create/', EventCreateView.as_view(), name='event-create'),
+    path('events/<int:ID>/update_event/', EventUpdateAPIView.as_view(), name='update an event'),
+
     path('events/search/<str:event_name>', EventSearchView.as_view(), name='event_search'),
     path('events/type/<str:event_type>/', EventListtype.as_view(), name='event-list-by-type'),
     path('events/category/<str:event_Category>/', EventListCategory.as_view(), name='event-list-by-category'),

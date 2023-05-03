@@ -20,7 +20,7 @@ class eventSerializer(serializers.ModelSerializer):
         return None
     class Meta:
         model = event
-        fields = '__all__'
+        exclude = ['id']
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

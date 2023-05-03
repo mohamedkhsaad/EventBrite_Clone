@@ -588,7 +588,7 @@ class UnlikeEventView(APIView):
 #                             attendee = serializer.save()
 #                             order_item.attendees.add(attendee)
 
-        return Response({'message': 'Order placed and invitations sent!'})
+        # return Response({'message': 'Order placed and invitations sent!'})
 
 
         # Send email invitation to attendees
@@ -603,5 +603,51 @@ class UnlikeEventView(APIView):
         #         )
 
         # Return success response
-        return HttpResponse('Order placed and invitations sent!')
+        # return HttpResponse('Order placed and invitations sent!')
 
+class EventUpdateAPIView(generics.UpdateAPIView):
+    """
+    This class defines a PUT request to update an existing event. It uses the EventSerializer for serialization and the event 
+    model for database queries. The put method first checks if the specified event exists in the database, then attempts to update 
+    the event using the serializer. If the serializer is valid, the updated event is saved and a success response is returned. 
+    Otherwise, an error response is returned with the serializer errors.
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+    queryset = event.objects.all()
+    serializer_class = eventSerializer
+    lookup_field = 'ID'
+    def put(self, request,ID):
+        """
+        A PUT request to update an event object for a given event ID
+        """
+        try:
+            event_instance = event.objects.get(ID=ID)
+            print(event_instance.ID)
+        except event.DoesNotExist:
+            return Response({'error': f'Event with id {ID} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+        if str(request.user.id) != str(event_instance.User_id):
+            return Response({'error': 'You are not authorized to update this event.'}, status=HTTP_401_UNAUTHORIZED)
+        
+        
+        
+           # retrieve event data from database
+        event_data = eventSerializer(event_instance).data
+        
+        # update the event data with the specified fields from the request
+        updated_event_data = {}
+        for key in event_data:
+            if key in request.data:
+                updated_event_data[key] = request.data[key]
+            else:
+                updated_event_data[key] = event_data[key]
+        
+        serializer = self.get_serializer(event_instance, data=updated_event_data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+
+    

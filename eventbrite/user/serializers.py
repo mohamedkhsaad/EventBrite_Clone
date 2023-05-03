@@ -61,13 +61,13 @@ class userSerializer(serializers.ModelSerializer):
         
 
         # Send the password reset email to the user
-        send_mail(
-             'Password reset for your My App account',
-             'Please click the following link to reset your password: ' + reset_url,
-             EMAIL_HOST_USER,
-             [user.email],
-             fail_silently=False,
-                 )
+        # send_mail(
+        #      'Password reset for your My App account',
+        #      'Please click the following link to reset your password: ' + reset_url,
+        #      EMAIL_HOST_USER,
+        #      [user.email],
+        #      fail_silently=False,
+        #          )
         return user
 
 
