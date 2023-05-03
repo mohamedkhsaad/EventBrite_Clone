@@ -16,7 +16,6 @@ from django.core.mail import send_mail, EmailMessage
 from django.http import Http404
 from django.template.loader import render_to_string
 from django.urls import reverse
-from eventbrite.email_info import from_email
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework import generics, filters, status
@@ -38,9 +37,9 @@ from django.core.signing import TimestampSigner
 from eventbrite.settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 
+
+
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
 def list_ticket_classes_by_event(request, event_id):
     """
     Return a list of all ticket class for a given event.
@@ -88,6 +87,7 @@ def check_promocode(request, event_id):
 
 
 
+
 # fees 
 @api_view(['POST'])
 def create_order(request,event_id):
@@ -107,10 +107,23 @@ def create_order(request,event_id):
                 "quantity": 1 
                 }
             ], 
-            "promocode" : "DISCOUNT25"
+            "promocode" : "DISCOUNT25" // optional
+            "user_id" : 1 // optional
 
         }
     """
+    # handle promocode
+    promocode = request.data.get('promocode')
+    if promocode:
+        discount = Discount.objects.filter(CODE=promocode, EVENT_ID=event_id).first()
+        if not discount:
+            
+            return Response({"details":"there isnt any discount with this promocode and event id"}, status=status.HTTP_400_BAD_REQUEST)
+
+    user_id = request.data.get('user_id')
+    if not user_id:
+        user_id = request.user.id
+        print( "user_id was got from the request ")
 
     order = Order(user_id = request.user.id) # create empty order so that orderitem can point to it
     order.save()
@@ -134,8 +147,7 @@ def create_order(request,event_id):
                 "quantity": 1 
                 }
             ], 
-            "promocode" : "DISCOUNT25",
-            "event" : 1
+            "promocode" : "DISCOUNT25"
 
         }"""}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -149,16 +161,18 @@ def create_order(request,event_id):
     print("--------2-------")
 
     for item in order_items:
-        print(item)
+        
         item['order_id'] = order.ID
         item['ticket_price'] = 999
-        
         print(item)
-        order_item_serializer = OrderItemSerializer(data=item)        
-        
-        if order_item_serializer.is_valid():
-            order_item_serializer.save()
-            print(order_item_serializer.is_valid())
+
+
+
+        order_item_serializer = OrderItemSerializer(data=item)               
+        if not order_item_serializer.is_valid():
+            return Response({"details":f"order item serializer wasnt able to validate the data  {order_item_serializer.error_messages}"}, status=status.HTTP_400_BAD_REQUEST)
+        order_item = order_item_serializer.save()
+        print(order_item_serializer.is_valid())
         
 
         print("-----3----------")
@@ -170,30 +184,28 @@ def create_order(request,event_id):
         print(quantity)
         
         if ticket_class.capacity - ticket_class.quantity_sold < quantity:
-            return Response({"details":f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class.id}"}, status=status.HTTP_400_BAD_REQUEST)
+            order.delete()
+            # order_item.delete()
+            return Response({"details":f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
         subtotal += ticket_class.PRICE * quantity
         
         ticket_class.quantity_sold += quantity
         # ticket_class.save()
 
-    fee = 0
-    total = subtotal - amount_off + fee
+
 
 
 
     if not event.objects.filter(ID = event_id):
         return Response({"details":"no event exist with this ID"}, status=status.HTTP_400_BAD_REQUEST)
 
+    if promocode:
+        order.discount_id = discount.ID
+        amount_off = float(discount.percent_off)/100 * subtotal
 
-    promocode = request.data.get('promocode')
-
-    discount = Discount.objects.filter(CODE=promocode, EVENT_ID=event_id).first()
-    if not discount:
-        return Response({"details":"there isnt any discount with this promocode and event id"}, status=status.HTTP_400_BAD_REQUEST)
-    amount_off = float(discount.percent_off)/100 * subtotal
-
-    
+    fee = 0
+    total = subtotal - amount_off + fee
 
 
 
@@ -211,7 +223,6 @@ def create_order(request,event_id):
     order.full_price = subtotal
     order.amount_off = amount_off
     order.total = total
-    order.discount_id = discount.ID
     order.event_id = event_id
     order.fee = fee
     order.save()

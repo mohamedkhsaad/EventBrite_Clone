@@ -5,11 +5,17 @@ from bson import ObjectId
 import random
 
 
-
+# add unique id generator for ticketclass
+def generate_unique_ticket_class_id():
+    while True:
+        # Generate a random integer between 1 and 99999999
+        new_id = random.randint(1, 99999999)
+        # Check if an event with this ID already exists in the database
+        if not TicketClass.objects.filter(ID=new_id).exists():
+            return new_id
 class TicketClass(models.Model):
-    # id = models.IntegerField(primary_key=True)
 
-    ID = models.IntegerField(default=generate_unique_id,unique=True)
+    ID = models.IntegerField(default=generate_unique_ticket_class_id,unique=True)
 
     event_id = models.IntegerField()
 
@@ -57,7 +63,6 @@ def generate_unique_order_id():
             return new_id
         
 class Order(models.Model):
-    # id = models.IntegerField(primary_key=True)
     ID = models.IntegerField(default=generate_unique_order_id,unique=True)
     user_id = models.IntegerField(null=True)
     event_id = models.IntegerField(null=True)
@@ -81,7 +86,6 @@ def generate_unique_orderitem_id():
         if not OrderItem.objects.filter(ID=new_id).exists():
             return new_id
 class OrderItem(models.Model):
-    # id = models.IntegerField(primary_key=True)
     ID = models.IntegerField(default=generate_unique_orderitem_id,unique=True)
     order_id = models.IntegerField(null=True)
 
