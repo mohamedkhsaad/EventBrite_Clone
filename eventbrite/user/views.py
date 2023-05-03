@@ -36,6 +36,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
 
 """
 user model (SIGNUP)
@@ -286,3 +288,14 @@ class EmailVerificationQueryView(APIView):
             # return Response(status=status.HTTP_400_BAD_REQUEST)
             msg = _("Unable to activate the user's acount with the provided data")
             raise serializers.ValidationError(msg)
+        
+
+@api_view(['GET'])
+def get_user_by_id(request,user_id):
+    print("=======")
+    print(user_id)
+    user = User.objects.get(id=user_id)
+    user_serializer = userSerializer(user)
+    data = user_serializer.data
+    del data['password']
+    return Response(data,status=status.HTTP_200_OK)

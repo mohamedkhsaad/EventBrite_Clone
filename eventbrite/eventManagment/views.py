@@ -464,7 +464,16 @@ def list_orders_by_event(request, event_id):
     orders = Order.objects.filter(event_id=event_id)
     serialized_orders = OrderSerializer(orders, many=True)
     return Response(serialized_orders.data)
+@api_view(['GET'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def list_orderitem_by_event(request, event_id):
+    """
 
+    """
+    order_items = OrderItem.objects.filter(event_id=event_id)
+    serialized_orderitems = OrderItemSerializer(order_items, many=True)
+    return Response(serialized_orderitems.data)
 
 @api_view(['GET'])
 # @authentication_classes([TokenAuthentication])
@@ -479,7 +488,16 @@ def list_orderitem_by_order(request, order_id):
 
 
 
+# def ssssssss
+#     orders = Order.objects.filter(event_id=event_id)
+#     serialized_orders = OrderSerializer(orders, many=True)
+#     orders = serialized_orders.data
+#     orders[0].id
 
+#     for order in orders:
+#         order_items = OrderItem.objects.filter(order_id=order_id)
+#         serialized_orderitems = OrderItemSerializer(order_items, many=True)
+#         return Response(serialized_orderitems.data)
 
 
 import random

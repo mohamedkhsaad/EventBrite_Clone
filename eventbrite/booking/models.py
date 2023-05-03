@@ -95,4 +95,7 @@ class OrderItem(models.Model):
     ticket_price = models.FloatField(null=True)
     currency = models.CharField(default='USD', max_length=10)
 
+    user_id = models.IntegerField(null=True)
+    event_id = models.IntegerField(null=True)
+
 

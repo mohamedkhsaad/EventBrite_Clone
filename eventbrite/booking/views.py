@@ -164,6 +164,9 @@ def create_order(request,event_id):
         
         item['order_id'] = order.ID
         item['ticket_price'] = 999
+        item['user_id'] = user_id
+        item['event_id'] = event_id
+
         print(item)
 
 
@@ -311,8 +314,6 @@ def confirm_order(request, token):
     print("=-=-=-=-= end confirm order==-=--=---=")
 
     return Response({"is_validated":True},status=status.HTTP_200_OK)
-
-
 
 
 
