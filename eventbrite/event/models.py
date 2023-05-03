@@ -74,8 +74,8 @@ Publish_choises = (
 
 def generate_unique_id():
     while True:
-        # Generate a random integer between 1 and 9999
-        new_id = random.randint(1, 9999)
+        # Generate a random integer between 1 and 99999999
+        new_id = random.randint(1, 99999999)
         # Check if an event with this ID already exists in the database
         if not event.objects.filter(ID=new_id).exists():
             return new_id

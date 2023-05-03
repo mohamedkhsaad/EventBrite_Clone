@@ -8,7 +8,7 @@ class TicketClassSerializer(serializers.ModelSerializer):
     # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = TicketClass
-        exclude = ['event', 'id']
+        exclude = ['event_id', 'id']
 
 
 class DiscountSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class DiscountSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ('id','ticket_class', 'quantity','order')
+        fields = ('ticket_class_id', 'quantity','order_id','ticket_price')
 
     # def create(self, validated_data):
     #     ticket_class = validated_data.get('ticket_class')
@@ -52,8 +52,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('id', 'user', 'event', 'discount', 'order_items',
-                  'full_price', 'fee', 'total', 'date_created', 'is_validated')
+        fields = ('user_id')
 
     def create(self, validated_data):
         order_items_data = validated_data.pop('order_items')
