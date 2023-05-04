@@ -1,3 +1,4 @@
+
 from rest_framework import serializers
 from booking.models import *
 
@@ -19,7 +20,7 @@ class DiscountSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ('ticket_class_id', 'quantity','order_id','ticket_price')
+        fields = ('ticket_class_id', 'quantity','order_id','ticket_price','user_id','event_id')
 
     # def create(self, validated_data):
     #     ticket_class = validated_data.get('ticket_class')
@@ -47,16 +48,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError('Invalid ticket class')
 
 class OrderSerializer(serializers.ModelSerializer):
-    order_items = OrderItemSerializer(many=True)
-
     class Meta:
         model = Order
-        fields = ('user_id')
-
-    def create(self, validated_data):
-        order_items_data = validated_data.pop('order_items')
-        order = Order.objects.create(**validated_data)
-        for order_item_data in order_items_data:
-            OrderItem.objects.create(order=order, **order_item_data)
-        return order
-
+        fields ='__all__'

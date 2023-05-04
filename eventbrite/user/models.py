@@ -27,7 +27,7 @@ class User(AbstractUser, PermissionsMixin):
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     is_staff = models.BooleanField(default=False,blank=False,null=False)
-    is_active = models.BooleanField(default=True,blank=False,null=False)
+    is_active = models.BooleanField(default=False,blank=False,null=False)
     username = models.CharField(unique=False,blank=False,null=False,max_length=150)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']

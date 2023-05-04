@@ -29,7 +29,7 @@ from booking.serializers import *
 from eventManagment.models import *
 from eventManagment.serializers import Publish_InfoSerializer
 
-
+from rest_framework.decorators import api_view
 class UserListEvents(generics.ListAPIView):
     """
     A viewset for retrieving all user events by user id.
@@ -175,4 +175,16 @@ class EventPublishView(generics.CreateAPIView):
             for field, errors in errors.items():
                 error_msgs.append(f"{field}: {', '.join(errors)}")
             return Response({'error': error_msgs, 'data': request.data}, status=HTTP_400_BAD_REQUEST)
-        
+
+
+
+@api_view(['GET'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def list_orderitem_by_event(request, event_id):
+    """
+
+    """
+    order_items = OrderItem.objects.filter(event_id=event_id)
+    serialized_orderitems = OrderItemSerializer(order_items, many=True)
+    return Response(serialized_orderitems.data)

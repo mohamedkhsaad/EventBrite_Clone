@@ -55,7 +55,7 @@ urlpatterns = [
     path('user/reset-password/check-query/<uidb64>/<token>/', CustomPasswordResetCheckView.as_view(),name='password_reset_check'),
     path('user/reset-password/change_password/',CustomPasswordResetConfirmView.as_view(),name='password_reset_change'),
     path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-
+    path('user/<int:user_id>/', get_user_by_id, name='get_user_by_id'),
 
 
     # event
@@ -116,6 +116,7 @@ urlpatterns = [
     path('eventmanagement/UserUpcomingEvents/<int:user_id>', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
     path('eventmanagement/<int:event_id>/promocode/', PromoCodeCreateAPIView.as_view(), name='create_promocode'),
     path('eventmanagement/<int:event_id>/publish/' ,EventPublishView.as_view(), name='publish_event'),
+    path('eventmanagement/event/<int:event_id>/order-items/', list_orderitem_by_event, name='list_orderitem_by_event'),
     # path('events/upload',UploadImageView.as_view(),name='upload-image'),
     #booking
     path('booking/',include('booking.urls')),

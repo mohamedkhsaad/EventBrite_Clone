@@ -113,15 +113,8 @@ DATABASES = {
         }
     }
 }
-# # Local Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': os.environ.get('DATABASE_ENGINE'),
-#         'NAME': os.environ.get('DATABASE_NAME'),
-#     }
-# }
 
-# # Local Database
+# Local Database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': os.environ.get('DATABASE_ENGINE'),
