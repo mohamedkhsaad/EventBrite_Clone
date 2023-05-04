@@ -26,10 +26,9 @@ from user.authentication import CustomTokenAuthentication
 
 from booking.models import *
 from booking.serializers import *
-
-import csv
 from eventManagment.models import *
 from eventManagment.serializers import Publish_InfoSerializer
+
 
 class UserListEvents(generics.ListAPIView):
     """
