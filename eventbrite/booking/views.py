@@ -37,7 +37,7 @@ from django.core.signing import TimestampSigner
 from eventbrite.settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 
-
+#TODO: ticket prices in create order
 
 @api_view(['GET'])
 def list_ticket_classes_by_event(request, event_id):
@@ -163,7 +163,7 @@ def create_order(request,event_id):
     for item in order_items:
         
         item['order_id'] = order.ID
-        item['ticket_price'] = 999
+        item['ticket_price'] = TicketClass.objects.get(ID=item["ticket_class_id"]).PRICE
         item['user_id'] = user_id
         item['event_id'] = event_id
 
