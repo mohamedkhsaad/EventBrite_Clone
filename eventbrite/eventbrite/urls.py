@@ -61,7 +61,6 @@ urlpatterns = [
     # event
     path('events/create/', EventCreateView.as_view(), name='event-create'),
     path('events/delete/<int:event_id>/', DeleteeAnEventClassView.as_view(), name='event-delete'),
-
     path('events/<int:event_id>/update_event/', EventUpdateView.as_view(), name='update an event'),
     path('events/search/<str:event_name>', EventSearchView.as_view(), name='event_search'),
     path('events/type/<str:event_type>/', EventListtype.as_view(), name='event-list-by-type'),
@@ -77,7 +76,9 @@ urlpatterns = [
     path('events/today/', TodayEventsList.as_view(), name='today-events'),
     path('events/weekend/', WeekendEventsView.as_view(), name='weekend-events'),
     path('events/free-events/', FreeTicketEventListView.as_view(), name='free_event_list'),
-    path('events/drafte-vents/', DraftEventsAPIView.as_view(), name='Draft_event_list'),
+    path('events/drafte-events/', DraftEventsAPIView.as_view(), name='Draft_event_list'),
+    path('events/live-events/', LiveEventsAPIView.as_view(), name='Live_event_list'),
+
 
     # events followers
     path('events/<int:event_id>/follow/', FollowEventView.as_view(), name='follow_event'),

@@ -423,17 +423,41 @@ class FreeTicketEventListView(generics.ListAPIView):
         return event.objects.filter(ticket_set__TICKET_TYPE='Free').distinct()
 
 
+from django.core.exceptions import PermissionDenied
+
 class DraftEventsAPIView(APIView):
     """
     A viewset for retrieving Draft events.
     """
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
 
     def get(self, request):
         """
-        This view should return a list of all the draft events.
+        This view should return a list of all the draft events of the creator.
         """
-        events = event.objects.filter(STATUS='Draft')
+        if not request.user.is_authenticated:
+            raise PermissionDenied()
+
+        events = event.objects.filter(STATUS='Draft', user=request.user)
+        serializer = eventSerializer(events, many=True)
+        return Response(serializer.data)
+
+
+class LiveEventsAPIView(APIView):
+    """
+    A viewset for retrieving Live events.
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+    def get(self, request):
+        """
+        This view should return a list of all the draft events of the creator.
+        """
+        if not request.user.is_authenticated:
+            raise PermissionDenied()
+
+        events = event.objects.filter(STATUS='Live', user=request.user)
         serializer = eventSerializer(events, many=True)
         return Response(serializer.data)
 
