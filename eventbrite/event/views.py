@@ -99,21 +99,18 @@ class AllEventListView(APIView):
     # permission_classes = [IsAuthenticated]
     # authentication_classes = [CustomTokenAuthentication]
     pagination_class = MyPagination
-
     def get(self, request, format=None):
-        print(f"authentication classes: {self.authentication_classes}")
-        print(f"permission classes: {self.permission_classes}")
         """
         This view should return a paginated list of all the events.
         """
-        events = event.objects.all()
+        # events = event.objects.all()
+        events = event.objects.filter(STATUS='Live')
         paginator = self.pagination_class()
         paginated_events = paginator.paginate_queryset(events, request)
         serializer = eventSerializer(paginated_events, many=True)
         response = paginator.get_paginated_response(serializer.data)
         response['count'] = paginator.page.paginator.count
         return response
-
 
 class EventSearchView(generics.ListAPIView):
     """
