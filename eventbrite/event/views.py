@@ -38,7 +38,7 @@ from django.utils import timezone
 from rest_framework.pagination import PageNumberPagination
 from booking.models import *
 from booking.serializers import *
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST,HTTP_401_UNAUTHORIZED
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 from booking.models import event, TicketClass
 from booking.serializers import *
@@ -49,6 +49,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from user.authentication import CustomTokenAuthentication
 
+
 class EventCreateView(generics.CreateAPIView):
     """
     A viewset for creating an event instance.
@@ -58,6 +59,7 @@ class EventCreateView(generics.CreateAPIView):
     serializer_class = eventSerializer
     queryset = event.objects.all()
     parser_classes = [MultiPartParser, FormParser]
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -67,12 +69,12 @@ class EventCreateView(generics.CreateAPIView):
         serializer.validated_data['User_id'] = request.user.id
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-         # Add user id to response data
+        # Add user id to response data
         user_id = request.user.id
         response_data = serializer.data
-        if response_data.get('online') =='True':
+        if response_data.get('online') == 'True':
             response_data['venue_name'] = ""
-        elif response_data.get('online') =='False' and response_data.get('venue_name') =='':
+        elif response_data.get('online') == 'False' and response_data.get('venue_name') == '':
             return Response({'You have to determine a venue name'})
         # response_data['user_id'] = user_id
         return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
@@ -84,9 +86,11 @@ class MyPagination(PageNumberPagination):
     It sets the page size to 10 by default and overrides the get_paginated_response method to include some print statements and return the paginated response data.
     """
     page_size = 10
+
     def get_paginated_response(self, data):
         print(self.page)
         return super().get_paginated_response(data)
+
 
 class AllEventListView(APIView):
     """
@@ -95,6 +99,7 @@ class AllEventListView(APIView):
     # permission_classes = [IsAuthenticated]
     # authentication_classes = [CustomTokenAuthentication]
     pagination_class = MyPagination
+
     def get(self, request, format=None):
         print(f"authentication classes: {self.authentication_classes}")
         print(f"permission classes: {self.permission_classes}")
@@ -146,6 +151,7 @@ class EventListCategory(generics.ListAPIView):
     A viewset for retrieving event instances by category.
     """
     serializer_class = eventSerializer
+
     def get_queryset(self):
         """
         This view should return a list of all the events
@@ -160,6 +166,7 @@ class EventListSupCategory(generics.ListAPIView):
     A viewset for retrieving event instances by sub-category.
     """
     serializer_class = eventSerializer
+
     def get_queryset(self):
         """
         This view should return a list of all the events
@@ -174,6 +181,7 @@ class EventListVenue(generics.ListAPIView):
     A viewset for retrieving event instances by venue.
     """
     serializer_class = eventSerializer
+
     def get_queryset(self):
         """
         This view should return a list of all the events
@@ -187,6 +195,7 @@ class OnlineEventsAPIView(APIView):
     """
     A viewset for retrieving event which the online is 'true' .
     """
+
     def get(self, request):
         """
         This view should return a list of all the online events.
@@ -204,6 +213,7 @@ class EventID(generics.ListAPIView):
     serializer_class = eventSerializer
     # permission_classes = [IsAuthenticated]
     # authentication_classes = [CustomTokenAuthentication]
+
     def get_queryset(self):
         """
         This view should return a list of all the events
@@ -211,6 +221,7 @@ class EventID(generics.ListAPIView):
         """
         event_sub_ID = self.kwargs['event_ID']
         return event.objects.filter(ID=event_sub_ID)
+
 
 class UserInterestCreateAPIView(CreateAPIView):
     """
@@ -221,6 +232,7 @@ class UserInterestCreateAPIView(CreateAPIView):
     serializer_class = UserInterestSerializer
     queryset = event.objects.all()
     parser_classes = [MultiPartParser, FormParser]
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -230,11 +242,12 @@ class UserInterestCreateAPIView(CreateAPIView):
         serializer.validated_data['User_id'] = request.user.id
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-         # Add user id to response data
+        # Add user id to response data
         user_id = request.user.id
         response_data = serializer.data
         # response_data['user_id'] = user_id
         return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class UserInterestAPIView(generics.ListAPIView):
     """
@@ -262,6 +275,7 @@ class UserInterestEventsAPIView(APIView):
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def get(self, request, format=None):
         # Check if the user is authenticated
         if not request.user.is_authenticated:
@@ -303,6 +317,7 @@ class TodayEventsList(generics.ListAPIView):
     retrieve the events happening on the current date and returns a queryset containing those events. 
     """
     serializer_class = eventSerializer
+
     def get_queryset(self):
         today = now().date()
         queryset = event.objects.filter(ST_DATE=today)
@@ -341,15 +356,16 @@ class TicketCreateAPIView(generics.CreateAPIView):
     authentication_classes = [CustomTokenAuthentication]
     queryset = TicketClass.objects.all()
     serializer_class = TicketClassSerializer
+
     def post(self, request, event_id):
         """
         A POST request to create a ticket object for a given event ID
-        """    
+        """
         try:
             Event = event.objects.get(ID=event_id)
         except event.DoesNotExist:
             return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-    
+
         ticket_data = request.data.copy()
         ticket_data['event'] = Event.ID
         ticket_data['event_id'] = Event.ID
@@ -358,12 +374,11 @@ class TicketCreateAPIView(generics.CreateAPIView):
         print(type(Event.User_id))
         print(type(request.user.id))
 
-         # Check if the user creating the ticket is the same user who created the event
+        # Check if the user creating the ticket is the same user who created the event
         # if request.user.id != str(Event.User_id):
         #     return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
         if str(request.user.id) != str(Event.User_id):
             return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
-
 
         if ticket_data.get('TICKET_TYPE') == 'Free':
             ticket_data['PRICE'] = 0
@@ -383,6 +398,7 @@ class EventTicketPrice(APIView):
     first ticket object associated with the event ID. If the ticket object exists, the ticket price is returned in a 
     success response. Otherwise, an error response is returned indicating that the ticket was not found.
     """
+
     def get(self, request, event_id):
         """
         Returns the ticket price for a given event.
@@ -399,16 +415,20 @@ class EventTicketPrice(APIView):
         else:
             return Response(status=404, data={'message': 'Ticket not found'})
 
+
 class FreeTicketEventListView(generics.ListAPIView):
     serializer_class = eventSerializer
+
     def get_queryset(self):
         return event.objects.filter(ticket_set__TICKET_TYPE='Free').distinct()
-    
+
+
 class DraftEventsAPIView(APIView):
     """
     A viewset for retrieving Draft events.
     """
     # permission_classes = [IsAuthenticated]
+
     def get(self, request):
         """
         This view should return a list of all the draft events.
@@ -423,38 +443,45 @@ class FollowEventView(APIView):
     """
     A viewset for make the user could follow an event by event ID.
     """
-    def get(self, request,event_id):
-        Event = get_object_or_404(event,ID=event_id)
+
+    def get(self, request, event_id):
+        Event = get_object_or_404(event, ID=event_id)
         if request.user.is_authenticated:
-            EventFollower.objects.get_or_create(user=request.user,ID=Event.ID)
+            EventFollower.objects.get_or_create(user=request.user, ID=Event.ID)
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'error', 'message': 'You must be logged in to follow an event.'})
+
 
 class UserFollowedEvents(APIView):
     """
     A viewset for GET the events that the user follow by the user authentication.
     """
+
     def get(self, request):
         if request.user.is_authenticated:
             event_followers = request.user.event_followers.all()
-            events = [get_object_or_404(event, ID=event_follower.ID) for event_follower in event_followers]
+            events = [get_object_or_404(event, ID=event_follower.ID)
+                      for event_follower in event_followers]
             serializer = eventSerializer(events, many=True)
             return Response(serializer.data)
         else:
             return Response({'status': 'error', 'message': 'You must be logged in to see followed events.'})
-        
+
+
 class UserFollowedEventsCount(APIView):
     """
     A viewset for count the events that the user follow by the user authentication.
     """
+
     def get(self, request):
         if request.user.is_authenticated:
             count = request.user.event_followers.count()
             return Response({'status': 'success', 'count': count})
         else:
             return Response({'status': 'error', 'message': 'You must be logged in to see followed events count.'})
-        
+
+
 class EventFollowersCount(APIView):
     """
     A viewset for count the users that follow an event by event ID.
@@ -468,57 +495,70 @@ class EventFollowersCount(APIView):
             return Response({'status': 'success', 'count': count})
         except event.DoesNotExist:
             return Response({'status': 'error', 'message': 'Event does not exist.'})
-    
+
+
 class UnfollowEventView(APIView):
     """
     A viewset for unfollow an event by event ID.
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def delete(self, request, event_id):
-        event_follower = get_object_or_404(EventFollower, user=request.user, ID=event_id)
-        num_deleted, _ = event_follower.__class__.objects.filter(user=request.user, ID=event_id).delete()
+        event_follower = get_object_or_404(
+            EventFollower, user=request.user, ID=event_id)
+        num_deleted, _ = event_follower.__class__.objects.filter(
+            user=request.user, ID=event_id).delete()
         if num_deleted > 0:
             return Response({'status': 'success'})
         else:
             return Response({'status': 'error', 'message': 'Could not unfollow event.'})
 # likes
+
+
 class LikeEventView(APIView):
     """
     A viewset for make the user could like an event by event ID.
     """
-    def get(self, request,event_id):
-        Event = get_object_or_404(event,ID=event_id)
+
+    def get(self, request, event_id):
+        Event = get_object_or_404(event, ID=event_id)
         if request.user.is_authenticated:
-            Eventlikes.objects.get_or_create(user=request.user,ID=Event.ID)
+            Eventlikes.objects.get_or_create(user=request.user, ID=Event.ID)
             return JsonResponse({'status': 'success'})
         else:
             return JsonResponse({'status': 'error', 'message': 'You must be logged in to follow an event.'})
+
 
 class UserLikedEvents(APIView):
     """
     A viewset for GET the events that the user liked by the user authentication.
     """
+
     def get(self, request):
         if request.user.is_authenticated:
             event_Likes = request.user.event_Likes.all()
-            events = [get_object_or_404(event,ID=event_like.ID) for event_like in event_Likes]
+            events = [get_object_or_404(event, ID=event_like.ID)
+                      for event_like in event_Likes]
             serializer = eventSerializer(events, many=True)
             return Response(serializer.data)
         else:
             return Response({'status': 'error', 'message': 'You must be logged in to see followed events.'})
-        
+
+
 class UserLikedEventsCount(APIView):
     """
     A viewset for count the events that the user follow by the user authentication.
     """
+
     def get(self, request):
         if request.user.is_authenticated:
             count = request.user.event_Likes.count()
             return Response({'status': 'success', 'count': count})
         else:
             return Response({'status': 'error', 'message': 'You must be logged in to see followed events count.'})
-        
+
+
 class EventLikesCount(APIView):
     """
     A viewset for count the users that follow an event by event ID.
@@ -532,22 +572,24 @@ class EventLikesCount(APIView):
             return Response({'status': 'success', 'count': count})
         except event.DoesNotExist:
             return Response({'status': 'error', 'message': 'Event does not exist.'})
-    
+
+
 class UnlikeEventView(APIView):
     """
     A viewset for unlike an event by event ID.
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def delete(self, request, event_id):
-        event_like = get_object_or_404(Eventlikes, user=request.user, ID=event_id)
-        num_deleted, _ = event_like.__class__.objects.filter(user=request.user, ID=event_id).delete()
+        event_like = get_object_or_404(
+            Eventlikes, user=request.user, ID=event_id)
+        num_deleted, _ = event_like.__class__.objects.filter(
+            user=request.user, ID=event_id).delete()
         if num_deleted > 0:
             return Response({'status': 'success'})
         else:
             return Response({'status': 'error', 'message': 'Could not unfollow event.'})
-
-
 
 
 # manage attendee:
@@ -590,7 +632,6 @@ class UnlikeEventView(APIView):
 
         # return Response({'message': 'Order placed and invitations sent!'})
 
-
         # Send email invitation to attendees
         # for order_item in order.order_items.all():
         #     for attendee in order_item.attendees.all():
@@ -605,49 +646,166 @@ class UnlikeEventView(APIView):
         # Return success response
         # return HttpResponse('Order placed and invitations sent!')
 
-class EventUpdateAPIView(generics.UpdateAPIView):
+class EventUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+
+    def put(self, request, event_id):
+        try:
+            event_obj = event.objects.get(ID=event_id)
+        except event.DoesNotExist:
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        if str(request.user.id) != str(event_obj.User_id):
+            return Response({'error': 'You are not authorized to update this event.'}, status=HTTP_401_UNAUTHORIZED)
+        data = {
+            'Title': request.data.get('Title', event_obj.Title),
+            'organizer': request.data.get('organizer', event_obj.organizer),
+            'Summery': request.data.get('Summery', event_obj.Summery),
+            'Description': request.data.get('Description', event_obj.Description),
+            'type': request.data.get('type', event_obj.type),
+            'category_name': request.data.get('category_name', event_obj.category_name),
+            'sub_Category': request.data.get('sub_Category', event_obj.sub_Category),
+            'venue_name': request.data.get('venue_name', event_obj.venue_name),
+            'ST_DATE': request.data.get('ST_DATE', event_obj.ST_DATE),
+            'END_DATE': request.data.get('END_DATE', event_obj.END_DATE),
+            'ST_TIME': request.data.get('ST_TIME', event_obj.ST_TIME),
+            'END_TIME': request.data.get('END_TIME', event_obj.END_TIME),
+            'online': request.data.get('online', event_obj.online),
+            'CAPACITY': request.data.get('CAPACITY', event_obj.CAPACITY),
+            'STATUS': request.data.get('STATUS', event_obj.STATUS),
+            'image': request.data.get('image', event_obj.image),
+            'image1': request.data.get('image1', event_obj.image1),
+            'image2': request.data.get('image2', event_obj.image2),
+            'image3': request.data.get('image3', event_obj.image3),
+            'image4': request.data.get('image4', event_obj.image4),
+            'image5': request.data.get('image5', event_obj.image5)
+        }
+        event.objects.filter(ID=event_id).update(**data)
+        return Response({'message': 'Event updated successfully'})
+
+
+class TicketClassUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+
+    def put(self, request, event_id):
+        try:
+            ticket_class_obj = TicketClass.objects.get(event_id=event_id)
+        except TicketClass.DoesNotExist:
+            return Response({'error': 'Ticket class does not exist.'}, status=HTTP_404_NOT_FOUND)
+        if str(request.user.id) != str(ticket_class_obj.User_id):
+            return Response({'error': 'You are not authorized to update this ticket class.'}, status=HTTP_401_UNAUTHORIZED)
+        data = {
+            'NAME': request.data.get('NAME', ticket_class_obj.NAME),
+            'PRICE': request.data.get('PRICE', ticket_class_obj.PRICE),
+            'capacity': request.data.get('capacity', ticket_class_obj.capacity),
+            'quantity_sold': request.data.get('quantity_sold', ticket_class_obj.quantity_sold),
+            'TICKET_TYPE': request.data.get('TICKET_TYPE', ticket_class_obj.TICKET_TYPE),
+            'Sales_start': request.data.get('Sales_start', ticket_class_obj.Sales_start),
+            'Sales_end': request.data.get('Sales_end', ticket_class_obj.Sales_end),
+            'Start_time': request.data.get('Start_time', ticket_class_obj.Start_time),
+            'End_time': request.data.get('End_time', ticket_class_obj.End_time),
+            'Absorb_fees': request.data.get('Absorb_fees', ticket_class_obj.Absorb_fees)
+        }
+        TicketClass.objects.filter(event_id=event_id).update(**data)
+
+        return Response({'message': 'Ticket class updated successfully'})
+
+
+class ALLTicketClassListView(generics.ListAPIView):
+    serializer_class = TicketClassSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+
+    def get(self, request, event_id):
+        try:
+            ticket_classes = TicketClass.objects.filter(event_id=event_id)
+        except TicketClass.DoesNotExist:
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        for ticket_class in ticket_classes:
+            if str(request.user.id) != str(ticket_class.User_id):
+                return Response({'error': 'You are not authorized to list these ticket classes.'}, status=HTTP_401_UNAUTHORIZED)
+        serializer = TicketClassSerializer(ticket_classes, many=True)
+        return Response(serializer.data)
+
+
+class ATicketClassListView(generics.ListAPIView):
+    serializer_class = TicketClassSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+
+    def get(self, request, TicketClass_id):
+        try:
+            ticket_classes = TicketClass.objects.filter(ID=TicketClass_id)
+        except TicketClass.DoesNotExist:
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        for ticket_class in ticket_classes:
+            if str(request.user.id) != str(ticket_class.User_id):
+                return Response({'error': 'You are not authorized to lisgt this ticket class.'}, status=HTTP_401_UNAUTHORIZED)
+        serializer = TicketClassSerializer(ticket_classes, many=True)
+        return Response(serializer.data)
+
+
+class DeleteeALLTicketClassView(APIView):
     """
-    This class defines a PUT request to update an existing event. It uses the EventSerializer for serialization and the event 
-    model for database queries. The put method first checks if the specified event exists in the database, then attempts to update 
-    the event using the serializer. If the serializer is valid, the updated event is saved and a success response is returned. 
-    Otherwise, an error response is returned with the serializer errors.
+    A viewset for deleting all ticket class for an event by event ID.
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
-    queryset = event.objects.all()
-    serializer_class = eventSerializer
-    lookup_field = 'ID'
-    def put(self, request,ID):
-        """
-        A PUT request to update an event object for a given event ID
-        """
+
+    def delete(self, request, event_id):
         try:
-            event_instance = event.objects.get(ID=ID)
-            print(event_instance.ID)
+            ticket_classes = TicketClass.objects.filter(event_id=event_id)
+        except TicketClass.DoesNotExist:
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        for ticket_class in ticket_classes:
+            if str(request.user.id) != str(ticket_class.User_id):
+                return Response({'error': 'You are not authorized to delete these ticket classes.'}, status=HTTP_401_UNAUTHORIZED)
+        num_deleted, _ = ticket_classes.delete()
+        if num_deleted > 0:
+            return Response({'status': 'success'})
+        else:
+            return Response({'status': 'error', 'message': 'Could not delete ticket class.'})
+
+
+class DeleteeATicketClassView(APIView):
+    """
+    A viewset for deleting a ticket class for an event by TicketClass_id.
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+
+    def delete(self, request, TicketClass_id):
+        try:
+            ticket_classes = TicketClass.objects.filter(ID=TicketClass_id)
+        except TicketClass.DoesNotExist:
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        for ticket_class in ticket_classes:
+            if str(request.user.id) != str(ticket_class.User_id):
+                return Response({'error': 'You are not authorized to delete this ticket class.'}, status=HTTP_401_UNAUTHORIZED)
+        num_deleted, _ = ticket_classes.delete()
+        if num_deleted > 0:
+            return Response({'status': 'success'})
+        else:
+            return Response({'status': 'error', 'message': 'Could not delete ticket class.'})
+
+
+class DeleteeAnEventClassView(APIView):
+    """
+    A viewset for deleting a ticket class for an event by TicketClass_id.
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+    def delete(self, request, event_id):
+        try:
+            Event = event.objects.get(ID=event_id)
         except event.DoesNotExist:
-            return Response({'error': f'Event with id {ID} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-        if str(request.user.id) != str(event_instance.User_id):
-            return Response({'error': 'You are not authorized to update this event.'}, status=HTTP_401_UNAUTHORIZED)
-        
-        
-        
-           # retrieve event data from database
-        event_data = eventSerializer(event_instance).data
-        
-        # update the event data with the specified fields from the request
-        updated_event_data = {}
-        for key in event_data:
-            if key in request.data:
-                updated_event_data[key] = request.data[key]
-            else:
-                updated_event_data[key] = event_data[key]
-        
-        serializer = self.get_serializer(event_instance, data=updated_event_data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-
-
-    
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        # for EVENT in Event:
+        if str(request.user.id) != str(Event.User_id):
+            return Response({'error': 'You are not authorized to delete this event.'}, status=HTTP_401_UNAUTHORIZED)
+        num_deleted, _ = Event.delete()
+        if num_deleted > 0:
+            return Response({'status': 'success'})
+        else:
+            return Response({'status': 'error', 'message': 'Could not delete this event.'})

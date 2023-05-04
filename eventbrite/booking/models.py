@@ -29,8 +29,8 @@ class TicketClass(models.Model):
     TICKET_TYPE = models.CharField(max_length=10, choices=TICKET_TYPE_CHOICES,blank=True,null=True)
     Sales_start = models.DateField()
     Sales_end = models.DateField()
-    Start_time = models.DateTimeField()
-    End_time = models.DateTimeField()
+    Start_time = models.TimeField()
+    End_time = models.TimeField()
     ABSORB_FEES_CHOICES = (
         ('True', 'True'),
         ('False', 'False')

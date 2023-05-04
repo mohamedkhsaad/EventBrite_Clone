@@ -5,7 +5,6 @@ from user.serializers import *
 from rest_framework import generics, status, request
 from rest_framework.response import Response
 
-
 class eventSerializer(serializers.ModelSerializer):
     """
     Serializer for the Event model.

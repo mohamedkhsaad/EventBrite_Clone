@@ -56,10 +56,13 @@ urlpatterns = [
     path('user/reset-password/change_password/',CustomPasswordResetConfirmView.as_view(),name='password_reset_change'),
     path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
+
+
     # event
     path('events/create/', EventCreateView.as_view(), name='event-create'),
-    path('events/<int:ID>/update_event/', EventUpdateAPIView.as_view(), name='update an event'),
+    path('events/delete/<int:event_id>/', DeleteeAnEventClassView.as_view(), name='event-delete'),
 
+    path('events/<int:event_id>/update_event/', EventUpdateView.as_view(), name='update an event'),
     path('events/search/<str:event_name>', EventSearchView.as_view(), name='event_search'),
     path('events/type/<str:event_type>/', EventListtype.as_view(), name='event-list-by-type'),
     path('events/category/<str:event_Category>/', EventListCategory.as_view(), name='event-list-by-category'),
@@ -67,29 +70,36 @@ urlpatterns = [
     path('events/ALL/', AllEventListView.as_view(), name='event-list-ALL'),
     path('events/online/', OnlineEventsAPIView.as_view(), name='online-events'),
     path('events/venue/<str:event_venue>/', EventListVenue.as_view(), name='event-list-by-venue'),
-    path('events/ID/<str:event_ID>/', EventID.as_view(), name='event-list-by-ID'),
+    path('events/ID/<int:event_ID>/', EventID.as_view(), name='event-list-by-ID'),
     path('events/interests-create/', UserInterestCreateAPIView.as_view(), name='user_interests_create'),
     path('events/for-you/', UserInterestEventsAPIView.as_view(), name='user-interests-events'),
     path('events/getuserinterests/', UserInterestAPIView.as_view(), name='user-interests'),
     path('events/today/', TodayEventsList.as_view(), name='today-events'),
     path('events/weekend/', WeekendEventsView.as_view(), name='weekend-events'),
-    path('events/<int:event_id>/Tickets/', TicketCreateAPIView.as_view(), name='create_ticket'),
-    path('events/TicketsPrice/<int:event_id>/', EventTicketPrice.as_view(), name='ticket_price_api'),
     path('events/free-events/', FreeTicketEventListView.as_view(), name='free_event_list'),
     path('events/drafte-vents/', DraftEventsAPIView.as_view(), name='Draft_event_list'),
 
-
+    # events followers
     path('events/<int:event_id>/follow/', FollowEventView.as_view(), name='follow_event'),
     path('events/followed/', UserFollowedEvents.as_view(), name='followed_events'),
     path('events/following-events-count/',UserFollowedEventsCount.as_view(), name='user-events-following-count'),
     path('events/event-followers-count/<int:event_id>/', EventFollowersCount.as_view(), name='event-followers-count'),
     path('events/unfollow_event/<int:event_id>/', UnfollowEventView.as_view(), name='unfollow_event'),
-
+    # events likes
     path('events/<int:event_id>/like/',LikeEventView.as_view(), name='like-event'),
     path('events/liked/', UserLikedEvents.as_view(), name='user-liked-events'),
     path('events/Liked-events-count/',UserLikedEventsCount.as_view(), name='user-events-following-count'),
     path('events/event-likes-count/<int:event_id>/',EventLikesCount.as_view(), name='event-Likes-count'),
     path('events/unlike_event/<int:event_id>/',UnlikeEventView.as_view(), name='unlike-event'),
+ 
+    # tickets
+    path('events/<int:event_id>/Tickets/', TicketCreateAPIView.as_view(), name='create_ticket'),
+    path('events/<int:event_id>/update_ticketclass/', TicketClassUpdateView.as_view(), name='update an ticketclass'),
+    path('events/TicketsPrice/<int:event_id>/', EventTicketPrice.as_view(), name='ticket_price_api'),
+    path('events/ALLTickets/<int:event_id>/', ALLTicketClassListView.as_view(), name='event-list-ALL-Tickets-of-event'),
+    path('events/ATickets/<int:TicketClass_id>/', ATicketClassListView.as_view(), name='event-list-A-Tickets-of-event'),
+    path('events/DeleteALLTickets/<int:event_id>/', DeleteeALLTicketClassView.as_view(), name='delete-ALL-Tickets-of-event'),
+    path('events/DeleteATicket/<int:TicketClass_id>/', DeleteeATicketClassView.as_view(), name='event-A-Ticket-of-event'),
 
     # path('events/<int:event_id>/add-attendee/', EventAttendeeView.as_view(), name='add_attendee'),
 
