@@ -48,7 +48,7 @@ from django.http import JsonResponse
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from user.authentication import CustomTokenAuthentication
-
+from datetime import date
 
 class EventCreateView(generics.CreateAPIView):
     """
@@ -104,6 +104,12 @@ class AllEventListView(APIView):
         This view should return a paginated list of all the events.
         """
         # events = event.objects.all()
+        today = date.today()
+        past_events = event.objects.filter(ST_DATE__lt=today, STATUS='Live')
+        for past_event in past_events:
+           data = {'STATUS': 'Past'}
+           event.objects.filter(ID=past_event.ID).update(**data)
+            # past_event.save()
         events = event.objects.filter(STATUS='Live')
         paginator = self.pagination_class()
         paginated_events = paginator.paginate_queryset(events, request)

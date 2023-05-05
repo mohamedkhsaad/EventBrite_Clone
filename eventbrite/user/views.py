@@ -75,12 +75,12 @@ class CustomTokenLoginView(APIView):
             email=email,
             password=password,
             )
-            if not user:
-                msg = _('Unable to authenticate with provided credentials')
-                raise serializers.ValidationError(msg, code='authorization')
+            # if not user:
+            #     msg = _('Unable to authenticate with provided credentials')
+            #     raise serializers.ValidationError(msg, code='authorization')
             return Response(response_data, status=status.HTTP_200_OK) 
-        else:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+        # else:
+        #     return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 

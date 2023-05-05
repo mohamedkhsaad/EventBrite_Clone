@@ -35,6 +35,7 @@ class UserListEvents(generics.ListAPIView):
     A viewset for retrieving all user events by user id.
     """
     permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
     queryset = event.objects.all()
     serializer_class = eventSerializer
 
@@ -43,7 +44,8 @@ class UserListEvents(generics.ListAPIView):
         This view should list all the user events
         for the given user id.
         """
-        user_id = self.kwargs['user_id']
+        # user_id = self.kwargs['user_id']
+        user_id = self.request.user.id
         return event.objects.filter(User_id=user_id)
 
 class UserListPastEvents(generics.ListAPIView):
@@ -51,17 +53,19 @@ class UserListPastEvents(generics.ListAPIView):
     A viewset for retrieving all user past events by user id.
     """
     permission_classes = [IsAuthenticated]
-
+    authentication_classes = [CustomTokenAuthentication]
     today = date.today()
     queryset = event.objects.all()
     serializer_class = eventSerializer
-
     def get_queryset(self):
         """
         This view should list all the user past 
         events for the given user id.
         """
-        user_id = self.kwargs['user_id']
+        # user_id = self.kwargs['user_id']
+        # data={'STATUS': request.data.get('STATUS', 'Past'),}
+        # event.objects.filter(ID=event_id).update(**data)
+        user_id = self.request.user.id
         return event.objects.filter(User_id=user_id).filter(ST_DATE__lt=self.today)
 
 class UserListUpcomingEvents(generics.ListAPIView):
@@ -69,17 +73,17 @@ class UserListUpcomingEvents(generics.ListAPIView):
     A viewset for retrieving all user upcoming events by user id.
     """
     permission_classes = [IsAuthenticated]
-
+    authentication_classes = [CustomTokenAuthentication]
     today = date.today()
     queryset = event.objects.all()
     serializer_class = eventSerializer
-
     def get_queryset(self):
         """
         This view should list all the user upcoming
         events for the given user id.
         """
-        user_id = self.kwargs['user_id']
+        # user_id = self.kwargs['user_id']
+        user_id = self.request.user.id
         return event.objects.filter(User_id=user_id).filter(ST_DATE__gt=self.today)
     
 class PromoCodeCreateAPIView(generics.CreateAPIView):
@@ -145,6 +149,7 @@ class EventPublishView(generics.CreateAPIView):
         
         if Publish_Info.objects.filter(Event_ID=event_id):
             return Response({'error': f'Event with id {event_id} already is published.'}, status=HTTP_400_BAD_REQUEST)
+        
         if request.data.get('Event_Status') == 'Private':
             password = request.data.get('Audience_Password')
             if not request.data.get('Audience_Password'):

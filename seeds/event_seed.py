@@ -22,7 +22,7 @@ events_dir = os.path.join(media_root, 'events/')
 if not os.path.exists(events_dir):
     os.makedirs(events_dir)
 user = {
-    "id": "1190264",
+    "id": "1",
     "email": "ismailtawfik@gmail.com",
     "password": "Password123*",
     "first_name": "Ismail",
@@ -65,7 +65,7 @@ for i in range(10):
         f.write(requests.get(image_url).content)
     event = {
         "id": uuid.uuid4().hex,
-        "ID": str(generate_unique_id()),
+        "ID": (generate_unique_id()),
         "User_id": user['id'],
         "Title": random_string(10),
         "organizer": random_string(8),

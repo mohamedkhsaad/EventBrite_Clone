@@ -111,9 +111,9 @@ urlpatterns = [
 
 
     #event management
-    path('eventmanagement/userevents/<int:user_id>', UserListEvents.as_view(), name='user_list_events'),
-    path('eventmanagement/UserPastEvents/<int:user_id>', UserListPastEvents.as_view(), name='user_list_past_events'),
-    path('eventmanagement/UserUpcomingEvents/<int:user_id>', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
+    path('eventmanagement/creatorevents/', UserListEvents.as_view(), name='user_list_events'),
+    path('eventmanagement/creatorPastEvents/', UserListPastEvents.as_view(), name='user_list_past_events'),
+    path('eventmanagement/creatorUpcomingEvents/', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
     path('eventmanagement/<int:event_id>/promocode/', PromoCodeCreateAPIView.as_view(), name='create_promocode'),
     path('eventmanagement/<int:event_id>/publish/' ,EventPublishView.as_view(), name='publish_event'),
     path('eventmanagement/event/<int:event_id>/order-items/', list_orderitem_by_event, name='list_orderitem_by_event'),
