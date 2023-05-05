@@ -6,8 +6,17 @@ from pymongo import MongoClient
 import uuid
 import requests
 
-client = MongoClient()
-db = client['eventbrite-db']
+
+
+
+
+
+# client = MongoClient()
+# db = client['eventbrite-db']
+
+client = MongoClient("mongodb+srv://ismail:512002@cluster0.7bge3an.mongodb.net/?retryWrites=true&w=majority", username="ismail", password="512002")
+db = client['event-us']
+
 media_root = ''
 events_dir = os.path.join(media_root, 'events/')
 if not os.path.exists(events_dir):
@@ -26,8 +35,6 @@ db.user_user.insert_one(user)
 def random_image_url():
     response = requests.get('https://picsum.photos/800/600')
     return response.url
-
-
 def random_string(n):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=n))
 
@@ -78,3 +85,22 @@ for i in range(10):
         "image": full_path
     }
     db.event_event.insert_one(event)
+
+
+
+# from djongo import settings
+# from pymongo import MongoClient
+# settings.configure(
+#     DATABASES={
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'event-us',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#                 'host': 'mongodb+srv://ismail:512002@cluster0.7bge3an.mongodb.net/?retryWrites=true&w=majority',
+#             }
+#         }
+#     }
+# )
+# client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+# db = client[settings.DATABASES['default']['NAME']]
