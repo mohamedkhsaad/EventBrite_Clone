@@ -5,37 +5,22 @@ import datetime
 from pymongo import MongoClient
 import uuid
 import requests
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
+
 client = MongoClient()
 db = client['eventbrite-db']
-
-
 media_root = ''
-# create a directory for event images if it doesn't exist
-
 events_dir = os.path.join(media_root, 'events/')
 if not os.path.exists(events_dir):
     os.makedirs(events_dir)
-
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eventbrite.settings')
-# if not settings.configured:
-#     settings_module = os.environ.get('DJANGO_SETTINGS_MODULE')
-#     if not settings_module:
-#         raise ImproperlyConfigured(
-#             "You must either set the DJANGO_SETTINGS_MODULE environment variable or call settings.configure() before accessing settings."
-#         )
-#     settings.configure()
-
 user = {
-    "email": "johndoe@example.com",
-    "password": "password123",
-    "first_name": "John",
-    "last_name": "Doe"
+    "id": "1190264",
+    "email": "ismailtawfik@gmail.com",
+    "password": "Password123*",
+    "first_name": "Ismail",
+    "last_name": "Tawfik",
+    'username': "IsmailTawfik"
 }
-
 db.user_user.insert_one(user)
-
 
 
 def random_image_url():
@@ -54,16 +39,27 @@ sub_categories = {
     'Sports': ['Football', 'Basketball', 'Tennis', 'Swimming'],
     'Arts': ['Painting', 'Sculpture', 'Photography', 'Architecture']
 }
+
+
+def generate_unique_id():
+    while True:
+        # Generate a random integer between 1 and 9999
+        new_id = random.randint(1, 9999)
+        # Check if an event with this ID already exists in the database
+        if not db.event_event.find_one({"ID": new_id}):
+            return new_id
+
+
 for i in range(10):
     image_url = random_image_url()
     filename = str(uuid.uuid4()) + '.jpg'
     full_path = os.path.join(media_root, 'events', filename)
     with open(full_path, 'wb') as f:
         f.write(requests.get(image_url).content)
-
     event = {
-        "ID": str(uuid.uuid4()),
-        "User_id":None,  
+        "id": uuid.uuid4().hex,
+        "ID": str(generate_unique_id()),
+        "User_id": user['id'],
         "Title": random_string(10),
         "organizer": random_string(8),
         "Summary": random_string(50),
@@ -78,22 +74,7 @@ for i in range(10):
         "END_TIME": "12:15:15",
         "online": "True",
         "CAPACITY": random.randint(50, 200),
-        "STATUS": "Draft",
+        "STATUS": "Live",
         "image": full_path
     }
     db.event_event.insert_one(event)
-    db.user_user.insert_one(user)
-
-# print('MEDIA_ROOT:', settings.MEDIA_ROOT)
-# print('full_path:', full_path)
-
-# import requests
-# import uuid
-# image_url = 'https://picsum.photos/800/600'
-# filename = str(uuid.uuid4()) + '.jpg'
-# full_path = '/Users/ismailtawfik/Downloads/EventBrite_Clone_Backend-19/eventbrite/media/events' + filename
-# with open(full_path, 'wb') as f:
-#     f.write(requests.get(image_url).content)
-
-
-# "export DJANGO_SETTINGS_MODULE=eventbrite.settings"
