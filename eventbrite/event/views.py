@@ -411,7 +411,7 @@ class EventTicketPrice(APIView):
         except event.DoesNotExist:
             return Response(status=404, data={'message': 'Event not found'})
 
-        ticket_obj = TicketClass.objects.filter(EVENT_ID=event_obj.ID).first()
+        ticket_obj = TicketClass.objects.filter(event_id=event_obj.ID).first()
         if ticket_obj:
             ticket_price = ticket_obj.PRICE
             return Response(status=200, data={'ticket_price': ticket_price})
