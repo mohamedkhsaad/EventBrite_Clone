@@ -13,7 +13,7 @@ load_dotenv()
 
 # server_url="https://event-us.me:8000/"
 # localhost_url="https://127.0.0.1:8080"
-server_url=os.getenv('server_url')
+server_url= "https://127.0.0.1:8000"
 # localhost_url=os.getenv('localhost_url')
 
 class Publish_Info(models.Model):
@@ -26,18 +26,21 @@ class Publish_Info(models.Model):
     Audience_Link = models.CharField(max_length=50, default='', editable= False)
     Audience_Password = models.CharField(max_length=50, blank=True)
     Keep_Private = models.BooleanField(default=False)
-    Publication_Date = models.DateTimeField(null=False, blank=True)
+    Publication_Date = models.DateTimeField(null=True, blank=True)
  
-    def default_audience_link(self):
-        return server_url + reverse('event-list-by-ID', kwargs={'event_ID': self.Event_ID})
+    # def default_audience_link(self):
+    #     return server_url + reverse('event-list-by-ID', kwargs={'event_ID': self.Event_ID})
     def __str__(self):
         return f"{self.ID}: {self.Audience_Link}"
 
     def save(self, *args, **kwargs):
-        if not self.Audience_Link:
-            self.Audience_Link = self.default_audience_link()
+        if self.Event_Status== 'Private':
+            self.Audience_Link = server_url + reverse('check_password_view', kwargs= {'event_id': self.Event_ID})
+        else:
+            self.Audience_Link = server_url + reverse('event-list-by-ID', kwargs={'event_ID': self.Event_ID})
         super().save(*args, **kwargs)
     
     os.getenv
+
 
 
