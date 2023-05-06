@@ -294,7 +294,7 @@ def add_attendee(request,event_id):
     for item in order_items:
         
         item['order_id'] = order.ID
-        item['ticket_price'] = 999
+        item['ticket_price'] = TicketClass.objects.get(ID=item["ticket_class_id"]).PRICE
         print(item)
 
 
