@@ -4,7 +4,7 @@ class:UserListEvents: A viewset for retrieving all user events by user id.
 class:UserListPastEvents: A viewset for retrieving all user past events by user id.
 class:UserListEvents: A viewset for retrieving all user upcoming events by user id.
 class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given event.
-
+function:add_attendee: A FBV that allows organizer to add attendees.
 """
 from django.shortcuts import render,redirect
 from django.urls import reverse
@@ -184,65 +184,15 @@ class EventPublishView(generics.CreateAPIView):
             return Response({'error': error_msgs, 'data': request.data}, status=HTTP_400_BAD_REQUEST)
         
 
-@api_view(['POST'])
-def add_attendee(request,event_id):
-
-    """
-    request data should look like this
-
-        {
-            "order_items":
-            [
-                {
-                "ticket_class_id" : 1,	
-                "quantity": 3 
-                },
-                {
-                "ticket_class_id" : 2,	
-                "quantity": 1 
-                }
-            ],
-            "first_name" : "ahmed",
-            "last_name" : "hamed",
-            "email" : "ahmedhamed@gmail.com"
-        }
-    
-    """
-    print("====== add attendee ======")
-    first_name = request.data.get('first_name')
-    last_name = request.data.get('last_name')
-    email = request.data.get('email')
-
-
-    user = User.objects.filter(first_name=first_name, last_name=last_name, email=email).first()
-    if bool(user) == True:
-        print("user already exist")
-
-        data = request.data
-        data["user_id"] = user.id
-        print(data)
-        # redirect to create order 
-        url = reverse("create-order",kwargs={'event_id': event_id})
-        print(url)
-        response = Response(data, status=status.HTTP_302_FOUND)
-        response['Location'] = url
-        return response
-        # return redirect(to = reverse("create-order",args=[event_id]),data=data)   
-
-
-    return Response(data={"l":"l"},status=status.HTTP_200_OK)
-    # get data  
-    # check if user exist if not create a user
-    # redirect to create order
-
 
 
 @api_view(['POST'])
 def add_attendee(request,event_id):
 
     """
-    this allows the organizer to add attendee if user doesnt exist it will be created
-
+    this allows the organizer to add attendee if user doesnt exist it will be created one,
+    This view creates an order for an event with the specified event ID.
+    user ID are received in the request data. A discount code may also be included.
     request data should look like this
 
         {
@@ -266,6 +216,26 @@ def add_attendee(request,event_id):
     first_name = request.data.get('first_name')
     last_name = request.data.get('last_name')
     email = request.data.get('email')
+
+    if not email:
+        return Response({"details":""" no email was sent, sent data should look like this {
+            "order_items":
+            [
+                {
+                "ticket_class_id" : 1,	
+                "quantity": 3 
+                },
+                {
+                "ticket_class_id" : 2,	
+                "quantity": 1 
+                }
+            ],
+            "first_name" : "ahmed",
+            "last_name" : "hamed",
+            "email" : "ahmedhamed@gmail.com"
+
+        }"""}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
     user = User.objects.filter(first_name=first_name, last_name=last_name, email=email).first()
@@ -305,8 +275,10 @@ def add_attendee(request,event_id):
                 "ticket_class_id" : 2,	
                 "quantity": 1 
                 }
-            ], 
-            "promocode" : "DISCOUNT25"
+            ],
+            "first_name" : "ahmed",
+            "last_name" : "hamed",
+            "email" : "ahmedhamed@gmail.com"
 
         }"""}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -464,6 +436,8 @@ def list_orders_by_event(request, event_id):
     orders = Order.objects.filter(event_id=event_id)
     serialized_orders = OrderSerializer(orders, many=True)
     return Response(serialized_orders.data)
+
+
 @api_view(['GET'])
 # @authentication_classes([TokenAuthentication])
 # @permission_classes([IsAuthenticated])
@@ -475,29 +449,19 @@ def list_orderitem_by_event(request, event_id):
     serialized_orderitems = OrderItemSerializer(order_items, many=True)
     return Response(serialized_orderitems.data)
 
-@api_view(['GET'])
+# @api_view(['GET'])
 # @authentication_classes([TokenAuthentication])
 # @permission_classes([IsAuthenticated])
-def list_orderitem_by_order(request, order_id):
-    """
+# def list_orderitem_by_order(request, order_id):
+#     """
 
-    """
-    order_items = OrderItem.objects.filter(order_id=order_id)
-    serialized_orderitems = OrderItemSerializer(order_items, many=True)
-    return Response(serialized_orderitems.data)
+#     """
+#     order_items = OrderItem.objects.filter(order_id=order_id)
+#     serialized_orderitems = OrderItemSerializer(order_items, many=True)
+#     return Response(serialized_orderitems.data)
 
 
 
-# def ssssssss
-#     orders = Order.objects.filter(event_id=event_id)
-#     serialized_orders = OrderSerializer(orders, many=True)
-#     orders = serialized_orders.data
-#     orders[0].id
-
-#     for order in orders:
-#         order_items = OrderItem.objects.filter(order_id=order_id)
-#         serialized_orderitems = OrderItemSerializer(order_items, many=True)
-#         return Response(serialized_orderitems.data)
 
 
 import random

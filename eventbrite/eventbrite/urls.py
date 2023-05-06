@@ -104,10 +104,11 @@ urlpatterns = [
     path('eventmanagement/UserUpcomingEvents/<int:user_id>', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
     path('eventmanagement/<int:event_id>/promocode/', PromoCodeCreateAPIView.as_view(), name='create_promocode'),
     path('eventmanagement/<int:event_id>/publish/' ,EventPublishView.as_view(), name='publish_event'),
+    
     path('eventmanagement/<int:event_id>/add-attendee/' ,add_attendee, name='add-attendee'),
     path('eventmanagement/event/<int:event_id>/orders/', list_orders_by_event, name='list-orders-by-event'),
-    path('eventmanagement/order/<int:order_id>/order-items/', list_orderitem_by_order, name='list-order-items-by-order-eventmanagement'),
     path('eventmanagement/event/<int:event_id>/order-items/', list_orderitem_by_event, name='list_orderitem_by_event'),
+    # path('eventmanagement/order/<int:order_id>/order-items/', list_orderitem_by_order, name='list-order-items-by-order-eventmanagement'),
 
 
 
