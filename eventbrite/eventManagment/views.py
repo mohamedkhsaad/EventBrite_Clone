@@ -190,6 +190,9 @@ class EventPublishView(generics.CreateAPIView):
                 return Response({'error': 'Please Provide a Publish Date.'}, status=HTTP_400_BAD_REQUEST)
 
             if not TicketClass.objects.filter(event_id=event_id):
+                print(type(event_id))
+                print(type(TicketClass.event_id))
+
                 return Response({'error': f'No tickets created for event with id {event_id}. Cannot publish event without tickets.'}, status=HTTP_400_BAD_REQUEST)
 
         Publish_Data = request.data.copy()
@@ -290,7 +293,7 @@ def add_attendee(request, event_id):
     if bool(user) == False:
         print("you should create user")
         data = request.data
-        data["password"] = generate_password()
+        data["password"] = "Ziad12345*"
         user_serializer = userSerializer(data=request.data)
         if not user_serializer.is_valid():
             print(user_serializer.error_messages)
@@ -342,6 +345,8 @@ def add_attendee(request, event_id):
         item['order_id'] = order.ID
         item['ticket_price'] = TicketClass.objects.get(
             ID=item["ticket_class_id"]).PRICE
+        item['user_id'] = user.id
+        item['event_id'] = event_id
         print(item)
 
         order_item_serializer = OrderItemSerializer(data=item)
@@ -358,14 +363,15 @@ def add_attendee(request, event_id):
         quantity = order_item_serializer.instance.quantity
         print(quantity)
 
-        if ticket_class.capacity - ticket_class.quantity_sold < quantity:
+        if int(ticket_class.capacity) - int(ticket_class.quantity_sold) < quantity:
             order.delete()
             # order_item.delete()
             return Response({"details": f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
         subtotal += ticket_class.PRICE * quantity
+        print(type)
 
-        ticket_class.quantity_sold += quantity
+        ticket_class.quantity_sold += str(quantity)
         # ticket_class.save()
 
     if not event.objects.filter(ID=event_id):
@@ -387,7 +393,7 @@ def add_attendee(request, event_id):
     order.total = total
     order.event_id = event_id
     order.fee = fee
-    order.save()
+    # order.save()
 
     send_confirmation_email(request._request, order)
 

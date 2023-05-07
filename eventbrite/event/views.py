@@ -368,18 +368,14 @@ class TicketCreateAPIView(generics.CreateAPIView):
             Event = event.objects.get(ID=event_id)
         except event.DoesNotExist:
             return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-
         ticket_data = request.data.copy()
         ticket_data['event'] = Event.ID
         ticket_data['event_id'] = Event.ID
+        print(Event.ID)
         ticket_data['user'] = request.user
         ticket_data['User_id'] = request.user.id
-        print(type(Event.User_id))
-        print(type(request.user.id))
-
+        
         # Check if the user creating the ticket is the same user who created the event
-        # if request.user.id != str(Event.User_id):
-        #     return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
         if str(request.user.id) != str(Event.User_id):
             return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
 

@@ -189,17 +189,15 @@ def create_order(request,event_id):
         quantity = order_item_serializer.instance.quantity
         print(quantity)
         
-        if ticket_class.capacity - ticket_class.quantity_sold < quantity:
+        if int(ticket_class.capacity) - int(ticket_class.quantity_sold) < quantity:
             order.delete()
             # order_item.delete()
             return Response({"details":f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
         subtotal += ticket_class.PRICE * quantity
         
-        ticket_class.quantity_sold += quantity
+        ticket_class.quantity_sold += str(quantity)
         # ticket_class.save()
-
-
 
 
 
@@ -212,9 +210,6 @@ def create_order(request,event_id):
 
     fee = 0
     total = subtotal - amount_off + fee
-
-
-
 
 
 
@@ -231,7 +226,7 @@ def create_order(request,event_id):
     order.total = total
     order.event_id = event_id
     order.fee = fee
-    order.save()
+    # order.save()
 
     send_confirmation_email(request._request,order)
 
