@@ -56,37 +56,33 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-booking.models">booking.models module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#booking.models.Discount"><code class="docutils literal notranslate"><span class="pre">Discount</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.models.Ticket"><code class="docutils literal notranslate"><span class="pre">Ticket</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.models.Order"><code class="docutils literal notranslate"><span class="pre">Order</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.models.OrderItem"><code class="docutils literal notranslate"><span class="pre">OrderItem</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.models.TicketClass"><code class="docutils literal notranslate"><span class="pre">TicketClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.models.generate_unique_order_id"><code class="docutils literal notranslate"><span class="pre">generate_unique_order_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.models.generate_unique_orderitem_id"><code class="docutils literal notranslate"><span class="pre">generate_unique_orderitem_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.models.generate_unique_ticket_class_id"><code class="docutils literal notranslate"><span class="pre">generate_unique_ticket_class_id()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-booking.serializers">booking.serializers module</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#booking.serializers.DiscountSerializer"><code class="docutils literal notranslate"><span class="pre">DiscountSerializer</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.serializers.TicketSerializer"><code class="docutils literal notranslate"><span class="pre">TicketSerializer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.serializers.OrderItemSerializer"><code class="docutils literal notranslate"><span class="pre">OrderItemSerializer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.serializers.OrderSerializer"><code class="docutils literal notranslate"><span class="pre">OrderSerializer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.serializers.TicketClassSerializer"><code class="docutils literal notranslate"><span class="pre">TicketClassSerializer</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.serializers.TicketQuantityClassSerializer"><code class="docutils literal notranslate"><span class="pre">TicketQuantityClassSerializer</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-booking.tests">booking.tests module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#booking.tests.CheckPromoCodeTests"><code class="docutils literal notranslate"><span class="pre">CheckPromoCodeTests</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.tests.CreateTicketAndSendConfirmationEmailTestCase"><code class="docutils literal notranslate"><span class="pre">CreateTicketAndSendConfirmationEmailTestCase</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.tests.CreateTicketTestCase"><code class="docutils literal notranslate"><span class="pre">CreateTicketTestCase</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.tests.DiscountListTestCase"><code class="docutils literal notranslate"><span class="pre">DiscountListTestCase</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.tests.GetTicketTestCase"><code class="docutils literal notranslate"><span class="pre">GetTicketTestCase</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.tests.ListTicketsByEventTestCase"><code class="docutils literal notranslate"><span class="pre">ListTicketsByEventTestCase</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.tests.ListTicketsByUserTestCase"><code class="docutils literal notranslate"><span class="pre">ListTicketsByUserTestCase</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.tests.SendConfirmationEmailTest"><code class="docutils literal notranslate"><span class="pre">SendConfirmationEmailTest</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-booking.tests">booking.tests module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-booking.urls">booking.urls module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-booking.views">booking.views module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.TicketList"><code class="docutils literal notranslate"><span class="pre">TicketList</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.check_promo_code"><code class="docutils literal notranslate"><span class="pre">check_promo_code()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.confirm_token"><code class="docutils literal notranslate"><span class="pre">confirm_token()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.create_ticket"><code class="docutils literal notranslate"><span class="pre">create_ticket()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.discount_list"><code class="docutils literal notranslate"><span class="pre">discount_list</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.discount_pk"><code class="docutils literal notranslate"><span class="pre">discount_pk</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.generate_confirmation_token"><code class="docutils literal notranslate"><span class="pre">generate_confirmation_token()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.get_ticket"><code class="docutils literal notranslate"><span class="pre">get_ticket()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.list_tickets_by_event"><code class="docutils literal notranslate"><span class="pre">list_tickets_by_event()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#booking.views.list_tickets_by_user"><code class="docutils literal notranslate"><span class="pre">list_tickets_by_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.check_promocode"><code class="docutils literal notranslate"><span class="pre">check_promocode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.confirm_order"><code class="docutils literal notranslate"><span class="pre">confirm_order()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.create_order"><code class="docutils literal notranslate"><span class="pre">create_order()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.list_orderitem_by_order"><code class="docutils literal notranslate"><span class="pre">list_orderitem_by_order()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.list_orderitem_by_user"><code class="docutils literal notranslate"><span class="pre">list_orderitem_by_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.list_orders_by_user"><code class="docutils literal notranslate"><span class="pre">list_orders_by_user()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.list_ticket_classes_by_event"><code class="docutils literal notranslate"><span class="pre">list_ticket_classes_by_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#booking.views.quantity_sold_out_of_total"><code class="docutils literal notranslate"><span class="pre">quantity_sold_out_of_total()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#booking.views.send_confirmation_email"><code class="docutils literal notranslate"><span class="pre">send_confirmation_email()</span></code></a></li>
 </ul>
 </li>
@@ -144,14 +140,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="booking.migrations.html#module-booking.migrations.0002_discount_event_id">booking.migrations.0002_discount_event_id module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="booking.migrations.html#booking.migrations.0002_discount_event_id.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="booking.migrations.html#booking.migrations.0002_discount_event_id.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="booking.migrations.html#booking.migrations.0002_discount_event_id.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="booking.migrations.html#booking-migrations-0002-discount-event-id-module">booking.migrations.0002_discount_event_id module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="booking.migrations.html#module-booking.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -292,196 +281,359 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="booking.models.Ticket">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.models.</span></span><span class="sig-name descname"><span class="pre">Ticket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NAME</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PRICE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EVENT_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GUEST_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TICKET_NUM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TICKET_TYPE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sales_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sales_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">End_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Absorb_fees</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/models.html#Ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.models.Ticket" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.models.</span></span><span class="sig-name descname"><span class="pre">Order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discount_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_price</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount_off</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fee</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_validated</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/models.html#Order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.models.Order" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.ABSORB_FEES_CHOICES">
-<span class="sig-name descname"><span class="pre">ABSORB_FEES_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('t',</span> <span class="pre">'true'),</span> <span class="pre">('f',</span> <span class="pre">'false'))</span></em><a class="headerlink" href="#booking.models.Ticket.ABSORB_FEES_CHOICES" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.Absorb_fees">
-<span class="sig-name descname"><span class="pre">Absorb_fees</span></span><a class="headerlink" href="#booking.models.Ticket.Absorb_fees" title="Permalink to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
 <dl class="py exception">
-<dt class="sig sig-object py" id="booking.models.Ticket.DoesNotExist">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#booking.models.Ticket.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#booking.models.Order.DoesNotExist" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.EVENT_ID">
-<span class="sig-name descname"><span class="pre">EVENT_ID</span></span><a class="headerlink" href="#booking.models.Ticket.EVENT_ID" title="Permalink to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.End_time">
-<span class="sig-name descname"><span class="pre">End_time</span></span><a class="headerlink" href="#booking.models.Ticket.End_time" title="Permalink to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.GUEST_ID">
-<span class="sig-name descname"><span class="pre">GUEST_ID</span></span><a class="headerlink" href="#booking.models.Ticket.GUEST_ID" title="Permalink to this definition"></a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.ID">
-<span class="sig-name descname"><span class="pre">ID</span></span><a class="headerlink" href="#booking.models.Ticket.ID" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.ID">
+<span class="sig-name descname"><span class="pre">ID</span></span><a class="headerlink" href="#booking.models.Order.ID" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="booking.models.Ticket.MultipleObjectsReturned">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#booking.models.Ticket.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#booking.models.Order.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.NAME">
-<span class="sig-name descname"><span class="pre">NAME</span></span><a class="headerlink" href="#booking.models.Ticket.NAME" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.amount_off">
+<span class="sig-name descname"><span class="pre">amount_off</span></span><a class="headerlink" href="#booking.models.Order.amount_off" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.PRICE">
-<span class="sig-name descname"><span class="pre">PRICE</span></span><a class="headerlink" href="#booking.models.Ticket.PRICE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.discount_id">
+<span class="sig-name descname"><span class="pre">discount_id</span></span><a class="headerlink" href="#booking.models.Order.discount_id" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.Sales_end">
-<span class="sig-name descname"><span class="pre">Sales_end</span></span><a class="headerlink" href="#booking.models.Ticket.Sales_end" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.event_id">
+<span class="sig-name descname"><span class="pre">event_id</span></span><a class="headerlink" href="#booking.models.Order.event_id" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.Sales_start">
-<span class="sig-name descname"><span class="pre">Sales_start</span></span><a class="headerlink" href="#booking.models.Ticket.Sales_start" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.fee">
+<span class="sig-name descname"><span class="pre">fee</span></span><a class="headerlink" href="#booking.models.Order.fee" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.Start_time">
-<span class="sig-name descname"><span class="pre">Start_time</span></span><a class="headerlink" href="#booking.models.Ticket.Start_time" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.full_price">
+<span class="sig-name descname"><span class="pre">full_price</span></span><a class="headerlink" href="#booking.models.Order.full_price" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.TICKET_NUM">
-<span class="sig-name descname"><span class="pre">TICKET_NUM</span></span><a class="headerlink" href="#booking.models.Ticket.TICKET_NUM" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#booking.models.Order.id" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.TICKET_TYPE">
-<span class="sig-name descname"><span class="pre">TICKET_TYPE</span></span><a class="headerlink" href="#booking.models.Ticket.TICKET_TYPE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.is_validated">
+<span class="sig-name descname"><span class="pre">is_validated</span></span><a class="headerlink" href="#booking.models.Order.is_validated" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.TICKET_TYPE_CHOICES">
-<span class="sig-name descname"><span class="pre">TICKET_TYPE_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('Free',</span> <span class="pre">'Free'),</span> <span class="pre">('VIP',</span> <span class="pre">'VIP'),</span> <span class="pre">('Donation',</span> <span class="pre">'Donation'))</span></em><a class="headerlink" href="#booking.models.Ticket.TICKET_TYPE_CHOICES" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#booking.models.Order.objects" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.event">
-<span class="sig-name descname"><span class="pre">event</span></span><a class="headerlink" href="#booking.models.Ticket.event" title="Permalink to this definition"></a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.event_id">
-<span class="sig-name descname"><span class="pre">event_id</span></span><a class="headerlink" href="#booking.models.Ticket.event_id" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_Absorb_fees_display">
-<span class="sig-name descname"><span class="pre">get_Absorb_fees_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">Absorb_fees&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_Absorb_fees_display" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_TICKET_TYPE_display">
-<span class="sig-name descname"><span class="pre">get_TICKET_TYPE_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">TICKET_TYPE&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_TICKET_TYPE_display" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_next_by_End_time">
-<span class="sig-name descname"><span class="pre">get_next_by_End_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">End_time&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_next_by_End_time" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_next_by_Sales_end">
-<span class="sig-name descname"><span class="pre">get_next_by_Sales_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">Sales_end&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_next_by_Sales_end" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_next_by_Sales_start">
-<span class="sig-name descname"><span class="pre">get_next_by_Sales_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">Sales_start&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_next_by_Sales_start" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_next_by_Start_time">
-<span class="sig-name descname"><span class="pre">get_next_by_Start_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">Start_time&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_next_by_Start_time" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_previous_by_End_time">
-<span class="sig-name descname"><span class="pre">get_previous_by_End_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">End_time&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_previous_by_End_time" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_previous_by_Sales_end">
-<span class="sig-name descname"><span class="pre">get_previous_by_Sales_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">Sales_end&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_previous_by_Sales_end" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_previous_by_Sales_start">
-<span class="sig-name descname"><span class="pre">get_previous_by_Sales_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">Sales_start&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_previous_by_Sales_start" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.models.Ticket.get_previous_by_Start_time">
-<span class="sig-name descname"><span class="pre">get_previous_by_Start_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">Start_time&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.Ticket.get_previous_by_Start_time" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.id">
-<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#booking.models.Ticket.id" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.models.Order.total">
+<span class="sig-name descname"><span class="pre">total</span></span><a class="headerlink" href="#booking.models.Order.total" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.models.Ticket.objects">
-<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#booking.models.Ticket.objects" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="booking.models.Order.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#booking.models.Order.user_id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
 
 </dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.models.OrderItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.models.</span></span><span class="sig-name descname"><span class="pre">OrderItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ticket_class_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ticket_price</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/models.html#OrderItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.models.OrderItem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="booking.models.OrderItem.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#booking.models.OrderItem.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.ID">
+<span class="sig-name descname"><span class="pre">ID</span></span><a class="headerlink" href="#booking.models.OrderItem.ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="booking.models.OrderItem.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#booking.models.OrderItem.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.currency">
+<span class="sig-name descname"><span class="pre">currency</span></span><a class="headerlink" href="#booking.models.OrderItem.currency" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.event_id">
+<span class="sig-name descname"><span class="pre">event_id</span></span><a class="headerlink" href="#booking.models.OrderItem.event_id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#booking.models.OrderItem.id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#booking.models.OrderItem.objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.order_id">
+<span class="sig-name descname"><span class="pre">order_id</span></span><a class="headerlink" href="#booking.models.OrderItem.order_id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.quantity">
+<span class="sig-name descname"><span class="pre">quantity</span></span><a class="headerlink" href="#booking.models.OrderItem.quantity" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.ticket_class_id">
+<span class="sig-name descname"><span class="pre">ticket_class_id</span></span><a class="headerlink" href="#booking.models.OrderItem.ticket_class_id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.ticket_price">
+<span class="sig-name descname"><span class="pre">ticket_price</span></span><a class="headerlink" href="#booking.models.OrderItem.ticket_price" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.OrderItem.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#booking.models.OrderItem.user_id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.models.TicketClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.models.</span></span><span class="sig-name descname"><span class="pre">TicketClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">User_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NAME</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PRICE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">capacity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantity_sold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TICKET_TYPE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sales_start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Sales_end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">End_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Absorb_fees</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/models.html#TicketClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.models.TicketClass" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.ABSORB_FEES_CHOICES">
+<span class="sig-name descname"><span class="pre">ABSORB_FEES_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('True',</span> <span class="pre">'True'),</span> <span class="pre">('False',</span> <span class="pre">'False'))</span></em><a class="headerlink" href="#booking.models.TicketClass.ABSORB_FEES_CHOICES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.Absorb_fees">
+<span class="sig-name descname"><span class="pre">Absorb_fees</span></span><a class="headerlink" href="#booking.models.TicketClass.Absorb_fees" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="booking.models.TicketClass.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#booking.models.TicketClass.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.End_time">
+<span class="sig-name descname"><span class="pre">End_time</span></span><a class="headerlink" href="#booking.models.TicketClass.End_time" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.ID">
+<span class="sig-name descname"><span class="pre">ID</span></span><a class="headerlink" href="#booking.models.TicketClass.ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="booking.models.TicketClass.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#booking.models.TicketClass.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.NAME">
+<span class="sig-name descname"><span class="pre">NAME</span></span><a class="headerlink" href="#booking.models.TicketClass.NAME" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.PRICE">
+<span class="sig-name descname"><span class="pre">PRICE</span></span><a class="headerlink" href="#booking.models.TicketClass.PRICE" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.Sales_end">
+<span class="sig-name descname"><span class="pre">Sales_end</span></span><a class="headerlink" href="#booking.models.TicketClass.Sales_end" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.Sales_start">
+<span class="sig-name descname"><span class="pre">Sales_start</span></span><a class="headerlink" href="#booking.models.TicketClass.Sales_start" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.Start_time">
+<span class="sig-name descname"><span class="pre">Start_time</span></span><a class="headerlink" href="#booking.models.TicketClass.Start_time" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.TICKET_TYPE">
+<span class="sig-name descname"><span class="pre">TICKET_TYPE</span></span><a class="headerlink" href="#booking.models.TicketClass.TICKET_TYPE" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.TICKET_TYPE_CHOICES">
+<span class="sig-name descname"><span class="pre">TICKET_TYPE_CHOICES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('Free',</span> <span class="pre">'Free'),</span> <span class="pre">('Paid',</span> <span class="pre">'Paid'),</span> <span class="pre">('Donation',</span> <span class="pre">'Donation'))</span></em><a class="headerlink" href="#booking.models.TicketClass.TICKET_TYPE_CHOICES" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.User_id">
+<span class="sig-name descname"><span class="pre">User_id</span></span><a class="headerlink" href="#booking.models.TicketClass.User_id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.capacity">
+<span class="sig-name descname"><span class="pre">capacity</span></span><a class="headerlink" href="#booking.models.TicketClass.capacity" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.event_id">
+<span class="sig-name descname"><span class="pre">event_id</span></span><a class="headerlink" href="#booking.models.TicketClass.event_id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.models.TicketClass.get_Absorb_fees_display">
+<span class="sig-name descname"><span class="pre">get_Absorb_fees_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">Absorb_fees&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.TicketClass.get_Absorb_fees_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.models.TicketClass.get_TICKET_TYPE_display">
+<span class="sig-name descname"><span class="pre">get_TICKET_TYPE_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">TICKET_TYPE&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.TicketClass.get_TICKET_TYPE_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.models.TicketClass.get_next_by_Sales_end">
+<span class="sig-name descname"><span class="pre">get_next_by_Sales_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">Sales_end&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.TicketClass.get_next_by_Sales_end" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.models.TicketClass.get_next_by_Sales_start">
+<span class="sig-name descname"><span class="pre">get_next_by_Sales_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">Sales_start&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.TicketClass.get_next_by_Sales_start" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.models.TicketClass.get_previous_by_Sales_end">
+<span class="sig-name descname"><span class="pre">get_previous_by_Sales_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">Sales_end&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.TicketClass.get_previous_by_Sales_end" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booking.models.TicketClass.get_previous_by_Sales_start">
+<span class="sig-name descname"><span class="pre">get_previous_by_Sales_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateField:</span> <span class="pre">Sales_start&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booking.models.TicketClass.get_previous_by_Sales_start" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#booking.models.TicketClass.id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#booking.models.TicketClass.objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.models.TicketClass.quantity_sold">
+<span class="sig-name descname"><span class="pre">quantity_sold</span></span><a class="headerlink" href="#booking.models.TicketClass.quantity_sold" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booking.models.generate_unique_order_id">
+<span class="sig-prename descclassname"><span class="pre">booking.models.</span></span><span class="sig-name descname"><span class="pre">generate_unique_order_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/models.html#generate_unique_order_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.models.generate_unique_order_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booking.models.generate_unique_orderitem_id">
+<span class="sig-prename descclassname"><span class="pre">booking.models.</span></span><span class="sig-name descname"><span class="pre">generate_unique_orderitem_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/models.html#generate_unique_orderitem_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.models.generate_unique_orderitem_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booking.models.generate_unique_ticket_class_id">
+<span class="sig-prename descclassname"><span class="pre">booking.models.</span></span><span class="sig-name descname"><span class="pre">generate_unique_ticket_class_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/models.html#generate_unique_ticket_class_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.models.generate_unique_ticket_class_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-booking.serializers">
@@ -510,22 +662,91 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="booking.serializers.TicketSerializer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.serializers.</span></span><span class="sig-name descname"><span class="pre">TicketSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/serializers.html#TicketSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.TicketSerializer" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.serializers.OrderItemSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.serializers.</span></span><span class="sig-name descname"><span class="pre">OrderItemSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/serializers.html#OrderItemSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.OrderItemSerializer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
 <dl class="py class">
-<dt class="sig sig-object py" id="booking.serializers.TicketSerializer.Meta">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/booking/serializers.html#TicketSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.TicketSerializer.Meta" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.serializers.OrderItemSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/booking/serializers.html#OrderItemSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.OrderItemSerializer.Meta" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.serializers.TicketSerializer.Meta.exclude">
-<span class="sig-name descname"><span class="pre">exclude</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['event',</span> <span class="pre">'id']</span></em><a class="headerlink" href="#booking.serializers.TicketSerializer.Meta.exclude" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.serializers.OrderItemSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('ticket_class_id',</span> <span class="pre">'quantity',</span> <span class="pre">'order_id',</span> <span class="pre">'ticket_price',</span> <span class="pre">'user_id',</span> <span class="pre">'event_id')</span></em><a class="headerlink" href="#booking.serializers.OrderItemSerializer.Meta.fields" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="booking.serializers.TicketSerializer.Meta.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#booking.serializers.TicketSerializer.Meta.model" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#booking.models.Ticket" title="booking.models.Ticket"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ticket</span></code></a></p>
+<dt class="sig sig-object py" id="booking.serializers.OrderItemSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#booking.serializers.OrderItemSerializer.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#booking.models.OrderItem" title="booking.models.OrderItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderItem</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.serializers.OrderSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.serializers.</span></span><span class="sig-name descname"><span class="pre">OrderSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/serializers.html#OrderSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.OrderSerializer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.serializers.OrderSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/booking/serializers.html#OrderSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.OrderSerializer.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.serializers.OrderSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#booking.serializers.OrderSerializer.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.serializers.OrderSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#booking.serializers.OrderSerializer.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#booking.models.Order" title="booking.models.Order"><code class="xref py py-class docutils literal notranslate"><span class="pre">Order</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.serializers.TicketClassSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.serializers.</span></span><span class="sig-name descname"><span class="pre">TicketClassSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/serializers.html#TicketClassSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.TicketClassSerializer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.serializers.TicketClassSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/booking/serializers.html#TicketClassSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.TicketClassSerializer.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.serializers.TicketClassSerializer.Meta.exclude">
+<span class="sig-name descname"><span class="pre">exclude</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['event_id',</span> <span class="pre">'id']</span></em><a class="headerlink" href="#booking.serializers.TicketClassSerializer.Meta.exclude" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.serializers.TicketClassSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#booking.serializers.TicketClassSerializer.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#booking.models.TicketClass" title="booking.models.TicketClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">TicketClass</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.serializers.TicketQuantityClassSerializer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.serializers.</span></span><span class="sig-name descname"><span class="pre">TicketQuantityClassSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/serializers.html#TicketQuantityClassSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.TicketQuantityClassSerializer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="booking.serializers.TicketQuantityClassSerializer.Meta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/booking/serializers.html#TicketQuantityClassSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.serializers.TicketQuantityClassSerializer.Meta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.serializers.TicketQuantityClassSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('ID',</span> <span class="pre">'quantity_sold',</span> <span class="pre">'capacity')</span></em><a class="headerlink" href="#booking.serializers.TicketQuantityClassSerializer.Meta.fields" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="booking.serializers.TicketQuantityClassSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#booking.serializers.TicketQuantityClassSerializer.Meta.model" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#booking.models.TicketClass" title="booking.models.TicketClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">TicketClass</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -535,187 +756,24 @@ object the first time, the query is executed.</p>
 </section>
 <section id="module-booking.tests">
 <span id="booking-tests-module"></span><h2>booking.tests module<a class="headerlink" href="#module-booking.tests" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.tests.CheckPromoCodeTests">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">CheckPromoCodeTests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CheckPromoCodeTests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CheckPromoCodeTests" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.CheckPromoCodeTests.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CheckPromoCodeTests.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CheckPromoCodeTests.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.CheckPromoCodeTests.test_check_promo_code_with_missing_param">
-<span class="sig-name descname"><span class="pre">test_check_promo_code_with_missing_param</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CheckPromoCodeTests.test_check_promo_code_with_missing_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CheckPromoCodeTests.test_check_promo_code_with_missing_param" title="Permalink to this definition"></a></dt>
-<dd><p>Test that a missing promo code param returns a 400 Bad Request response.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.CheckPromoCodeTests.test_check_promo_code_with_valid_code">
-<span class="sig-name descname"><span class="pre">test_check_promo_code_with_valid_code</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CheckPromoCodeTests.test_check_promo_code_with_valid_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CheckPromoCodeTests.test_check_promo_code_with_valid_code" title="Permalink to this definition"></a></dt>
-<dd><p>Test that a valid promo code for the specified event returns a 200 OK response.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.tests.CreateTicketAndSendConfirmationEmailTestCase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">CreateTicketAndSendConfirmationEmailTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CreateTicketAndSendConfirmationEmailTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CreateTicketAndSendConfirmationEmailTestCase" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.CreateTicketAndSendConfirmationEmailTestCase.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CreateTicketAndSendConfirmationEmailTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CreateTicketAndSendConfirmationEmailTestCase.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.CreateTicketAndSendConfirmationEmailTestCase.test_create_ticket_and_send_confirmation_email">
-<span class="sig-name descname"><span class="pre">test_create_ticket_and_send_confirmation_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CreateTicketAndSendConfirmationEmailTestCase.test_create_ticket_and_send_confirmation_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CreateTicketAndSendConfirmationEmailTestCase.test_create_ticket_and_send_confirmation_email" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.tests.CreateTicketTestCase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">CreateTicketTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CreateTicketTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CreateTicketTestCase" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.CreateTicketTestCase.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CreateTicketTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CreateTicketTestCase.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.CreateTicketTestCase.test_create_ticket">
-<span class="sig-name descname"><span class="pre">test_create_ticket</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#CreateTicketTestCase.test_create_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.CreateTicketTestCase.test_create_ticket" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.tests.DiscountListTestCase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">DiscountListTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#DiscountListTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.DiscountListTestCase" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.DiscountListTestCase.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#DiscountListTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.DiscountListTestCase.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.DiscountListTestCase.test_create_discount">
-<span class="sig-name descname"><span class="pre">test_create_discount</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#DiscountListTestCase.test_create_discount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.DiscountListTestCase.test_create_discount" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.DiscountListTestCase.test_list_discounts">
-<span class="sig-name descname"><span class="pre">test_list_discounts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#DiscountListTestCase.test_list_discounts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.DiscountListTestCase.test_list_discounts" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.tests.GetTicketTestCase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">GetTicketTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#GetTicketTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.GetTicketTestCase" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.GetTicketTestCase.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#GetTicketTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.GetTicketTestCase.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.GetTicketTestCase.test_get_invalid_ticket">
-<span class="sig-name descname"><span class="pre">test_get_invalid_ticket</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#GetTicketTestCase.test_get_invalid_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.GetTicketTestCase.test_get_invalid_ticket" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.GetTicketTestCase.test_get_valid_ticket">
-<span class="sig-name descname"><span class="pre">test_get_valid_ticket</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#GetTicketTestCase.test_get_valid_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.GetTicketTestCase.test_get_valid_ticket" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.tests.ListTicketsByEventTestCase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">ListTicketsByEventTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByEventTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByEventTestCase" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.ListTicketsByEventTestCase.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByEventTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByEventTestCase.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.ListTicketsByEventTestCase.test_list_tickets_by_event">
-<span class="sig-name descname"><span class="pre">test_list_tickets_by_event</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByEventTestCase.test_list_tickets_by_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByEventTestCase.test_list_tickets_by_event" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.tests.ListTicketsByUserTestCase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">ListTicketsByUserTestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByUserTestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByUserTestCase" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.ListTicketsByUserTestCase.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByUserTestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByUserTestCase.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.ListTicketsByUserTestCase.test_list_tickets_by_user">
-<span class="sig-name descname"><span class="pre">test_list_tickets_by_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#ListTicketsByUserTestCase.test_list_tickets_by_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.ListTicketsByUserTestCase.test_list_tickets_by_user" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.tests.SendConfirmationEmailTest">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.tests.</span></span><span class="sig-name descname"><span class="pre">SendConfirmationEmailTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#SendConfirmationEmailTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.SendConfirmationEmailTest" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="booking.tests.SendConfirmationEmailTest.test_send_confirmation_email">
-<span class="sig-name descname"><span class="pre">test_send_confirmation_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mock_get</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/tests.html#SendConfirmationEmailTest.test_send_confirmation_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.tests.SendConfirmationEmailTest.test_send_confirmation_email" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 </section>
 <section id="module-booking.urls">
 <span id="booking-urls-module"></span><h2>booking.urls module<a class="headerlink" href="#module-booking.urls" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-booking.views">
 <span id="booking-views-module"></span><h2>booking.views module<a class="headerlink" href="#module-booking.views" title="Permalink to this heading"></a></h2>
-<p>This module contains several function based views for the booling app.
-function:list_tickets_by_event: A FBV thst Return a list of all tickets for a given event.
-function:list_tickets_by_user: A FBV for retrieving list of all tickets for a given user.
-function:get_ticket: A FBV that Return a ticket object by ticket ID.
+<p>This module contains several function based views for the booking app.
+function:list_ticket_classes_by_event: A FBV thst Return a list of all ticket classes for a given event.
 function:check_promo_code: A FBV Check whether a promo code is valid for a given event.
-class:discount_list: A view that returns a list of all discounts or creates a new discount.
-class:discount_pk: A view that returns a discounts object or update a new discount or delete it.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.views.TicketList">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">TicketList</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#TicketList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.TicketList" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListCreateAPIView</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.TicketList.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#booking.views.TicketList.queryset" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.TicketList.serializer_class">
-<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#booking.views.TicketList.serializer_class" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#booking.serializers.TicketSerializer" title="booking.serializers.TicketSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">TicketSerializer</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
+function:create_order: A FBV that create order with its order items and Return the data saved.
+function:confirm_order: a FBV that confirms the order by the sent token to user’s email.
+function:list_orders_by_user : a FBV that returns orders by user id.
+function:list_orderitem_by_order : a FBV that return order items in an order by order id.
+function:list_orderitem_by_user : a FBV that returns order items by user id.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="booking.views.check_promo_code">
-<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">check_promo_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#check_promo_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.check_promo_code" title="Permalink to this definition"></a></dt>
-<dd><p>Check whether a promo code is valid for a given event.</p>
+<dt class="sig sig-object py" id="booking.views.check_promocode">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">check_promocode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#check_promocode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.check_promocode" title="Permalink to this definition"></a></dt>
+<dd><p>Check whether a promocode is valid for a given event.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -730,144 +788,60 @@ class:discount_pk: A view that returns a discounts object or update a new discou
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="booking.views.confirm_token">
-<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">confirm_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expiration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3600</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#confirm_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.confirm_token" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="booking.views.create_ticket">
-<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">create_ticket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#create_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.create_ticket" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.views.discount_list">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">discount_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#discount_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.discount_list" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListCreateAPIView</span></code></p>
-<p>A view class to list and create Discount objects.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><p>queryset (QuerySet): A QuerySet of all Discount objects.
-serializer_class (DiscountSerializer): The serializer class for Discount objects.
-authentication_classes (list): A list of authentication classes used for this view.
-permission_classes (list): A list of permission classes used for this view.</p>
-</dd>
-<dt>Methods:</dt><dd><dl class="simple">
-<dt>get(self, request, <a href="#id1"><span class="problematic" id="id2">*</span></a>args, <a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs):</dt><dd><p>Handle HTTP GET request and retrieve a list of Discount objects.</p>
-</dd>
-<dt>post(self, request, <a href="#id5"><span class="problematic" id="id6">*</span></a>args, <a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs):</dt><dd><p>Handle HTTP POST request and create a new Discount object.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.discount_list.authentication_classes">
-<span class="sig-name descname"><span class="pre">authentication_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.authentication.TokenAuthentication'&gt;]</span></em><a class="headerlink" href="#booking.views.discount_list.authentication_classes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.discount_list.permission_classes">
-<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#booking.views.discount_list.permission_classes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.discount_list.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#booking.views.discount_list.queryset" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.discount_list.serializer_class">
-<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#booking.views.discount_list.serializer_class" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#booking.serializers.DiscountSerializer" title="booking.serializers.DiscountSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscountSerializer</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="booking.views.discount_pk">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">discount_pk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#discount_pk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.discount_pk" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RetrieveUpdateDestroyAPIView</span></code></p>
-<p>A view class to retrieve, update, or delete a Discount object by primary key.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><p>queryset (QuerySet): A QuerySet of all Discount objects.
-serializer_class (DiscountSerializer): The serializer class for Discount objects.
-authentication_classes (list): A list of authentication classes used for this view.
-permission_classes (list): A list of permission classes used for this view.</p>
-</dd>
-<dt>Methods:</dt><dd><dl class="simple">
-<dt>get(self, request, <a href="#id9"><span class="problematic" id="id10">*</span></a>args, <a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs):</dt><dd><p>Handle HTTP GET request and retrieve a Discount object by primary key.</p>
-</dd>
-<dt>put(self, request, <a href="#id13"><span class="problematic" id="id14">*</span></a>args, <a href="#id15"><span class="problematic" id="id16">**</span></a>kwargs):</dt><dd><p>Handle HTTP PUT request and update a Discount object by primary key.</p>
-</dd>
-<dt>delete(self, request, <a href="#id17"><span class="problematic" id="id18">*</span></a>args, <a href="#id19"><span class="problematic" id="id20">**</span></a>kwargs):</dt><dd><p>Handle HTTP DELETE request and delete a Discount object by primary key.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.discount_pk.authentication_classes">
-<span class="sig-name descname"><span class="pre">authentication_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.authentication.TokenAuthentication'&gt;]</span></em><a class="headerlink" href="#booking.views.discount_pk.authentication_classes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.discount_pk.permission_classes">
-<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#booking.views.discount_pk.permission_classes" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.discount_pk.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#booking.views.discount_pk.queryset" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="booking.views.discount_pk.serializer_class">
-<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#booking.views.discount_pk.serializer_class" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#booking.serializers.DiscountSerializer" title="booking.serializers.DiscountSerializer"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscountSerializer</span></code></a></p>
-</dd></dl>
-
+<dt class="sig sig-object py" id="booking.views.confirm_order">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">confirm_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#confirm_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.confirm_order" title="Permalink to this definition"></a></dt>
+<dd><p>This function confirms an order by taking a token as input and 
+returning a response indicating whether the order has been validated. 
+The token is used to retrieve the order ID, 
+which is then used to update the order object’s is_validated field to True. 
+The function returns a response with the value of is_validated as True and a status code of 200 if successful.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="booking.views.generate_confirmation_token">
-<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">generate_confirmation_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#generate_confirmation_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.generate_confirmation_token" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.views.create_order">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">create_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#create_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.create_order" title="Permalink to this definition"></a></dt>
+<dd><p>This view creates an order for an event with the specified event ID.
+user ID are received in the request data. A discount code may also be included.
+request data should look like this</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“order_items”:
+[</p>
+<blockquote>
+<div><p>{
+“ticket_class_id” : 1,  
+“quantity”: 3 
+},
+{
+“ticket_class_id” : 2,  
+“quantity”: 1 
+}</p>
+</div></blockquote>
+<p>], 
+“promocode” : “DISCOUNT25” // optional</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booking.views.list_orderitem_by_order">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">list_orderitem_by_order</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#list_orderitem_by_order"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.list_orderitem_by_order" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="booking.views.get_ticket">
-<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">get_ticket</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#get_ticket"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.get_ticket" title="Permalink to this definition"></a></dt>
-<dd><p>Return a ticket object by ticket ID.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> – HTTP request object.</p></li>
-<li><p><strong>ticket_id</strong> – Ticket ID.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A JSON object representing the ticket for the given ID.</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="booking.views.list_orderitem_by_user">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">list_orderitem_by_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#list_orderitem_by_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.list_orderitem_by_user" title="Permalink to this definition"></a></dt>
+<dd><p>This function takes a user_id as input and returns a list of OrderItem objects
+associated with the given user. 
+It uses the OrderItemSerializer to serialize the data before returning it in the response.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="booking.views.list_tickets_by_event">
-<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">list_tickets_by_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#list_tickets_by_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.list_tickets_by_event" title="Permalink to this definition"></a></dt>
-<dd><p>Return a list of all tickets for a given event.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>request</strong> – HTTP request object.</p></li>
-<li><p><strong>event_id</strong> – Event ID.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of JSON objects representing the tickets for the given event.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="booking.views.list_tickets_by_user">
-<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">list_tickets_by_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#list_tickets_by_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.list_tickets_by_user" title="Permalink to this definition"></a></dt>
-<dd><p>Return a list of all tickets for a given user.</p>
+<dt class="sig sig-object py" id="booking.views.list_orders_by_user">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">list_orders_by_user</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#list_orders_by_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.list_orders_by_user" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of all orders for a given user.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -876,15 +850,38 @@ permission_classes (list): A list of permission classes used for this view.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of JSON objects representing the tickets for the given user.</p>
+<dd class="field-even"><p>A list of JSON objects representing the bookings for the given user.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="booking.views.send_confirmation_email">
-<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">send_confirmation_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#send_confirmation_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.send_confirmation_email" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="booking.views.list_ticket_classes_by_event">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">list_ticket_classes_by_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#list_ticket_classes_by_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.list_ticket_classes_by_event" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of all ticket class for a given event.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – HTTP request object.</p></li>
+<li><p><strong>event_id</strong> – Event ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of JSON objects representing the bookings for the given event.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booking.views.quantity_sold_out_of_total">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">quantity_sold_out_of_total</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#quantity_sold_out_of_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.quantity_sold_out_of_total" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booking.views.send_confirmation_email">
+<span class="sig-prename descclassname"><span class="pre">booking.views.</span></span><span class="sig-name descname"><span class="pre">send_confirmation_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booking/views.html#send_confirmation_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booking.views.send_confirmation_email" title="Permalink to this definition"></a></dt>
+<dd><p>this function should construct the url with a token and send the link by mail to the user</p>
+</dd></dl>
 
 </section>
 <section id="module-booking">

@@ -71,73 +71,121 @@
 <span class="kn">from</span> <span class="nn">eventbrite.settings</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">user.models</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseBadRequest</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">JsonResponse</span>
+<span class="kn">from</span> <span class="nn">django_resized</span> <span class="kn">import</span> <span class="n">ResizedImageField</span>
+
+<span class="n">CATEGORY_CHOICES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;Category&#39;</span><span class="p">,</span> <span class="s1">&#39;Category&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Auto, Boat &amp; Air&#39;</span><span class="p">,</span> <span class="s1">&#39;Auto, Boat &amp; Air&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Business &amp; Professional&#39;</span><span class="p">,</span> <span class="s1">&#39;Business &amp; Professional&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Charity &amp; Causes&#39;</span><span class="p">,</span> <span class="s1">&#39;Charity &amp; Causes&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Community &amp; Culture&#39;</span><span class="p">,</span> <span class="s1">&#39;Community &amp; Culture&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Family &amp; Education&#39;</span><span class="p">,</span> <span class="s1">&#39;Family &amp; Education&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Fashion &amp; Beauty&#39;</span><span class="p">,</span> <span class="s1">&#39;Fashion &amp; Beauty&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Film, Media &amp; Entertainment&#39;</span><span class="p">,</span> <span class="s1">&#39;Film, Media &amp; Entertainment&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Food &amp; Drink&#39;</span><span class="p">,</span> <span class="s1">&#39;Food &amp; Drink&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Government &amp; Politics&#39;</span><span class="p">,</span> <span class="s1">&#39;Government &amp; Politics&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Health &amp; Wellness&#39;</span><span class="p">,</span> <span class="s1">&#39;Health &amp; Wellness&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Hobbies &amp; Special Interest&#39;</span><span class="p">,</span> <span class="s1">&#39;Hobbies &amp; Special Interest&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Home &amp; Lifestyle&#39;</span><span class="p">,</span> <span class="s1">&#39;Home &amp; Lifestyle&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Music&#39;</span><span class="p">,</span> <span class="s1">&#39;Music&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Performing &amp; Visual Arts&#39;</span><span class="p">,</span> <span class="s1">&#39;Performing &amp; Visual Arts&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Religion &amp; Spitituality&#39;</span><span class="p">,</span> <span class="s1">&#39;Religion &amp; Spitituality&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;School Activities&#39;</span><span class="p">,</span> <span class="s1">&#39;School Activities&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Science &amp; Technology&#39;</span><span class="p">,</span> <span class="s1">&#39;Science &amp; Technology&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Seasonal &amp; Holiday&#39;</span><span class="p">,</span> <span class="s1">&#39;Seasonal &amp; Holiday&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Sports &amp; Fitness&#39;</span><span class="p">,</span> <span class="s1">&#39;Sports &amp; Fitness&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Travel &amp; Outdoor&#39;</span><span class="p">,</span> <span class="s1">&#39;Travel &amp; Outdoor&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Other&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">TYPE_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="s1">&#39;Type&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Appearance or Singing&#39;</span><span class="p">,</span> <span class="s1">&#39;Appearance or Singing&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Attraction&#39;</span><span class="p">,</span> <span class="s1">&#39;Attraction&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Camp, Trip, or Retreat&#39;</span><span class="p">,</span> <span class="s1">&#39;Camp, Trip, or Retreat&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Class, Training, or Workshop&#39;</span><span class="p">,</span> <span class="s1">&#39;Class, Training, or Workshop&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Concert or Performance&#39;</span><span class="p">,</span> <span class="s1">&#39;Concert or Performance&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Conference&#39;</span><span class="p">,</span> <span class="s1">&#39;Conference&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Convention&#39;</span><span class="p">,</span> <span class="s1">&#39;Convention&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Dinner or Gala&#39;</span><span class="p">,</span> <span class="s1">&#39;Dinner or Gala&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Festival or fair&#39;</span><span class="p">,</span> <span class="s1">&#39;Festival or fair&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Game or Competition&#39;</span><span class="p">,</span> <span class="s1">&#39;Game or Competition&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Meeting or Networking Event&#39;</span><span class="p">,</span> <span class="s1">&#39;Meeting or Networking Event&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Party or Social Gathering&#39;</span><span class="p">,</span> <span class="s1">&#39;Party or Social Gathering&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Race or Endurance Event&#39;</span><span class="p">,</span> <span class="s1">&#39;Race or Endurance Event&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Rally&#39;</span><span class="p">,</span> <span class="s1">&#39;Rally&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Screening&#39;</span><span class="p">,</span> <span class="s1">&#39;Screening&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Seminar or Talk&#39;</span><span class="p">,</span> <span class="s1">&#39;Seminar or Talk&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Tour&#39;</span><span class="p">,</span> <span class="s1">&#39;Tour&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Tournment&#39;</span><span class="p">,</span> <span class="s1">&#39;Tournment&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Tradeshow, Consumer Show, or Expo&#39;</span><span class="p">,</span> <span class="s1">&#39;Tradeshow, Consumer Show, or Expo&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Other&#39;</span><span class="p">,</span> <span class="s1">&#39;Other&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">Online_choises</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;False&#39;</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">STATUS_choises</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;Draft&#39;</span><span class="p">,</span> <span class="s1">&#39;Draft&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Live&#39;</span><span class="p">,</span> <span class="s1">&#39;Live&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Past&#39;</span><span class="p">,</span> <span class="s1">&#39;Past&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">Publish_choises</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;Private&#39;</span><span class="p">,</span> <span class="s1">&#39;Private&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;Public&#39;</span><span class="p">,</span> <span class="s1">&#39;Public&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="generate_unique_id"><a class="viewcode-back" href="../../event.html#event.models.generate_unique_id">[docs]</a><span class="k">def</span> <span class="nf">generate_unique_id</span><span class="p">():</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># Generate a random integer between 1 and 9999</span>
+        <span class="n">new_id</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
+        <span class="c1"># Check if an event with this ID already exists in the database</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">new_id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">new_id</span></div>
 
 
 <div class="viewcode-block" id="UserInterest"><a class="viewcode-back" href="../../event.html#event.models.UserInterest">[docs]</a><span class="k">class</span> <span class="nc">UserInterest</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span>
         <span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;interests&#39;</span><span class="p">)</span>
+    <span class="n">User_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">category_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
     <span class="n">sub_Category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interest</span><span class="o">.</span><span class="n">category_name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">interest</span><span class="o">.</span><span class="n">sub_Category</span><span class="si">}</span><span class="s2">&quot;</span></div>
-
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">User_id</span></div>
 
 <div class="viewcode-block" id="event"><a class="viewcode-back" href="../../event.html#event.models.event">[docs]</a><span class="k">class</span> <span class="nc">event</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Model representing an event.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ID</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">User_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ID</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">generate_unique_id</span><span class="p">)</span>
+    <span class="n">User_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">Title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
     <span class="n">organizer</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">AUTH_USER_MODEL</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">get_user_model</span><span class="p">(),</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
     <span class="n">organizer</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
     <span class="n">Summery</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">Description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="nb">type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">category_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">sub_Category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">venue_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TYPE_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;Type&#39;</span><span class="p">)</span>
+    <span class="n">category_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
+        <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">CATEGORY_CHOICES</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;Category&#39;</span><span class="p">)</span>
+    <span class="n">sub_Category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">venue_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">ST_DATE</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
     <span class="n">END_DATE</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
     <span class="n">ST_TIME</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TimeField</span><span class="p">()</span>
     <span class="n">END_TIME</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TimeField</span><span class="p">()</span>
-    <span class="n">Online_choises</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;True&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;False&#39;</span><span class="p">,</span> <span class="s1">&#39;False&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
     <span class="n">online</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">Online_choises</span><span class="p">)</span>
     <span class="n">CAPACITY</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
-    <span class="n">PASSWORD</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">STATUS_choises</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">(</span><span class="s1">&#39;Draft&#39;</span><span class="p">,</span> <span class="s1">&#39;Draft&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;Live&#39;</span><span class="p">,</span> <span class="s1">&#39;Live&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s1">&#39;Past&#39;</span><span class="p">,</span> <span class="s1">&#39;Past&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">STATUS</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS_choises</span><span class="p">)</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s1">&#39;events/&#39;</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="c1"># image = models.ImageField(upload_to=&#39;event_images/&#39;)</span>
-    <span class="c1"># image = models.ImageField(upload_to=&#39;event_images/%Y/%m/%d/&#39;)</span>
-    <span class="c1"># def image_url(self):</span>
-    <span class="c1">#     if self.image:</span>
-    <span class="c1">#         return reverse(&#39;event_image&#39;, args=[str(self.id)])</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         return &#39;&#39;</span>
-
-    <span class="c1"># locationـid = models.IntegerField()</span>
-    <span class="c1"># TICKETS=models.ExpressionList([1])</span>
-    <span class="c1"># GUESTS=models.ExpressionList([1])</span>
-    <span class="c1"># FOLLOEWRS =models.ExpressionList([1])</span>
-    <span class="c1"># LIKES =models.ExpressionList([1])</span>
-    <span class="c1"># CREATED=models.ExpressionList([1])</span>
-
-    <span class="n">REQUIRED_FIELDS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">,</span> <span class="s1">&#39;User_id&#39;</span><span class="p">,</span> <span class="s1">&#39;Title&#39;</span><span class="p">,</span> <span class="s1">&#39;organizer&#39;</span><span class="p">,</span> <span class="s1">&#39;Description&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;Category&#39;</span><span class="p">,</span>
-                       <span class="s1">&#39;sub_Category&#39;</span><span class="p">,</span> <span class="s1">&#39;venue_name&#39;</span><span class="p">,</span> <span class="s1">&#39;ST_DATE&#39;</span><span class="p">,</span> <span class="s1">&#39;END_DATE&#39;</span><span class="p">,</span> <span class="s1">&#39;ST_TIME&#39;</span><span class="p">,</span> <span class="s1">&#39;END_TIME&#39;</span><span class="p">,</span> <span class="s1">&#39;online&#39;</span><span class="p">,</span>
-                       <span class="s1">&#39;CAPACITY&#39;</span><span class="p">,</span> <span class="s1">&#39;PASSWORD&#39;</span><span class="p">,</span> <span class="s1">&#39;STATUS&#39;</span><span class="p">,</span> <span class="s1">&#39;image&#39;</span>
-                       <span class="p">]</span>
-
+    <span class="n">STATUS</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">choices</span><span class="o">=</span><span class="n">STATUS_choises</span><span class="p">)</span>
+    <span class="c1"># Publish = models.CharField(max_length=10, choices=Publish_choises)</span>
+    <span class="c1"># PASSWORD = models.CharField(max_length=10, null=True)</span>
     <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">verbose_name</span> <span class="o">=</span> <span class="s2">&quot;Event&quot;</span>
         <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="s2">&quot;Events&quot;</span>
@@ -205,6 +253,45 @@
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;String for representing the Model object.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span></div>
+
+
+<div class="viewcode-block" id="add_image_fields"><a class="viewcode-back" href="../../event.html#event.models.add_image_fields">[docs]</a><span class="k">def</span> <span class="nf">add_image_fields</span><span class="p">(</span><span class="n">count</span><span class="p">):</span>
+    <span class="c1"># Add first image field as &#39;image&#39;</span>
+    <span class="n">event</span><span class="o">.</span><span class="n">add_to_class</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="n">ResizedImageField</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">512</span><span class="p">,</span> <span class="mi">256</span><span class="p">],</span>  <span class="n">crop</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;middle&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">],</span>
+    <span class="n">upload_to</span><span class="o">=</span><span class="s1">&#39;events/&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">))</span>
+    <span class="c1"># Add remaining image fields with field names &#39;image2&#39;, &#39;image3&#39;, ...</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">count</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;image</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">ResizedImageField</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">512</span><span class="p">,</span> <span class="mi">256</span><span class="p">],</span><span class="n">crop</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;middle&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">],</span><span class="n">upload_to</span><span class="o">=</span><span class="s1">&#39;events/&#39;</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">field_name</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">add_to_class</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span></div>
+<span class="c1"># add_image_fields(5)</span>
+<div class="viewcode-block" id="EventFollower"><a class="viewcode-back" href="../../event.html#event.models.EventFollower">[docs]</a><span class="k">class</span> <span class="nc">EventFollower</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model representing a user following an event.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span>
+        <span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;event_followers&#39;</span><span class="p">)</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">followed_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ID</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Eventlikes"><a class="viewcode-back" href="../../event.html#event.models.Eventlikes">[docs]</a><span class="k">class</span> <span class="nc">Eventlikes</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model representing a user following an event.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span>
+        <span class="n">User</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;event_Likes&#39;</span><span class="p">)</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">followed_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ID</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span></div>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.core.validators</span> <span class="kn">import</span> <span class="n">EmailValidator</span>
+
+
+
 </pre></div>
 
            </div>

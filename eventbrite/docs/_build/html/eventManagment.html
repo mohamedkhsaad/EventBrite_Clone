@@ -56,13 +56,24 @@
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.apps.EventmanagmentConfig"><code class="docutils literal notranslate"><span class="pre">EventmanagmentConfig</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.models">eventManagment.models module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.models">eventManagment.models module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.models.Publish_Info"><code class="docutils literal notranslate"><span class="pre">Publish_Info</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.tests">eventManagment.tests module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-eventManagment.views">eventManagment.views module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.CheckPasswordAPIView"><code class="docutils literal notranslate"><span class="pre">CheckPasswordAPIView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.EventPublishView"><code class="docutils literal notranslate"><span class="pre">EventPublishView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.PromoCodeCreateAPIView"><code class="docutils literal notranslate"><span class="pre">PromoCodeCreateAPIView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.UserListEvents"><code class="docutils literal notranslate"><span class="pre">UserListEvents</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.UserListPastEvents"><code class="docutils literal notranslate"><span class="pre">UserListPastEvents</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.UserListUpcomingEvents"><code class="docutils literal notranslate"><span class="pre">UserListUpcomingEvents</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.add_attendee"><code class="docutils literal notranslate"><span class="pre">add_attendee()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.generate_password"><code class="docutils literal notranslate"><span class="pre">generate_password()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.list_orderitem_by_event"><code class="docutils literal notranslate"><span class="pre">list_orderitem_by_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.list_orders_by_event"><code class="docutils literal notranslate"><span class="pre">list_orders_by_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.send_confirmation_email"><code class="docutils literal notranslate"><span class="pre">send_confirmation_email()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eventManagment.views.validate_password"><code class="docutils literal notranslate"><span class="pre">validate_password()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-eventManagment">Module contents</a></li>
@@ -140,6 +151,103 @@
 </section>
 <section id="module-eventManagment.models">
 <span id="eventmanagment-models-module"></span><h2>eventManagment.models module<a class="headerlink" href="#module-eventManagment.models" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.models.</span></span><span class="sig-name descname"><span class="pre">Publish_Info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Event_ID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Event_Status</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Audience_Link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Audience_Password</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Keep_Private</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Publication_Date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/models.html#Publish_Info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.models.Publish_Info" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.Audience_Link">
+<span class="sig-name descname"><span class="pre">Audience_Link</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.Audience_Link" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.Audience_Password">
+<span class="sig-name descname"><span class="pre">Audience_Password</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.Audience_Password" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.Event_ID">
+<span class="sig-name descname"><span class="pre">Event_ID</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.Event_ID" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.Event_Status">
+<span class="sig-name descname"><span class="pre">Event_Status</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.Event_Status" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.Event_Status_Choices">
+<span class="sig-name descname"><span class="pre">Event_Status_Choices</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(('Public',</span> <span class="pre">'Public'),</span> <span class="pre">('Private',</span> <span class="pre">'Private'))</span></em><a class="headerlink" href="#eventManagment.models.Publish_Info.Event_Status_Choices" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.Keep_Private">
+<span class="sig-name descname"><span class="pre">Keep_Private</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.Keep_Private" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.Publication_Date">
+<span class="sig-name descname"><span class="pre">Publication_Date</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.Publication_Date" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.default_audience_link">
+<span class="sig-name descname"><span class="pre">default_audience_link</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/models.html#Publish_Info.default_audience_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.models.Publish_Info.default_audience_link" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.get_Event_Status_display">
+<span class="sig-name descname"><span class="pre">get_Event_Status_display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.CharField:</span> <span class="pre">Event_Status&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eventManagment.models.Publish_Info.get_Event_Status_display" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#eventManagment.models.Publish_Info.id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#eventManagment.models.Publish_Info.objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eventManagment.models.Publish_Info.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/models.html#Publish_Info.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.models.Publish_Info.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save the current instance. Override this in a subclass if you want to
+control the saving process.</p>
+<p>The ‘force_insert’ and ‘force_update’ parameters can be used to insist
+that the “save” must be an SQL insert or update (or equivalent for
+non-SQL backends), respectively. Normally, they should not be set.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-eventManagment.tests">
 <span id="eventmanagment-tests-module"></span><h2>eventManagment.tests module<a class="headerlink" href="#module-eventManagment.tests" title="Permalink to this heading"></a></h2>
@@ -151,6 +259,55 @@ class:UserListEvents: A viewset for retrieving all user events by user id.
 class:UserListPastEvents: A viewset for retrieving all user past events by user id.
 class:UserListEvents: A viewset for retrieving all user upcoming events by user id.
 class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given event.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="eventManagment.views.CheckPasswordAPIView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">CheckPasswordAPIView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#CheckPasswordAPIView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.CheckPasswordAPIView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="eventManagment.views.CheckPasswordAPIView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#CheckPasswordAPIView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.CheckPasswordAPIView.post" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.CheckPasswordAPIView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#eventManagment.views.CheckPasswordAPIView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Password_Serializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="eventManagment.views.EventPublishView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">EventPublishView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#EventPublishView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.EventPublishView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CreateAPIView</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.EventPublishView.authentication_classes">
+<span class="sig-name descname"><span class="pre">authentication_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'user.authentication.CustomTokenAuthentication'&gt;]</span></em><a class="headerlink" href="#eventManagment.views.EventPublishView.authentication_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.EventPublishView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#eventManagment.views.EventPublishView.permission_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eventManagment.views.EventPublishView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#EventPublishView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.EventPublishView.post" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.EventPublishView.queryset">
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(1)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(2)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(3)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(4)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(5)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(6)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(7)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(8)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(9)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(10)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(11)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(12)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(13)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(14)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(15)&gt;,</span> <span class="pre">&lt;Publish_Info:</span> <span class="pre">Publish_Info</span> <span class="pre">object</span> <span class="pre">(16)&gt;]&gt;</span></em><a class="headerlink" href="#eventManagment.views.EventPublishView.queryset" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.EventPublishView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#eventManagment.views.EventPublishView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">Publish_InfoSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="eventManagment.views.PromoCodeCreateAPIView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">PromoCodeCreateAPIView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#PromoCodeCreateAPIView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.PromoCodeCreateAPIView" title="Permalink to this definition"></a></dt>
@@ -180,6 +337,11 @@ class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">UserListEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListEvents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListEvents" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
 <p>A viewset for retrieving all user events by user id.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.UserListEvents.authentication_classes">
+<span class="sig-name descname"><span class="pre">authentication_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'user.authentication.CustomTokenAuthentication'&gt;]</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.authentication_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="eventManagment.views.UserListEvents.get_queryset">
 <span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListEvents.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListEvents.get_queryset" title="Permalink to this definition"></a></dt>
@@ -194,7 +356,7 @@ for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">llllllllllllll&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">lllllllllllllllllll&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -210,6 +372,11 @@ for the given user id.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">UserListPastEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListPastEvents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListPastEvents" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
 <p>A viewset for retrieving all user past events by user id.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.authentication_classes">
+<span class="sig-name descname"><span class="pre">authentication_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'user.authentication.CustomTokenAuthentication'&gt;]</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.authentication_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.get_queryset">
 <span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListPastEvents.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListPastEvents.get_queryset" title="Permalink to this definition"></a></dt>
@@ -224,7 +391,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">llllllllllllll&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">lllllllllllllllllll&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -235,7 +402,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListPastEvents.today">
-<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">4,</span> <span class="pre">15)</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.today" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">5,</span> <span class="pre">7)</span></em><a class="headerlink" href="#eventManagment.views.UserListPastEvents.today" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -245,6 +412,11 @@ events for the given user id.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">UserListUpcomingEvents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListUpcomingEvents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ListAPIView</span></code></p>
 <p>A viewset for retrieving all user upcoming events by user id.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.authentication_classes">
+<span class="sig-name descname"><span class="pre">authentication_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'user.authentication.CustomTokenAuthentication'&gt;]</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.authentication_classes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.get_queryset">
 <span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#UserListUpcomingEvents.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.get_queryset" title="Permalink to this definition"></a></dt>
@@ -259,7 +431,7 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[]&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">llllllllllllll&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">lllllllllllllllllll&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">&lt;event:</span> <span class="pre">ggg&gt;,</span> <span class="pre">'...(remaining</span> <span class="pre">elements</span> <span class="pre">truncated)...']&gt;</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -270,10 +442,80 @@ events for the given user id.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="eventManagment.views.UserListUpcomingEvents.today">
-<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">4,</span> <span class="pre">15)</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.today" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">today</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">datetime.date(2023,</span> <span class="pre">5,</span> <span class="pre">7)</span></em><a class="headerlink" href="#eventManagment.views.UserListUpcomingEvents.today" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eventManagment.views.add_attendee">
+<span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">add_attendee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#add_attendee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.add_attendee" title="Permalink to this definition"></a></dt>
+<dd><p>this allows the organizer to add attendee if user doesnt exist it will be created one,
+This view creates an order for an event with the specified event ID.
+user ID are received in the request data. A discount code may also be included.
+request data should look like this</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“order_items”:
+[</p>
+<blockquote>
+<div><p>{
+“ticket_class_id” : 1,  
+“quantity”: 3 
+},
+{
+“ticket_class_id” : 2,  
+“quantity”: 1 
+}</p>
+</div></blockquote>
+<p>],
+“first_name” : “ahmed”,
+“last_name” : “hamed”,
+“email” : “<a class="reference external" href="mailto:ahmedhamed&#37;&#52;&#48;gmail&#46;com">ahmedhamed<span>&#64;</span>gmail<span>&#46;</span>com</a>”</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eventManagment.views.generate_password">
+<span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">generate_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#generate_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.generate_password" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a random password of specified length</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eventManagment.views.list_orderitem_by_event">
+<span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">list_orderitem_by_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#list_orderitem_by_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.list_orderitem_by_event" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eventManagment.views.list_orders_by_event">
+<span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">list_orders_by_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#list_orders_by_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.list_orders_by_event" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of all orders for a given user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>request</strong> – HTTP request object.</p></li>
+<li><p><strong>user_id</strong> – User ID.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of JSON objects representing the bookings for the given user.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eventManagment.views.send_confirmation_email">
+<span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">send_confirmation_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#send_confirmation_email"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.send_confirmation_email" title="Permalink to this definition"></a></dt>
+<dd><p>this function should construct the url with a token and send the link by mail to the user</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eventManagment.views.validate_password">
+<span class="sig-prename descclassname"><span class="pre">eventManagment.views.</span></span><span class="sig-name descname"><span class="pre">validate_password</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">password</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/eventManagment/views.html#validate_password"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eventManagment.views.validate_password" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-eventManagment">

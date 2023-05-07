@@ -60,19 +60,20 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-user.models">user.models module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#user.models.CustomToken"><code class="docutils literal notranslate"><span class="pre">CustomToken</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#user.models.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-user.tests">user.tests module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#user.tests.AuthTokenSerializerTest"><code class="docutils literal notranslate"><span class="pre">AuthTokenSerializerTest</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#user.tests.UserSerializerTest"><code class="docutils literal notranslate"><span class="pre">UserSerializerTest</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-user.tests">user.tests module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-user.urls">user.urls module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-user.views">user.views module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#user.views.CreateTokenView"><code class="docutils literal notranslate"><span class="pre">CreateTokenView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user.views.CustomPasswordResetCheckView"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetCheckView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user.views.CustomPasswordResetConfirmView"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetConfirmView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#user.views.CustomPasswordResetView"><code class="docutils literal notranslate"><span class="pre">CustomPasswordResetView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user.views.CustomTokenLoginView"><code class="docutils literal notranslate"><span class="pre">CustomTokenLoginView</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#user.views.EmailCheckView"><code class="docutils literal notranslate"><span class="pre">EmailCheckView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user.views.EmailVerificationQueryView"><code class="docutils literal notranslate"><span class="pre">EmailVerificationQueryView</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user.views.get_user_by_id"><code class="docutils literal notranslate"><span class="pre">get_user_by_id()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#user.views.userViewSet"><code class="docutils literal notranslate"><span class="pre">userViewSet</span></code></a></li>
 </ul>
 </li>
@@ -210,37 +211,104 @@
 <p>This module contains 1 model class for the user app.</p>
 <p>class:user: A class that contains all fields concerning the user.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="user.models.User">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.models.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/models.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.models.User" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PermissionsMixin</span></code></p>
-<p>This class contains all the user fields</p>
+<dt class="sig sig-object py" id="user.models.CustomToken">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.models.</span></span><span class="sig-name descname"><span class="pre">CustomToken</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/models.html#CustomToken"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.models.CustomToken" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="user.models.CustomToken.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#user.models.CustomToken.DoesNotExist" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="user.models.CustomToken.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#user.models.CustomToken.MultipleObjectsReturned" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
 <dl class="py attribute">
-<dt class="sig sig-object py" id="user.models.User.DISCOUNT_ID">
-<span class="sig-name descname"><span class="pre">DISCOUNT_ID</span></span><a class="headerlink" href="#user.models.User.DISCOUNT_ID" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="user.models.CustomToken.created">
+<span class="sig-name descname"><span class="pre">created</span></span><a class="headerlink" href="#user.models.CustomToken.created" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.CustomToken.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#user.models.CustomToken.email" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user.models.CustomToken.get_next_by_created">
+<span class="sig-name descname"><span class="pre">get_next_by_created</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user.models.CustomToken.get_next_by_created" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user.models.CustomToken.get_previous_by_created">
+<span class="sig-name descname"><span class="pre">get_previous_by_created</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#user.models.CustomToken.get_previous_by_created" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.CustomToken.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#user.models.CustomToken.id" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.CustomToken.key">
+<span class="sig-name descname"><span class="pre">key</span></span><a class="headerlink" href="#user.models.CustomToken.key" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.CustomToken.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#user.models.CustomToken.objects" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="user.models.CustomToken.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/models.html#CustomToken.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.models.CustomToken.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save the current instance. Override this in a subclass if you want to
+control the saving process.</p>
+<p>The ‘force_insert’ and ‘force_update’ parameters can be used to insist
+that the “save” must be an SQL insert or update (or equivalent for
+non-SQL backends), respectively. Normally, they should not be set.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.CustomToken.user">
+<span class="sig-name descname"><span class="pre">user</span></span><a class="headerlink" href="#user.models.CustomToken.user" title="Permalink to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.CustomToken.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#user.models.CustomToken.user_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="user.models.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.models.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/models.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.models.User" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PermissionsMixin</span></code></p>
+<p>This class contains all the user fields</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="user.models.User.DoesNotExist">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#user.models.User.DoesNotExist" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="user.models.User.EVENT_CREATED">
-<span class="sig-name descname"><span class="pre">EVENT_CREATED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#user.models.User.EVENT_CREATED" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="user.models.User.FOLLOWERS">
-<span class="sig-name descname"><span class="pre">FOLLOWERS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#user.models.User.FOLLOWERS" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="user.models.User.INTERESTS_ID">
-<span class="sig-name descname"><span class="pre">INTERESTS_ID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#user.models.User.INTERESTS_ID" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="user.models.User.MultipleObjectsReturned">
@@ -250,12 +318,7 @@ object the first time, the query is executed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="user.models.User.REQUIRED_FIELDS">
-<span class="sig-name descname"><span class="pre">REQUIRED_FIELDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['first_name',</span> <span class="pre">'last_name',</span> <span class="pre">'age',</span> <span class="pre">'gender',</span> <span class="pre">'city',</span> <span class="pre">'country']</span></em><a class="headerlink" href="#user.models.User.REQUIRED_FIELDS" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="user.models.User.TICKETS_ID">
-<span class="sig-name descname"><span class="pre">TICKETS_ID</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#user.models.User.TICKETS_ID" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">REQUIRED_FIELDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['first_name',</span> <span class="pre">'last_name']</span></em><a class="headerlink" href="#user.models.User.REQUIRED_FIELDS" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -298,6 +361,21 @@ object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.User.custom_tokens">
+<span class="sig-name descname"><span class="pre">custom_tokens</span></span><a class="headerlink" href="#user.models.User.custom_tokens" title="Permalink to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="user.models.User.date_joined">
 <span class="sig-name descname"><span class="pre">date_joined</span></span><a class="headerlink" href="#user.models.User.date_joined" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
@@ -309,6 +387,36 @@ object the first time, the query is executed.</p>
 <span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#user.models.User.email" title="Permalink to this definition"></a></dt>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.User.event_Likes">
+<span class="sig-name descname"><span class="pre">event_Likes</span></span><a class="headerlink" href="#user.models.User.event_Likes" title="Permalink to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.models.User.event_followers">
+<span class="sig-name descname"><span class="pre">event_followers</span></span><a class="headerlink" href="#user.models.User.event_followers" title="Permalink to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -485,34 +593,6 @@ object the first time, the query is executed.</p>
 </section>
 <section id="module-user.tests">
 <span id="user-tests-module"></span><h2>user.tests module<a class="headerlink" href="#module-user.tests" title="Permalink to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="user.tests.AuthTokenSerializerTest">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.tests.</span></span><span class="sig-name descname"><span class="pre">AuthTokenSerializerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/tests.html#AuthTokenSerializerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.tests.AuthTokenSerializerTest" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user.tests.AuthTokenSerializerTest.setUp">
-<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/tests.html#AuthTokenSerializerTest.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.tests.AuthTokenSerializerTest.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="user.tests.AuthTokenSerializerTest.test_auth_token_creation">
-<span class="sig-name descname"><span class="pre">test_auth_token_creation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/tests.html#AuthTokenSerializerTest.test_auth_token_creation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.tests.AuthTokenSerializerTest.test_auth_token_creation" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="user.tests.UserSerializerTest">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.tests.</span></span><span class="sig-name descname"><span class="pre">UserSerializerTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/tests.html#UserSerializerTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.tests.UserSerializerTest" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="user.tests.UserSerializerTest.test_create_user">
-<span class="sig-name descname"><span class="pre">test_create_user</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/tests.html#UserSerializerTest.test_create_user"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.tests.UserSerializerTest.test_create_user" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 </section>
 <section id="module-user.urls">
 <span id="user-urls-module"></span><h2>user.urls module<a class="headerlink" href="#module-user.urls" title="Permalink to this heading"></a></h2>
@@ -524,24 +604,35 @@ object the first time, the query is executed.</p>
 <p>class:CreateTokenView: A viewset for the authentication and authorization of the user (login).</p>
 <p>class:EmailCheckView: A viewset to cheack the emeil</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="user.views.CreateTokenView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">CreateTokenView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CreateTokenView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CreateTokenView" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObtainAuthToken</span></code></p>
-<p>Create a new auth token for user</p>
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetCheckView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">CustomPasswordResetCheckView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CustomPasswordResetCheckView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CustomPasswordResetCheckView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="user.views.CreateTokenView.post">
-<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CreateTokenView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CreateTokenView.post" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetCheckView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CustomPasswordResetCheckView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CustomPasswordResetCheckView.post" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="user.views.CreateTokenView.renderer_classes">
-<span class="sig-name descname"><span class="pre">renderer_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.renderers.JSONRenderer'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'rest_framework.renderers.BrowsableAPIRenderer'&gt;]</span></em><a class="headerlink" href="#user.views.CreateTokenView.renderer_classes" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetCheckView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#user.views.CustomPasswordResetCheckView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">PasswordResetQuerySerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetConfirmView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">CustomPasswordResetConfirmView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CustomPasswordResetConfirmView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CustomPasswordResetConfirmView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetConfirmView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CustomPasswordResetConfirmView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CustomPasswordResetConfirmView.post" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="user.views.CreateTokenView.serializer_class">
-<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#user.views.CreateTokenView.serializer_class" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AuthTokenSerializer</span></code></p>
+<dt class="sig sig-object py" id="user.views.CustomPasswordResetConfirmView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#user.views.CustomPasswordResetConfirmView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">PasswordResetSerializer</span></code></p>
 </dd></dl>
 
 </dd></dl>
@@ -565,6 +656,23 @@ POST variables and then check if it’s valid.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="user.views.CustomTokenLoginView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">CustomTokenLoginView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CustomTokenLoginView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CustomTokenLoginView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user.views.CustomTokenLoginView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#CustomTokenLoginView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.CustomTokenLoginView.post" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.views.CustomTokenLoginView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#user.views.CustomTokenLoginView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">AuthTokenSerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="user.views.EmailCheckView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">EmailCheckView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#EmailCheckView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.EmailCheckView" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
@@ -574,6 +682,28 @@ POST variables and then check if it’s valid.</p>
 <dd></dd></dl>
 
 </dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="user.views.EmailVerificationQueryView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">EmailVerificationQueryView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#EmailVerificationQueryView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.EmailVerificationQueryView" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="user.views.EmailVerificationQueryView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#EmailVerificationQueryView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.EmailVerificationQueryView.post" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="user.views.EmailVerificationQueryView.serializer_class">
+<span class="sig-name descname"><span class="pre">serializer_class</span></span><a class="headerlink" href="#user.views.EmailVerificationQueryView.serializer_class" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">EmailVerificationQuerySerializer</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="user.views.get_user_by_id">
+<span class="sig-prename descclassname"><span class="pre">user.views.</span></span><span class="sig-name descname"><span class="pre">get_user_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/user/views.html#get_user_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#user.views.get_user_by_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="user.views.userViewSet">
@@ -602,7 +732,7 @@ POST variables and then check if it’s valid.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="user.views.userViewSet.queryset">
-<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;User:</span> <span class="pre">ziad&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">youssef&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">yousssef&#64;gmail.com&gt;]&gt;</span></em><a class="headerlink" href="#user.views.userViewSet.queryset" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">queryset</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;QuerySet</span> <span class="pre">[&lt;User:</span> <span class="pre">1,weweewe&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">2,ffff&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">3,aaaa&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">4,ismail&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">5,youssef&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">6,plapla&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">7,llllalallala&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">8,vhvhvk&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">9,kggkg&#64;gmail.com&gt;,</span> <span class="pre">&lt;User:</span> <span class="pre">1190264,ismailtawfik&#64;gmail.com&gt;]&gt;</span></em><a class="headerlink" href="#user.views.userViewSet.queryset" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">

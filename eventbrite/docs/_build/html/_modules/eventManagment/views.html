@@ -75,30 +75,53 @@
 <span class="sd">class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given event.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">get_object_or_404</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">viewsets</span>
 <span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">JsonResponse</span><span class="p">,</span> <span class="n">HttpResponse</span>
-<span class="kn">from</span> <span class="nn">event.serializers</span> <span class="kn">import</span><span class="o">*</span>
+<span class="kn">from</span> <span class="nn">event.serializers</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span>
-<span class="kn">from</span> <span class="nn">user</span> <span class="kn">import</span><span class="o">*</span>
+<span class="kn">from</span> <span class="nn">user</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
 <span class="kn">import</span> <span class="nn">csv</span>
-<span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span><span class="o">*</span>
+<span class="kn">from</span> <span class="nn">event.models</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">rest_framework.permissions</span> <span class="kn">import</span> <span class="n">IsAuthenticated</span>
 <span class="kn">from</span> <span class="nn">booking.models</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">booking.serializers</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">rest_framework.status</span> <span class="kn">import</span> <span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">HTTP_400_BAD_REQUEST</span><span class="p">,</span> <span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">HTTP_400_BAD_REQUEST</span>
+<span class="kn">from</span> <span class="nn">rest_framework.status</span> <span class="kn">import</span> <span class="n">HTTP_200_OK</span><span class="p">,</span> <span class="n">HTTP_400_BAD_REQUEST</span><span class="p">,</span> <span class="n">HTTP_201_CREATED</span><span class="p">,</span> <span class="n">HTTP_400_BAD_REQUEST</span><span class="p">,</span> <span class="n">HTTP_401_UNAUTHORIZED</span>
 <span class="kn">from</span> <span class="nn">rest_framework.views</span> <span class="kn">import</span> <span class="n">APIView</span>
-<span class="kn">from</span> <span class="nn">booking.models</span> <span class="kn">import</span> <span class="n">event</span><span class="p">,</span> <span class="n">Ticket</span>
-<span class="kn">from</span> <span class="nn">booking.serializers</span> <span class="kn">import</span> <span class="n">TicketSerializer</span>
-<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">from</span> <span class="nn">user.authentication</span> <span class="kn">import</span> <span class="n">CustomTokenAuthentication</span>
+<span class="kn">from</span> <span class="nn">booking.models</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">booking.serializers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">eventManagment.models</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">eventManagment.serializers</span> <span class="kn">import</span> <span class="n">Publish_InfoSerializer</span><span class="p">,</span> <span class="n">Password_Serializer</span>
+<span class="kn">from</span> <span class="nn">eventManagment.forms</span> <span class="kn">import</span> <span class="n">Password_Form</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span>
+<span class="kn">from</span> <span class="nn">rest_framework.decorators</span> <span class="kn">import</span> <span class="n">api_view</span><span class="p">,</span> <span class="n">authentication_classes</span><span class="p">,</span> <span class="n">permission_classes</span>
+<span class="kn">from</span> <span class="nn">django.core.signing</span> <span class="kn">import</span> <span class="n">TimestampSigner</span>
+<span class="kn">from</span> <span class="nn">eventbrite.settings</span> <span class="kn">import</span> <span class="n">EMAIL_HOST_USER</span><span class="p">,</span><span class="n">EMAIL_HOST_PASSWORD</span>
+<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span><span class="p">,</span> <span class="n">EmailMessage</span>
+
+
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="c1"># server_url=&quot;https://event-us.me:8000/&quot;</span>
+<span class="c1"># localhost_url=&quot;https://127.0.0.1:8080&quot;</span>
+<span class="n">server_url</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;server_url&#39;</span><span class="p">)</span>
+<span class="c1"># localhost_url=os.getenv(&#39;localhost_url&#39;)</span>
+
 
 <div class="viewcode-block" id="UserListEvents"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListEvents">[docs]</a><span class="k">class</span> <span class="nc">UserListEvents</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A viewset for retrieving all user events by user id.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="n">authentication_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">CustomTokenAuthentication</span><span class="p">]</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
 
@@ -107,15 +130,17 @@
 <span class="sd">        This view should list all the user events</span>
 <span class="sd">        for the given user id.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
+        <span class="c1"># user_id = self.kwargs[&#39;user_id&#39;]</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
         <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span></div></div>
+
 
 <div class="viewcode-block" id="UserListPastEvents"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListPastEvents">[docs]</a><span class="k">class</span> <span class="nc">UserListPastEvents</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A viewset for retrieving all user past events by user id.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
-
+    <span class="n">authentication_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">CustomTokenAuthentication</span><span class="p">]</span>
     <span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
@@ -125,15 +150,19 @@
 <span class="sd">        This view should list all the user past </span>
 <span class="sd">        events for the given user id.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
+        <span class="c1"># user_id = self.kwargs[&#39;user_id&#39;]</span>
+        <span class="c1"># data={&#39;STATUS&#39;: request.data.get(&#39;STATUS&#39;, &#39;Past&#39;),}</span>
+        <span class="c1"># event.objects.filter(ID=event_id).update(**data)</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
         <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ST_DATE__lt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="p">)</span></div></div>
+
 
 <div class="viewcode-block" id="UserListUpcomingEvents"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.UserListUpcomingEvents">[docs]</a><span class="k">class</span> <span class="nc">UserListUpcomingEvents</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">ListAPIView</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A viewset for retrieving all user upcoming events by user id.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
-
+    <span class="n">authentication_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">CustomTokenAuthentication</span><span class="p">]</span>
     <span class="n">today</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">eventSerializer</span>
@@ -143,9 +172,11 @@
 <span class="sd">        This view should list all the user upcoming</span>
 <span class="sd">        events for the given user id.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">]</span>
+        <span class="c1"># user_id = self.kwargs[&#39;user_id&#39;]</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
         <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">User_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ST_DATE__gt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">today</span><span class="p">)</span></div></div>
-    
+
+
 <div class="viewcode-block" id="PromoCodeCreateAPIView"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.PromoCodeCreateAPIView">[docs]</a><span class="k">class</span> <span class="nc">PromoCodeCreateAPIView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIView</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A view that creates a promocode for a specific events given the event id</span>
@@ -161,7 +192,7 @@
             <span class="n">Event</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">event</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Event with id </span><span class="si">{</span><span class="n">event_id</span><span class="si">}</span><span class="s1"> does not exist.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
-        
+
         <span class="n">PromoCode_Data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">PromoCode_Data</span><span class="p">[</span><span class="s1">&#39;event&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Event</span><span class="o">.</span><span class="n">ID</span>
 
@@ -178,9 +209,9 @@
                     <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
-            
+
             <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Promo codes uploaded successfully.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
-        
+
         <span class="c1"># If no CSV file was uploaded, create a single promo code</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">PromoCode_Data</span><span class="p">)</span>
@@ -189,6 +220,349 @@
                 <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="validate_password"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.validate_password">[docs]</a><span class="k">def</span> <span class="nf">validate_password</span><span class="p">(</span><span class="n">password</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">password</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="EventPublishView"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.EventPublishView">[docs]</a><span class="k">class</span> <span class="nc">EventPublishView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIView</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">Publish_InfoSerializer</span>
+    <span class="n">queryset</span> <span class="o">=</span> <span class="n">Publish_Info</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="n">authentication_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">CustomTokenAuthentication</span><span class="p">]</span>
+
+<div class="viewcode-block" id="EventPublishView.post"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.EventPublishView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Event</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">event</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Event with id </span><span class="si">{</span><span class="n">event_id</span><span class="si">}</span><span class="s1"> does not exist.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Publish_Info</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Event_ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Event with id </span><span class="si">{</span><span class="n">event_id</span><span class="si">}</span><span class="s1"> already is published.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Event_Status&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Private&#39;</span><span class="p">:</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Audience_Password&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Audience_Password&#39;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Audience Password is required for private events.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">validate_password</span><span class="p">(</span><span class="n">password</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Password must contain at least 8 characters.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Keep_Private&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Publication_Date&#39;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Do not add date, as your event will be kept private&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Keep_Private&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Publication_Date&#39;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Please Provide a Publish Date.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">TicketClass</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;No tickets created for event with id </span><span class="si">{</span><span class="n">event_id</span><span class="si">}</span><span class="s1">. Cannot publish event without tickets.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+        <span class="n">Publish_Data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">Publish_Data</span><span class="p">[</span><span class="s1">&#39;Event_ID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_id</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializer_class</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">Publish_Data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Event</span><span class="o">.</span><span class="n">User_id</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;You are not authorized to delete this event.&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_401_UNAUTHORIZED</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;STATUS&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;STATUS&#39;</span><span class="p">,</span> <span class="s1">&#39;Live&#39;</span><span class="p">),</span> <span class="p">}</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">errors</span>
+            <span class="n">error_msgs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">errors</span> <span class="ow">in</span> <span class="n">errors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">error_msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="n">error_msgs</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="CheckPasswordAPIView"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.CheckPasswordAPIView">[docs]</a><span class="k">class</span> <span class="nc">CheckPasswordAPIView</span><span class="p">(</span><span class="n">generics</span><span class="o">.</span><span class="n">CreateAPIView</span><span class="p">):</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">Password_Serializer</span>
+
+<div class="viewcode-block" id="CheckPasswordAPIView.post"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.CheckPasswordAPIView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+            <span class="n">publish_info</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Publish_Info</span><span class="p">,</span> <span class="n">Event_ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">Password_Form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">publish_info</span><span class="o">.</span><span class="n">Audience_Password</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;https://127.0.0.1:8000/events/ID/</span><span class="si">{</span><span class="n">event_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;Invalid Password&#39;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div></div>
+
+
+<span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="c1"># @authentication_classes([TokenAuthentication])</span>
+<span class="c1"># @permission_classes([IsAuthenticated])</span>
+<span class="k">def</span> <span class="nf">list_orderitem_by_event</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">order_items</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+    <span class="n">serialized_orderitems</span> <span class="o">=</span> <span class="n">OrderItemSerializer</span><span class="p">(</span><span class="n">order_items</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_orderitems</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="c1"># managee attendee</span>
+<div class="viewcode-block" id="add_attendee"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.add_attendee">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">add_attendee</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    this allows the organizer to add attendee if user doesnt exist it will be created one,</span>
+<span class="sd">    This view creates an order for an event with the specified event ID.</span>
+<span class="sd">    user ID are received in the request data. A discount code may also be included.</span>
+<span class="sd">    request data should look like this</span>
+
+<span class="sd">        {</span>
+<span class="sd">            &quot;order_items&quot;:</span>
+<span class="sd">            [</span>
+<span class="sd">                {</span>
+<span class="sd">                &quot;ticket_class_id&quot; : 1,	</span>
+<span class="sd">                &quot;quantity&quot;: 3 </span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                &quot;ticket_class_id&quot; : 2,	</span>
+<span class="sd">                &quot;quantity&quot;: 1 </span>
+<span class="sd">                }</span>
+<span class="sd">            ],</span>
+<span class="sd">            &quot;first_name&quot; : &quot;ahmed&quot;,</span>
+<span class="sd">            &quot;last_name&quot; : &quot;hamed&quot;,</span>
+<span class="sd">            &quot;email&quot; : &quot;ahmedhamed@gmail.com&quot;</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;====== add attendee ======&quot;</span><span class="p">)</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;first_name&#39;</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;last_name&#39;</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">email</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;details&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot; no email was sent, sent data should look like this {</span>
+<span class="s2">            &quot;order_items&quot;:</span>
+<span class="s2">            [</span>
+<span class="s2">                {</span>
+<span class="s2">                &quot;ticket_class_id&quot; : 1,	</span>
+<span class="s2">                &quot;quantity&quot;: 3 </span>
+<span class="s2">                },</span>
+<span class="s2">                {</span>
+<span class="s2">                &quot;ticket_class_id&quot; : 2,	</span>
+<span class="s2">                &quot;quantity&quot;: 1 </span>
+<span class="s2">                }</span>
+<span class="s2">            ],</span>
+<span class="s2">            &quot;first_name&quot; : &quot;ahmed&quot;,</span>
+<span class="s2">            &quot;last_name&quot; : &quot;hamed&quot;,</span>
+<span class="s2">            &quot;email&quot; : &quot;ahmedhamed@gmail.com&quot;</span>
+
+<span class="s2">        }&quot;&quot;&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">first_name</span><span class="o">=</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="n">last_name</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">user</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;you should create user&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;password&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">generate_password</span><span class="p">()</span>
+        <span class="n">user_serializer</span> <span class="o">=</span> <span class="n">userSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user_serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">user_serializer</span><span class="o">.</span><span class="n">error_messages</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">user_serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+        <span class="n">user_serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">user_serializer</span><span class="o">.</span><span class="n">instance</span><span class="p">)</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">user_serializer</span><span class="o">.</span><span class="n">instance</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;user already exist&quot;</span><span class="p">)</span>
+
+    <span class="c1"># create empty order so that orderitem can point to it</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">Order</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">order</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------1--------&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Retrieve the request data</span>
+
+    <span class="n">order_items</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;order_items&#39;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">order_items</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;details&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;sent data should look like this {</span>
+<span class="s2">            &quot;order_items&quot;:</span>
+<span class="s2">            [</span>
+<span class="s2">                {</span>
+<span class="s2">                &quot;ticket_class_id&quot; : 1,	</span>
+<span class="s2">                &quot;quantity&quot;: 3 </span>
+<span class="s2">                },</span>
+<span class="s2">                {</span>
+<span class="s2">                &quot;ticket_class_id&quot; : 2,	</span>
+<span class="s2">                &quot;quantity&quot;: 1 </span>
+<span class="s2">                }</span>
+<span class="s2">            ],</span>
+<span class="s2">            &quot;first_name&quot; : &quot;ahmed&quot;,</span>
+<span class="s2">            &quot;last_name&quot; : &quot;hamed&quot;,</span>
+<span class="s2">            &quot;email&quot; : &quot;ahmedhamed@gmail.com&quot;</span>
+
+<span class="s2">        }&quot;&quot;&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="c1"># data[&#39;order_id&#39;] = order.ID</span>
+    <span class="c1"># print(data)</span>
+
+    <span class="c1"># for Calculate the order</span>
+    <span class="n">subtotal</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">amount_off</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------2-------&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">order_items</span><span class="p">:</span>
+
+        <span class="n">item</span><span class="p">[</span><span class="s1">&#39;order_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">ID</span>
+        <span class="n">item</span><span class="p">[</span><span class="s1">&#39;ticket_price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TicketClass</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;ticket_class_id&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">PRICE</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="n">order_item_serializer</span> <span class="o">=</span> <span class="n">OrderItemSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">order_item_serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;details&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;order item serializer wasnt able to validate the data  </span><span class="si">{</span><span class="n">order_item_serializer</span><span class="o">.</span><span class="n">error_messages</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+        <span class="n">order_item</span> <span class="o">=</span> <span class="n">order_item_serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">order_item_serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">())</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----3----------&quot;</span><span class="p">)</span>
+
+        <span class="n">ticket_class</span> <span class="o">=</span> <span class="n">TicketClass</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">ID</span><span class="o">=</span><span class="n">order_item_serializer</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">ticket_class_id</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ticket_class</span><span class="o">.</span><span class="n">PRICE</span><span class="p">)</span>
+        <span class="n">quantity</span> <span class="o">=</span> <span class="n">order_item_serializer</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">quantity</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ticket_class</span><span class="o">.</span><span class="n">capacity</span> <span class="o">-</span> <span class="n">ticket_class</span><span class="o">.</span><span class="n">quantity_sold</span> <span class="o">&lt;</span> <span class="n">quantity</span><span class="p">:</span>
+            <span class="n">order</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="c1"># order_item.delete()</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;details&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Not enough tickets available for ticket class id </span><span class="si">{</span><span class="n">order_item_serializer</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">ticket_class_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+        <span class="n">subtotal</span> <span class="o">+=</span> <span class="n">ticket_class</span><span class="o">.</span><span class="n">PRICE</span> <span class="o">*</span> <span class="n">quantity</span>
+
+        <span class="n">ticket_class</span><span class="o">.</span><span class="n">quantity_sold</span> <span class="o">+=</span> <span class="n">quantity</span>
+        <span class="c1"># ticket_class.save()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ID</span><span class="o">=</span><span class="n">event_id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s2">&quot;details&quot;</span><span class="p">:</span> <span class="s2">&quot;no event exist with this ID&quot;</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
+
+    <span class="n">fee</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">subtotal</span> <span class="o">+</span> <span class="n">fee</span>
+
+    <span class="c1"># Create the order</span>
+    <span class="n">order_response</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;tickets&#39;</span><span class="p">:</span> <span class="n">order_items</span><span class="p">,</span>
+        <span class="s1">&#39;full_price&#39;</span><span class="p">:</span> <span class="n">subtotal</span><span class="p">,</span>
+        <span class="s1">&#39;amount_off&#39;</span><span class="p">:</span> <span class="n">amount_off</span><span class="p">,</span>
+        <span class="s1">&#39;fee&#39;</span><span class="p">:</span> <span class="n">fee</span><span class="p">,</span>
+        <span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="n">total</span>
+    <span class="p">}</span>
+    <span class="n">order</span><span class="o">.</span><span class="n">full_price</span> <span class="o">=</span> <span class="n">subtotal</span>
+    <span class="n">order</span><span class="o">.</span><span class="n">amount_off</span> <span class="o">=</span> <span class="n">amount_off</span>
+    <span class="n">order</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">total</span>
+    <span class="n">order</span><span class="o">.</span><span class="n">event_id</span> <span class="o">=</span> <span class="n">event_id</span>
+    <span class="n">order</span><span class="o">.</span><span class="n">fee</span> <span class="o">=</span> <span class="n">fee</span>
+    <span class="n">order</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="n">send_confirmation_email</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">_request</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">order_response</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="send_confirmation_email"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.send_confirmation_email">[docs]</a><span class="k">def</span> <span class="nf">send_confirmation_email</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; this function should construct the url with a token and send the link by mail to the user &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;======confirmation mail=======&quot;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+
+    <span class="c1"># Generate a confirmation token</span>
+    <span class="n">signer</span> <span class="o">=</span> <span class="n">TimestampSigner</span><span class="p">()</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">signer</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="c1"># token = generate_confirmation_token(order.id)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+
+    <span class="n">confirmation_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">build_absolute_uri</span><span class="p">(</span>
+        <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;confirm-order&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">token</span><span class="p">]))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;======1=======&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Build the confirmation URL</span>
+    <span class="c1"># confirmation_url = request.build_absolute_uri(</span>
+    <span class="c1">#     reverse(&#39;create-booking&#39;))  # , args=[token]))</span>
+
+    <span class="c1"># token, created = Token.objects.get_or_create(user=user)</span>
+    <span class="c1"># confirmation_url = &#39;google.com&#39;</span>
+    <span class="c1"># confirmation_url = f&quot;https://example.com/confirm-email/?token={token.key}&quot;</span>
+
+    <span class="c1"># Generate a QR code for the confirmation URL using the Google Charts API</span>
+    <span class="n">qr_code_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://chart.googleapis.com/chart?chs=150x150&amp;cht=qr&amp;chl=</span><span class="si">{</span><span class="n">confirmation_url</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">qr_code_image</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">qr_code_url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;======2=======&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Send the confirmation email</span>
+    <span class="n">subject</span> <span class="o">=</span> <span class="s1">&#39;Confirm your email address&#39;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Hi </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="si">}</span><span class="s1">, please click the link below or scan the QR code to confirm your booking:</span><span class="se">\n\n</span><span class="s1"> </span><span class="si">{</span><span class="n">confirmation_url</span><span class="si">}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1">&#39;</span>
+    <span class="n">from_email</span> <span class="o">=</span> <span class="s1">&#39;no-reply@example.com&#39;</span>
+    <span class="n">recipient_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">recipient_list</span><span class="p">)</span>
+    <span class="n">mail</span> <span class="o">=</span> <span class="n">EmailMessage</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">from_email</span><span class="p">,</span>
+                        <span class="n">recipient_list</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">EMAIL_HOST_USER</span><span class="p">)</span>
+    <span class="n">send_mail</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
+              <span class="n">from_email</span><span class="o">=</span><span class="n">from_email</span><span class="p">,</span>
+              <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+              <span class="n">recipient_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;to@example.com&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;======3=======&quot;</span><span class="p">)</span>
+
+    <span class="c1"># ,content_type=&#39;image/png&#39;</span>
+    <span class="n">mail</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;qrcode.png&#39;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">qr_code_image</span><span class="p">)</span>
+    <span class="n">mail</span><span class="o">.</span><span class="n">send</span><span class="p">()</span>
+    <span class="c1"># send_mail(message=mail, subject=subject,from_email=from_email,recipient_list=recipient_list , html_message=f&#39;&lt;p&gt;{message}&lt;/p&gt;&lt;img src=&quot;cid:qrcode&quot;&gt;&#39;, fail_silently=False)</span>
+    <span class="c1"># Render a response</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;====== end of function =======&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="mi">201</span><span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">201</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="list_orders_by_event"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.list_orders_by_event">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="c1"># @authentication_classes([TokenAuthentication])</span>
+<span class="c1"># @permission_classes([IsAuthenticated])</span>
+<span class="k">def</span> <span class="nf">list_orders_by_event</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a list of all orders for a given user.</span>
+
+<span class="sd">    :param request: HTTP request object.</span>
+<span class="sd">    :param user_id: User ID.</span>
+<span class="sd">    :return: A list of JSON objects representing the bookings for the given user.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">orders</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+    <span class="n">serialized_orders</span> <span class="o">=</span> <span class="n">OrderSerializer</span><span class="p">(</span><span class="n">orders</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_orders</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="list_orderitem_by_event"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.list_orderitem_by_event">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="c1"># @authentication_classes([TokenAuthentication])</span>
+<span class="c1"># @permission_classes([IsAuthenticated])</span>
+<span class="k">def</span> <span class="nf">list_orderitem_by_event</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">order_items</span> <span class="o">=</span> <span class="n">OrderItem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">event_id</span><span class="o">=</span><span class="n">event_id</span><span class="p">)</span>
+    <span class="n">serialized_orderitems</span> <span class="o">=</span> <span class="n">OrderItemSerializer</span><span class="p">(</span><span class="n">order_items</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serialized_orderitems</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+<span class="c1"># @api_view([&#39;GET&#39;])</span>
+<span class="c1"># @authentication_classes([TokenAuthentication])</span>
+<span class="c1"># @permission_classes([IsAuthenticated])</span>
+<span class="c1"># def list_orderitem_by_order(request, order_id):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     order_items = OrderItem.objects.filter(order_id=order_id)</span>
+<span class="c1">#     serialized_orderitems = OrderItemSerializer(order_items, many=True)</span>
+<span class="c1">#     return Response(serialized_orderitems.data)</span>
+
+
+<div class="viewcode-block" id="generate_password"><a class="viewcode-back" href="../../eventManagment.html#eventManagment.views.generate_password">[docs]</a><span class="k">def</span> <span class="nf">generate_password</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a random password of specified length&quot;&quot;&quot;</span>
+    <span class="n">characters</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span>
+    <span class="n">password</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">characters</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">password</span></div>
 </pre></div>
 
            </div>
