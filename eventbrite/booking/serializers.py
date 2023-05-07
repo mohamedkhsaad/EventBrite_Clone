@@ -8,7 +8,7 @@ class TicketClassSerializer(serializers.ModelSerializer):
     # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     class Meta:
         model = TicketClass
-        exclude = ['id']
+        exclude = ['event_id', 'id']
 
 
 class DiscountSerializer(serializers.ModelSerializer):
@@ -51,3 +51,11 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields ='__all__'
+
+
+class TicketQuantityClassSerializer(serializers.ModelSerializer):
+
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    class Meta:
+        model = TicketClass
+        fields = ('ID','quantity_sold', 'capacity')

@@ -76,6 +76,8 @@ class Order(models.Model):
     is_validated = models.BooleanField(default=False)
 
 
+
+
 def generate_unique_orderitem_id():
     while True:
         # Generate a random integer between 1 and 99999999

@@ -1,10 +1,12 @@
 """
-This module contains several function based views for the booling app.
-function:list_bookings_by_event: A FBV thst Return a list of all bookings for a given event.
-function:list_bookings_by_user: A FBV for retrieving list of all bookings for a given user.
-function:get_ticket: A FBV that Return a ticket object by ticket ID.
+This module contains several function based views for the booking app.
+function:list_ticket_classes_by_event: A FBV thst Return a list of all ticket classes for a given event.
 function:check_promo_code: A FBV Check whether a promo code is valid for a given event.
-function:create_booking: a FBV that creates a booking object
+function:create_order: A FBV that create order with its order items and Return the data saved.
+function:confirm_order: a FBV that confirms the order by the sent token to user's email.
+function:list_orders_by_user : a FBV that returns orders by user id.
+function:list_orderitem_by_order : a FBV that return order items in an order by order id.
+function:list_orderitem_by_user : a FBV that returns order items by user id.
 """
 # class:discount_list: A view that returns a list of all discounts or creates a new discount.
 # class:discount_pk: A view that returns a discounts object or update a new discount or delete it.
@@ -37,7 +39,7 @@ from django.core.signing import TimestampSigner
 from eventbrite.settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 
-
+#TODO: ticket prices in create order
 
 @api_view(['GET'])
 def list_ticket_classes_by_event(request, event_id):
@@ -64,7 +66,7 @@ def list_ticket_classes_by_event(request, event_id):
 # @permission_classes([IsAuthenticated])
 def check_promocode(request, event_id):
     """
-    Check whether a promo code is valid for a given event.
+    Check whether a promocode is valid for a given event.
 
     :param request: HTTP request object.
     :param event_id: Event ID.
@@ -93,6 +95,8 @@ def check_promocode(request, event_id):
 def create_order(request,event_id):
 
     """
+    This view creates an order for an event with the specified event ID.
+    user ID are received in the request data. A discount code may also be included.
     request data should look like this
 
         {
@@ -108,7 +112,6 @@ def create_order(request,event_id):
                 }
             ], 
             "promocode" : "DISCOUNT25" // optional
-            "user_id" : 1 // optional
 
         }
     """
@@ -163,7 +166,7 @@ def create_order(request,event_id):
     for item in order_items:
         
         item['order_id'] = order.ID
-        item['ticket_price'] = 999
+        item['ticket_price'] = TicketClass.objects.get(ID=item["ticket_class_id"]).PRICE
         item['user_id'] = user_id
         item['event_id'] = event_id
 
@@ -185,16 +188,15 @@ def create_order(request,event_id):
         print(ticket_class.PRICE)
         quantity = order_item_serializer.instance.quantity
         print(quantity)
-        print(ticket_class.capacity)
-        print(ticket_class.quantity_sold)
-        if int(ticket_class.capacity) - int(ticket_class.quantity_sold) < quantity:
+        
+        if ticket_class.capacity - ticket_class.quantity_sold < quantity:
             order.delete()
             # order_item.delete()
             return Response({"details":f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
         subtotal += ticket_class.PRICE * quantity
         
-        ticket_class.quantity_sold += str(quantity)
+        ticket_class.quantity_sold += quantity
         # ticket_class.save()
 
 
@@ -229,7 +231,7 @@ def create_order(request,event_id):
     order.total = total
     order.event_id = event_id
     order.fee = fee
-    # order.save()
+    order.save()
 
     send_confirmation_email(request._request,order)
 
@@ -284,7 +286,7 @@ def send_confirmation_email(request,order):
     send_mail(subject=subject, message=message,
             from_email=from_email,
             fail_silently=False,
-            recipient_list = ["to@example.com"])
+            recipient_list =recipient_list)
     print("======3=======")
 
     # ,content_type='image/png'
@@ -299,6 +301,14 @@ def send_confirmation_email(request,order):
 
 @api_view(['GET'])
 def confirm_order(request, token):
+    """
+    This function confirms an order by taking a token as input and 
+    returning a response indicating whether the order has been validated. 
+    The token is used to retrieve the order ID, 
+    which is then used to update the order object's is_validated field to True. 
+    The function returns a response with the value of is_validated as True and a status code of 200 if successful.
+    """
+
     print("=-=-=-=-= start confirm order==-=--=---=")
 
     signer = TimestampSigner()
@@ -315,8 +325,6 @@ def confirm_order(request, token):
     print("=-=-=-=-= end confirm order==-=--=---=")
 
     return Response({"is_validated":True},status=status.HTTP_200_OK)
-
-
 
 
 
@@ -347,3 +355,28 @@ def list_orderitem_by_order(request, order_id):
     serialized_orderitems = OrderItemSerializer(order_items, many=True)
     return Response(serialized_orderitems.data)
 
+@api_view(['GET'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def list_orderitem_by_user(request, user_id):
+    """
+    This function takes a user_id as input and returns a list of OrderItem objects
+    associated with the given user. 
+    It uses the OrderItemSerializer to serialize the data before returning it in the response.
+    """
+    order_items = OrderItem.objects.filter(user_id=user_id)
+    serialized_orderitems = OrderItemSerializer(order_items, many=True)
+    return Response(serialized_orderitems.data)
+
+
+
+@api_view(['GET'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def quantity_sold_out_of_total(request,event_id):
+    """
+
+    """
+    ticket_classes = TicketClass.objects.filter(event_id=event_id)
+    serialized_Ticket_classes = TicketQuantityClassSerializer(ticket_classes, many=True)
+    return Response(serialized_Ticket_classes.data)

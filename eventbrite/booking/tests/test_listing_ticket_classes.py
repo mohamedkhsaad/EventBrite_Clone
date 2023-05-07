@@ -21,12 +21,6 @@ class ListTicketClassesByEventTestCase(APITestCase):
             password='testpassword',
             first_name='Test',
             last_name='User',
-            age=25,
-            gender='male',
-            city='New York',
-            country='USA',
-            is_staff=True,
-            is_active=True,
             username='testuser'
         )
 
@@ -59,10 +53,6 @@ class ListTicketClassesByEventTestCase(APITestCase):
             capacity=10,
             quantity_sold=0,
             TICKET_TYPE='Paid',
-            Sales_start=datetime(2023, 5, 3, 10, 0, 0, tzinfo=timezone),
-            Sales_end=datetime(2023, 5, 8, 10, 0, 0, tzinfo=timezone),
-            Start_time=datetime(2023, 5, 3, 10, 0, 0, tzinfo=timezone),
-            End_time=datetime(2023, 5, 8, 10, 0, 0, tzinfo=timezone),
             Absorb_fees='True'
         )
 
@@ -73,8 +63,8 @@ class ListTicketClassesByEventTestCase(APITestCase):
         """
         Ensure we can list all ticket classes for an event.
         """
-        url = f'/events/{self.event.ID}/ticket-classes/'
-        response = self.client.get(url)
+        url = reverse('list-ticket-classes-by-event', args=[self.event.ID])
+        response = self.client.get(url,follow=True)
 
         # assert that the response status code is HTTP 200 OK
         self.assertEqual(response.status_code, status.HTTP_200_OK)
