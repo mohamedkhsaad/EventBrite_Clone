@@ -242,7 +242,7 @@ def add_attendee(request,event_id):
     if bool(user) == False:
         print("you should create user")
         data = request.data
-        data["password"] = generate_password()
+        data["password"] = generate_password(10)
         user_serializer = userSerializer(data = request.data)
         if not user_serializer.is_valid():
             print(user_serializer.error_messages)
@@ -295,6 +295,8 @@ def add_attendee(request,event_id):
         
         item['order_id'] = order.ID
         item['ticket_price'] = TicketClass.objects.get(ID=item["ticket_class_id"]).PRICE
+        item['user_id'] = user.id
+        item['event_id'] = event_id
         print(item)
 
 

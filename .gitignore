@@ -3,3 +3,5 @@
 *.jpg
 requirements.txt
 .env
+eventbrite\booking\booking_migrations_backup\
+EventBrite_Clone_Backend/eventbrite/booking/booking_migrations/
