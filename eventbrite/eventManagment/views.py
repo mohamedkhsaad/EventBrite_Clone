@@ -498,7 +498,7 @@ def add_attendee(request, event_id):
     order.fee = fee
     # order.save()
 
-    send_confirmation_email(request._request, order)
+    # send_confirmation_email(request._request, order)
 
     return Response(order_response, status=status.HTTP_201_CREATED)
 
