@@ -32,7 +32,7 @@ class TicketClass(models.Model):
         ('Paid', 'Paid'),
         ('Donation', 'Donation'),
     )
-    TICKET_TYPE = models.CharField(max_length=10, choices=TICKET_TYPE_CHOICES,blank=True,null=True)
+    TICKET_TYPE = models.CharField(max_length=10, choices=TICKET_TYPE_CHOICES)
     Sales_start = models.DateField()
     Sales_end = models.DateField()
     Start_time = models.TimeField()
