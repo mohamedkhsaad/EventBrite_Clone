@@ -33,7 +33,6 @@ class EventListVenueTestCase(TestCase):
             END_TIME='18:00:00',
             online='True',
             CAPACITY=100,
-            PASSWORD='test',
             STATUS='Live',
             image=None
         )

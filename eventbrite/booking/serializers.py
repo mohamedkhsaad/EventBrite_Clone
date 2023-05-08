@@ -14,8 +14,8 @@ class TicketClassSerializer(serializers.ModelSerializer):
 class DiscountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discount
-        fields = '__all__'
-
+        exclude = ['id']
+        
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem

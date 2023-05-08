@@ -207,9 +207,9 @@ class EmailVerificationQueryView(APIView):
 @api_view(['GET'])
 def get_user_by_id(request,user_id):
     print("=======")
-    print(user_id)
-    user = User.objects.get(id=user_id)
+    print(type(user_id))
+    user = User.objects.get(id=(user_id))
     user_serializer = userSerializer(user)
     data = user_serializer.data
-    del data['password']
+    # del data['password']
     return Response(data,status=status.HTTP_200_OK)

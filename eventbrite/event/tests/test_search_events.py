@@ -30,7 +30,6 @@ class Search_EventListtypeTest(APITestCase):
             END_TIME='10:00:00',
             online='True',
             CAPACITY=50,
-            PASSWORD='password',
             STATUS='Live',
             image=None
         )
@@ -51,7 +50,6 @@ class Search_EventListtypeTest(APITestCase):
             END_TIME='11:00:00',
             online='False',
             CAPACITY=100,
-            PASSWORD=None,
             STATUS='Draft',
             image=None
         )

@@ -41,17 +41,42 @@ class TicketClass(models.Model):
         ('True', 'True'),
         ('False', 'False')
     )
-    Absorb_fees = models.CharField(max_length=5, choices=ABSORB_FEES_CHOICES)
-    
+    Absorb_fees = models.CharField(max_length=5, choices=ABSORB_FEES_CHOICES,null=True,blank=True)
+
 class Discount(models.Model):
     ID = models.IntegerField(default=generate_unique_id,unique=True)
-    EVENT_ID = models.IntegerField(default=11111)  # should be primary key
-    percent_off = models.IntegerField()
-    CODE = models.CharField(max_length=20)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    Quantity_available = models.IntegerField()
+    EVENT_ID = models.IntegerField()
     User_ID = models.IntegerField()
+    CODE = models.CharField(max_length=20)
+    Ticket_limit_CHOICES = (
+        ('Limited', 'Limited'),
+        ('Unlimited', 'Unlimited')
+    )
+    Ticket_limit= models.CharField(max_length=15, choices=Ticket_limit_CHOICES,null=True,blank=True)
+    Limitedamount=models.IntegerField(null=True,blank=True)
+    Reveal_hidden_CHOICES = (
+        ('True', 'True'),
+        ('False', 'False')
+    )
+    Reveal_hidden=models.CharField(max_length=5, choices=Reveal_hidden_CHOICES,null=True,blank=True)
+    Discountـpercentage = models.FloatField(null=True,blank=True)
+    Discount_price=models.FloatField(null=True,blank=True)
+
+    Starts_CHOICES = (
+        ('now', 'now'),
+        ('scheduled', 'scheduled')
+    )
+    Ends_CHOICES = (
+        ('When ticket sales end', 'When ticket sales end'),
+        ('scheduled', 'scheduled')
+    )
+    Starts=models.CharField(max_length=20, choices=Reveal_hidden_CHOICES,null=True,blank=True)
+    Ends=models.CharField(max_length=50, choices=Reveal_hidden_CHOICES,null=True,blank=True)
+    start_date = models.DateField(null=True,blank=True)
+    start_time=models.TimeField(null=True,blank=True)
+    end_date =models.TimeField(null=True,blank=True)
+    Quantity_available = models.IntegerField(null=True,blank=True)
+    file = models.FileField(upload_to='promocodes/',null=True,blank=True)
 
         
 def generate_unique_order_id():

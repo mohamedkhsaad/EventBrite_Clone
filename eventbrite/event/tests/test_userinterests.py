@@ -50,7 +50,6 @@ class UserInterestEventsAPIViewTestCase(TestCase):
             END_TIME='18:00:00',
             online='True',
             CAPACITY=100,
-            PASSWORD='test',
             STATUS='Live',
             image=None)
         self.event2 = event.objects.create(
@@ -71,7 +70,6 @@ class UserInterestEventsAPIViewTestCase(TestCase):
             END_TIME='18:00:00',
             online='True',
             CAPACITY=100,
-            PASSWORD='test',
             STATUS='Live',
             image=None)
         self.event3 = event.objects.create(
@@ -92,7 +90,6 @@ class UserInterestEventsAPIViewTestCase(TestCase):
             END_TIME='18:00:00',
             online='True',
             CAPACITY=100,
-            PASSWORD='test',
             STATUS='Live',
             image=None)
         # Create some user interests

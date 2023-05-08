@@ -36,7 +36,6 @@ class OnlineEventsAPIViewTestCase(APITestCase):
             END_TIME='10:00:00',
             online='True',
             CAPACITY=50,
-            PASSWORD='password',
             STATUS='Live',
             image='eventbrite/media/events/photo-1533450718592-29d45635f0a9_H6X4vcW.jpeg'
         )
@@ -57,7 +56,6 @@ class OnlineEventsAPIViewTestCase(APITestCase):
             END_TIME='11:00:00',
             online='False',
             CAPACITY=100,
-            PASSWORD=None,
             STATUS='Draft',
             image='eventbrite/media/events/photo-1533450718592-29d45635f0a9_H6X4vcW.jpeg'
         )

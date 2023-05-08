@@ -196,7 +196,9 @@ def create_order(request,event_id):
 
         subtotal += ticket_class.PRICE * quantity
         
-        ticket_class.quantity_sold += str(quantity)
+        # ticket_class.quantity_sold += str(quantity)
+
+        ticket_class.quantity_sold = (int(ticket_class.quantity_sold) + quantity)
         # ticket_class.save()
 
 

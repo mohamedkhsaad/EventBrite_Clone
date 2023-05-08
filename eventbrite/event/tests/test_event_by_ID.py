@@ -32,12 +32,11 @@ class EventListtIDTest(APITestCase):
             END_TIME='10:00:00',
             online='True',
             CAPACITY=50,
-            PASSWORD='password',
             STATUS='Live',
             image=None
         )
         self.event2 = event.objects.create(
-            ID=2,
+            ID=987668,
             User_id=2,
             Title='Online Event 2',
             organizer='Organizer 2',
@@ -53,12 +52,10 @@ class EventListtIDTest(APITestCase):
             END_TIME='11:00:00',
             online='False',
             CAPACITY=100,
-            PASSWORD=None,
             STATUS='Draft',
             image=None
         )
         self.event_ID=1
-
     def test_get_events_by_type(self):
         """
         Test retrieving events by type.
@@ -76,7 +73,7 @@ class EventListtIDTest(APITestCase):
         """
         Test retrieving events by a ID that does not exist.
         """
-        nonexistent_ID = 'nonexistent ID'
+        nonexistent_ID = '2'
         url = reverse('event-list-by-ID', kwargs={'event_ID': nonexistent_ID})
         response = self.client.get(url,follow=True)
         self.assertEqual(response.data, [])

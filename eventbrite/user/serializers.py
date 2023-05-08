@@ -58,8 +58,8 @@ class userSerializer(serializers.ModelSerializer):
 
                 # Construct the reset URL for the user
         reset_url = reverse_lazy('verify_mail', args={'u_email': u_email, 'token': token})
-        print(u_email)
-        print(token)
+        # print(u_email)
+        # print(token)
         
 
                 # Send the password reset email to the user

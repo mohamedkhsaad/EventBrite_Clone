@@ -106,6 +106,88 @@ class UserListUpcomingEvents(generics.ListAPIView):
         # user_id = self.kwargs['user_id']
         user_id = self.request.user.id
         return event.objects.filter(User_id=user_id).filter(ST_DATE__gt=self.today)
+from django.core.files.storage import FileSystemStorage
+
+# import io
+# class PromoCodeCreateAPIView(generics.CreateAPIView):
+#     """
+#     A view that creates a promocode for a specific events given the event id
+#     """
+#     queryset = Discount.objects.all()
+#     serializer_class = DiscountSerializer
+#     permission_classes = [IsAuthenticated]
+#     authentication_classes = [CustomTokenAuthentication]
+#     def post(self, request, event_id):
+#         """
+#         a post request to create promocode for an event, and have the option to add a csv file instead of typying the promocode details
+#         """
+#         try:
+#             Event = event.objects.get(ID=event_id)
+#         except event.DoesNotExist:
+#             return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+#         if str(request.user.id) != str(Event.User_id):
+#             return Response({'error': 'You are not authorized to create a promocode for this event.'}, status=HTTP_401_UNAUTHORIZED)
+#         if not TicketClass.objects.filter(event_id=event_id):
+#             return Response({'error': f'No tickets created for event with id {event_id}. Cannot publish event without tickets.'}, status=HTTP_400_BAD_REQUEST)
+#         PromoCode_Data = request.data.copy()
+#         PromoCode_Data['EVENT_ID'] = Event.ID
+#         PromoCode_Data['User_ID'] = request.user.id
+
+
+#         # Check if a CSV file was uploaded
+#         if 'file' in request.FILES:
+#             # save file to server
+#             file = request.FILES['file']
+#             file_path = os.path.join(settings.MEDIA_ROOT, 'promocodes/', file.name)
+#             directory_path = os.path.dirname(file_path)
+#             if not os.path.exists(directory_path):
+#                 os.makedirs(directory_path)
+#             with open(file_path, 'wb+') as destination:
+#                 for chunk in file.chunks():
+#                     destination.write(chunk)
+#             # parse CSV data
+#             csv_data = request.FILES['file'].read().decode('utf-8')
+#             reader = csv.DictReader(io.StringIO(csv_data))
+
+#             # create a promocode for each row in the CSV
+#             for row in reader:
+#                 promo_code_data = {
+#                     'EVENT_ID': event_id,
+#                     'User_ID': request.user.id,
+#                     'CODE': row.get('code', ''),
+#                     'Ticket_limit': row.get('ticket_limit', ''),
+#                     'Limitedamount': row.get('limited_amount', ''),
+#                     'Reveal_hidden': row.get('reveal_hidden', ''),
+#                     'Discountـpercentage': row.get('discount_percentage', ''),
+#                     'Discount_price': row.get('discount_price', ''),
+#                     'Starts': row.get('starts', ''),
+#                     'Ends': row.get('ends', ''),
+#                     'start_date': row.get('start_date', ''),
+#                     'start_time': row.get('start_time', ''),
+#                     'end_date': row.get('end_date', ''),
+#                     'Quantity_available': row.get('quantity_available', ''),
+#                 }
+#                 serializer = DiscountSerializer(data=promo_code_data)
+#                 print(serializer)
+#                 if serializer.is_valid():
+#                     discount = serializer.save()
+#                     print("mmdmdmdm")
+#                     return Response(serializer.data, status=HTTP_201_CREATED)
+#                 else:
+#                     return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+#             return Response({'message': 'Promo codes created from CSV file.'})
+
+
+#         # If no CSV file was uploaded, create a single promo code
+#         else:
+#             serializer = self.serializer_class(data=PromoCode_Data)
+#             if serializer.is_valid():
+#                 serializer.save()
+#                 return Response(serializer.data, status=HTTP_201_CREATED)
+#             else:
+                # return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class PromoCodeCreateAPIView(generics.CreateAPIView):
@@ -114,7 +196,8 @@ class PromoCodeCreateAPIView(generics.CreateAPIView):
     """
     queryset = Discount.objects.all()
     serializer_class = DiscountSerializer
-
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
     def post(self, request, event_id):
         """
         a post request to create promocode for an event, and have the option to add a csv file instead of typying the promocode details
@@ -123,36 +206,59 @@ class PromoCodeCreateAPIView(generics.CreateAPIView):
             Event = event.objects.get(ID=event_id)
         except event.DoesNotExist:
             return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-
+        if str(request.user.id) != str(Event.User_id):
+            return Response({'error': 'You are not authorized to create a promocode for this event.'}, status=HTTP_401_UNAUTHORIZED)
+        if not TicketClass.objects.filter(event_id=event_id):
+            return Response({'error': f'No tickets created for event with id {event_id}. Cannot publish event without tickets.'}, status=HTTP_400_BAD_REQUEST)
         PromoCode_Data = request.data.copy()
-        PromoCode_Data['event'] = Event.ID
-
-        # Check if a CSV file was uploaded
+        PromoCode_Data['EVENT_ID'] = Event.ID
+        PromoCode_Data['User_ID'] = request.user.id
         if 'file' in request.FILES:
-            csv_file = request.FILES['file']
-            decoded_file = csv_file.read().decode('utf-8').splitlines()
-            reader = csv.DictReader(decoded_file)
+            # parse CSV data
+            csv_data = request.FILES['file'].read().decode('utf-8')
+            reader = csv.DictReader(csv_data.splitlines())
+            # create a promocode for each row in the CSV
             for row in reader:
-                # Add the event ID to each row of data before saving
-                row['event'] = Event.ID
-                serializer = self.serializer_class(data=row)
+                promo_code_data = {
+                    'EVENT_ID': event_id,
+                    'User_ID': request.user.id,
+                    'CODE': row['code'],
+                    'Ticket_limit': row['ticket_limit'],
+                    'Limitedamount': row['limited_amount'],
+                    'Reveal_hidden': row['reveal_hidden'].strip(),
+                    'Discountـpercentage': row['discount_percentage'],
+                    'Discount_price': row['discount_price'],
+                    'Starts': row['starts'].strip(),
+                    'Ends': row['ends'].strip(),
+                    # 'start_date': row['start_date',],
+                    # 'start_time': row['start_time'],
+                    # 'end_date': row['end_date'],
+                    'Quantity_available': row['quantity_available']
+                }
+                # Only include start_date and start_time if they exist and are not empty
+                if 'start_date' in row and row['start_date']:
+                    promo_code_data['start_date'] = row['start_date']
+                if 'start_time' in row and row['start_time']:
+                    promo_code_data['start_time'] = row['start_time']
+
+                # Only include end_date if it exists and is not empty
+                if 'end_date' in row and row['end_date']:
+                    promo_code_data['end_date'] = row['end_date']
+                serializer = DiscountSerializer(data=promo_code_data)
                 if serializer.is_valid():
                     serializer.save()
                 else:
                     return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-            return Response({'message': 'Promo codes uploaded successfully.'}, status=HTTP_201_CREATED)
-
-        # If no CSV file was uploaded, create a single promo code
+            return Response({'message': 'Promo codes created from CSV file.'})
+        
+        # no file was uploaded, create a single promocode
+        serializer = DiscountSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         else:
-            serializer = self.serializer_class(data=PromoCode_Data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=HTTP_201_CREATED)
-            else:
-                return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 def validate_password(password):
     if len(password) < 8:
         return False
@@ -190,9 +296,6 @@ class EventPublishView(generics.CreateAPIView):
                 return Response({'error': 'Please Provide a Publish Date.'}, status=HTTP_400_BAD_REQUEST)
 
             if not TicketClass.objects.filter(event_id=event_id):
-                print(type(event_id))
-                print(type(TicketClass.event_id))
-
                 return Response({'error': f'No tickets created for event with id {event_id}. Cannot publish event without tickets.'}, status=HTTP_400_BAD_REQUEST)
 
         Publish_Data = request.data.copy()
@@ -201,7 +304,7 @@ class EventPublishView(generics.CreateAPIView):
         if serializer.is_valid():
             serializer.save()
             if str(request.user.id) != str(Event.User_id):
-                return Response({'error': 'You are not authorized to delete this event.'}, status=HTTP_401_UNAUTHORIZED)
+                return Response({'error': 'You are not authorized to publish this event.'}, status=HTTP_401_UNAUTHORIZED)
             data = {'STATUS': request.data.get('STATUS', 'Live'), }
             event.objects.filter(ID=event_id).update(**data)
 
