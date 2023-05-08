@@ -711,9 +711,9 @@ class TicketClassUpdateView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
 
-    def put(self, request, event_id):
+    def put(self, request, TicketClass_id):
         try:
-            ticket_class_obj = TicketClass.objects.get(event_id=event_id)
+            ticket_class_obj = TicketClass.objects.get(ID=TicketClass_id)
         except TicketClass.DoesNotExist:
             return Response({'error': 'Ticket class does not exist.'}, status=HTTP_404_NOT_FOUND)
         if str(request.user.id) != str(ticket_class_obj.User_id):
@@ -730,8 +730,7 @@ class TicketClassUpdateView(APIView):
             'End_time': request.data.get('End_time', ticket_class_obj.End_time),
             'Absorb_fees': request.data.get('Absorb_fees', ticket_class_obj.Absorb_fees)
         }
-        TicketClass.objects.filter(event_id=event_id).update(**data)
-
+        TicketClass.objects.filter(ID=TicketClass_id).update(**data)
         return Response({'message': 'Ticket class updated successfully'})
 
 
@@ -797,7 +796,6 @@ class DeleteeATicketClassView(APIView):
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
-
     def delete(self, request, TicketClass_id):
         try:
             ticket_classes = TicketClass.objects.filter(ID=TicketClass_id)

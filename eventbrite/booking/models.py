@@ -52,7 +52,7 @@ class Discount(models.Model):
         ('Limited', 'Limited'),
         ('Unlimited', 'Unlimited')
     )
-    Ticket_limit= models.CharField(max_length=15, choices=Ticket_limit_CHOICES,null=True,blank=True)
+    Ticket_limit= models.CharField(max_length=15,choices=Ticket_limit_CHOICES,null=True,blank=True)
     Limitedamount=models.IntegerField(null=True,blank=True)
     Reveal_hidden_CHOICES = (
         ('True', 'True'),

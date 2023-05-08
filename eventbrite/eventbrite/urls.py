@@ -95,7 +95,7 @@ urlpatterns = [
  
     # tickets
     path('events/<int:event_id>/Tickets/', TicketCreateAPIView.as_view(), name='create_ticket'),
-    path('events/<int:event_id>/update_ticketclass/', TicketClassUpdateView.as_view(), name='update an ticketclass'),
+    path('events/<int:TicketClass_id>/update_ticketclass/', TicketClassUpdateView.as_view(), name='update an ticketclass'),
     path('events/TicketsPrice/<int:event_id>/', EventTicketPrice.as_view(), name='ticket_price_api'),
     path('events/ALLTickets/<int:event_id>/', ALLTicketClassListView.as_view(), name='event-list-ALL-Tickets-of-event'),
     path('events/ATickets/<int:TicketClass_id>/', ATicketClassListView.as_view(), name='event-list-A-Tickets-of-event'),
