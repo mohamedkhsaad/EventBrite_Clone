@@ -42,6 +42,8 @@ from django.http import QueryDict
 
 
 @api_view(['GET'])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_ticket_classes_by_event(request, event_id):
     """
     Return a list of all ticket class for a given event.
@@ -62,8 +64,8 @@ def list_ticket_classes_by_event(request, event_id):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def check_promocode(request, event_id):
     """
     Check whether a promocode is valid for a given event.
@@ -115,6 +117,8 @@ def check_promocode(request, event_id):
 
 # fees 
 @api_view(['POST'])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_order(request,event_id):
 
     """
@@ -348,8 +352,8 @@ def confirm_order(request, token):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_orders_by_user(request, user_id):
     """
     Return a list of all orders for a given user.
@@ -364,8 +368,8 @@ def list_orders_by_user(request, user_id):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_orderitem_by_order(request, order_id):
     """
 
@@ -375,8 +379,8 @@ def list_orderitem_by_order(request, order_id):
     return Response(serialized_orderitems.data)
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_orderitem_by_user(request, user_id):
     """
     This function takes a user_id as input and returns a list of OrderItem objects
