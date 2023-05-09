@@ -120,7 +120,6 @@ def create_order(request,event_id):
     if promocode:
         discount = Discount.objects.filter(CODE=promocode, EVENT_ID=event_id).first()
         if not discount:
-            
             return Response({"details":"there isnt any discount with this promocode and event id"}, status=status.HTTP_400_BAD_REQUEST)
 
     user_id = request.data.get('user_id')
@@ -198,7 +197,13 @@ def create_order(request,event_id):
         
         # ticket_class.quantity_sold += str(quantity)
 
-        ticket_class.quantity_sold = (int(ticket_class.quantity_sold) + quantity)
+        # ticket_class.quantity_sold = (int(ticket_class.quantity_sold) + quantity)
+
+
+        quantity_sold_updated = int(ticket_class.quantity_sold) + quantity
+        TicketClass.objects.filter(ID=ticket_class.ID).update(quantity_sold=str(quantity_sold_updated))
+                
+
         # ticket_class.save()
 
 
@@ -208,7 +213,11 @@ def create_order(request,event_id):
 
     if promocode:
         order.discount_id = discount.ID
-        amount_off = float(discount.percent_off)/100 * subtotal
+
+        amount_off = float(discount.Discountـpercentage)/100 * subtotal
+        print(discount.Discountـpercentage)
+        print(type(discount.Discountـpercentage))
+
 
     fee = 0
     total = subtotal - amount_off + fee
@@ -230,8 +239,7 @@ def create_order(request,event_id):
     order.fee = fee
     # order.save()
 
-    send_confirmation_email(request._request,order)
-
+    # send_confirmation_email(request._request,order)
     return Response(order_response,status=status.HTTP_201_CREATED)
 
 
@@ -245,7 +253,7 @@ def send_confirmation_email(request,order):
 
     # Generate a confirmation token
     signer = TimestampSigner()
-    token = signer.sign(str(order.id))
+    token = signer.sign(str(order.ID))
     # token = generate_confirmation_token(order.id)
 
     print(token)
@@ -273,7 +281,7 @@ def send_confirmation_email(request,order):
 
     # Send the confirmation email
     subject = 'Confirm your email address'
-    message = f'Hi {user.username}, please click the link below or scan the QR code to confirm your booking:\n\n {confirmation_url} \n\n'
+    message = f'Hi {user.first_name}, please click the link below or scan the QR code to confirm your booking:\n\n {confirmation_url} \n\n'
     from_email = 'no-reply@example.com'
     recipient_list = [user.email]
     print(recipient_list)
@@ -316,9 +324,11 @@ def confirm_order(request, token):
 
     print("=-=-=-=-= mid confirm order==-=--=---=")
     print(id)
-    order = Order.objects.get(id=order_id)
+    order = Order.objects.get(ID=order_id)
     order.is_validated = True
-    order.save()
+    Order.objects.filter(ID=order_id).update(is_validated='True')
+
+    # order.save()
     print("=-=-=-=-= end confirm order==-=--=---=")
 
     return Response({"is_validated":True},status=status.HTTP_200_OK)

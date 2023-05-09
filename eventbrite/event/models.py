@@ -206,7 +206,6 @@ class EventFollower(models.Model):
     followed_date = models.DateTimeField(auto_now_add=True)
     ID = models.IntegerField()
 
-
 class Eventlikes(models.Model):
     """
     Model representing a user following an event.

@@ -42,21 +42,17 @@ urlpatterns = [
     name='api-docs',
     ),
     # path('admin/', admin.site.urls),
+
     # user
     path('verify-mail/<uidb64>/<token>/',EmailVerificationQueryView.as_view(),name='verify_mail'),
     path('user/signup/',userViewSet.as_view({'post': 'create'}), name='signup'),
     path('user/login/',CustomTokenLoginView.as_view(), name='token'),
-    # path('ProtectedView/',ProtectedView.as_view(), name='ProtectedView'),
-
     path('user/emailcheck/<str:email>/', EmailCheckView.as_view(), name='email-check'),
     path('user/reset-password/', CustomPasswordResetView.as_view(), name='password_reset'),
     path('user/reset-password/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    # path('user/reset-password/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('user/reset-password/check-query/<uidb64>/<token>/', CustomPasswordResetCheckView.as_view(),name='password_reset_check'),
     path('user/reset-password/change_password/',CustomPasswordResetConfirmView.as_view(),name='password_reset_change'),
     path('user/reset-password/complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-    path('user/<int:user_id>/', get_user_by_id, name='get_user_by_id'),
-
 
     # event
     path('events/create/', EventCreateView.as_view(), name='event-create'),
@@ -118,12 +114,15 @@ urlpatterns = [
     path('eventmanagement/<int:event_id>/publish/' ,EventPublishView.as_view(), name='publish_event'),
     path('eventmanagement/event/<int:event_id>/order-items/', list_orderitem_by_event, name='list_orderitem_by_event'),
     path('eventmanagement/<int:event_id>/check_password/',CheckPasswordAPIView.as_view(), name='check_password_view'),
-
-
     path('eventmanagement/<int:event_id>/add-attendee/' ,add_attendee, name='add-attendee'),
     path('eventmanagement/event/<int:event_id>/orders/', list_orders_by_event, name='list-orders-by-event'),
 
-    # path('events/upload',UploadImageView.as_view(),name='upload-image'),
+    # dashboard
+    path('dashboard/user/<int:user_id>/', get_user_by_id, name='get_user_by_id'),
+    path('dashboard/eventmanagement/event/save/<int:event_id>/order-items/', savecsv_orderitems_by_eventid, name='savecsv_list_orderitem_by_event'),
+    path('dashboard/eventmanagement/event/<int:event_id>/order-items/', dashboard_orderitems_by_eventid, name='savecsv_list_orderitem_by_event'),
+    path('dashboard/eventmanagement/sold-tickets/<int:event_id>/ticket-classes/',quantity_sold_out_of_total,name='sold_tickets'),
+
     #booking
     path('booking/',include('booking.urls')),
     path('',include('rest_framework.urls')),

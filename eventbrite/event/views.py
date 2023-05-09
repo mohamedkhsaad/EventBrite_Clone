@@ -733,7 +733,6 @@ class TicketClassUpdateView(APIView):
         TicketClass.objects.filter(ID=TicketClass_id).update(**data)
         return Response({'message': 'Ticket class updated successfully'})
 
-
 class ALLTicketClassListView(generics.ListAPIView):
     serializer_class = TicketClassSerializer
     permission_classes = [IsAuthenticated]

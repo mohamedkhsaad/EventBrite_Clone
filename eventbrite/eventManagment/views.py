@@ -419,9 +419,7 @@ def add_attendee(request, event_id):
     order.event_id = event_id
     order.fee = fee
     # order.save()
-
     # send_confirmation_email(request._request, order)
-
     return Response(order_response, status=status.HTTP_201_CREATED)
 
 
@@ -525,3 +523,47 @@ def generate_password(length=8):
     characters = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(characters) for i in range(length))
     return password
+
+
+
+
+
+
+@api_view(['GET'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def savecsv_orderitems_by_eventid(request, event_id):
+    order_items = OrderItem.objects.filter(event_id=event_id)
+    serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
+    json_data = serialized_orderitems.data
+    # del json_data[3]
+    write_json_to_csv(json_data,filename='attendee_report.csv')
+
+    return Response(json_data,status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def dashboard_orderitems_by_eventid(request, event_id):
+    order_items = OrderItem.objects.filter(event_id=event_id)
+    serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
+    json_data = serialized_orderitems.data
+    # del json_data[3]
+    # write_json_to_csv(json_data,filename='attendee_report.csv')
+
+    return Response(json_data,status=status.HTTP_200_OK)
+
+import csv
+import json
+def write_json_to_csv(json_list, filename):
+    # extract field names from the first JSON object in the list
+    fieldnames = list(json_list[0].keys())
+    
+    # open the CSV file for writing
+    with open(filename, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile,fieldnames=fieldnames)
+        # write the header row to the CSV file
+        writer.writeheader()
+        # write each JSON object to a row in the CSV file
+        for json_obj in json_list:
+            writer.writerow(json_obj)

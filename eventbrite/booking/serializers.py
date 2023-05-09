@@ -58,3 +58,11 @@ class TicketQuantityClassSerializer(serializers.ModelSerializer):
     class Meta:
         model = TicketClass
         fields = ('ID','quantity_sold', 'capacity')
+
+
+
+
+class DashboardOrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ('ticket_class_id', 'quantity','order_id','user_id','event_id')
