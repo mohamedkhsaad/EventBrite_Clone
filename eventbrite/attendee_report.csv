@@ -1,0 +1,2 @@
+json_data
+"[OrderedDict([('ticket_class_id', 99976198), ('quantity', 3), ('order_id', 72988003), ('user_id', 12), ('event_id', 79127307), ('ticket_price', 999.0)]), OrderedDict([('ticket_class_id', 32616113), ('quantity', 3), ('order_id', 78947034), ('user_id', 12), ('event_id', 79127307), ('ticket_price', 999.0)])]"
