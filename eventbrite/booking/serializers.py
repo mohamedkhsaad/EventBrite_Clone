@@ -1,4 +1,10 @@
+"""
+This module contains serializer classes for the booking app.
 
+class:TicketQuantityClassSerializer: Serializer class to return the quantity tickets sold out of the capacity(total).
+
+class:DashboardOrderItemSerializer: Serializer class to return the attendee report.
+"""
 from rest_framework import serializers
 from booking.models import *
 
