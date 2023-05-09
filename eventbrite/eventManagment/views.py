@@ -164,6 +164,8 @@ class PromoCodeCreateAPIView(generics.CreateAPIView):
                 # Only include end_date if it exists and is not empty
                 if 'end_date' in row and row['end_date']:
                     promo_code_data['end_date'] = row['end_date']
+                if 'end_time' in row and row['end_time']:
+                    promo_code_data['end_time'] = row['end_time']
                 serializer = DiscountSerializer(data=promo_code_data)
                 if serializer.is_valid():
                     serializer.save()
@@ -211,17 +213,21 @@ class EventPublishView(generics.CreateAPIView):
             if not validate_password(password):
                 return Response({'error': 'Password must contain at least 8 characters.'}, status=HTTP_400_BAD_REQUEST)
 
-            if request.data.get('Keep_Private') and request.data.get('Publication_Date'):
-                return Response({'error': 'Do not add date, as your event will be kept private'}, status=HTTP_400_BAD_REQUEST)
+            # if request.data.get('Keep_Private') and request.data.get('Publication_Date'):
+            #     return Response({'error': 'Do not add date, as your event will be kept private'}, status=HTTP_400_BAD_REQUEST)
 
-            if not request.data.get('Keep_Private') and not request.data.get('Publication_Date'):
-                return Response({'error': 'Please Provide a Publish Date.'}, status=HTTP_400_BAD_REQUEST)
+
+                # Publish_Info.objects.filter(ID=event_id).update(Publication_Date=' ')
 
             if not TicketClass.objects.filter(event_id=event_id):
                 return Response({'error': f'No tickets created for event with id {event_id}. Cannot publish event without tickets.'}, status=HTTP_400_BAD_REQUEST)
 
         Publish_Data = request.data.copy()
         Publish_Data['Event_ID'] = event_id
+        if request.data.get('Keep_Private')=="True":
+                 Publish_Data['Publication_Date']=''
+        elif request.data.get('Keep_Private')=="False" and not request.data.get('Publication_Date'):
+                return Response({'error': 'Please Provide a Publish Date.'}, status=HTTP_400_BAD_REQUEST)
         serializer = self.serializer_class(data=Publish_Data)
         if serializer.is_valid():
             serializer.save()
@@ -530,28 +536,67 @@ def generate_password(length=8):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def savecsv_orderitems_by_eventid(request, event_id):
+    try:
+            Event = event.objects.get(ID=event_id)
+            print(request.user.id)
+    except event.DoesNotExist:
+        return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+    
+    if str(request.user.id) != str(Event.User_id):
+            return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
     order_items = OrderItem.objects.filter(event_id=event_id)
     serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
     json_data = serialized_orderitems.data
+    count=len(json_data)
+    users = [d['user_id'] for d in json_data]
+    for id in users:
+        user = User.objects.get(id=(id))
+        user_serializer = userSerializer(user)
+        data = user_serializer.data
+    sum=0
+    for d in json_data:
+        quantity_sold = int(d['quantity'])
+        price=d['ticket_price']
+        sum+=int(quantity_sold*price)
+
     # del json_data[3]
     write_json_to_csv(json_data,filename='attendee_report.csv')
 
-    return Response(json_data,status=status.HTTP_200_OK)
+    return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def dashboard_orderitems_by_eventid(request, event_id):
+    try:
+            Event = event.objects.get(ID=event_id)
+            print(request.user.id)
+    except event.DoesNotExist:
+        return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+    
+    if str(request.user.id) != str(Event.User_id):
+            return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
+
     order_items = OrderItem.objects.filter(event_id=event_id)
     serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
     json_data = serialized_orderitems.data
-    # del json_data[3]
-    # write_json_to_csv(json_data,filename='attendee_report.csv')
+    count=len(json_data)
+    users = [d['user_id'] for d in json_data]
+    
+    for id in users:
+        user = User.objects.get(id=(id))
+        user_serializer = userSerializer(user)
+        data = user_serializer.data
+    sum=0
+    for d in json_data:
+        quantity_sold = int(d['quantity'])
+        price=d['ticket_price']
+        sum+=int((quantity_sold*price))
 
-    return Response(json_data,status=status.HTTP_200_OK)
+    return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
 
 import csv
 import json
@@ -561,9 +606,12 @@ def write_json_to_csv(json_list, filename):
     
     # open the CSV file for writing
     with open(filename, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile,fieldnames=fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
         # write the header row to the CSV file
         writer.writeheader()
+
         # write each JSON object to a row in the CSV file
         for json_obj in json_list:
             writer.writerow(json_obj)
+    

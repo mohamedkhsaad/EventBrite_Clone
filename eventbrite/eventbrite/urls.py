@@ -116,7 +116,6 @@ urlpatterns = [
     path('eventmanagement/<int:event_id>/check_password/',CheckPasswordAPIView.as_view(), name='check_password_view'),
     path('eventmanagement/<int:event_id>/add-attendee/' ,add_attendee, name='add-attendee'),
     path('eventmanagement/event/<int:event_id>/orders/', list_orders_by_event, name='list-orders-by-event'),
-
     # dashboard
     path('dashboard/user/<int:user_id>/', get_user_by_id, name='get_user_by_id'),
     path('dashboard/eventmanagement/event/save/<int:event_id>/order-items/', savecsv_orderitems_by_eventid, name='savecsv_list_orderitem_by_event'),

@@ -30,12 +30,10 @@ from event.models import event as Event
 from user.models import User
 from eventbrite.settings import *
 from rest_framework.authtoken.models import Token
-
-
-
+from user.authentication import CustomTokenAuthentication
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from django.urls import reverse
 from django.core.signing import TimestampSigner
-
 from eventbrite.settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 
@@ -378,12 +376,19 @@ def list_orderitem_by_user(request, user_id):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def quantity_sold_out_of_total(request,event_id):
     """
-
     """
+    try:
+            Event = event.objects.get(ID=event_id)
+            print(request.user.id)
+    except event.DoesNotExist:
+        return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+    
+    if str(request.user.id) != str(Event.User_id):
+            return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
     ticket_classes = TicketClass.objects.filter(event_id=event_id)
     serialized_Ticket_classes = TicketQuantityClassSerializer(ticket_classes, many=True)
     return Response(serialized_Ticket_classes.data)

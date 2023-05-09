@@ -65,4 +65,4 @@ class TicketQuantityClassSerializer(serializers.ModelSerializer):
 class DashboardOrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ('ticket_class_id', 'quantity','order_id','user_id','event_id')
+        fields = ('ticket_class_id', 'quantity','order_id','user_id','event_id','ticket_price')

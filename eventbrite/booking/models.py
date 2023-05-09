@@ -70,11 +70,13 @@ class Discount(models.Model):
         ('When ticket sales end', 'When ticket sales end'),
         ('scheduled', 'scheduled')
     )
-    Starts=models.CharField(max_length=20, choices=Reveal_hidden_CHOICES,null=True,blank=True)
-    Ends=models.CharField(max_length=50, choices=Reveal_hidden_CHOICES,null=True,blank=True)
+    Starts=models.CharField(max_length=20, choices=Starts_CHOICES,null=True,blank=True)
+    Ends=models.CharField(max_length=50, choices=Ends_CHOICES,null=True,blank=True)
     start_date = models.DateField(null=True,blank=True)
     start_time=models.TimeField(null=True,blank=True)
     end_date =models.TimeField(null=True,blank=True)
+    end_time=models.TimeField(null=True,blank=True)
+
     Quantity_available = models.IntegerField(null=True,blank=True)
     file = models.FileField(upload_to='promocodes/',null=True,blank=True)
 
