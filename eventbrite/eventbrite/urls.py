@@ -114,6 +114,7 @@ urlpatterns = [
     path('eventmanagement/<int:event_id>/publish/' ,EventPublishView.as_view(), name='publish_event'),
     path('eventmanagement/event/<int:event_id>/order-items/', list_orderitem_by_event, name='list_orderitem_by_event'),
     path('eventmanagement/<int:event_id>/check_password/',CheckPasswordAPIView.as_view(), name='check_password_view'),
+    path('eventmanagement/<int:user_id>/export_csv/', ExportEventsAPIView.as_view(), name='export_events_api'),
     path('eventmanagement/<int:event_id>/add-attendee/' ,add_attendee, name='add-attendee'),
     path('eventmanagement/event/<int:event_id>/orders/', list_orders_by_event, name='list-orders-by-event'),
     # dashboard

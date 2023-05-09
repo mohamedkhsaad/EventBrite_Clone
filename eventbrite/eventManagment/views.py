@@ -263,7 +263,43 @@ class CheckPasswordAPIView(generics.CreateAPIView):
                 return Response({'Invalid Password'}, status=HTTP_400_BAD_REQUEST)
 
 
+class ExportEventsAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
 
+
+    def get(self, request, user_id):
+        # Fetch events created by the specified user
+        events = event.objects.filter(User_id=user_id)
+
+        # Create the HttpResponse object with CSV headers
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="events.csv"'
+
+        # Create a CSV writer object
+        writer = csv.writer(response)
+
+        # Write the CSV headers
+        writer.writerow(['Event', 'Date', 'Status', 'Tickets Sold', 'Tickets Available'])
+
+        # Write the event data rows
+        for Event in events:
+            tickets_sold = TicketClass.objects.filter(event_id=Event.ID).aggregate(total_sold=models.Sum('quantity_sold')).get('total_sold', 0)
+            tickets_available = TicketClass.objects.filter(event_id=Event.ID).aggregate(total_capacity=models.Sum('capacity')).get('total_capacity', 0)
+
+            # Handle None values and provide default values for subtraction
+            tickets_sold = tickets_sold or 0
+            tickets_available = tickets_available or 0
+
+            writer.writerow([
+                Event.Title,
+                Event.ST_DATE,
+                Event.STATUS,
+                tickets_sold,
+                tickets_available - tickets_sold
+            ])
+
+        return response
 
 
 # managee attendee
