@@ -258,19 +258,13 @@ class CheckPasswordAPIView(generics.CreateAPIView):
                 return Response({'Invalid Password'}, status=HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-def list_orderitem_by_event(request, event_id):
-    """
-    """
-    order_items = OrderItem.objects.filter(event_id=event_id)
-    serialized_orderitems = OrderItemSerializer(order_items, many=True)
-    return Response(serialized_orderitems.data)
+
 
 
 # managee attendee
 @api_view(['POST'])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def add_attendee(request, event_id):
     """
     this allows the organizer to add attendee if user doesnt exist it will be created one,
@@ -296,6 +290,9 @@ def add_attendee(request, event_id):
         }
     """
     print("====== add attendee ======")
+    if str(request.user.id) != str(event.objects.filter(ID = event_id).first().User_id):
+        return Response({'error': 'You are not authorized to add an attendee for this event.'}, status=HTTP_401_UNAUTHORIZED)
+
     first_name = request.data.get('first_name')
     last_name = request.data.get('last_name')
     email = request.data.get('email')
@@ -374,8 +371,14 @@ def add_attendee(request, event_id):
     for item in order_items:
 
         item['order_id'] = order.ID
-        item['ticket_price'] = TicketClass.objects.get(
-            ID=item["ticket_class_id"]).PRICE
+        try:
+            item['ticket_price'] = TicketClass.objects.get(ID=item["ticket_class_id"]).PRICE
+        except:
+            ticket_class_id = item["ticket_class_id"]
+            return Response({"details":f"no ticket class with this id. ticket_class_id = { ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # item['ticket_price'] = TicketClass.objects.get(
+        #     ID=item["ticket_class_id"]).PRICE
         item['user_id'] = user.id
         item['event_id'] = event_id
         print(item)
@@ -399,7 +402,8 @@ def add_attendee(request, event_id):
             # order_item.delete()
             return Response({"details": f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
-        subtotal += int(ticket_class.PRICE * quantity)
+        subtotal += int(ticket_class.PRICE) * quantity
+
         print(type)
 
         quantity_sold_updated = int(ticket_class.quantity_sold) + quantity
@@ -486,8 +490,8 @@ def send_confirmation_email(request, order):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_orders_by_event(request, event_id):
     """
     Return a list of all orders for a given user.
@@ -502,8 +506,8 @@ def list_orders_by_event(request, event_id):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_orderitem_by_event(request, event_id):
     """
 
@@ -512,16 +516,7 @@ def list_orderitem_by_event(request, event_id):
     serialized_orderitems = OrderItemSerializer(order_items, many=True)
     return Response(serialized_orderitems.data)
 
-# @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# def list_orderitem_by_order(request, order_id):
-#     """
 
-#     """
-#     order_items = OrderItem.objects.filter(order_id=order_id)
-#     serialized_orderitems = OrderItemSerializer(order_items, many=True)
-#     return Response(serialized_orderitems.data)
 
 
 def generate_password(length=8):

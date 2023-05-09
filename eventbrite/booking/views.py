@@ -37,9 +37,13 @@ from django.core.signing import TimestampSigner
 from eventbrite.settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 
-#TODO: ticket prices in create order
+from django.utils import timezone
+from django.http import QueryDict
+
 
 @api_view(['GET'])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_ticket_classes_by_event(request, event_id):
     """
     Return a list of all ticket class for a given event.
@@ -60,8 +64,8 @@ def list_ticket_classes_by_event(request, event_id):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def check_promocode(request, event_id):
     """
     Check whether a promocode is valid for a given event.
@@ -70,19 +74,42 @@ def check_promocode(request, event_id):
     :param event_id: Event ID.
     :return: A JSON object indicating whether the promo code is valid.
     """
-    # /event?promocode=SAVE123
-    # search an event's promo codes
-
+    print("start check promocode")
+    print(request.query_params)
     try:
         promocode = request.query_params['promocode']
     except:
-        return Response({'err': 'missing promocode param'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"err": "missing promocode param"}, status=status.HTTP_400_BAD_REQUEST)
+    print("promocode param found")
+
+    now = timezone.now()
+    print(now)
 
     discount = Discount.objects.filter(EVENT_ID=event_id, CODE=promocode).first()
     if not discount:
-        return Response({'is_promocode': False}, status=status.HTTP_400_BAD_REQUEST)
-    
-    return Response({'is_promocode': True}, status=status.HTTP_200_OK)
+        return Response({'is_valid_promocode': False,"details":"not found"}, status=status.HTTP_200_OK)
+    print("discount was found")
+
+    if discount.Quantity_available is not None and discount.Quantity_available <= 0:
+        return Response({'is_valid_promocode': False, "details":"quantity available = 0"}, status=status.HTTP_200_OK)
+    print("availble quantity was found")
+
+    if discount.Ends == 'scheduled' and discount.end_date is not None and discount.end_time is not None:
+        if str(now.date()) > discount.end_date or (str(now.date()) == discount.end_date and str(now.time())[0:8] >= discount.end_time):
+            return Response({'is_valid_promocode': False, "details":"promocode has expired"}, status=status.HTTP_200_OK)
+    # print(now.date())
+    # print(discount.end_date)
+    # print(str(now.date()) > discount.end_date)
+
+    # print(str(now.time())[0:8])
+    # print(discount.end_time)
+    # print(str(now.time())[0:8] >= discount.end_time)
+    print("hasnt expired yet")
+
+    serialized_discount = DiscountSerializer(discount)
+    # print(serialized_discount)
+    return Response({'is_valid_promocode': True,"discount": serialized_discount.data}, status=status.HTTP_200_OK)
+
 
 
 
@@ -90,6 +117,8 @@ def check_promocode(request, event_id):
 
 # fees 
 @api_view(['POST'])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def create_order(request,event_id):
 
     """
@@ -113,47 +142,44 @@ def create_order(request,event_id):
 
         }
     """
-    # handle promocode
+    # validate data
+
+    # check sent event_id
+    if not event.objects.filter(ID = event_id):
+        return Response({"details":"no event exist with this ID"}, status=status.HTTP_400_BAD_REQUEST)
+    # check if a promocode was sent and validate it
     promocode = request.data.get('promocode')
     if promocode:
-        discount = Discount.objects.filter(CODE=promocode, EVENT_ID=event_id).first()
+        now = timezone.now()
+        discount = Discount.objects.filter(EVENT_ID=event_id, CODE=promocode).first()
         if not discount:
-            return Response({"details":"there isnt any discount with this promocode and event id"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'is_valid_promocode': False,"details":"not found"}, status=status.HTTP_200_OK)
+        if discount.Quantity_available is not None and discount.Quantity_available <= 0:
+            return Response({'is_valid_promocode': False, "details":"quantity available = 0"}, status=status.HTTP_200_OK)
+        if discount.Ends == 'scheduled' and discount.end_date is not None and discount.end_time is not None:
+            if str(now.date()) > discount.end_date or (str(now.date()) == discount.end_date and str(now.time())[0:8] >= discount.end_time):
+                return Response({'is_valid_promocode': False, "details":"promocode has expired"}, status=status.HTTP_200_OK)
 
+
+    # get user data
     user_id = request.data.get('user_id')
     if not user_id:
         user_id = request.user.id
         print( "user_id was got from the request ")
 
-    order = Order(user_id = request.user.id) # create empty order so that orderitem can point to it
-    order.save()
-    print("-------1--------")
-
-    # Retrieve the request data
-  
+    # get order_items
     order_items = request.data.get('order_items')
     data = request.data
     print(data)
     if not order_items:
-        return Response({"details":"""sent data should look like this {
-            "order_items":
-            [
-                {
-                "ticket_class_id" : 1,	
-                "quantity": 3 
-                },
-                {
-                "ticket_class_id" : 2,	
-                "quantity": 1 
-                }
-            ], 
-            "promocode" : "DISCOUNT25"
+        return Response({"details":" no order_items list of object was sent"}, status=status.HTTP_400_BAD_REQUEST)
 
-        }"""}, status=status.HTTP_400_BAD_REQUEST)
 
-    # data['order_id'] = order.ID
-    # print(data)
 
+
+    order = Order(user_id = request.user.id) # create empty order so that orderitem can point to it
+    order.save()
+    print("-------1--------")
 
     # for Calculate the order 
     subtotal = 0.0
@@ -163,13 +189,15 @@ def create_order(request,event_id):
     for item in order_items:
         
         item['order_id'] = order.ID
-        item['ticket_price'] = TicketClass.objects.get(ID=item["ticket_class_id"]).PRICE
+        try:
+            item['ticket_price'] = TicketClass.objects.get(ID=item["ticket_class_id"]).PRICE
+        except:
+            ticket_class_id = item["ticket_class_id"]
+            return Response({"details":f"no ticket class with this id. ticket_class_id = { ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
+
         item['user_id'] = user_id
         item['event_id'] = event_id
-
         print(item)
-
-
 
         order_item_serializer = OrderItemSerializer(data=item)               
         if not order_item_serializer.is_valid():
@@ -180,8 +208,8 @@ def create_order(request,event_id):
 
         print("-----3----------")
 
-
         ticket_class = TicketClass.objects.get(ID=order_item_serializer.instance.ticket_class_id)
+
         print(ticket_class.PRICE)
         quantity = order_item_serializer.instance.quantity
         print(quantity)
@@ -192,37 +220,27 @@ def create_order(request,event_id):
             return Response({"details":f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
         subtotal += ticket_class.PRICE * quantity
-        
-        # ticket_class.quantity_sold += str(quantity)
 
-        # ticket_class.quantity_sold = (int(ticket_class.quantity_sold) + quantity)
-
-
+        # update ticket quantity sold
         quantity_sold_updated = int(ticket_class.quantity_sold) + quantity
         TicketClass.objects.filter(ID=ticket_class.ID).update(quantity_sold=str(quantity_sold_updated))
-                
 
-        # ticket_class.save()
-
-
-
-    if not event.objects.filter(ID = event_id):
-        return Response({"details":"no event exist with this ID"}, status=status.HTTP_400_BAD_REQUEST)
-
+    # handel discount if a promocode was sent
     if promocode:
         order.discount_id = discount.ID
-
         amount_off = float(discount.Discountـpercentage)/100 * subtotal
+
+        # decrement Quantity_available of the used promocode
+        Quantity_available_updated = int(discount.Quantity_available) - 1
+        Discount.objects.filter(ID=discount.ID).update(Quantity_available=str(Quantity_available_updated))
+
         print(discount.Discountـpercentage)
         print(type(discount.Discountـpercentage))
-
 
     fee = 0
     total = subtotal - amount_off + fee
 
-
-
-    # Create the order
+    # Create the response
     order_response = {
         'tickets':order_items,
         'full_price' : subtotal,
@@ -235,7 +253,7 @@ def create_order(request,event_id):
     order.total = total
     order.event_id = event_id
     order.fee = fee
-    # order.save()
+    order.save()
 
     # send_confirmation_email(request._request,order)
     return Response(order_response,status=status.HTTP_201_CREATED)
@@ -334,8 +352,8 @@ def confirm_order(request, token):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_orders_by_user(request, user_id):
     """
     Return a list of all orders for a given user.
@@ -350,8 +368,8 @@ def list_orders_by_user(request, user_id):
 
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_orderitem_by_order(request, order_id):
     """
 
@@ -361,8 +379,8 @@ def list_orderitem_by_order(request, order_id):
     return Response(serialized_orderitems.data)
 
 @api_view(['GET'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([CustomTokenAuthentication])
+@permission_classes([IsAuthenticated])
 def list_orderitem_by_user(request, user_id):
     """
     This function takes a user_id as input and returns a list of OrderItem objects
