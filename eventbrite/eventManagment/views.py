@@ -26,7 +26,7 @@ from event.models import *
 from rest_framework.permissions import IsAuthenticated
 from booking.models import *
 from booking.serializers import *
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED,HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 from user.authentication import CustomTokenAuthentication
 from booking.models import *
@@ -192,6 +192,75 @@ def validate_password(password):
     if len(password) < 8:
         return False
     return True
+class APromocodeListView(generics.ListAPIView):
+    """
+    A view that to get a promocode for a specific events by discount id
+    """
+    serializer_class = DiscountSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+    def get(self, request, discount_id):
+        try:
+            ticket_classes = Discount.objects.filter(ID=discount_id)
+        except Discount.DoesNotExist:
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        for ticket_class in ticket_classes:
+            if str(request.user.id) != str(ticket_class.User_ID):
+                return Response({'error': 'You are not authorized to list this promocode.'}, status=HTTP_401_UNAUTHORIZED)
+        serializer = DiscountSerializer(ticket_classes, many=True)
+        return Response(serializer.data)
+class PromoCodeUpdateView(APIView):
+    """
+    A view that update a promocode for a specific events given the discount id
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+    def put(self, request, discount_id):
+        try:
+            discount_obj = Discount.objects.get(ID=discount_id)
+        except Discount.DoesNotExist:
+            return Response({'error': 'Discount does not exist.'}, status=HTTP_404_NOT_FOUND)
+        if str(request.user.id) != str(discount_obj.User_ID):
+            return Response({'error': 'You are not authorized to update this discount.'}, status=HTTP_401_UNAUTHORIZED)
+        data = {
+            'CODE': request.data.get('CODE', discount_obj.CODE),
+            'Ticket_limit': request.data.get('Ticket_limit', discount_obj.Ticket_limit),
+            'Limitedamount': request.data.get('Limitedamount', discount_obj.Limitedamount),
+            'Reveal_hidden': request.data.get('Reveal_hidden', discount_obj.Reveal_hidden),
+            'Discountـpercentage': request.data.get('Discountـpercentage', discount_obj.Discountـpercentage),
+            'Discount_price': request.data.get('Discount_price', discount_obj.Discount_price),
+            'Starts': request.data.get('Starts', discount_obj.Starts),
+            'Ends': request.data.get('Ends', discount_obj.Ends),
+            'start_date': request.data.get('start_date', discount_obj.start_date),
+            'start_time': request.data.get('start_time', discount_obj.start_time),
+            'end_date': request.data.get('end_date', discount_obj.end_date),
+            'end_time': request.data.get('end_time', discount_obj.end_time),
+            'Quantity_available': request.data.get('Quantity_available', discount_obj.Quantity_available),
+            # 'file': request.data.get('file', discount_obj.file),
+        }
+        Discount.objects.filter(ID=discount_id).update(**data)
+        return Response({'message': 'Discount updated successfully'})
+
+class PromoCodeDeleteView(APIView):
+    """
+    A viewset for deleting a discount for an event by Discount ID.
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+    def delete(self, request, discount_id):
+        try:
+            promocodes = Discount.objects.filter(ID=discount_id)
+        except Discount.DoesNotExist:
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        for promocode in promocodes:
+            if str(request.user.id) != str(promocode.User_ID):
+                return Response({'error': 'You are not authorized to delete this ticket class.'}, status=HTTP_401_UNAUTHORIZED)
+        num_deleted, _ = promocodes.delete()
+        if num_deleted > 0:
+            return Response({'status': 'success'})
+        else:
+            return Response({'status': 'error', 'message': 'Could not delete ticket class.'})
+
 
 
 class EventPublishView(generics.CreateAPIView):

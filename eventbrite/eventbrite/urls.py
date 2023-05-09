@@ -111,6 +111,10 @@ urlpatterns = [
     path('eventmanagement/creatorPastEvents/', UserListPastEvents.as_view(), name='user_list_past_events'),
     path('eventmanagement/creatorUpcomingEvents/', UserListUpcomingEvents.as_view(), name='user_list_upcoming_events'),
     path('eventmanagement/<int:event_id>/promocode/', PromoCodeCreateAPIView.as_view(), name='create_promocode'),
+    path('eventmanagement/<int:discount_id>/get_apromocode/', APromocodeListView.as_view(), name='get-promocode'),
+    path('eventmanagement/<int:discount_id>/update_promocode/', PromoCodeUpdateView.as_view(), name='update-promocode'),
+    path('eventmanagement/<int:discount_id>/delete_promocode/', PromoCodeDeleteView.as_view(), name='delete-promocode'),
+
     path('eventmanagement/<int:event_id>/publish/' ,EventPublishView.as_view(), name='publish_event'),
     path('eventmanagement/event/<int:event_id>/order-items/', list_orderitem_by_event, name='list_orderitem_by_event'),
     path('eventmanagement/<int:event_id>/check_password/',CheckPasswordAPIView.as_view(), name='check_password_view'),
