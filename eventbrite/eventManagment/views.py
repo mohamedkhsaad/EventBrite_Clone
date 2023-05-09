@@ -399,7 +399,7 @@ def add_attendee(request, event_id):
             # order_item.delete()
             return Response({"details": f"Not enough tickets available for ticket class id {order_item_serializer.instance.ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
-        subtotal += ticket_class.PRICE * quantity
+        subtotal += int(ticket_class.PRICE) * quantity
         print(type)
 
         quantity_sold_updated = int(ticket_class.quantity_sold) + quantity
