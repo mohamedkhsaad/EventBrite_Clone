@@ -178,7 +178,7 @@ def create_order(request,event_id):
 
 
     order = Order(user_id = request.user.id) # create empty order so that orderitem can point to it
-    order.save()
+    # order.save()
     print("-------1--------")
 
     # for Calculate the order 

@@ -60,7 +60,6 @@ class UserListEvents(generics.ListAPIView):
     authentication_classes = [CustomTokenAuthentication]
     queryset = event.objects.all()
     serializer_class = eventSerializer
-
     def get_queryset(self):
         """
         This view should list all the user events
@@ -335,31 +334,24 @@ class CheckPasswordAPIView(generics.CreateAPIView):
 class ExportEventsAPIView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
-
-
-    def get(self, request, user_id):
+    def get(self, request):
         # Fetch events created by the specified user
+        user_id = self.request.user.id
         events = event.objects.filter(User_id=user_id)
-
         # Create the HttpResponse object with CSV headers
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="events.csv"'
-
         # Create a CSV writer object
         writer = csv.writer(response)
-
         # Write the CSV headers
         writer.writerow(['Event', 'Date', 'Status', 'Tickets Sold', 'Tickets Available'])
-
         # Write the event data rows
         for Event in events:
             tickets_sold = TicketClass.objects.filter(event_id=Event.ID).aggregate(total_sold=models.Sum('quantity_sold')).get('total_sold', 0)
             tickets_available = TicketClass.objects.filter(event_id=Event.ID).aggregate(total_capacity=models.Sum('capacity')).get('total_capacity', 0)
-
             # Handle None values and provide default values for subtraction
             tickets_sold = tickets_sold or 0
             tickets_available = tickets_available or 0
-
             writer.writerow([
                 Event.Title,
                 Event.ST_DATE,
@@ -367,7 +359,6 @@ class ExportEventsAPIView(APIView):
                 tickets_sold,
                 tickets_available - tickets_sold
             ])
-
         return response
 
 
@@ -640,14 +631,16 @@ def generate_password(length=8):
 
 
 
+# Dashboards
 @api_view(['GET'])
 @authentication_classes([CustomTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def savecsv_orderitems_by_eventid(request, event_id):
     '''
-This is a view function to retrieve all orderitems made by users using event ID 
-and save them in a csv file for the attendee report.
+    This is a view function to retrieve all orderitems made by users using event ID 
+    and save them in a csv file for the attendee report.
     '''
+    
     try:
             Event = event.objects.get(ID=event_id)
             print(request.user.id)
@@ -661,27 +654,45 @@ and save them in a csv file for the attendee report.
     json_data = serialized_orderitems.data
     count=len(json_data)
     users = [d['user_id'] for d in json_data]
+    attendees=[]
     for id in users:
-        user = User.objects.get(id=(id))
+        user = User.objects.get(id=int(id))
         user_serializer = userSerializer(user)
         data = user_serializer.data
+        attendees.append(data)
+
+    emails=[]
+    for d in attendees:
+        emails.append(d['email'])
     sum=0
     for d in json_data:
         quantity_sold = int(d['quantity'])
         price=d['ticket_price']
         sum+=int(quantity_sold*price)
+    headers = ['Event ID', 'User ID', 'User Email', 'Order ID', 'Order Item ID', 'Ticket Type', 'Ticket Price', 'Quantity']
 
-    # del json_data[3]
-    write_json_to_csv(json_data,filename='attendee_report.csv')
+    # Combine the events and json_data lists
+    rows = []
+    for item in json_data:
+        c=0
+        rows.append([event_id, item['user_id'], emails[c], item['order_id'], item['ticket_class_id'], item['ticket_price'], item['quantity']])
+        c+=1
 
-    return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
+    # Write the data to a CSV file
+    filename = f'{event_id}_attendee_report.csv'
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(headers)
+        writer.writerows(rows)
+
+    return Response({'data': json_data, 'number of order': count,'profit':sum,'user_email':emails},status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @authentication_classes([CustomTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def dashboard_orderitems_by_eventid(request, event_id):
     '''
-This is a view function to retrieve all orderitems made by users using event ID.
+    This is a view function to retrieve all orderitems made by users using event ID.
     '''
     try:
             Event = event.objects.get(ID=event_id)
@@ -697,36 +708,22 @@ This is a view function to retrieve all orderitems made by users using event ID.
     json_data = serialized_orderitems.data
     count=len(json_data)
     users = [d['user_id'] for d in json_data]
-    
+    attendees=[]
     for id in users:
         user = User.objects.get(id=(id))
         user_serializer = userSerializer(user)
         data = user_serializer.data
+        attendees.append(data)
+    emails=[]
+    for d in attendees:
+        emails.append(d['email'])
+
+    print(emails)
     sum=0
     for d in json_data:
         quantity_sold = int(d['quantity'])
         price=d['ticket_price']
         sum+=int((quantity_sold*price))
 
-    return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
-
-import csv
-import json
-def write_json_to_csv(json_list, filename):
-    '''
-This a function that takes a json format and save it to excel file
-    '''
-    # extract field names from the first JSON object in the list
-    fieldnames = list(json_list[0].keys())
-    
-    # open the CSV file for writing
-    with open(filename, 'w', newline='') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-
-        # write the header row to the CSV file
-        writer.writeheader()
-
-        # write each JSON object to a row in the CSV file
-        for json_obj in json_list:
-            writer.writerow(json_obj)
+    return Response({'data':json_data, 'number of order': count,'profit':sum,'user_email':emails},status=status.HTTP_200_OK)
     
