@@ -1282,17 +1282,29 @@
                     <li data-group="Eventmanagement" data-name="eventmanagementCreatoreventsList" class="">
                       <a href="#api-Eventmanagement-eventmanagementCreatoreventsList">eventmanagementCreatoreventsList</a>
                     </li>
+                    <li data-group="Eventmanagement" data-name="eventmanagementDeletePromocodeDestroy" class="">
+                      <a href="#api-Eventmanagement-eventmanagementDeletePromocodeDestroy">eventmanagementDeletePromocodeDestroy</a>
+                    </li>
                     <li data-group="Eventmanagement" data-name="eventmanagementEventOrderItemsRetrieve" class="">
                       <a href="#api-Eventmanagement-eventmanagementEventOrderItemsRetrieve">eventmanagementEventOrderItemsRetrieve</a>
                     </li>
                     <li data-group="Eventmanagement" data-name="eventmanagementEventOrdersRetrieve" class="">
                       <a href="#api-Eventmanagement-eventmanagementEventOrdersRetrieve">eventmanagementEventOrdersRetrieve</a>
                     </li>
+                    <li data-group="Eventmanagement" data-name="eventmanagementExportCsvRetrieve" class="">
+                      <a href="#api-Eventmanagement-eventmanagementExportCsvRetrieve">eventmanagementExportCsvRetrieve</a>
+                    </li>
+                    <li data-group="Eventmanagement" data-name="eventmanagementGetApromocodeList" class="">
+                      <a href="#api-Eventmanagement-eventmanagementGetApromocodeList">eventmanagementGetApromocodeList</a>
+                    </li>
                     <li data-group="Eventmanagement" data-name="eventmanagementPromocodeCreate" class="">
                       <a href="#api-Eventmanagement-eventmanagementPromocodeCreate">eventmanagementPromocodeCreate</a>
                     </li>
                     <li data-group="Eventmanagement" data-name="eventmanagementPublishCreate" class="">
                       <a href="#api-Eventmanagement-eventmanagementPublishCreate">eventmanagementPublishCreate</a>
+                    </li>
+                    <li data-group="Eventmanagement" data-name="eventmanagementUpdatePromocodeUpdate" class="">
+                      <a href="#api-Eventmanagement-eventmanagementUpdatePromocodeUpdate">eventmanagementUpdatePromocodeUpdate</a>
                     </li>
                   <li class="nav-header" data-group="Events"><a href="#api-Events">API Methods - Events</a></li>
                     <li data-group="Events" data-name="eventsALLRetrieve" class="">
@@ -2271,10 +2283,7 @@ request data should look like this
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Booking-bookingEventOrdersCreate-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
- -H "Authorization: Basic [[basicHash]]"\
-\
--H "Authorization: [[apiKey]]"\
-"//booking/event/{event_id}/orders/?"</code></pre>
+"//booking/event/{event_id}/orders/"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Booking-bookingEventOrdersCreate-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -2288,24 +2297,7 @@ import java.util.*;
 public class BookingApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Configure HTTP basic authorization: basicAuth
-        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
-        basicAuth.setUsername("YOUR USERNAME");
-        basicAuth.setPassword("YOUR PASSWORD");
-
-        // Configure API key authorization: cookieAuth
-        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
-        cookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //cookieAuth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: tokenAuth
-        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
-        tokenAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //tokenAuth.setApiKeyPrefix("Token");
-
+        
         BookingApi apiInstance = new BookingApi();
         Integer eventId = 56; // Integer | 
         try {
@@ -2340,19 +2332,7 @@ public class BookingApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Booking-bookingEventOrdersCreate-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: basicAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-// Configure API key authorization: (authentication scheme: cookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
-// Configure API key authorization: (authentication scheme: tokenAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
-Integer *eventId = 56; // 
+                              <pre class="prettyprint"><code class="language-cpp">Integer *eventId = 56; // 
 
 BookingApi *apiInstance = [[BookingApi alloc] init];
 
@@ -2367,23 +2347,6 @@ BookingApi *apiInstance = [[BookingApi alloc] init];
 
                             <div class="tab-pane" id="examples-Booking-bookingEventOrdersCreate-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
-var defaultClient = SwaggerJsClient.ApiClient.instance;
-// Configure HTTP basic authorization: basicAuth
-var basicAuth = defaultClient.authentications['basicAuth'];
-basicAuth.username = 'YOUR USERNAME'
-basicAuth.password = 'YOUR PASSWORD'
-
-// Configure API key authorization: cookieAuth
-var cookieAuth = defaultClient.authentications['cookieAuth'];
-cookieAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
-
-// Configure API key authorization: tokenAuth
-var tokenAuth = defaultClient.authentications['tokenAuth'];
-tokenAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
 
 var api = new SwaggerJsClient.BookingApi()
 var eventId = 56; // {{Integer}} 
@@ -2415,17 +2378,6 @@ namespace Example
     {
         public void main()
         {
-            // Configure HTTP basic authorization: basicAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-            // Configure API key authorization: cookieAuth
-            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
-            // Configure API key authorization: tokenAuth
-            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
 
             var apiInstance = new BookingApi();
             var eventId = 56;  // Integer | 
@@ -2447,17 +2399,6 @@ namespace Example
                             <div class="tab-pane" id="examples-Booking-bookingEventOrdersCreate-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
-// Configure HTTP basic authorization: basicAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-// Configure API key authorization: cookieAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
-// Configure API key authorization: tokenAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiBookingApi();
 $eventId = 56; // Integer | 
@@ -2474,17 +2415,6 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::BookingApi;
-# Configure HTTP basic authorization: basicAuth
-$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
-# Configure API key authorization: cookieAuth
-$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
-# Configure API key authorization: tokenAuth
-$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::BookingApi->new();
 my $eventId = 56; # Integer | 
@@ -2503,17 +2433,6 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
-# Configure HTTP basic authorization: basicAuth
-swagger_client.configuration.username = 'YOUR_USERNAME'
-swagger_client.configuration.password = 'YOUR_PASSWORD'
-# Configure API key authorization: cookieAuth
-swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
-# Configure API key authorization: tokenAuth
-swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
 api_instance = swagger_client.BookingApi()
@@ -2558,13 +2477,6 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                            </table>
 
                           <h2>Responses</h2>
                             <h3> Status: 200 - No response body </h3>
@@ -2615,10 +2527,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Booking-bookingEventsPromocodeRetrieve-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
- -H "Authorization: Basic [[basicHash]]"\
-\
--H "Authorization: [[apiKey]]"\
-"//booking/events/{event_id}/promocode/?"</code></pre>
+"//booking/events/{event_id}/promocode/"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Booking-bookingEventsPromocodeRetrieve-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -2632,24 +2541,7 @@ import java.util.*;
 public class BookingApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Configure HTTP basic authorization: basicAuth
-        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
-        basicAuth.setUsername("YOUR USERNAME");
-        basicAuth.setPassword("YOUR PASSWORD");
-
-        // Configure API key authorization: cookieAuth
-        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
-        cookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //cookieAuth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: tokenAuth
-        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
-        tokenAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //tokenAuth.setApiKeyPrefix("Token");
-
+        
         BookingApi apiInstance = new BookingApi();
         Integer eventId = 56; // Integer | 
         try {
@@ -2684,19 +2576,7 @@ public class BookingApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Booking-bookingEventsPromocodeRetrieve-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: basicAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-// Configure API key authorization: (authentication scheme: cookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
-// Configure API key authorization: (authentication scheme: tokenAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
-Integer *eventId = 56; // 
+                              <pre class="prettyprint"><code class="language-cpp">Integer *eventId = 56; // 
 
 BookingApi *apiInstance = [[BookingApi alloc] init];
 
@@ -2711,23 +2591,6 @@ BookingApi *apiInstance = [[BookingApi alloc] init];
 
                             <div class="tab-pane" id="examples-Booking-bookingEventsPromocodeRetrieve-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
-var defaultClient = SwaggerJsClient.ApiClient.instance;
-// Configure HTTP basic authorization: basicAuth
-var basicAuth = defaultClient.authentications['basicAuth'];
-basicAuth.username = 'YOUR USERNAME'
-basicAuth.password = 'YOUR PASSWORD'
-
-// Configure API key authorization: cookieAuth
-var cookieAuth = defaultClient.authentications['cookieAuth'];
-cookieAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
-
-// Configure API key authorization: tokenAuth
-var tokenAuth = defaultClient.authentications['tokenAuth'];
-tokenAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
 
 var api = new SwaggerJsClient.BookingApi()
 var eventId = 56; // {{Integer}} 
@@ -2759,17 +2622,6 @@ namespace Example
     {
         public void main()
         {
-            // Configure HTTP basic authorization: basicAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-            // Configure API key authorization: cookieAuth
-            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
-            // Configure API key authorization: tokenAuth
-            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
 
             var apiInstance = new BookingApi();
             var eventId = 56;  // Integer | 
@@ -2791,17 +2643,6 @@ namespace Example
                             <div class="tab-pane" id="examples-Booking-bookingEventsPromocodeRetrieve-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
-// Configure HTTP basic authorization: basicAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-// Configure API key authorization: cookieAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
-// Configure API key authorization: tokenAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiBookingApi();
 $eventId = 56; // Integer | 
@@ -2818,17 +2659,6 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::BookingApi;
-# Configure HTTP basic authorization: basicAuth
-$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
-# Configure API key authorization: cookieAuth
-$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
-# Configure API key authorization: tokenAuth
-$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::BookingApi->new();
 my $eventId = 56; # Integer | 
@@ -2847,17 +2677,6 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
-# Configure HTTP basic authorization: basicAuth
-swagger_client.configuration.username = 'YOUR_USERNAME'
-swagger_client.configuration.password = 'YOUR_PASSWORD'
-# Configure API key authorization: cookieAuth
-swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
-# Configure API key authorization: tokenAuth
-swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
 api_instance = swagger_client.BookingApi()
@@ -2902,13 +2721,6 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                            </table>
 
                           <h2>Responses</h2>
                             <h3> Status: 200 - No response body </h3>
@@ -2959,10 +2771,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Booking-bookingEventsTicketClassesRetrieve-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
- -H "Authorization: Basic [[basicHash]]"\
-\
--H "Authorization: [[apiKey]]"\
-"//booking/events/{event_id}/ticket-classes/?"</code></pre>
+"//booking/events/{event_id}/ticket-classes/"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Booking-bookingEventsTicketClassesRetrieve-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -2976,24 +2785,7 @@ import java.util.*;
 public class BookingApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Configure HTTP basic authorization: basicAuth
-        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
-        basicAuth.setUsername("YOUR USERNAME");
-        basicAuth.setPassword("YOUR PASSWORD");
-
-        // Configure API key authorization: cookieAuth
-        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
-        cookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //cookieAuth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: tokenAuth
-        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
-        tokenAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //tokenAuth.setApiKeyPrefix("Token");
-
+        
         BookingApi apiInstance = new BookingApi();
         Integer eventId = 56; // Integer | 
         try {
@@ -3028,19 +2820,7 @@ public class BookingApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Booking-bookingEventsTicketClassesRetrieve-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: basicAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-// Configure API key authorization: (authentication scheme: cookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
-// Configure API key authorization: (authentication scheme: tokenAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
-Integer *eventId = 56; // 
+                              <pre class="prettyprint"><code class="language-cpp">Integer *eventId = 56; // 
 
 BookingApi *apiInstance = [[BookingApi alloc] init];
 
@@ -3055,23 +2835,6 @@ BookingApi *apiInstance = [[BookingApi alloc] init];
 
                             <div class="tab-pane" id="examples-Booking-bookingEventsTicketClassesRetrieve-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
-var defaultClient = SwaggerJsClient.ApiClient.instance;
-// Configure HTTP basic authorization: basicAuth
-var basicAuth = defaultClient.authentications['basicAuth'];
-basicAuth.username = 'YOUR USERNAME'
-basicAuth.password = 'YOUR PASSWORD'
-
-// Configure API key authorization: cookieAuth
-var cookieAuth = defaultClient.authentications['cookieAuth'];
-cookieAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
-
-// Configure API key authorization: tokenAuth
-var tokenAuth = defaultClient.authentications['tokenAuth'];
-tokenAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
 
 var api = new SwaggerJsClient.BookingApi()
 var eventId = 56; // {{Integer}} 
@@ -3103,17 +2866,6 @@ namespace Example
     {
         public void main()
         {
-            // Configure HTTP basic authorization: basicAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-            // Configure API key authorization: cookieAuth
-            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
-            // Configure API key authorization: tokenAuth
-            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
 
             var apiInstance = new BookingApi();
             var eventId = 56;  // Integer | 
@@ -3135,17 +2887,6 @@ namespace Example
                             <div class="tab-pane" id="examples-Booking-bookingEventsTicketClassesRetrieve-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
-// Configure HTTP basic authorization: basicAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-// Configure API key authorization: cookieAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
-// Configure API key authorization: tokenAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiBookingApi();
 $eventId = 56; // Integer | 
@@ -3162,17 +2903,6 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::BookingApi;
-# Configure HTTP basic authorization: basicAuth
-$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
-# Configure API key authorization: cookieAuth
-$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
-# Configure API key authorization: tokenAuth
-$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::BookingApi->new();
 my $eventId = 56; # Integer | 
@@ -3191,17 +2921,6 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
-# Configure HTTP basic authorization: basicAuth
-swagger_client.configuration.username = 'YOUR_USERNAME'
-swagger_client.configuration.password = 'YOUR_PASSWORD'
-# Configure API key authorization: cookieAuth
-swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
-# Configure API key authorization: tokenAuth
-swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
 api_instance = swagger_client.BookingApi()
@@ -3246,13 +2965,6 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                            </table>
 
                           <h2>Responses</h2>
                             <h3> Status: 200 - No response body </h3>
@@ -3299,10 +3011,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Booking-bookingOrderOrderItemsRetrieve-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
- -H "Authorization: Basic [[basicHash]]"\
-\
--H "Authorization: [[apiKey]]"\
-"//booking/order/{order_id}/order-items/?"</code></pre>
+"//booking/order/{order_id}/order-items/"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Booking-bookingOrderOrderItemsRetrieve-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -3316,24 +3025,7 @@ import java.util.*;
 public class BookingApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Configure HTTP basic authorization: basicAuth
-        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
-        basicAuth.setUsername("YOUR USERNAME");
-        basicAuth.setPassword("YOUR PASSWORD");
-
-        // Configure API key authorization: cookieAuth
-        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
-        cookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //cookieAuth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: tokenAuth
-        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
-        tokenAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //tokenAuth.setApiKeyPrefix("Token");
-
+        
         BookingApi apiInstance = new BookingApi();
         Integer orderId = 56; // Integer | 
         try {
@@ -3368,19 +3060,7 @@ public class BookingApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Booking-bookingOrderOrderItemsRetrieve-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: basicAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-// Configure API key authorization: (authentication scheme: cookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
-// Configure API key authorization: (authentication scheme: tokenAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
-Integer *orderId = 56; // 
+                              <pre class="prettyprint"><code class="language-cpp">Integer *orderId = 56; // 
 
 BookingApi *apiInstance = [[BookingApi alloc] init];
 
@@ -3395,23 +3075,6 @@ BookingApi *apiInstance = [[BookingApi alloc] init];
 
                             <div class="tab-pane" id="examples-Booking-bookingOrderOrderItemsRetrieve-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
-var defaultClient = SwaggerJsClient.ApiClient.instance;
-// Configure HTTP basic authorization: basicAuth
-var basicAuth = defaultClient.authentications['basicAuth'];
-basicAuth.username = 'YOUR USERNAME'
-basicAuth.password = 'YOUR PASSWORD'
-
-// Configure API key authorization: cookieAuth
-var cookieAuth = defaultClient.authentications['cookieAuth'];
-cookieAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
-
-// Configure API key authorization: tokenAuth
-var tokenAuth = defaultClient.authentications['tokenAuth'];
-tokenAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
 
 var api = new SwaggerJsClient.BookingApi()
 var orderId = 56; // {{Integer}} 
@@ -3443,17 +3106,6 @@ namespace Example
     {
         public void main()
         {
-            // Configure HTTP basic authorization: basicAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-            // Configure API key authorization: cookieAuth
-            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
-            // Configure API key authorization: tokenAuth
-            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
 
             var apiInstance = new BookingApi();
             var orderId = 56;  // Integer | 
@@ -3475,17 +3127,6 @@ namespace Example
                             <div class="tab-pane" id="examples-Booking-bookingOrderOrderItemsRetrieve-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
-// Configure HTTP basic authorization: basicAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-// Configure API key authorization: cookieAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
-// Configure API key authorization: tokenAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiBookingApi();
 $orderId = 56; // Integer | 
@@ -3502,17 +3143,6 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::BookingApi;
-# Configure HTTP basic authorization: basicAuth
-$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
-# Configure API key authorization: cookieAuth
-$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
-# Configure API key authorization: tokenAuth
-$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::BookingApi->new();
 my $orderId = 56; # Integer | 
@@ -3531,17 +3161,6 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
-# Configure HTTP basic authorization: basicAuth
-swagger_client.configuration.username = 'YOUR_USERNAME'
-swagger_client.configuration.password = 'YOUR_PASSWORD'
-# Configure API key authorization: cookieAuth
-swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
-# Configure API key authorization: tokenAuth
-swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
 api_instance = swagger_client.BookingApi()
@@ -3586,13 +3205,6 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                            </table>
 
                           <h2>Responses</h2>
                             <h3> Status: 200 - No response body </h3>
@@ -3643,10 +3255,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Booking-bookingUserOrdersRetrieve-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
- -H "Authorization: Basic [[basicHash]]"\
-\
--H "Authorization: [[apiKey]]"\
-"//booking/user/{user_id}/orders/?"</code></pre>
+"//booking/user/{user_id}/orders/"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Booking-bookingUserOrdersRetrieve-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -3660,24 +3269,7 @@ import java.util.*;
 public class BookingApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Configure HTTP basic authorization: basicAuth
-        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
-        basicAuth.setUsername("YOUR USERNAME");
-        basicAuth.setPassword("YOUR PASSWORD");
-
-        // Configure API key authorization: cookieAuth
-        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
-        cookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //cookieAuth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: tokenAuth
-        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
-        tokenAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //tokenAuth.setApiKeyPrefix("Token");
-
+        
         BookingApi apiInstance = new BookingApi();
         Integer userId = 56; // Integer | 
         try {
@@ -3712,19 +3304,7 @@ public class BookingApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Booking-bookingUserOrdersRetrieve-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: basicAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-// Configure API key authorization: (authentication scheme: cookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
-// Configure API key authorization: (authentication scheme: tokenAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
-Integer *userId = 56; // 
+                              <pre class="prettyprint"><code class="language-cpp">Integer *userId = 56; // 
 
 BookingApi *apiInstance = [[BookingApi alloc] init];
 
@@ -3739,23 +3319,6 @@ BookingApi *apiInstance = [[BookingApi alloc] init];
 
                             <div class="tab-pane" id="examples-Booking-bookingUserOrdersRetrieve-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
-var defaultClient = SwaggerJsClient.ApiClient.instance;
-// Configure HTTP basic authorization: basicAuth
-var basicAuth = defaultClient.authentications['basicAuth'];
-basicAuth.username = 'YOUR USERNAME'
-basicAuth.password = 'YOUR PASSWORD'
-
-// Configure API key authorization: cookieAuth
-var cookieAuth = defaultClient.authentications['cookieAuth'];
-cookieAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
-
-// Configure API key authorization: tokenAuth
-var tokenAuth = defaultClient.authentications['tokenAuth'];
-tokenAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
 
 var api = new SwaggerJsClient.BookingApi()
 var userId = 56; // {{Integer}} 
@@ -3787,17 +3350,6 @@ namespace Example
     {
         public void main()
         {
-            // Configure HTTP basic authorization: basicAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-            // Configure API key authorization: cookieAuth
-            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
-            // Configure API key authorization: tokenAuth
-            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
 
             var apiInstance = new BookingApi();
             var userId = 56;  // Integer | 
@@ -3819,17 +3371,6 @@ namespace Example
                             <div class="tab-pane" id="examples-Booking-bookingUserOrdersRetrieve-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
-// Configure HTTP basic authorization: basicAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-// Configure API key authorization: cookieAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
-// Configure API key authorization: tokenAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiBookingApi();
 $userId = 56; // Integer | 
@@ -3846,17 +3387,6 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::BookingApi;
-# Configure HTTP basic authorization: basicAuth
-$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
-# Configure API key authorization: cookieAuth
-$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
-# Configure API key authorization: tokenAuth
-$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::BookingApi->new();
 my $userId = 56; # Integer | 
@@ -3875,17 +3405,6 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
-# Configure HTTP basic authorization: basicAuth
-swagger_client.configuration.username = 'YOUR_USERNAME'
-swagger_client.configuration.password = 'YOUR_PASSWORD'
-# Configure API key authorization: cookieAuth
-swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
-# Configure API key authorization: tokenAuth
-swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
 api_instance = swagger_client.BookingApi()
@@ -3930,13 +3449,6 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                            </table>
 
                           <h2>Responses</h2>
                             <h3> Status: 200 - No response body </h3>
@@ -3962,7 +3474,7 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This is a view function to retrieve all orderitems made by users using event ID.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/dashboard/eventmanagement/event/{event_id}/order-items/</span></code></pre>
@@ -4202,7 +3714,8 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This is a view function to retrieve all orderitems made by users using event ID
+and save them in a csv file for the attendee report.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/dashboard/eventmanagement/event/save/{event_id}/order-items/</span></code></pre>
@@ -4442,7 +3955,8 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">A view function that returns the ticket classes ids in an event associated with how many tickets were sold out of the total.
+It uses the TicketQuantityClassSerializer to serialize the data before returning it in the response.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/dashboard/eventmanagement/sold-tickets/{event_id}/ticket-classes/</span></code></pre>
@@ -4682,7 +4196,7 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This is a function to retrieve the user info by the user id. (Used in dashboard).</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/dashboard/user/{user_id}/</span></code></pre>
@@ -5069,10 +4583,7 @@ request data should look like this
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Eventmanagement-eventmanagementAddAttendeeCreate-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
- -H "Authorization: Basic [[basicHash]]"\
-\
--H "Authorization: [[apiKey]]"\
-"//eventmanagement/{event_id}/add-attendee/?"</code></pre>
+"//eventmanagement/{event_id}/add-attendee/"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Eventmanagement-eventmanagementAddAttendeeCreate-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -5086,24 +4597,7 @@ import java.util.*;
 public class EventmanagementApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Configure HTTP basic authorization: basicAuth
-        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
-        basicAuth.setUsername("YOUR USERNAME");
-        basicAuth.setPassword("YOUR PASSWORD");
-
-        // Configure API key authorization: cookieAuth
-        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
-        cookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //cookieAuth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: tokenAuth
-        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
-        tokenAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //tokenAuth.setApiKeyPrefix("Token");
-
+        
         EventmanagementApi apiInstance = new EventmanagementApi();
         Integer eventId = 56; // Integer | 
         try {
@@ -5138,19 +4632,7 @@ public class EventmanagementApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementAddAttendeeCreate-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: basicAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-// Configure API key authorization: (authentication scheme: cookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
-// Configure API key authorization: (authentication scheme: tokenAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
-Integer *eventId = 56; // 
+                              <pre class="prettyprint"><code class="language-cpp">Integer *eventId = 56; // 
 
 EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
 
@@ -5165,23 +4647,6 @@ EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
 
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementAddAttendeeCreate-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
-var defaultClient = SwaggerJsClient.ApiClient.instance;
-// Configure HTTP basic authorization: basicAuth
-var basicAuth = defaultClient.authentications['basicAuth'];
-basicAuth.username = 'YOUR USERNAME'
-basicAuth.password = 'YOUR PASSWORD'
-
-// Configure API key authorization: cookieAuth
-var cookieAuth = defaultClient.authentications['cookieAuth'];
-cookieAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
-
-// Configure API key authorization: tokenAuth
-var tokenAuth = defaultClient.authentications['tokenAuth'];
-tokenAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
 
 var api = new SwaggerJsClient.EventmanagementApi()
 var eventId = 56; // {{Integer}} 
@@ -5213,17 +4678,6 @@ namespace Example
     {
         public void main()
         {
-            // Configure HTTP basic authorization: basicAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-            // Configure API key authorization: cookieAuth
-            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
-            // Configure API key authorization: tokenAuth
-            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
 
             var apiInstance = new EventmanagementApi();
             var eventId = 56;  // Integer | 
@@ -5245,17 +4699,6 @@ namespace Example
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementAddAttendeeCreate-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
-// Configure HTTP basic authorization: basicAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-// Configure API key authorization: cookieAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
-// Configure API key authorization: tokenAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiEventmanagementApi();
 $eventId = 56; // Integer | 
@@ -5272,17 +4715,6 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::EventmanagementApi;
-# Configure HTTP basic authorization: basicAuth
-$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
-# Configure API key authorization: cookieAuth
-$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
-# Configure API key authorization: tokenAuth
-$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::EventmanagementApi->new();
 my $eventId = 56; # Integer | 
@@ -5301,17 +4733,6 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
-# Configure HTTP basic authorization: basicAuth
-swagger_client.configuration.username = 'YOUR_USERNAME'
-swagger_client.configuration.password = 'YOUR_PASSWORD'
-# Configure API key authorization: cookieAuth
-swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
-# Configure API key authorization: tokenAuth
-swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
 api_instance = swagger_client.EventmanagementApi()
@@ -5356,13 +4777,6 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                            </table>
 
                           <h2>Responses</h2>
                             <h3> Status: 200 - No response body </h3>
@@ -6651,6 +6065,246 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
+                    <div id="api-Eventmanagement-eventmanagementDeletePromocodeDestroy">
+                      <article id="api-Eventmanagement-eventmanagementDeletePromocodeDestroy-0" data-group="User" data-name="eventmanagementDeletePromocodeDestroy" data-version="0">
+                        <div class="pull-left">
+                          <h1>eventmanagementDeletePromocodeDestroy</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">A viewset for deleting a discount for an event by Discount ID.</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/eventmanagement/{discount_id}/delete_promocode/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X DELETE\
+"//eventmanagement/{discount_id}/delete_promocode/"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.EventmanagementApi;
+
+import java.io.File;
+import java.util.*;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Integer discountId = 56; // Integer | 
+        try {
+            apiInstance.eventmanagementDeletePromocodeDestroy(discountId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementDeletePromocodeDestroy");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.EventmanagementApi;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Integer discountId = 56; // Integer | 
+        try {
+            apiInstance.eventmanagementDeletePromocodeDestroy(discountId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementDeletePromocodeDestroy");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Integer *discountId = 56; // 
+
+EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
+
+[apiInstance eventmanagementDeletePromocodeDestroyWith:discountId
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
+
+var api = new SwaggerJsClient.EventmanagementApi()
+var discountId = 56; // {{Integer}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.eventmanagementDeletePromocodeDestroy(discountId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class eventmanagementDeletePromocodeDestroyExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new EventmanagementApi();
+            var discountId = 56;  // Integer | 
+
+            try
+            {
+                apiInstance.eventmanagementDeletePromocodeDestroy(discountId);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling EventmanagementApi.eventmanagementDeletePromocodeDestroy: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiEventmanagementApi();
+$discountId = 56; // Integer | 
+
+try {
+    $api_instance->eventmanagementDeletePromocodeDestroy($discountId);
+} catch (Exception $e) {
+    echo 'Exception when calling EventmanagementApi->eventmanagementDeletePromocodeDestroy: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::EventmanagementApi;
+
+my $api_instance = WWW::SwaggerClient::EventmanagementApi->new();
+my $discountId = 56; # Integer | 
+
+eval { 
+    $api_instance->eventmanagementDeletePromocodeDestroy(discountId => $discountId);
+};
+if ($@) {
+    warn "Exception when calling EventmanagementApi->eventmanagementDeletePromocodeDestroy: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementDeletePromocodeDestroy-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.EventmanagementApi()
+discountId = 56 # Integer | 
+
+try: 
+    api_instance.eventmanagement_delete_promocode_destroy(discountId)
+except ApiException as e:
+    print("Exception when calling EventmanagementApi->eventmanagementDeletePromocodeDestroy: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">discount_id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementDeletePromocodeDestroy_discountId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 204 - No response body </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-Eventmanagement-eventmanagementEventOrderItemsRetrieve">
                       <article id="api-Eventmanagement-eventmanagementEventOrderItemsRetrieve-0" data-group="User" data-name="eventmanagementEventOrderItemsRetrieve" data-version="0">
                         <div class="pull-left">
@@ -6660,7 +6314,7 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">list of all order items in an event by event ID</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/eventmanagement/event/{event_id}/order-items/</span></code></pre>
@@ -6684,10 +6338,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Eventmanagement-eventmanagementEventOrderItemsRetrieve-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
- -H "Authorization: Basic [[basicHash]]"\
-\
--H "Authorization: [[apiKey]]"\
-"//eventmanagement/event/{event_id}/order-items/?"</code></pre>
+"//eventmanagement/event/{event_id}/order-items/"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Eventmanagement-eventmanagementEventOrderItemsRetrieve-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -6701,24 +6352,7 @@ import java.util.*;
 public class EventmanagementApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Configure HTTP basic authorization: basicAuth
-        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
-        basicAuth.setUsername("YOUR USERNAME");
-        basicAuth.setPassword("YOUR PASSWORD");
-
-        // Configure API key authorization: cookieAuth
-        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
-        cookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //cookieAuth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: tokenAuth
-        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
-        tokenAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //tokenAuth.setApiKeyPrefix("Token");
-
+        
         EventmanagementApi apiInstance = new EventmanagementApi();
         Integer eventId = 56; // Integer | 
         try {
@@ -6753,19 +6387,7 @@ public class EventmanagementApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementEventOrderItemsRetrieve-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: basicAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-// Configure API key authorization: (authentication scheme: cookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
-// Configure API key authorization: (authentication scheme: tokenAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
-Integer *eventId = 56; // 
+                              <pre class="prettyprint"><code class="language-cpp">Integer *eventId = 56; // 
 
 EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
 
@@ -6780,23 +6402,6 @@ EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
 
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementEventOrderItemsRetrieve-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
-var defaultClient = SwaggerJsClient.ApiClient.instance;
-// Configure HTTP basic authorization: basicAuth
-var basicAuth = defaultClient.authentications['basicAuth'];
-basicAuth.username = 'YOUR USERNAME'
-basicAuth.password = 'YOUR PASSWORD'
-
-// Configure API key authorization: cookieAuth
-var cookieAuth = defaultClient.authentications['cookieAuth'];
-cookieAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
-
-// Configure API key authorization: tokenAuth
-var tokenAuth = defaultClient.authentications['tokenAuth'];
-tokenAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
 
 var api = new SwaggerJsClient.EventmanagementApi()
 var eventId = 56; // {{Integer}} 
@@ -6828,17 +6433,6 @@ namespace Example
     {
         public void main()
         {
-            // Configure HTTP basic authorization: basicAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-            // Configure API key authorization: cookieAuth
-            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
-            // Configure API key authorization: tokenAuth
-            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
 
             var apiInstance = new EventmanagementApi();
             var eventId = 56;  // Integer | 
@@ -6860,17 +6454,6 @@ namespace Example
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementEventOrderItemsRetrieve-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
-// Configure HTTP basic authorization: basicAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-// Configure API key authorization: cookieAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
-// Configure API key authorization: tokenAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiEventmanagementApi();
 $eventId = 56; // Integer | 
@@ -6887,17 +6470,6 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::EventmanagementApi;
-# Configure HTTP basic authorization: basicAuth
-$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
-# Configure API key authorization: cookieAuth
-$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
-# Configure API key authorization: tokenAuth
-$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::EventmanagementApi->new();
 my $eventId = 56; # Integer | 
@@ -6916,17 +6488,6 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
-# Configure HTTP basic authorization: basicAuth
-swagger_client.configuration.username = 'YOUR_USERNAME'
-swagger_client.configuration.password = 'YOUR_PASSWORD'
-# Configure API key authorization: cookieAuth
-swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
-# Configure API key authorization: tokenAuth
-swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
 api_instance = swagger_client.EventmanagementApi()
@@ -6971,13 +6532,6 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                            </table>
 
                           <h2>Responses</h2>
                             <h3> Status: 200 - No response body </h3>
@@ -7028,10 +6582,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Eventmanagement-eventmanagementEventOrdersRetrieve-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X GET\
- -H "Authorization: Basic [[basicHash]]"\
-\
--H "Authorization: [[apiKey]]"\
-"//eventmanagement/event/{event_id}/orders/?"</code></pre>
+"//eventmanagement/event/{event_id}/orders/"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Eventmanagement-eventmanagementEventOrdersRetrieve-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -7045,24 +6596,7 @@ import java.util.*;
 public class EventmanagementApiExample {
 
     public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Configure HTTP basic authorization: basicAuth
-        HttpBasicAuth basicAuth = (HttpBasicAuth) defaultClient.getAuthentication("basicAuth");
-        basicAuth.setUsername("YOUR USERNAME");
-        basicAuth.setPassword("YOUR PASSWORD");
-
-        // Configure API key authorization: cookieAuth
-        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
-        cookieAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //cookieAuth.setApiKeyPrefix("Token");
-
-        // Configure API key authorization: tokenAuth
-        ApiKeyAuth tokenAuth = (ApiKeyAuth) defaultClient.getAuthentication("tokenAuth");
-        tokenAuth.setApiKey("YOUR API KEY");
-        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-        //tokenAuth.setApiKeyPrefix("Token");
-
+        
         EventmanagementApi apiInstance = new EventmanagementApi();
         Integer eventId = 56; // Integer | 
         try {
@@ -7097,19 +6631,7 @@ public class EventmanagementApiExample {
   <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
   </div> -->
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementEventOrdersRetrieve-0-objc">
-                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
-// Configure HTTP basic authorization (authentication scheme: basicAuth)
-[apiConfig setUsername:@"YOUR_USERNAME"];
-[apiConfig setPassword:@"YOUR_PASSWORD"];
-// Configure API key authorization: (authentication scheme: cookieAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"sessionid"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"sessionid"];
-// Configure API key authorization: (authentication scheme: tokenAuth)
-[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"Authorization"];
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"Authorization"];
-Integer *eventId = 56; // 
+                              <pre class="prettyprint"><code class="language-cpp">Integer *eventId = 56; // 
 
 EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
 
@@ -7124,23 +6646,6 @@ EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
 
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementEventOrdersRetrieve-0-javascript">
                               <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
-var defaultClient = SwaggerJsClient.ApiClient.instance;
-// Configure HTTP basic authorization: basicAuth
-var basicAuth = defaultClient.authentications['basicAuth'];
-basicAuth.username = 'YOUR USERNAME'
-basicAuth.password = 'YOUR PASSWORD'
-
-// Configure API key authorization: cookieAuth
-var cookieAuth = defaultClient.authentications['cookieAuth'];
-cookieAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//cookieAuth.apiKeyPrefix['sessionid'] = "Token"
-
-// Configure API key authorization: tokenAuth
-var tokenAuth = defaultClient.authentications['tokenAuth'];
-tokenAuth.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//tokenAuth.apiKeyPrefix['Authorization'] = "Token"
 
 var api = new SwaggerJsClient.EventmanagementApi()
 var eventId = 56; // {{Integer}} 
@@ -7172,17 +6677,6 @@ namespace Example
     {
         public void main()
         {
-            // Configure HTTP basic authorization: basicAuth
-            Configuration.Default.Username = "YOUR_USERNAME";
-            Configuration.Default.Password = "YOUR_PASSWORD";
-            // Configure API key authorization: cookieAuth
-            Configuration.Default.ApiKey.Add("sessionid", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("sessionid", "Bearer");
-            // Configure API key authorization: tokenAuth
-            Configuration.Default.ApiKey.Add("Authorization", "YOUR_API_KEY");
-            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-            // Configuration.Default.ApiKeyPrefix.Add("Authorization", "Bearer");
 
             var apiInstance = new EventmanagementApi();
             var eventId = 56;  // Integer | 
@@ -7204,17 +6698,6 @@ namespace Example
                             <div class="tab-pane" id="examples-Eventmanagement-eventmanagementEventOrdersRetrieve-0-php">
                               <pre class="prettyprint"><code class="language-php"><&#63;php
 require_once(__DIR__ . '/vendor/autoload.php');
-// Configure HTTP basic authorization: basicAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setUsername('YOUR_USERNAME');
-Swagger\Client\Configuration::getDefaultConfiguration()->setPassword('YOUR_PASSWORD');
-// Configure API key authorization: cookieAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('sessionid', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('sessionid', 'Bearer');
-// Configure API key authorization: tokenAuth
-Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
-// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiEventmanagementApi();
 $eventId = 56; // Integer | 
@@ -7231,17 +6714,6 @@ try {
                               <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
 use WWW::SwaggerClient::Configuration;
 use WWW::SwaggerClient::EventmanagementApi;
-# Configure HTTP basic authorization: basicAuth
-$WWW::SwaggerClient::Configuration::username = 'YOUR_USERNAME';
-$WWW::SwaggerClient::Configuration::password = 'YOUR_PASSWORD';
-# Configure API key authorization: cookieAuth
-$WWW::SwaggerClient::Configuration::api_key->{'sessionid'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'sessionid'} = "Bearer";
-# Configure API key authorization: tokenAuth
-$WWW::SwaggerClient::Configuration::api_key->{'Authorization'} = 'YOUR_API_KEY';
-# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-#$WWW::SwaggerClient::Configuration::api_key_prefix->{'Authorization'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::EventmanagementApi->new();
 my $eventId = 56; # Integer | 
@@ -7260,17 +6732,6 @@ import time
 import swagger_client
 from swagger_client.rest import ApiException
 from pprint import pprint
-# Configure HTTP basic authorization: basicAuth
-swagger_client.configuration.username = 'YOUR_USERNAME'
-swagger_client.configuration.password = 'YOUR_PASSWORD'
-# Configure API key authorization: cookieAuth
-swagger_client.configuration.api_key['sessionid'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['sessionid'] = 'Bearer'
-# Configure API key authorization: tokenAuth
-swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 
 # create an instance of the API class
 api_instance = swagger_client.EventmanagementApi()
@@ -7315,13 +6776,6 @@ except ApiException as e:
 
 
 
-                            <div class="methodsubtabletitle">Query parameters</div>
-                            <table id="methodsubtable">
-                              <tr>
-                                <th width="150px">Name</th>
-                                <th>Description</th>
-                              </tr>
-                            </table>
 
                           <h2>Responses</h2>
                             <h3> Status: 200 - No response body </h3>
@@ -7330,6 +6784,540 @@ except ApiException as e:
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Eventmanagement-eventmanagementExportCsvRetrieve">
+                      <article id="api-Eventmanagement-eventmanagementExportCsvRetrieve-0" data-group="User" data-name="eventmanagementExportCsvRetrieve" data-version="0">
+                        <div class="pull-left">
+                          <h1>eventmanagementExportCsvRetrieve</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/eventmanagement/{user_id}/export_csv/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+"//eventmanagement/{user_id}/export_csv/"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.EventmanagementApi;
+
+import java.io.File;
+import java.util.*;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Integer userId = 56; // Integer | 
+        try {
+            apiInstance.eventmanagementExportCsvRetrieve(userId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementExportCsvRetrieve");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.EventmanagementApi;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Integer userId = 56; // Integer | 
+        try {
+            apiInstance.eventmanagementExportCsvRetrieve(userId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementExportCsvRetrieve");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Integer *userId = 56; // 
+
+EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
+
+[apiInstance eventmanagementExportCsvRetrieveWith:userId
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
+
+var api = new SwaggerJsClient.EventmanagementApi()
+var userId = 56; // {{Integer}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.eventmanagementExportCsvRetrieve(userId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class eventmanagementExportCsvRetrieveExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new EventmanagementApi();
+            var userId = 56;  // Integer | 
+
+            try
+            {
+                apiInstance.eventmanagementExportCsvRetrieve(userId);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling EventmanagementApi.eventmanagementExportCsvRetrieve: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiEventmanagementApi();
+$userId = 56; // Integer | 
+
+try {
+    $api_instance->eventmanagementExportCsvRetrieve($userId);
+} catch (Exception $e) {
+    echo 'Exception when calling EventmanagementApi->eventmanagementExportCsvRetrieve: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::EventmanagementApi;
+
+my $api_instance = WWW::SwaggerClient::EventmanagementApi->new();
+my $userId = 56; # Integer | 
+
+eval { 
+    $api_instance->eventmanagementExportCsvRetrieve(userId => $userId);
+};
+if ($@) {
+    warn "Exception when calling EventmanagementApi->eventmanagementExportCsvRetrieve: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementExportCsvRetrieve-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.EventmanagementApi()
+userId = 56 # Integer | 
+
+try: 
+    api_instance.eventmanagement_export_csv_retrieve(userId)
+except ApiException as e:
+    print("Exception when calling EventmanagementApi->eventmanagementExportCsvRetrieve: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">user_id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementExportCsvRetrieve_userId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - No response body </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Eventmanagement-eventmanagementGetApromocodeList">
+                      <article id="api-Eventmanagement-eventmanagementGetApromocodeList-0" data-group="User" data-name="eventmanagementGetApromocodeList" data-version="0">
+                        <div class="pull-left">
+                          <h1>eventmanagementGetApromocodeList</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">A view that to get a promocode for a specific events by discount id</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/eventmanagement/{discount_id}/get_apromocode/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementGetApromocodeList-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"//eventmanagement/{discount_id}/get_apromocode/"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.EventmanagementApi;
+
+import java.io.File;
+import java.util.*;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Integer discountId = 56; // Integer | 
+        try {
+            array[Discount] result = apiInstance.eventmanagementGetApromocodeList(discountId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementGetApromocodeList");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.EventmanagementApi;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Integer discountId = 56; // Integer | 
+        try {
+            array[Discount] result = apiInstance.eventmanagementGetApromocodeList(discountId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementGetApromocodeList");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Integer *discountId = 56; // 
+
+EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
+
+[apiInstance eventmanagementGetApromocodeListWith:discountId
+              completionHandler: ^(array[Discount] output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
+
+var api = new SwaggerJsClient.EventmanagementApi()
+var discountId = 56; // {{Integer}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.eventmanagementGetApromocodeList(discountId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class eventmanagementGetApromocodeListExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new EventmanagementApi();
+            var discountId = 56;  // Integer | 
+
+            try
+            {
+                array[Discount] result = apiInstance.eventmanagementGetApromocodeList(discountId);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling EventmanagementApi.eventmanagementGetApromocodeList: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiEventmanagementApi();
+$discountId = 56; // Integer | 
+
+try {
+    $result = $api_instance->eventmanagementGetApromocodeList($discountId);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling EventmanagementApi->eventmanagementGetApromocodeList: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::EventmanagementApi;
+
+my $api_instance = WWW::SwaggerClient::EventmanagementApi->new();
+my $discountId = 56; # Integer | 
+
+eval { 
+    my $result = $api_instance->eventmanagementGetApromocodeList(discountId => $discountId);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling EventmanagementApi->eventmanagementGetApromocodeList: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementGetApromocodeList-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.EventmanagementApi()
+discountId = 56 # Integer | 
+
+try: 
+    api_response = api_instance.eventmanagement_get_apromocode_list(discountId)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling EventmanagementApi->eventmanagementGetApromocodeList: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">discount_id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementGetApromocodeList_discountId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 -  </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-eventmanagementGetApromocodeList-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-eventmanagementGetApromocodeList-200-schema">
+                                  <div id='responses-eventmanagementGetApromocodeList-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Discount"
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-eventmanagementGetApromocodeList-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-eventmanagementGetApromocodeList-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-eventmanagementGetApromocodeList-200-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>
@@ -9010,6 +8998,246 @@ except ApiException as e:
                                   </div>
                                   <input id='responses-eventmanagementPublishCreate-201-schema-data' type='hidden' value=''></input>
                                 </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Eventmanagement-eventmanagementUpdatePromocodeUpdate">
+                      <article id="api-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0" data-group="User" data-name="eventmanagementUpdatePromocodeUpdate" data-version="0">
+                        <div class="pull-left">
+                          <h1>eventmanagementUpdatePromocodeUpdate</h1>
+                          <p></p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">A view that update a promocode for a specific events given the discount id</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="put"><code><span class="pln">/eventmanagement/{discount_id}/update_promocode/</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X PUT\
+"//eventmanagement/{discount_id}/update_promocode/"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.EventmanagementApi;
+
+import java.io.File;
+import java.util.*;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Integer discountId = 56; // Integer | 
+        try {
+            apiInstance.eventmanagementUpdatePromocodeUpdate(discountId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementUpdatePromocodeUpdate");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.EventmanagementApi;
+
+public class EventmanagementApiExample {
+
+    public static void main(String[] args) {
+        EventmanagementApi apiInstance = new EventmanagementApi();
+        Integer discountId = 56; // Integer | 
+        try {
+            apiInstance.eventmanagementUpdatePromocodeUpdate(discountId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling EventmanagementApi#eventmanagementUpdatePromocodeUpdate");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Integer *discountId = 56; // 
+
+EventmanagementApi *apiInstance = [[EventmanagementApi alloc] init];
+
+[apiInstance eventmanagementUpdatePromocodeUpdateWith:discountId
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SwaggerJsClient = require('swagger-js-client');
+
+var api = new SwaggerJsClient.EventmanagementApi()
+var discountId = 56; // {{Integer}} 
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.eventmanagementUpdatePromocodeUpdate(discountId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class eventmanagementUpdatePromocodeUpdateExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new EventmanagementApi();
+            var discountId = 56;  // Integer | 
+
+            try
+            {
+                apiInstance.eventmanagementUpdatePromocodeUpdate(discountId);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling EventmanagementApi.eventmanagementUpdatePromocodeUpdate: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiEventmanagementApi();
+$discountId = 56; // Integer | 
+
+try {
+    $api_instance->eventmanagementUpdatePromocodeUpdate($discountId);
+} catch (Exception $e) {
+    echo 'Exception when calling EventmanagementApi->eventmanagementUpdatePromocodeUpdate: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::EventmanagementApi;
+
+my $api_instance = WWW::SwaggerClient::EventmanagementApi->new();
+my $discountId = 56; # Integer | 
+
+eval { 
+    $api_instance->eventmanagementUpdatePromocodeUpdate(discountId => $discountId);
+};
+if ($@) {
+    warn "Exception when calling EventmanagementApi->eventmanagementUpdatePromocodeUpdate: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Eventmanagement-eventmanagementUpdatePromocodeUpdate-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.EventmanagementApi()
+discountId = 56 # Integer | 
+
+try: 
+    api_instance.eventmanagement_update_promocode_update(discountId)
+except ApiException as e:
+    print("Exception when calling EventmanagementApi->eventmanagementUpdatePromocodeUpdate: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">discount_id*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_eventmanagementUpdatePromocodeUpdate_discountId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      Integer
+                                                  </span>
+                                  
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - No response body </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
                             </div>
 
                         </article>
@@ -22175,7 +22403,9 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This is a view class for the user email check.
+It checks if the email entered is in the database or not
+    to redirect the user either to the signup or to login.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/user/emailcheck/{email}/</span></code></pre>
@@ -22515,7 +22745,7 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This is a view class for the user login. User has to verify his email after signup to be able to login</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/user/login/</span></code></pre>
@@ -23022,7 +23252,8 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This is a view class for the user to reset his password
+and for the frontend to put the email to specify the user to update his password.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/user/reset-password/change_password/</span></code></pre>
@@ -23561,7 +23792,8 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This is a view class to check the link (sent earlier by email) clicked by the user to reset his password.
+The class checks the token and the u_email from the query</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/user/reset-password/check-query/{uidb64}/{token}/</span></code></pre>
@@ -24711,7 +24943,8 @@ except ApiException as e:
                         <div class="pull-right"></div>
                         <div class="clearfix"></div>
                         <p></p>
-                        <p class="marked"></p>
+                        <p class="marked">This is a view class for the user to verify his email to activate his account
+by clicking the link sent to him by mail right after signing up.</p>
                         <p></p>
                         <br />
                         <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/verify-mail/{uidb64}/{token}/</span></code></pre>
