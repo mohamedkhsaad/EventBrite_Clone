@@ -402,8 +402,8 @@ def add_attendee(request, event_id):
         subtotal += ticket_class.PRICE * quantity
         print(type)
 
-        ticket_class.quantity_sold += str(quantity)
-        # ticket_class.save()
+        quantity_sold_updated = int(ticket_class.quantity_sold) + quantity
+        TicketClass.objects.filter(ID=ticket_class.ID).update(quantity_sold=str(quantity_sold_updated))
 
     if not event.objects.filter(ID=event_id):
         return Response({"details": "no event exist with this ID"}, status=status.HTTP_400_BAD_REQUEST)
