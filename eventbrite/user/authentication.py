@@ -1,3 +1,7 @@
+"""
+A file to define a custom token authentication system for our project
+
+"""
 from django.contrib.auth.backends import BaseBackend
 from rest_framework.authentication import TokenAuthentication
 from user.models import CustomToken

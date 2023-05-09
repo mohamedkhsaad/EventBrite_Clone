@@ -1,11 +1,21 @@
 """
-This module contains 2 view classes for the user app.
+This module contains view classes for the user app.
 
 class:userViewSet: A viewset for creating a new user (Signup).
 
-class:CreateTokenView: A viewset for the authentication and authorization of the user (login).
+class:CustomTokenLoginView: A viewset for the authentication and authorization of the user (login).
 
-class:EmailCheckView: A viewset to cheack the emeil
+class:EmailCheckView: A viewset to check the email
+
+class:CustomPasswordResetView: a viewset to send the user email to change his password.
+
+class:CustomPasswordResetCheckView: a viewset to check the token and the u_email in the user link.    
+
+class:CustomPasswordResetConfirmView: a viewset for the user to change his password.
+
+class:EmailVerificationQueryView: a viewset for the user to verify the token and u_email in the link to verify and activate his account.
+
+function:get_user_by_id: a view function to retrieve the user info by user id
 """
 from .serializers import *
 from django.contrib.auth.models import User
@@ -53,7 +63,10 @@ user model (LOGIN)
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
 
-class CustomTokenLoginView(APIView):  
+class CustomTokenLoginView(APIView): 
+    '''
+This is a view class for the user login. User has to verify his email after signup to be able to login
+    '''
     serializer_class=AuthTokenSerializer
     def post(self, request, format=None):
         email = request.data.get('email')
@@ -90,6 +103,11 @@ user model (EMAIL CHECK)
 '''
 user_ = get_user_model()
 class EmailCheckView(APIView):
+    '''
+This is a view class for the user email check. 
+It checks if the email entered is in the database or not
+    to redirect the user either to the signup or to login.
+    '''
     def get(self, request, email):
         try:
             user = user_.objects.get(email=email)
@@ -103,6 +121,11 @@ class EmailCheckView(APIView):
 user model reset password
 '''
 class CustomPasswordResetView(PasswordResetView):
+    '''
+This is a view class to allow the user to enter his email to reset his password.
+If the email doesn't exist in the database it returns a json response that the email doesn't exist.
+If the email exists the class sends him an email with his email encrypted in the query with a token. 
+    '''
     success_url = reverse_lazy('password_reset_done')
 
     def post(self, request, *args, **kwargs):
@@ -141,6 +164,10 @@ class CustomPasswordResetView(PasswordResetView):
 
 
 class CustomPasswordResetCheckView(APIView):
+    '''
+This is a view class to check the link (sent earlier by email) clicked by the user to reset his password.
+The class checks the token and the u_email from the query
+    '''
     serializer_class = PasswordResetQuerySerializer
     def post(self, request, *args, **kwargs):
         serializer = PasswordResetQuerySerializer(data=request.data)
@@ -165,6 +192,10 @@ class CustomPasswordResetCheckView(APIView):
         
 
 class CustomPasswordResetConfirmView(APIView):
+    '''
+This is a view class for the user to reset his password 
+and for the frontend to put the email to specify the user to update his password.
+    '''
     serializer_class = PasswordResetSerializer
     def post(self, request):
         serializer = PasswordResetSerializer(data=request.data)
@@ -181,6 +212,10 @@ class CustomPasswordResetConfirmView(APIView):
 
 
 class EmailVerificationQueryView(APIView):
+    '''
+This is a view class for the user to verify his email to activate his account
+by clicking the link sent to him by mail right after signing up.
+    '''
     serializer_class = EmailVerificationQuerySerializer
     def post(self, request, *args, **kwargs):
         serializer = PasswordResetQuerySerializer(data=request.data)
@@ -206,6 +241,9 @@ class EmailVerificationQueryView(APIView):
 
 @api_view(['GET'])
 def get_user_by_id(request,user_id):
+    '''
+This is a function to retrieve the user info by the user id. (Used in dashboard).
+    '''
     print("=======")
     print(type(user_id))
     user = User.objects.get(id=(user_id))

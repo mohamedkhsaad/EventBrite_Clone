@@ -1,8 +1,9 @@
 """
-This module contains 1 model class for the user app.
+This module contains models class for the user app.
 
 class:user: A class that contains all fields concerning the user.
 
+class:CustomToken: A token class that contains all fields concerning the token
 """
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager, Group, Permission

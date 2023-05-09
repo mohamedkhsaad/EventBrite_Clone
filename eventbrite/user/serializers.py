@@ -1,7 +1,20 @@
 """
-This module contains 2 serializer classes for the user app.
+This module contains serializer classes for the user app.
+
 class:userSerializer: A serializer class for creating a new user (Signup).
+
 class:AuthTokenSerializer: A serializer class for the authentication and authorization of the user (login).
+
+class:EmailVerificationQuerySerializer: a serializer for the email verification with token and user_email.
+
+class:EmailCheckSerializer: a serializer for the email check for the user to put his email and check if it exists in the database.
+
+class:PasswordResetQuerySerializer: a serializer class with a token and u_email to check the query of the link entered by the user.
+
+class:PasswordResetSerializer: a serializer class to allow the user to change his password
+                    and for the frontend to put the email of the user to allow him to change his password.
+
+function:validate_password: a function that make specific conditions for the password
 """
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
