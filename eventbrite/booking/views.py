@@ -37,7 +37,7 @@ from django.core.signing import TimestampSigner
 from eventbrite.settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
 
 
-#TODO: ticket prices in create order
+from django.utils import timezone
 
 @api_view(['GET'])
 def list_ticket_classes_by_event(request, event_id):
@@ -70,19 +70,41 @@ def check_promocode(request, event_id):
     :param event_id: Event ID.
     :return: A JSON object indicating whether the promo code is valid.
     """
-    # /event?promocode=SAVE123
-    # search an event's promo codes
-
+    print("start check promocode")
     try:
         promocode = request.query_params['promocode']
     except:
-        return Response({'err': 'missing promocode param'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"err": "missing promocode param"}, status=status.HTTP_400_BAD_REQUEST)
+    print("promocode param found")
+
+    now = timezone.now()
+    print(now)
 
     discount = Discount.objects.filter(EVENT_ID=event_id, CODE=promocode).first()
     if not discount:
-        return Response({'is_promocode': False}, status=status.HTTP_400_BAD_REQUEST)
-    
-    return Response({'is_promocode': True}, status=status.HTTP_200_OK)
+        return Response({'is_valid_promocode': False,"details":"not found"}, status=status.HTTP_200_OK)
+    print("discount was found")
+
+    if discount.Quantity_available is not None and discount.Quantity_available <= 0:
+        return Response({'is_valid_promocode': False, "details":"quantity available = 0"}, status=status.HTTP_200_OK)
+    print("availble quantity was found")
+
+    if discount.Ends == 'scheduled' and discount.end_date is not None and discount.end_time is not None:
+        if str(now.date()) > discount.end_date or (str(now.date()) == discount.end_date and str(now.time())[0:8] >= discount.end_time):
+            return Response({'is_valid_promocode': False, "details":"promocode has expired"}, status=status.HTTP_200_OK)
+    # print(now.date())
+    # print(discount.end_date)
+    # print(str(now.date()) > discount.end_date)
+
+    # print(str(now.time())[0:8])
+    # print(discount.end_time)
+    # print(str(now.time())[0:8] >= discount.end_time)
+    print("hasnt expired yet")
+
+    serialized_discount = DiscountSerializer(discount)
+    # print(serialized_discount)
+    return Response({'is_valid_promocode': True,"discount": serialized_discount.data}, status=status.HTTP_200_OK)
+
 
 
 
