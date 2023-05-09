@@ -1,9 +1,14 @@
 """
 This module contains several view classes for the eventmanagement app.
+
 class:UserListEvents: A viewset for retrieving all user events by user id.
+
 class:UserListPastEvents: A viewset for retrieving all user past events by user id.
+
 class:UserListEvents: A viewset for retrieving all user upcoming events by user id.
+
 class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given event.
+
 
 """
 import string
@@ -506,7 +511,7 @@ def list_orders_by_event(request, event_id):
 # @permission_classes([IsAuthenticated])
 def list_orderitem_by_event(request, event_id):
     """
-
+list of all order items in an event by event ID
     """
     order_items = OrderItem.objects.filter(event_id=event_id)
     serialized_orderitems = OrderItemSerializer(order_items, many=True)
@@ -539,6 +544,10 @@ def generate_password(length=8):
 @authentication_classes([CustomTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def savecsv_orderitems_by_eventid(request, event_id):
+    '''
+This is a view function to retrieve all orderitems made by users using event ID 
+and save them in a csv file for the attendee report.
+    '''
     try:
             Event = event.objects.get(ID=event_id)
             print(request.user.id)
@@ -571,6 +580,9 @@ def savecsv_orderitems_by_eventid(request, event_id):
 @authentication_classes([CustomTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def dashboard_orderitems_by_eventid(request, event_id):
+    '''
+This is a view function to retrieve all orderitems made by users using event ID.
+    '''
     try:
             Event = event.objects.get(ID=event_id)
             print(request.user.id)
@@ -601,6 +613,9 @@ def dashboard_orderitems_by_eventid(request, event_id):
 import csv
 import json
 def write_json_to_csv(json_list, filename):
+    '''
+This a function that takes a json format and save it to excel file
+    '''
     # extract field names from the first JSON object in the list
     fieldnames = list(json_list[0].keys())
     

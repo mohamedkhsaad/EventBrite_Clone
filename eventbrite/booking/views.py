@@ -380,6 +380,8 @@ def list_orderitem_by_user(request, user_id):
 @permission_classes([IsAuthenticated])
 def quantity_sold_out_of_total(request,event_id):
     """
+A view function that returns the ticket classes ids in an event associated with how many tickets were sold out of the total.
+It uses the TicketQuantityClassSerializer to serialize the data before returning it in the response.
     """
     try:
             Event = event.objects.get(ID=event_id)
