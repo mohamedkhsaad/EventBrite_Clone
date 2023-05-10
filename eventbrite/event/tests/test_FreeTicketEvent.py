@@ -25,7 +25,7 @@ class FreeTicketEventListViewTestCase(TestCase):
             END_TIME='17:00',
             online='Yes',
             CAPACITY=100,
-            STATUS='Draft'
+            STATUS='Live'
         )
         self.event2 = event.objects.create(
             ID=2,
@@ -43,7 +43,7 @@ class FreeTicketEventListViewTestCase(TestCase):
             END_TIME='17:00',
             online='Yes',
             CAPACITY=50,
-            STATUS='Published'
+            STATUS='Live'
         )
         self.ticket_class1 = TicketClass.objects.create(
             ID=1,

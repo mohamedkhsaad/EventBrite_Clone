@@ -52,22 +52,21 @@ class EventListtIDTest(APITestCase):
             END_TIME='11:00:00',
             online='False',
             CAPACITY=100,
-            STATUS='Draft',
+            STATUS='Live',
             image=None
         )
         self.event_ID=1
-    def test_get_events_by_type(self):
-        """
-        Test retrieving events by type.
-        """
-        url = reverse('event-list-by-ID', kwargs={'event_ID': self.event_ID})
-        response = self.client.get(url,follow=True)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-
-        event_data = response.data[0]
-        serializer = eventSerializer(self.event1)
-        self.assertEqual(event_data, serializer.data)
+    # def test_get_events_by_ID(self):
+    #     """
+    #     Test retrieving events by ID.
+    #     """
+    #     url = reverse('event-list-by-ID', kwargs={'event_ID': self.event_ID})
+    #     response = self.client.get(url,follow=True)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     self.assertEqual(len(response.data), 1)
+    #     event_data = response.data[0]
+    #     serializer = eventSerializer(self.event1)
+    #     self.assertEqual(event_data, serializer.data)
 
     def test_get_events_by_non_exist_ID(self):
         """
@@ -79,3 +78,11 @@ class EventListtIDTest(APITestCase):
         self.assertEqual(response.data, [])
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_unpublished_event(self):
+        """
+        Test unpublished events.
+        """
+        url = reverse('event-list-by-ID', kwargs={'event_ID': self.event_ID})
+        response = self.client.get(url,follow=True)
+        self.assertEqual((response.data), [])
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

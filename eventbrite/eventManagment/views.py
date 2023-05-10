@@ -340,7 +340,6 @@ class EventPublishView(generics.CreateAPIView):
 
 class CheckPasswordAPIView(generics.CreateAPIView):
     serializer_class = Password_Serializer
-
     def post(self, request, event_id):
         if request.method == 'POST':
             publish_info = get_object_or_404(Publish_Info, Event_ID=event_id)

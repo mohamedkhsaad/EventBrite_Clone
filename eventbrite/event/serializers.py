@@ -28,6 +28,8 @@ class eventSerializer(serializers.ModelSerializer):
         if instance is not None:
             data['Title'] = instance.Title or ''
         return data
+    
+    
     add_image_fields(5)
 
 

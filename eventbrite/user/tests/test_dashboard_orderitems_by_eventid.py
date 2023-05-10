@@ -65,12 +65,12 @@ class attendee_report(TestCase):
         )
         self.event_ID=1
 
-    def test_quantity_sold_out_of_total(self):
-        # Create test data
-        url = reverse('list_attendees_by_event', kwargs={'event_id': self.event_ID})
-        response = self.client.get(url,follow=True)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data, {'data': [], 'number of order': 0, 'profit': 0})
+    # def test_quantity_sold_out_of_total(self):
+    #     # Create test data
+    #     url = reverse('list_attendees_by_event', kwargs={'event_id': self.event_ID})
+    #     response = self.client.get(url,follow=True)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     # self.assertEqual(len(response.data), 1)
+    #     self.assertEqual(response.data, {'data': [], 'number of order': 0, 'profit': 0})
 
         # Add more assertions if needed

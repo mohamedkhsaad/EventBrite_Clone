@@ -52,7 +52,7 @@ class EventListSubCategoryTest(APITestCase):
             END_TIME='11:00:00',
             online='False',
             CAPACITY=100,
-            STATUS='Draft',
+            STATUS='Live',
             image=None
         )
     def test_get_events_by_sub_Category(self):

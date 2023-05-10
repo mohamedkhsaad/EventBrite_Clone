@@ -71,7 +71,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from user.authentication import CustomTokenAuthentication
 from datetime import date
 from django.core.exceptions import PermissionDenied
-
+from eventManagment.models import*
+from django.shortcuts import render, redirect, get_object_or_404
 
 # events
 
@@ -222,7 +223,7 @@ class EventSearchView(generics.ListAPIView):
         for the title specified in the URL parameter.
         """
         event_name = self.kwargs['event_name']
-        return event.objects.filter(Title__icontains=event_name)
+        return event.objects.filter(Title__icontains=event_name,STATUS='Live')
 
 
 class EventListtype(generics.ListAPIView):
@@ -237,7 +238,7 @@ class EventListtype(generics.ListAPIView):
         for the type specified in the URL parameter.
         """
         event_type = self.kwargs['event_type']
-        return event.objects.filter(type=event_type)
+        return event.objects.filter(type=event_type,STATUS='Live')
 
 
 class EventListCategory(generics.ListAPIView):
@@ -252,7 +253,7 @@ class EventListCategory(generics.ListAPIView):
         for the category specified in the URL parameter.
         """
         event_Category = self.kwargs['event_Category']
-        return event.objects.filter(category_name=event_Category)
+        return event.objects.filter(category_name=event_Category,STATUS='Live')
 
 
 class EventListSupCategory(generics.ListAPIView):
@@ -267,7 +268,7 @@ class EventListSupCategory(generics.ListAPIView):
         for the sub-category specified in the URL parameter.
         """
         event_sub_Category = self.kwargs['event_sub_Category']
-        return event.objects.filter(sub_Category=event_sub_Category)
+        return event.objects.filter(sub_Category=event_sub_Category,STATUS='Live')
 
 
 class EventListVenue(generics.ListAPIView):
@@ -282,7 +283,7 @@ class EventListVenue(generics.ListAPIView):
         for the venue specified in the URL parameter.
         """
         event_venue = self.kwargs['event_venue']
-        return event.objects.filter(venue_name__icontains=event_venue)
+        return event.objects.filter(venue_name__icontains=event_venue,STATUS='Live')
 
 
 class OnlineEventsAPIView(APIView):
@@ -300,22 +301,44 @@ class OnlineEventsAPIView(APIView):
         return Response(serializer.data)
 
 
+# class EventID(generics.ListAPIView):
+#     """
+#     A viewset for retrieving event instances by ID.
+#     """
+#     serializer_class = eventSerializer
+#     # permission_classes = [IsAuthenticated]
+#     # authentication_classes = [CustomTokenAuthentication]
+
+#     def get_queryset(self):
+#         """
+#         This view should return a list of all the events
+#         for the sub-category specified in the URL parameter.
+#         """
+#         event_sub_ID = self.kwargs['event_ID']
+#         return event.objects.filter(ID=event_sub_ID)
 class EventID(generics.ListAPIView):
     """
     A viewset for retrieving event instances by ID.
     """
     serializer_class = eventSerializer
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [CustomTokenAuthentication]
 
     def get_queryset(self):
-        """
-        This view should return a list of all the events
-        for the sub-category specified in the URL parameter.
-        """
-        event_sub_ID = self.kwargs['event_ID']
-        return event.objects.filter(ID=event_sub_ID)
+        eventid = self.kwargs['event_ID']
+        print(eventid)
+        # Check if the event is published
+        try:
+            publishinfo = Publish_Info.objects.get(Event_ID=eventid)
+        except Publish_Info.DoesNotExist:
+            return event.objects.none()  # Event not found in publish_info
+        
+        if publishinfo.Event_Status == 'Public':
+            return event.objects.filter(ID=eventid,STATUS='Live')
+        elif publishinfo.Event_Status == 'Private':
+            # Redirect to password check URL
+            # return redirect('check_password_view', event_id=eventid)
+            return event.objects.none()  # Invalid event status in publish_info
 
+        return event.objects.none()  # Invalid event status in publish_info
 
 class UserInterestCreateAPIView(CreateAPIView):
     """
@@ -414,7 +437,7 @@ class TodayEventsList(generics.ListAPIView):
 
     def get_queryset(self):
         today = now().date()
-        queryset = event.objects.filter(ST_DATE=today)
+        queryset = event.objects.filter(ST_DATE=today,STATUS='Live')
         return queryset
 
 
@@ -433,7 +456,7 @@ class WeekendEventsView(generics.ListAPIView):
         # Find the date of the upcoming Saturday
         saturday = friday + timezone.timedelta(1)
         queryset = event.objects.filter(
-            Q(ST_DATE__gte=friday) & Q(END_DATE__lte=saturday)
+            Q(ST_DATE__gte=friday) & Q(END_DATE__lte=saturday),STATUS='Live'
         )
         return queryset
 
@@ -448,7 +471,7 @@ class FreeTicketEventListView(generics.ListAPIView):
         # Get the events that have a ticket class of type "Free"
         free_ticket_events = TicketClass.objects.filter(
             TICKET_TYPE='Free').values_list('event_id', flat=True)
-        queryset = event.objects.filter(ID__in=free_ticket_events)
+        queryset = event.objects.filter(ID__in=free_ticket_events,STATUS='Live')
         return queryset
 
 

@@ -59,7 +59,7 @@ class Weekend_EventsAPIViewTestCase(APITestCase):
             END_TIME='11:00:00',
             online='False',
             CAPACITY=100,
-            STATUS='Draft',
+            STATUS='Live',
             image=None
         )
         self.event3 = event.objects.create(
@@ -79,7 +79,7 @@ class Weekend_EventsAPIViewTestCase(APITestCase):
             END_TIME='11:00:00',
             online='False',
             CAPACITY=100,
-            STATUS='Draft',
+            STATUS='Live',
             image=None
         )
         self.url2 = reverse('weekend-events')
