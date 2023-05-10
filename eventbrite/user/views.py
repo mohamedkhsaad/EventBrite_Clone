@@ -120,7 +120,7 @@ It checks if the email entered is in the database or not
 '''
 user model reset password
 '''
-class CustomPasswordResetView(PasswordResetView):
+class CustomPasswordResetView(APIView):
     '''
 This is a view class to allow the user to enter his email to reset his password.
 If the email doesn't exist in the database it returns a json response that the email doesn't exist.
