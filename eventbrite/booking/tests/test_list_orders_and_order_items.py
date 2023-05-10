@@ -1,10 +1,19 @@
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 from booking.models import Order
+from django.test import override_settings
+from django.contrib.auth import get_user_model
+
 
 class OrderListViewTestCase(APITestCase):
     def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username='ahmed',
+            email='ahmed@gmail.com',
+            password='qwER12#$',)
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
         self.user_id = 1
         self.order1 = Order.objects.create(user_id=self.user_id, full_price=10.0, total=10.0)
         self.order2 = Order.objects.create(user_id=self.user_id, full_price=20.0, total=20.0)

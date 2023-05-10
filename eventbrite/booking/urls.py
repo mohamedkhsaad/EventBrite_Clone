@@ -6,7 +6,7 @@ from .views import *
 urlpatterns = [
 
     path('events/<int:event_id>/ticket-classes/',
-         list_ticket_classes_by_event, name='list-bookings-by-event'),
+         list_ticket_classes_by_event, name='list-ticket-classes-by-event'),
     path('events/<int:event_id>/promocode/',
          check_promocode, name='check-promocode'),
     path('event/<int:event_id>/orders/', create_order, name='create-order'),
