@@ -69,7 +69,7 @@ user model (LOGIN)
 
 class CustomTokenLoginView(APIView):
     '''
-This is a view class for the user login. User has to verify his email after signup to be able to login
+    This is a view class for the user login. User has to verify his email after signup to be able to login
     '''
     serializer_class = AuthTokenSerializer
 
@@ -87,8 +87,8 @@ This is a view class for the user login. User has to verify his email after sign
                 'id': user_id,
                 'email': user.email,
                 'token': custom_token.key,
-                'first_name':user.first_name,
-                'last_name':user.last_name,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
                 'initials': (user.first_name[0] if user.first_name else '') + (user.last_name[0] if user.last_name else '')
 
             }
@@ -115,8 +115,8 @@ user_ = get_user_model()
 
 class EmailCheckView(APIView):
     '''
-This is a view class for the user email check. 
-It checks if the email entered is in the database or not
+    This is a view class for the user email check. 
+    It checks if the email entered is in the database or not
     to redirect the user either to the signup or to login.
     '''
 
@@ -136,9 +136,9 @@ user model reset password
 
 class CustomPasswordResetView(APIView):
     '''
-This is a view class to allow the user to enter his email to reset his password.
-If the email doesn't exist in the database it returns a json response that the email doesn't exist.
-If the email exists the class sends him an email with his email encrypted in the query with a token. 
+    This is a view class to allow the user to enter his email to reset his password.
+    If the email doesn't exist in the database it returns a json response that the email doesn't exist.
+    If the email exists the class sends him an email with his email encrypted in the query with a token. 
     '''
     success_url = reverse_lazy('password_reset_done')
 
@@ -178,8 +178,8 @@ If the email exists the class sends him an email with his email encrypted in the
 
 class CustomPasswordResetCheckView(APIView):
     '''
-This is a view class to check the link (sent earlier by email) clicked by the user to reset his password.
-The class checks the token and the u_email from the query
+    This is a view class to check the link (sent earlier by email) clicked by the user to reset his password.
+    The class checks the token and the u_email from the query
     '''
     serializer_class = PasswordResetQuerySerializer
 
@@ -208,8 +208,8 @@ The class checks the token and the u_email from the query
 
 class CustomPasswordResetConfirmView(APIView):
     '''
-This is a view class for the user to reset his password 
-and for the frontend to put the email to specify the user to update his password.
+    This is a view class for the user to reset his password 
+    and for the frontend to put the email to specify the user to update his password.
     '''
     serializer_class = PasswordResetSerializer
 
@@ -230,8 +230,8 @@ and for the frontend to put the email to specify the user to update his password
 
 class EmailVerificationQueryView(APIView):
     '''
-This is a view class for the user to verify his email to activate his account
-by clicking the link sent to him by mail right after signing up.
+    This is a view class for the user to verify his email to activate his account
+    by clicking the link sent to him by mail right after signing up.
     '''
     serializer_class = EmailVerificationQuerySerializer
 
@@ -261,7 +261,7 @@ by clicking the link sent to him by mail right after signing up.
 @api_view(['GET'])
 def get_user_by_id(request, user_id):
     '''
-This is a function to retrieve the user info by the user id. (Used in dashboard).
+    This is a function to retrieve the user info by the user id. (Used in dashboard).
     '''
     try:
         user = User.objects.get(id=(user_id))

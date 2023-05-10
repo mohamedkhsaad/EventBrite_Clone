@@ -9,8 +9,15 @@ class:UserListEvents: A viewset for retrieving all user upcoming events by user 
 
 class:PromoCodeCreateAPIView: A viewser for creating a new promocode for a given event.
 
+class:PromoCodeUpdateView: A view that update a promocode for a specific events given the discount id
+
+class:APromocodeListView:  A view that to get a promocode for a specific events by discount id
+
+class::EventPublishView:   A view for publish a specific event given the event ID
 
 """
+from django.core.files.storage import FileSystemStorage
+import json
 import string
 import random
 from django.shortcuts import render, redirect, get_object_or_404
@@ -26,7 +33,7 @@ from event.models import *
 from rest_framework.permissions import IsAuthenticated
 from booking.models import *
 from booking.serializers import *
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED,HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 from user.authentication import CustomTokenAuthentication
 from booking.models import *
@@ -37,7 +44,7 @@ from eventManagment.forms import Password_Form
 from rest_framework.decorators import api_view
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from django.core.signing import TimestampSigner
-from eventbrite.settings import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD
+from eventbrite.settings import EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 from django.core.mail import send_mail, EmailMessage
 
 
@@ -60,6 +67,7 @@ class UserListEvents(generics.ListAPIView):
     authentication_classes = [CustomTokenAuthentication]
     queryset = event.objects.all()
     serializer_class = eventSerializer
+
     def get_queryset(self):
         """
         This view should list all the user events
@@ -110,7 +118,7 @@ class UserListUpcomingEvents(generics.ListAPIView):
         # user_id = self.kwargs['user_id']
         user_id = self.request.user.id
         return event.objects.filter(User_id=user_id).filter(ST_DATE__gt=self.today)
-from django.core.files.storage import FileSystemStorage
+
 
 class PromoCodeCreateAPIView(generics.CreateAPIView):
     """
@@ -120,6 +128,7 @@ class PromoCodeCreateAPIView(generics.CreateAPIView):
     serializer_class = DiscountSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def post(self, request, event_id):
         """
         A Post request to create promocode for an event, and have the option to add a csv file instead of typying the promocode details
@@ -142,8 +151,8 @@ class PromoCodeCreateAPIView(generics.CreateAPIView):
             # create a promocode for each row in the CSV
             for row in reader:
                 code = row.get('code', '')
-                if Discount.objects.filter(CODE=code,EVENT_ID=event_id).first():
-                     return Response({'error': f'Promocode with code {code} already exists for this event.'}, status=HTTP_400_BAD_REQUEST)
+                if Discount.objects.filter(CODE=code, EVENT_ID=event_id).first():
+                    return Response({'error': f'Promocode with code {code} already exists for this event.'}, status=HTTP_400_BAD_REQUEST)
                 promo_code_data = {
                     'EVENT_ID': event_id,
                     'User_ID': request.user.id,
@@ -187,10 +196,14 @@ class PromoCodeCreateAPIView(generics.CreateAPIView):
                 return Response(serializer.data, status=HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
 def validate_password(password):
     if len(password) < 8:
         return False
     return True
+
+
 class APromocodeListView(generics.ListAPIView):
     """
     A view that to get a promocode for a specific events by discount id
@@ -198,6 +211,7 @@ class APromocodeListView(generics.ListAPIView):
     serializer_class = DiscountSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def get(self, request, discount_id):
         try:
             ticket_classes = Discount.objects.filter(ID=discount_id)
@@ -208,12 +222,15 @@ class APromocodeListView(generics.ListAPIView):
                 return Response({'error': 'You are not authorized to list this promocode.'}, status=HTTP_401_UNAUTHORIZED)
         serializer = DiscountSerializer(ticket_classes, many=True)
         return Response(serializer.data)
+
+
 class PromoCodeUpdateView(APIView):
     """
     A view that update a promocode for a specific events given the discount id
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def put(self, request, discount_id):
         try:
             discount_obj = Discount.objects.get(ID=discount_id)
@@ -240,12 +257,14 @@ class PromoCodeUpdateView(APIView):
         Discount.objects.filter(ID=discount_id).update(**data)
         return Response({'message': 'Discount updated successfully'})
 
+
 class PromoCodeDeleteView(APIView):
     """
     A viewset for deleting a discount for an event by Discount ID.
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def delete(self, request, discount_id):
         try:
             promocodes = Discount.objects.filter(ID=discount_id)
@@ -261,8 +280,10 @@ class PromoCodeDeleteView(APIView):
             return Response({'status': 'error', 'message': 'Could not delete ticket class.'})
 
 
-
 class EventPublishView(generics.CreateAPIView):
+    """
+    A view for publish a specific event given the event ID
+    """
     serializer_class = Publish_InfoSerializer
     queryset = Publish_Info.objects.all()
     permission_classes = [IsAuthenticated]
@@ -289,7 +310,6 @@ class EventPublishView(generics.CreateAPIView):
             # if request.data.get('Keep_Private') and request.data.get('Publication_Date'):
             #     return Response({'error': 'Do not add date, as your event will be kept private'}, status=HTTP_400_BAD_REQUEST)
 
-
                 # Publish_Info.objects.filter(ID=event_id).update(Publication_Date=' ')
 
             if not TicketClass.objects.filter(event_id=event_id):
@@ -297,10 +317,10 @@ class EventPublishView(generics.CreateAPIView):
 
         Publish_Data = request.data.copy()
         Publish_Data['Event_ID'] = event_id
-        if request.data.get('Keep_Private')=="True":
-                 Publish_Data['Publication_Date']=''
-        elif request.data.get('Keep_Private')=="False" and not request.data.get('Publication_Date'):
-                return Response({'error': 'Please Provide a Publish Date.'}, status=HTTP_400_BAD_REQUEST)
+        if request.data.get('Keep_Private') == "True":
+            Publish_Data['Publication_Date'] = ''
+        elif request.data.get('Keep_Private') == "False" and not request.data.get('Publication_Date'):
+            return Response({'error': 'Please Provide a Publish Date.'}, status=HTTP_400_BAD_REQUEST)
         serializer = self.serializer_class(data=Publish_Data)
         if serializer.is_valid():
             serializer.save()
@@ -344,11 +364,14 @@ class ExportEventsAPIView(APIView):
         # Create a CSV writer object
         writer = csv.writer(response)
         # Write the CSV headers
-        writer.writerow(['Event', 'Date', 'Status', 'Tickets Sold', 'Tickets Available'])
+        writer.writerow(['Event', 'Date', 'Status',
+                        'Tickets Sold', 'Tickets Available'])
         # Write the event data rows
         for Event in events:
-            tickets_sold = TicketClass.objects.filter(event_id=Event.ID).aggregate(total_sold=models.Sum('quantity_sold')).get('total_sold', 0)
-            tickets_available = TicketClass.objects.filter(event_id=Event.ID).aggregate(total_capacity=models.Sum('capacity')).get('total_capacity', 0)
+            tickets_sold = TicketClass.objects.filter(event_id=Event.ID).aggregate(
+                total_sold=models.Sum('quantity_sold')).get('total_sold', 0)
+            tickets_available = TicketClass.objects.filter(event_id=Event.ID).aggregate(
+                total_capacity=models.Sum('capacity')).get('total_capacity', 0)
             # Handle None values and provide default values for subtraction
             tickets_sold = tickets_sold or 0
             tickets_available = tickets_available or 0
@@ -391,7 +414,7 @@ def add_attendee(request, event_id):
         }
     """
     print("====== add attendee ======")
-    if str(request.user.id) != str(event.objects.filter(ID = event_id).first().User_id):
+    if str(request.user.id) != str(event.objects.filter(ID=event_id).first().User_id):
         return Response({'error': 'You are not authorized to add an attendee for this event.'}, status=HTTP_401_UNAUTHORIZED)
 
     first_name = request.data.get('first_name')
@@ -473,10 +496,11 @@ def add_attendee(request, event_id):
 
         item['order_id'] = order.ID
         try:
-            item['ticket_price'] = TicketClass.objects.get(ID=item["ticket_class_id"]).PRICE
+            item['ticket_price'] = TicketClass.objects.get(
+                ID=item["ticket_class_id"]).PRICE
         except:
             ticket_class_id = item["ticket_class_id"]
-            return Response({"details":f"no ticket class with this id. ticket_class_id = { ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"details": f"no ticket class with this id. ticket_class_id = { ticket_class_id}"}, status=status.HTTP_400_BAD_REQUEST)
 
         # item['ticket_price'] = TicketClass.objects.get(
         #     ID=item["ticket_class_id"]).PRICE
@@ -508,7 +532,8 @@ def add_attendee(request, event_id):
         print(type)
 
         quantity_sold_updated = int(ticket_class.quantity_sold) + quantity
-        TicketClass.objects.filter(ID=ticket_class.ID).update(quantity_sold=str(quantity_sold_updated))
+        TicketClass.objects.filter(ID=ticket_class.ID).update(
+            quantity_sold=str(quantity_sold_updated))
 
     if not event.objects.filter(ID=event_id):
         return Response({"details": "no event exist with this ID"}, status=status.HTTP_400_BAD_REQUEST)
@@ -535,7 +560,9 @@ def add_attendee(request, event_id):
 
 
 def send_confirmation_email(request, order):
-    """ this function should construct the url with a token and send the link by mail to the user """
+    """ 
+    this function should construct the url with a token and send the link by mail to the user 
+    """
 
     print("======confirmation mail=======")
     user = request.user
@@ -611,24 +638,20 @@ def list_orders_by_event(request, event_id):
 @permission_classes([IsAuthenticated])
 def list_orderitem_by_event(request, event_id):
     """
-list of all order items in an event by event ID
+    List of all order items in an event by event ID
     """
     order_items = OrderItem.objects.filter(event_id=event_id)
     serialized_orderitems = OrderItemSerializer(order_items, many=True)
     return Response(serialized_orderitems.data)
 
 
-
-
 def generate_password(length=8):
-    """Generate a random password of specified length"""
+    """
+    Generate a random password of specified length
+    """
     characters = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(characters) for i in range(length))
     return password
-
-
-
-
 
 
 # Dashboards
@@ -637,78 +660,89 @@ def generate_password(length=8):
 @authentication_classes([CustomTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def savecsv_orderitems_by_eventid(request, event_id):
+    '''
+    This is a view function to retrieve all orderitems made by users using event ID 
+    and used to view all attendees at event with the type of tickets they bought and their quantities.
+    Then save them in a csv file for the attendee report.
+    '''
     try:
-            Event = event.objects.get(ID=event_id)
-            print(request.user.id)
+        Event = event.objects.get(ID=event_id)
+        print(request.user.id)
     except event.DoesNotExist:
         return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-    
+
     if str(request.user.id) != str(Event.User_id):
-            return Response({'error': 'You are not authorized to view the data of this event.'}, status=HTTP_401_UNAUTHORIZED)
+        return Response({'error': 'You are not authorized to view the data of this event.'}, status=HTTP_401_UNAUTHORIZED)
     order_items = OrderItem.objects.filter(event_id=event_id)
-    serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
+    serialized_orderitems = DashboardOrderItemSerializer(
+        order_items, many=True)
     json_data = serialized_orderitems.data
-    count=len(json_data)
+    count = len(json_data)
     # users = [d['user_id'] for d in json_data]
     # for id in users:
     #     user = User.objects.get(id=(id))
     #     user_serializer = userSerializer(user)
     #     data = user_serializer.data
-    sum=0
+    sum = 0
     for d in json_data:
         quantity_sold = str(d['quantity'])
         # quantity_sold = d['quantity']
-        price=d['ticket_price']
+        price = d['ticket_price']
     if isinstance(quantity_sold, int) and isinstance(price, int):
         sum += quantity_sold * price
     else:
         print("Invalid input: quantity_sold and price must be integers")
 
     # del json_data[3]
-    write_json_to_csv(json_data,filename='attendee_report.csv')
+    write_json_to_csv(json_data, filename='attendee_report.csv')
 
-    return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
+    return Response({'data': json_data, 'number of order': count, 'profit': sum}, status=status.HTTP_200_OK)
+
 
 @api_view(['GET'])
 @authentication_classes([CustomTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def dashboard_orderitems_by_eventid(request, event_id):
+    '''
+    This is a view function to retrieve all orderitems made by users using event ID 
+    and used to view all attendees at event with the type of tickets they bought and their quantities.
+    '''
     try:
-            Event = event.objects.get(ID=event_id)
-            print(request.user.id)
+        Event = event.objects.get(ID=event_id)
+        print(request.user.id)
     except event.DoesNotExist:
         return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-    
+
     if str(request.user.id) != str(Event.User_id):
-            return Response({'error': 'You are not authorized to view the data of this event.'}, status=HTTP_401_UNAUTHORIZED)
+        return Response({'error': 'You are not authorized to view the data of this event.'}, status=HTTP_401_UNAUTHORIZED)
 
     order_items = OrderItem.objects.filter(event_id=event_id)
-    serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
+    serialized_orderitems = DashboardOrderItemSerializer(
+        order_items, many=True)
     json_data = serialized_orderitems.data
-    count=len(json_data)
-    # users = [d['user_id'] for d in json_data]    
+    count = len(json_data)
+    # users = [d['user_id'] for d in json_data]
     # for id in users:
     #     user = User.objects.get(id=(id))
     #     user_serializer = userSerializer(user)
     #     data = user_serializer.data
-    sum=0
+    sum = 0
     for d in json_data:
         # quantity_sold = int(d['quantity'])
         quantity_sold = str(d['quantity'])
-        price=d['ticket_price']
+        price = d['ticket_price']
     if isinstance(quantity_sold, int) and isinstance(price, int):
         sum += quantity_sold * price
     else:
         print("Invalid input: quantity_sold and price must be integers")
 
-    return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
+    return Response({'data': json_data, 'number of order': count, 'profit': sum}, status=status.HTTP_200_OK)
 
-import csv
-import json
+
 def write_json_to_csv(json_list, filename):
     # extract field names from the first JSON object in the list
     fieldnames = list(json_list[0].keys())
-    
+
     # open the CSV file for writing
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -719,16 +753,16 @@ def write_json_to_csv(json_list, filename):
         # write each JSON object to a row in the CSV file
         for json_obj in json_list:
             writer.writerow(json_obj)
-    
+
 # @api_view(['GET'])
 # @authentication_classes([CustomTokenAuthentication])
 # @permission_classes([IsAuthenticated])
 # def savecsv_orderitems_by_eventid(request, event_id):
 #     '''
-#     This is a view function to retrieve all orderitems made by users using event ID 
+#     This is a view function to retrieve all orderitems made by users using event ID
 #     and save them in a csv file for the attendee report.
 #     '''
-    
+
 #     try:
 #             Event = event.objects.get(ID=event_id)
 #             print(request.user.id)
@@ -786,7 +820,7 @@ def write_json_to_csv(json_list, filename):
 #             print(request.user.id)
 #     except event.DoesNotExist:
 #         return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-    
+
 #     if str(request.user.id) != str(Event.User_id):
 #             return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
 
@@ -813,4 +847,3 @@ def write_json_to_csv(json_list, filename):
 #         sum+=int((quantity_sold*price))
 
 #     return Response({'data':json_data, 'number of order': count,'profit':sum,'user_email':emails},status=status.HTTP_200_OK)
-    
