@@ -4,6 +4,7 @@ from rest_framework.views import status
 from booking.models import *
 from event.models import event as Event
 from booking.serializers import *
+from django.test import override_settings
 
 import pytz
 timezone = pytz.timezone('UTC')
@@ -11,6 +12,7 @@ timezone = pytz.timezone('UTC')
 from datetime import datetime
 
 
+@override_settings(AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.AllowAllUsersModelBackend'])
 class ListTicketClassesByEventTestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
