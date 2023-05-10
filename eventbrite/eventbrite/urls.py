@@ -125,7 +125,7 @@ urlpatterns = [
     # dashboard
     path('dashboard/user/<int:user_id>/', get_user_by_id, name='get_user_by_id'),
     path('dashboard/eventmanagement/event/save/<int:event_id>/order-items/', savecsv_orderitems_by_eventid, name='savecsv_list_orderitem_by_event'),
-    path('dashboard/eventmanagement/event/<int:event_id>/order-items/', dashboard_orderitems_by_eventid, name='savecsv_list_orderitem_by_event'),
+    path('dashboard/eventmanagement/event/<int:event_id>/order-items/', dashboard_orderitems_by_eventid, name='list_attendees_by_event'),
     path('dashboard/eventmanagement/sold-tickets/<int:event_id>/ticket-classes/',quantity_sold_out_of_total,name='sold_tickets'),
 
     #booking

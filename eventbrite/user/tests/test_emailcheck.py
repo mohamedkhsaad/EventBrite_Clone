@@ -11,7 +11,7 @@ class EmailCheckViewTestCase(TestCase):
         self.user_model = User
         self.user_data = {
             'email': 'testuser@example.com',
-            'password': 'testpassword',
+            'password': 'Testpassword123*',
             'username' : 'testusername'
         }
         

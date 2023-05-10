@@ -1,33 +1,73 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
-from rest_framework.authtoken.models import Token
+from user.models import CustomToken
 from ..serializers import *
 from rest_framework.test import APITestCase
+from django.test import TestCase
+from django.contrib.auth import get_user_model
+from rest_framework.test import APIRequestFactory
+from rest_framework.response import Response
+from rest_framework import status
+# from ..serializers import AuthTokenSerializer
+from ..views import CustomTokenLoginView
 
 
-class AuthTokenSerializerTest(TestCase):
+User = get_user_model()
+
+class CustomTokenLoginViewTest(TestCase):
     def setUp(self):
+        self.username='testusername'
         self.email = 'testuser@example.com'
-        self.password = 'testpassword'
-        self.username = 'testusername'
-        self.user = get_user_model().objects.create_user(
+        self.password = 'TestPassword12^&'
+        self.user = User.objects.create_user(
             username=self.username,
             email=self.email,
             password=self.password,
-
         )
-        self.serializer_data = {
-            'email': self.email,
-            'password': self.password
-        }
+        self.factory = APIRequestFactory()
 
-    def test_auth_token_creation(self):
-        serializer = AuthTokenSerializer(data=self.serializer_data)
-        serializer.is_valid(raise_exception=True)
-        token = Token.objects.create(user=self.user)
-        self.assertEqual(serializer.validated_data['user'], self.user)
-        self.assertEqual(serializer.validated_data['user'].auth_token, token)
+    def test_custom_token_login(self):
+        data = {
+            "email": self.email,
+            "password": self.password,
+        }
+        request = self.factory.post('/custom-token-login/', data=data)
+        view = CustomTokenLoginView.as_view()
+        response = view(request)
+
+        # Assertions for the response
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('id', response.data)
+        self.assertIn('email', response.data)
+        self.assertIn('token', response.data)
+
+        # Additional assertions if needed
+        # ...
+
+class AuthTokenSerializerTest(TestCase):
+    def test_validate_credentials(self):
+        username='testusername'
+        email = 'testuser@example.com'
+        password = 'TestPassword12^&'
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+        )
+
+        data = {
+            "username":username,
+            "email": email,
+            "password": password,
+        }
+        serializer = AuthTokenSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        validated_data = serializer.validated_data
+
+        # Assertions for the validated data
+        self.assertEqual(validated_data['email'], email)
+        self.assertEqual(validated_data['password'], password)
 
 
 User = get_user_model()
@@ -39,7 +79,7 @@ class UserSerializerTest(APITestCase):
             "email": "test@example.com",
             "first_name": "John",
             "last_name": "Doe",
-            "password": "test12345",
+            "password": "Test123^&45",
         }
         serializer = userSerializer(data=data)
         self.assertTrue(serializer.is_valid())

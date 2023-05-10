@@ -17,7 +17,7 @@ class:TodayEventsList: A viewset for retrieving event instances for today.
 class:WeekendEventsView: A viewset for retrieving event instances for weekend.
 class:FreeTicketEventListView: A viewset for retrieving free events.
 class:DraftEventsAPIView: A viewset for retrieving Draft events for creators.
-class:LiveEventsAPIView: A viewset for retrieving Live events for creators.
+class:LiveEventsAPIView:: A viewset for retrieving Live events for creators.
 
 class:FollowEventView: A viewset for make the user could follow an event by event ID.
 class:UserFollowedEvents: A viewset for retrive the events that the user followed.
