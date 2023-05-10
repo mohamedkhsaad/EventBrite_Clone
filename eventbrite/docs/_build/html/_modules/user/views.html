@@ -68,14 +68,25 @@
              
   <h1>Source code for user.views</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module contains 2 view classes for the user app.</span>
+<span class="sd">This module contains view classes for the user app.</span>
 
 <span class="sd">class:userViewSet: A viewset for creating a new user (Signup).</span>
 
-<span class="sd">class:CreateTokenView: A viewset for the authentication and authorization of the user (login).</span>
+<span class="sd">class:CustomTokenLoginView: A viewset for the authentication and authorization of the user (login).</span>
 
-<span class="sd">class:EmailCheckView: A viewset to cheack the emeil</span>
+<span class="sd">class:EmailCheckView: A viewset to check the email</span>
+
+<span class="sd">class:CustomPasswordResetView: a viewset to send the user email to change his password.</span>
+
+<span class="sd">class:CustomPasswordResetCheckView: a viewset to check the token and the u_email in the user link.    </span>
+
+<span class="sd">class:CustomPasswordResetConfirmView: a viewset for the user to change his password.</span>
+
+<span class="sd">class:EmailVerificationQueryView: a viewset for the user to verify the token and u_email in the link to verify and activate his account.</span>
+
+<span class="sd">function:get_user_by_id: a view function to retrieve the user info by user id</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">rest_framework.status</span> <span class="kn">import</span> <span class="n">HTTP_400_BAD_REQUEST</span>
 <span class="kn">from</span> <span class="nn">.serializers</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
 <span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
@@ -110,20 +121,27 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">user model (SIGNUP)</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
+
 <div class="viewcode-block" id="userViewSet"><a class="viewcode-back" href="../../user.html#user.views.userViewSet">[docs]</a><span class="k">class</span> <span class="nc">userViewSet</span><span class="p">(</span><span class="n">viewsets</span><span class="o">.</span><span class="n">ModelViewSet</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A viewset for signing up new users.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">userSerializer</span>
     <span class="n">queryset</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">user model (LOGIN)</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">from</span> <span class="nn">rest_framework.status</span> <span class="kn">import</span> <span class="n">HTTP_400_BAD_REQUEST</span>
 
 
-<div class="viewcode-block" id="CustomTokenLoginView"><a class="viewcode-back" href="../../user.html#user.views.CustomTokenLoginView">[docs]</a><span class="k">class</span> <span class="nc">CustomTokenLoginView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>  
-    <span class="n">serializer_class</span><span class="o">=</span><span class="n">AuthTokenSerializer</span>
+<div class="viewcode-block" id="CustomTokenLoginView"><a class="viewcode-back" href="../../user.html#user.views.CustomTokenLoginView">[docs]</a><span class="k">class</span> <span class="nc">CustomTokenLoginView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This is a view class for the user login. User has to verify his email after signup to be able to login</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">AuthTokenSerializer</span>
+
 <div class="viewcode-block" id="CustomTokenLoginView.post"><a class="viewcode-back" href="../../user.html#user.views.CustomTokenLoginView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">)</span>
         <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">)</span>
@@ -135,30 +153,42 @@
             <span class="n">custom_token</span> <span class="o">=</span> <span class="n">CustomToken</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
             <span class="n">user_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span>
             <span class="n">response_data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;id&#39;</span><span class="p">:</span><span class="n">user_id</span><span class="p">,</span>
-            <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
-            <span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">custom_token</span><span class="o">.</span><span class="n">key</span> 
+                <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+                <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+                <span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">custom_token</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+                <span class="s1">&#39;first_name&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span>
+                <span class="s1">&#39;last_name&#39;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span>
+                <span class="s1">&#39;initials&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
             <span class="p">}</span>
+            <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;initials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_data</span><span class="p">[</span><span class="s1">&#39;initials&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
             <span class="n">user</span> <span class="o">=</span> <span class="n">authenticate</span><span class="p">(</span>
-            <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
-            <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span>
-            <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+                <span class="n">request</span><span class="o">=</span><span class="n">request</span><span class="p">,</span>
+                <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span>
+                <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="c1"># if not user:</span>
             <span class="c1">#     msg = _(&#39;Unable to authenticate with provided credentials&#39;)</span>
             <span class="c1">#     raise serializers.ValidationError(msg, code=&#39;authorization&#39;)</span>
-            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">response_data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span> </div></div>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">response_data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div></div>
         <span class="c1"># else:</span>
         <span class="c1">#     return Response({&#39;error&#39;: &#39;Invalid credentials&#39;}, status=status.HTTP_401_UNAUTHORIZED)</span>
-
-
 
 
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">user model (EMAIL CHECK)</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="n">user_</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="EmailCheckView"><a class="viewcode-back" href="../../user.html#user.views.EmailCheckView">[docs]</a><span class="k">class</span> <span class="nc">EmailCheckView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This is a view class for the user email check. </span>
+<span class="sd">    It checks if the email entered is in the database or not</span>
+<span class="sd">    to redirect the user either to the signup or to login.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
 <div class="viewcode-block" id="EmailCheckView.get"><a class="viewcode-back" href="../../user.html#user.views.EmailCheckView.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">user_</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span>
@@ -171,7 +201,14 @@
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">user model reset password</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<div class="viewcode-block" id="CustomPasswordResetView"><a class="viewcode-back" href="../../user.html#user.views.CustomPasswordResetView">[docs]</a><span class="k">class</span> <span class="nc">CustomPasswordResetView</span><span class="p">(</span><span class="n">PasswordResetView</span><span class="p">):</span>
+
+
+<div class="viewcode-block" id="CustomPasswordResetView"><a class="viewcode-back" href="../../user.html#user.views.CustomPasswordResetView">[docs]</a><span class="k">class</span> <span class="nc">CustomPasswordResetView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This is a view class to allow the user to enter his email to reset his password.</span>
+<span class="sd">    If the email doesn&#39;t exist in the database it returns a json response that the email doesn&#39;t exist.</span>
+<span class="sd">    If the email exists the class sends him an email with his email encrypted in the query with a token. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;password_reset_done&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CustomPasswordResetView.post"><a class="viewcode-back" href="../../user.html#user.views.CustomPasswordResetView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -190,7 +227,8 @@
                 <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 
                 <span class="c1"># Construct the reset URL for the user</span>
-                <span class="n">reset_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;password_reset_check&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;u_email&#39;</span><span class="p">:</span> <span class="n">u_email</span><span class="p">,</span> <span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">})</span>
+                <span class="n">reset_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;password_reset_check&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">{</span>
+                                         <span class="s1">&#39;u_email&#39;</span><span class="p">:</span> <span class="n">u_email</span><span class="p">,</span> <span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="n">token</span><span class="p">})</span>
                 <span class="c1"># print(uid)</span>
                 <span class="c1"># print(token)</span>
 
@@ -202,15 +240,18 @@
                     <span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">],</span>
                     <span class="n">fail_silently</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
-                
+
         <span class="c1"># Redirect to the password reset done page</span>
         <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">success_url</span><span class="p">)</span></div></div>
 
 
-
-
 <div class="viewcode-block" id="CustomPasswordResetCheckView"><a class="viewcode-back" href="../../user.html#user.views.CustomPasswordResetCheckView">[docs]</a><span class="k">class</span> <span class="nc">CustomPasswordResetCheckView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This is a view class to check the link (sent earlier by email) clicked by the user to reset his password.</span>
+<span class="sd">    The class checks the token and the u_email from the query</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">PasswordResetQuerySerializer</span>
+
 <div class="viewcode-block" id="CustomPasswordResetCheckView.post"><a class="viewcode-back" href="../../user.html#user.views.CustomPasswordResetCheckView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">serializer</span> <span class="o">=</span> <span class="n">PasswordResetQuerySerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -219,9 +260,10 @@
         <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">u_email</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">urlsafe_base64_decode</span><span class="p">(</span><span class="n">u_email</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;strict&#39;</span><span class="p">)</span>
+            <span class="n">u_email</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">urlsafe_base64_decode</span><span class="p">(</span><span class="n">u_email</span><span class="p">),</span>
+                          <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;strict&#39;</span><span class="p">)</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">u_email</span><span class="p">)</span>
-        
+
         <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">,</span> <span class="n">User</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">):</span>
             <span class="n">user</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -231,26 +273,37 @@
             <span class="c1"># return Response(status=status.HTTP_400_BAD_REQUEST)</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Unable to find the user&#39;s acount with the provided data&quot;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div></div>
-        
+
 
 <div class="viewcode-block" id="CustomPasswordResetConfirmView"><a class="viewcode-back" href="../../user.html#user.views.CustomPasswordResetConfirmView">[docs]</a><span class="k">class</span> <span class="nc">CustomPasswordResetConfirmView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This is a view class for the user to reset his password </span>
+<span class="sd">    and for the frontend to put the email to specify the user to update his password.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">PasswordResetSerializer</span>
+
 <div class="viewcode-block" id="CustomPasswordResetConfirmView.post"><a class="viewcode-back" href="../../user.html#user.views.CustomPasswordResetConfirmView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="n">serializer</span> <span class="o">=</span> <span class="n">PasswordResetSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;user_email&#39;</span><span class="p">])</span>
-        
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Unable to authenticate with provided credentials&#39;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-    
-        <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;user_email&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">password</span><span class="o">=</span><span class="n">make_password</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]))</span>
-        
+
+        <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;user_email&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">password</span><span class="o">=</span><span class="n">make_password</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">validated_data</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]))</span>
+
         <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;detail&#39;</span><span class="p">:</span> <span class="s1">&#39;Password reset successfully.&#39;</span><span class="p">})</span></div></div>
 
 
 <div class="viewcode-block" id="EmailVerificationQueryView"><a class="viewcode-back" href="../../user.html#user.views.EmailVerificationQueryView">[docs]</a><span class="k">class</span> <span class="nc">EmailVerificationQueryView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This is a view class for the user to verify his email to activate his account</span>
+<span class="sd">    by clicking the link sent to him by mail right after signing up.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">serializer_class</span> <span class="o">=</span> <span class="n">EmailVerificationQuerySerializer</span>
+
 <div class="viewcode-block" id="EmailVerificationQueryView.post"><a class="viewcode-back" href="../../user.html#user.views.EmailVerificationQueryView.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">serializer</span> <span class="o">=</span> <span class="n">PasswordResetQuerySerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -258,12 +311,13 @@
         <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">u_email</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">urlsafe_base64_decode</span><span class="p">(</span><span class="n">u_email</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;strict&#39;</span><span class="p">)</span>
+            <span class="n">u_email</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">urlsafe_base64_decode</span><span class="p">(</span><span class="n">u_email</span><span class="p">),</span>
+                          <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;strict&#39;</span><span class="p">)</span>
             <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">u_email</span><span class="p">)</span>
-           
+
         <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">OverflowError</span><span class="p">,</span> <span class="n">User</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">):</span>
             <span class="n">user</span> <span class="o">=</span> <span class="kc">None</span>
-    
+
         <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">default_token_generator</span><span class="o">.</span><span class="n">check_token</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
             <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">u_email</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">is_active</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;u_email&#39;</span><span class="p">:</span> <span class="n">u_email</span><span class="p">})</span>
@@ -271,17 +325,22 @@
             <span class="c1"># return Response(status=status.HTTP_400_BAD_REQUEST)</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Unable to activate the user&#39;s acount with the provided data&quot;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">serializers</span><span class="o">.</span><span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div></div>
-        
+
 
 <div class="viewcode-block" id="get_user_by_id"><a class="viewcode-back" href="../../user.html#user.views.get_user_by_id">[docs]</a><span class="nd">@api_view</span><span class="p">([</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">get_user_by_id</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">user_id</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=======&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
-    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_user_by_id</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This is a function to retrieve the user info by the user id. (Used in dashboard).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="p">(</span><span class="n">user_id</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">User</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s1">&#39;user_exists&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
     <span class="n">user_serializer</span> <span class="o">=</span> <span class="n">userSerializer</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">user_serializer</span><span class="o">.</span><span class="n">data</span>
-    <span class="k">del</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+    <span class="c1"># del data[&#39;password&#39;]</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

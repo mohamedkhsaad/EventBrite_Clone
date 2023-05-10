@@ -68,24 +68,26 @@
              
   <h1>Source code for event.serializers</h1><div class="highlight"><pre>
 <span></span>
+<span class="c1"># imports</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">serializers</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">user.serializers</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">rest_framework</span> <span class="kn">import</span> <span class="n">generics</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">request</span>
 <span class="kn">from</span> <span class="nn">rest_framework.response</span> <span class="kn">import</span> <span class="n">Response</span>
 
+
 <div class="viewcode-block" id="eventSerializer"><a class="viewcode-back" href="../../event.html#event.serializers.eventSerializer">[docs]</a><span class="k">class</span> <span class="nc">eventSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Serializer for the Event model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># image, image2, image3,image4 = tuple(serializers.ImageField(max_length=None,use_url=True,required=False, allow_null=True)for i in range(4))</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">HiddenField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">serializers</span><span class="o">.</span><span class="n">CurrentUserDefault</span><span class="p">())</span>
-    <span class="c1"># user_id = serializers.SerializerMethodField()</span>
+
 <div class="viewcode-block" id="eventSerializer.get_user_id"><a class="viewcode-back" href="../../event.html#event.serializers.eventSerializer.get_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">request</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
         <span class="k">return</span> <span class="kc">None</span></div>
+
 <div class="viewcode-block" id="eventSerializer.Meta"><a class="viewcode-back" href="../../event.html#event.serializers.eventSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">event</span>
         <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span></div>
@@ -106,39 +108,40 @@
         <span class="n">model</span> <span class="o">=</span> <span class="n">event</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span></div></div>
 
+
 <div class="viewcode-block" id="UserInterestSerializer"><a class="viewcode-back" href="../../event.html#event.serializers.UserInterestSerializer">[docs]</a><span class="k">class</span> <span class="nc">UserInterestSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Serializer for UserInterest model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># user = serializers.SlugRelatedField(</span>
-    <span class="c1">#     slug_field=&#39;email&#39;, queryset=User.objects.all())</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">serializers</span><span class="o">.</span><span class="n">HiddenField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">serializers</span><span class="o">.</span><span class="n">CurrentUserDefault</span><span class="p">())</span>
-    <span class="c1"># user_id = serializers.SerializerMethodField()</span>
+
 <div class="viewcode-block" id="UserInterestSerializer.get_user_id"><a class="viewcode-back" href="../../event.html#event.serializers.UserInterestSerializer.get_user_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">request</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span>
         <span class="k">return</span> <span class="kc">None</span></div>
-  
 
 <div class="viewcode-block" id="UserInterestSerializer.Meta"><a class="viewcode-back" href="../../event.html#event.serializers.UserInterestSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">UserInterest</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span></div></div>
 
 
-
 <div class="viewcode-block" id="EventFollowerSerializer"><a class="viewcode-back" href="../../event.html#event.serializers.EventFollowerSerializer">[docs]</a><span class="k">class</span> <span class="nc">EventFollowerSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serializer for the EventFollower model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="EventFollowerSerializer.Meta"><a class="viewcode-back" href="../../event.html#event.serializers.EventFollowerSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">EventFollower</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span></div></div>
 
 
 <div class="viewcode-block" id="EventLikesSerializer"><a class="viewcode-back" href="../../event.html#event.serializers.EventLikesSerializer">[docs]</a><span class="k">class</span> <span class="nc">EventLikesSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Serializer for the Eventlikes model.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="EventLikesSerializer.Meta"><a class="viewcode-back" href="../../event.html#event.serializers.EventLikesSerializer.Meta">[docs]</a>    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
         <span class="n">model</span> <span class="o">=</span> <span class="n">Eventlikes</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;__all__&#39;</span></div></div>
-
-
 </pre></div>
 
            </div>

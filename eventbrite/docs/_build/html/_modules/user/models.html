@@ -68,10 +68,11 @@
              
   <h1>Source code for user.models</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module contains 1 model class for the user app.</span>
+<span class="sd">This module contains models class for the user app.</span>
 
 <span class="sd">class:user: A class that contains all fields concerning the user.</span>
 
+<span class="sd">class:CustomToken: A token class that contains all fields concerning the token</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">AbstractUser</span><span class="p">,</span> <span class="n">PermissionsMixin</span><span class="p">,</span> <span class="n">BaseUserManager</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Permission</span>
@@ -98,6 +99,7 @@
     <span class="n">is_staff</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">is_active</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">username</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="c1"># User_ID = models.IntegerField()</span>
     <span class="n">USERNAME_FIELD</span> <span class="o">=</span> <span class="s1">&#39;email&#39;</span>
     <span class="n">REQUIRED_FIELDS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;last_name&#39;</span><span class="p">]</span>
     <span class="c1"># groups = models.ManyToManyField(</span>
