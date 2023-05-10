@@ -656,7 +656,8 @@ def savecsv_orderitems_by_eventid(request, event_id):
     #     data = user_serializer.data
     sum=0
     for d in json_data:
-        quantity_sold = int(d['quantity'])
+        # quantity_sold = int(d['quantity'])
+        quantity_sold = d['quantity']
         price=d['ticket_price']
         sum+=int(quantity_sold*price)
 
