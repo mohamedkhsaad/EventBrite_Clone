@@ -659,7 +659,7 @@ def savecsv_orderitems_by_eventid(request, event_id):
         quantity_sold = str(d['quantity'])
         # quantity_sold = d['quantity']
         price=d['ticket_price']
-        sum+=(quantity_sold*price)
+        sum+=int((int(quantity_sold)*int(price)))
 
     # del json_data[3]
     write_json_to_csv(json_data,filename='attendee_report.csv')
@@ -693,7 +693,7 @@ def dashboard_orderitems_by_eventid(request, event_id):
         # quantity_sold = int(d['quantity'])
         quantity_sold = str(d['quantity'])
         price=d['ticket_price']
-        sum+=((quantity_sold*price))
+        sum+=int((int(quantity_sold)*int(price)))
 
     return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
 
