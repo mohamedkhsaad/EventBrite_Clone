@@ -2,11 +2,11 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
-from event.models import event, EventFollower
+from event.models import *
 from django.contrib.auth import get_user_model
 from datetime import datetime, timedelta
 
-class FollowEventViewTestCase(APITestCase):
+class LikeEventViewTestCase(APITestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
             username='testuser', password='testpass'
@@ -34,13 +34,13 @@ class FollowEventViewTestCase(APITestCase):
 
     def test_follow_event_authenticated(self):
         self.client.force_authenticate(user=self.user)
-        url = reverse('follow_event', args=[self.event.ID])
+        url = reverse('like-event', args=[self.event.ID])
         response = self.client.get(url,follow=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # self.assertEqual(response.data['status'],'success')
 
     def test_follow_event_unauthenticated(self):
-        url = reverse('follow_event', args=[self.event.ID])
+        url = reverse('like-event', args=[self.event.ID])
         response = self.client.get(url,follow=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # self.assertEqual(response.data['status'], 'error')
@@ -48,7 +48,7 @@ class FollowEventViewTestCase(APITestCase):
 
 
 
-class UserFollowedEventsTestCase(APITestCase):
+class UserLikedEventsTestCase(APITestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
             username='testuser', password='testpass'
@@ -73,20 +73,20 @@ class UserFollowedEventsTestCase(APITestCase):
             CAPACITY=100,
             STATUS='Open',
         )
-        self.event_follower = EventFollower.objects.create(
+        self.event_follower = Eventlikes.objects.create(
             user=self.user, event=self.event, ID=self.event.ID
         )
 
-    def test_user_followed_events_authenticated(self):
+    def test_user_likes_events_authenticated(self):
         self.client.force_authenticate(user=self.user)
-        url = reverse('followed_events')
+        url = reverse('user-liked-events')
         response = self.client.get(url,follow=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]['Title'], self.event.Title)
 
-    def test_user_followed_events_unauthenticated(self):
-        url = reverse('followed_events')
+    def test_user_likes_events_unauthenticated(self):
+        url = reverse('user-liked-events')
         response = self.client.get(url,follow=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['status'], 'error')
