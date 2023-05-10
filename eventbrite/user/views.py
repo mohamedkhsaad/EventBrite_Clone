@@ -17,6 +17,7 @@ class:EmailVerificationQueryView: a viewset for the user to verify the token and
 
 function:get_user_by_id: a view function to retrieve the user info by user id
 """
+from rest_framework.status import HTTP_400_BAD_REQUEST
 from .serializers import *
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
@@ -51,23 +52,27 @@ from rest_framework.decorators import api_view
 """
 user model (SIGNUP)
 """
+
+
 class userViewSet(viewsets.ModelViewSet):
     """
     A viewset for signing up new users.
     """
     serializer_class = userSerializer
     queryset = User.objects.all()
+
+
 '''
 user model (LOGIN)
 '''
-from rest_framework.status import HTTP_400_BAD_REQUEST
 
 
-class CustomTokenLoginView(APIView): 
+class CustomTokenLoginView(APIView):
     '''
 This is a view class for the user login. User has to verify his email after signup to be able to login
     '''
-    serializer_class=AuthTokenSerializer
+    serializer_class = AuthTokenSerializer
+
     def post(self, request, format=None):
         email = request.data.get('email')
         password = request.data.get('password')
@@ -79,35 +84,42 @@ This is a view class for the user login. User has to verify his email after sign
             custom_token = CustomToken.objects.create(user=user)
             user_id = user.id
             response_data = {
-            'id':user_id,
-            'email': user.email,
-            'token': custom_token.key 
+                'id': user_id,
+                'email': user.email,
+                'token': custom_token.key,
+                'first_name':user.first_name,
+                'last_name':user.last_name,
+                'initials': (user.first_name[0] if user.first_name else '') + (user.last_name[0] if user.last_name else '')
+
             }
+            response_data['initials'] = response_data['initials'].upper()
+
             user = authenticate(
-            request=request,
-            email=email,
-            password=password,
+                request=request,
+                email=email,
+                password=password,
             )
             # if not user:
             #     msg = _('Unable to authenticate with provided credentials')
             #     raise serializers.ValidationError(msg, code='authorization')
-            return Response(response_data, status=status.HTTP_200_OK) 
+            return Response(response_data, status=status.HTTP_200_OK)
         # else:
         #     return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
 
 
 '''
 user model (EMAIL CHECK)
 '''
 user_ = get_user_model()
+
+
 class EmailCheckView(APIView):
     '''
 This is a view class for the user email check. 
 It checks if the email entered is in the database or not
     to redirect the user either to the signup or to login.
     '''
+
     def get(self, request, email):
         try:
             user = user_.objects.get(email=email)
@@ -120,6 +132,8 @@ It checks if the email entered is in the database or not
 '''
 user model reset password
 '''
+
+
 class CustomPasswordResetView(APIView):
     '''
 This is a view class to allow the user to enter his email to reset his password.
@@ -144,7 +158,8 @@ If the email exists the class sends him an email with his email encrypted in the
                 print(token)
 
                 # Construct the reset URL for the user
-                reset_url = reverse_lazy('password_reset_check', args={'u_email': u_email, 'token': token})
+                reset_url = reverse_lazy('password_reset_check', args={
+                                         'u_email': u_email, 'token': token})
                 # print(uid)
                 # print(token)
 
@@ -156,11 +171,9 @@ If the email exists the class sends him an email with his email encrypted in the
                     [user.email],
                     fail_silently=False,
                 )
-                
+
         # Redirect to the password reset done page
         return HttpResponseRedirect(self.success_url)
-
-
 
 
 class CustomPasswordResetCheckView(APIView):
@@ -169,6 +182,7 @@ This is a view class to check the link (sent earlier by email) clicked by the us
 The class checks the token and the u_email from the query
     '''
     serializer_class = PasswordResetQuerySerializer
+
     def post(self, request, *args, **kwargs):
         serializer = PasswordResetQuerySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -177,9 +191,10 @@ The class checks the token and the u_email from the query
         token = request.data.get('token')
 
         try:
-            u_email = str(urlsafe_base64_decode(u_email), encoding='utf-8', errors='strict')
+            u_email = str(urlsafe_base64_decode(u_email),
+                          encoding='utf-8', errors='strict')
             user = User.objects.get(email=u_email)
-        
+
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
 
@@ -189,7 +204,7 @@ The class checks the token and the u_email from the query
             # return Response(status=status.HTTP_400_BAD_REQUEST)
             msg = _("Unable to find the user's acount with the provided data")
             raise serializers.ValidationError(msg)
-        
+
 
 class CustomPasswordResetConfirmView(APIView):
     '''
@@ -197,17 +212,19 @@ This is a view class for the user to reset his password
 and for the frontend to put the email to specify the user to update his password.
     '''
     serializer_class = PasswordResetSerializer
+
     def post(self, request):
         serializer = PasswordResetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = User.objects.get(email=serializer.validated_data['user_email'])
-        
+
         if not user:
             msg = _('Unable to authenticate with provided credentials')
             raise serializers.ValidationError(msg)
-    
-        User.objects.filter(email=serializer.validated_data['user_email']).update(password=make_password(serializer.validated_data['password']))
-        
+
+        User.objects.filter(email=serializer.validated_data['user_email']).update(
+            password=make_password(serializer.validated_data['password']))
+
         return Response({'detail': 'Password reset successfully.'})
 
 
@@ -217,6 +234,7 @@ This is a view class for the user to verify his email to activate his account
 by clicking the link sent to him by mail right after signing up.
     '''
     serializer_class = EmailVerificationQuerySerializer
+
     def post(self, request, *args, **kwargs):
         serializer = PasswordResetQuerySerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -224,12 +242,13 @@ by clicking the link sent to him by mail right after signing up.
         token = request.data.get('token')
 
         try:
-            u_email = str(urlsafe_base64_decode(u_email), encoding='utf-8', errors='strict')
+            u_email = str(urlsafe_base64_decode(u_email),
+                          encoding='utf-8', errors='strict')
             user = User.objects.get(email=u_email)
-           
+
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
-    
+
         if user is not None and default_token_generator.check_token(user, token):
             User.objects.filter(email=u_email).update(is_active=True)
             return Response({'u_email': u_email})
@@ -237,17 +256,19 @@ by clicking the link sent to him by mail right after signing up.
             # return Response(status=status.HTTP_400_BAD_REQUEST)
             msg = _("Unable to activate the user's acount with the provided data")
             raise serializers.ValidationError(msg)
-        
+
 
 @api_view(['GET'])
-def get_user_by_id(request,user_id):
+def get_user_by_id(request, user_id):
     '''
 This is a function to retrieve the user info by the user id. (Used in dashboard).
     '''
-    print("=======")
-    print(type(user_id))
-    user = User.objects.get(id=(user_id))
+    try:
+        user = User.objects.get(id=(user_id))
+    except User.DoesNotExist:
+        user = None
+        return JsonResponse({'user_exists': False})
     user_serializer = userSerializer(user)
     data = user_serializer.data
     # del data['password']
-    return Response(data,status=status.HTTP_200_OK)
+    return Response(data, status=status.HTTP_200_OK)

@@ -72,6 +72,9 @@ Publish_choises = (
 
 
 def generate_unique_id():
+    """
+    This function create a unique random ID 
+    """
     while True:
         # Generate a random integer between 1 and 9999
         new_id = random.randint(1, 9999)
@@ -81,6 +84,9 @@ def generate_unique_id():
 
 
 class UserInterest(models.Model):
+    """
+    Model representing an user interests.
+    """
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='interests')
     User_id = models.IntegerField(blank=True, null=True)
@@ -89,6 +95,7 @@ class UserInterest(models.Model):
 
     def __str__(self):
         return self.User_id
+
 
 class event(models.Model):
     """
@@ -106,17 +113,18 @@ class event(models.Model):
         max_length=50, choices=TYPE_CHOICES, default='Type')
     category_name = models.CharField(
         max_length=50, choices=CATEGORY_CHOICES, default='Category')
-    sub_Category = models.CharField(max_length=20,null=True,blank=True)
-    venue_name = models.CharField(max_length=20,blank=True)
+    sub_Category = models.CharField(max_length=20, null=True, blank=True)
+    venue_name = models.CharField(max_length=20, blank=True)
     ST_DATE = models.DateField()
     END_DATE = models.DateField()
     ST_TIME = models.TimeField()
     END_TIME = models.TimeField()
     online = models.CharField(max_length=5, choices=Online_choises)
     CAPACITY = models.IntegerField()
-    STATUS = models.CharField(max_length=5,choices=STATUS_choises)
+    STATUS = models.CharField(max_length=5, choices=STATUS_choises)
     # Publish = models.CharField(max_length=10, choices=Publish_choises)
     # PASSWORD = models.CharField(max_length=10, null=True)
+
     class Meta:
         verbose_name = "Event"
         verbose_name_plural = "Events"
@@ -187,38 +195,38 @@ class Locations(models.Model):
 
 
 def add_image_fields(count):
+    """
+    This function generate auto image fields and resize the all images with a fix size
+    """
     # Add first image field as 'image'
     event.add_to_class('image', ResizedImageField(size=[512, 256],  crop=['middle', 'center'],
-    upload_to='events/', blank=True, null=True, verbose_name='image'))
+                                                  upload_to='events/', blank=True, null=True, verbose_name='image'))
     # Add remaining image fields with field names 'image2', 'image3', ...
     for i in range(1, count+1):
         field_name = f"image{i}"
-        field = ResizedImageField(size=[512, 256],crop=['middle', 'center'],upload_to='events/', blank=True, null=True, verbose_name=field_name)
+        field = ResizedImageField(size=[512, 256], crop=[
+                                  'middle', 'center'], upload_to='events/', blank=True, null=True, verbose_name=field_name)
         event.add_to_class(field_name, field)
-# add_image_fields(5)
+
+
 class EventFollower(models.Model):
     """
     Model representing a user following an event.
     """
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='event_followers')
-    event = models.ForeignKey(event, on_delete=models.CASCADE,null=True,blank=True)
+    event = models.ForeignKey(
+        event, on_delete=models.CASCADE, null=True, blank=True)
     followed_date = models.DateTimeField(auto_now_add=True)
     ID = models.IntegerField()
 
+
 class Eventlikes(models.Model):
     """
-    Model representing a user following an event.
+    Model representing a user likes an event.
     """
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='event_Likes')
     event = models.ForeignKey(event, on_delete=models.CASCADE)
     followed_date = models.DateTimeField(auto_now_add=True)
     ID = models.IntegerField()
-
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.core.validators import EmailValidator
-
-
-

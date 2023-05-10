@@ -1,6 +1,7 @@
 """
-This module contains several view classes for the events app.
+This module contains several view classes for the events,followers,likes and tickets.
 class:EventCreateView: A viewset for creating an event instance.
+class:EventUpdateView: A viewset for updating an event instance.
 class:AllEventListView: A viewset for retrieving all event instances.
 class:EventSearchView: A viewset for searching event instances by title.
 class:EventListtype: A viewset for retrieving event instances by type.
@@ -14,11 +15,31 @@ class:UserInterestAPIView: A viewset for retrive an user Interests instance.
 class:UserInterestEventsAPIView: A viewset for retrieving event instances based on user Interests.
 class:TodayEventsList: A viewset for retrieving event instances for today.
 class:WeekendEventsView: A viewset for retrieving event instances for weekend.
-class:TicketCreateAPIView: A viewset for create a new ticket for a given event
-class:EventTicketPrice: A viewset for retrieve the ticket price for a given event.
-class:DraftEventsAPIView: A viewset for retrieving Draft events.
+class:FreeTicketEventListView: A viewset for retrieving free events.
+class:DraftEventsAPIView: A viewset for retrieving Draft events for creators.
+class:LiveEventsAPIView: A viewset for retrieving Live events for creators.
 
+class:FollowEventView: A viewset for make the user could follow an event by event ID.
+class:UserFollowedEvents: A viewset for retrive the events that the user followed.
+class:UserFollowedEventsCount: A viewset for count the events that the user followed.
+class:EventFollowersCount: A viewset for count the users that follow an event by event ID.
+class:UnfollowEventView: A viewset for unfollow an event by event ID.
+
+class:LikeEventView: A viewset for make the user could like an event by event ID.
+class:UserLikedEvents: A viewset for retrive the events that the user liked.
+class:UserLikedEventsCount: A viewset for count the events that the user liked.
+class:EventLikesCount: A viewset for count the users that like an event by event ID.
+class:UnlikeEventView: A viewset for unlike an event by event ID.
+
+class:TicketCreateAPIView: A viewset for create a new ticket for a given event
+class:TicketClassUpdateView: A viewset for Update a Ticket Class.
+class:ALLTicketClassListView: A viewset for retrieving ALL Tickets Classes for a given event.
+class:ATicketClassListView: A viewset for retrieving A Ticket Class by ticket class ID.
+class:DeleteeALLTicketClassView: A viewset for Delete a All Tickets Classes for a given event.
+class:DeleteeATicketClassView: A viewset for Delete a A Ticket Class by ticket class ID.
+class:EventTicketPrice: A viewset for retrieve the ticket price for a given event.
 """
+# imports
 from event.forms import *
 from django.db.models import Q
 from django.shortcuts import render
@@ -52,6 +73,31 @@ from datetime import date
 from django.core.exceptions import PermissionDenied
 
 
+# events
+
+"""
+This module contains several view classes for the events.
+class:EventCreateView: A viewset for creating an event instance.
+class:EventUpdateView: A viewset for updating an event instance.
+class:AllEventListView: A viewset for retrieving all event instances.
+class:EventSearchView: A viewset for searching event instances by title.
+class:EventListtype: A viewset for retrieving event instances by type.
+class:EventListCategory: A viewset for retrieving event instances by category.
+class:EventListSupCategory: A viewset for retrieving event instances by sub-category.
+class:EventListVenue: A viewset for retrieving event instances by venue.
+class:OnlineEventsAPIView: A viewset for retrieving online event instances.
+class:EventID: A viewset for retrieving event instances by ID.
+class:UserInterestCreateAPIView: A viewset for creating an user Interests instance.
+class:UserInterestAPIView: A viewset for retrive an user Interests instance.
+class:UserInterestEventsAPIView: A viewset for retrieving event instances based on user Interests.
+class:TodayEventsList: A viewset for retrieving event instances for today.
+class:WeekendEventsView: A viewset for retrieving event instances for weekend.
+class:FreeTicketEventListView: A viewset for retrieving free events.
+class:DraftEventsAPIView: A viewset for retrieving Draft events for creators.
+class:LiveEventsAPIView: A viewset for retrieving Live events for creators.
+"""
+
+
 class EventCreateView(generics.CreateAPIView):
     """
     A viewset for creating an event instance.
@@ -82,6 +128,47 @@ class EventCreateView(generics.CreateAPIView):
         return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
 
 
+class EventUpdateView(APIView):
+    """
+    A viewset for Update an event instance.
+    """
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
+
+    def put(self, request, event_id):
+        try:
+            event_obj = event.objects.get(ID=event_id)
+        except event.DoesNotExist:
+            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
+        if str(request.user.id) != str(event_obj.User_id):
+            return Response({'error': 'You are not authorized to update this event.'}, status=HTTP_401_UNAUTHORIZED)
+        data = {
+            'Title': request.data.get('Title', event_obj.Title),
+            'organizer': request.data.get('organizer', event_obj.organizer),
+            'Summery': request.data.get('Summery', event_obj.Summery),
+            'Description': request.data.get('Description', event_obj.Description),
+            'type': request.data.get('type', event_obj.type),
+            'category_name': request.data.get('category_name', event_obj.category_name),
+            'sub_Category': request.data.get('sub_Category', event_obj.sub_Category),
+            'venue_name': request.data.get('venue_name', event_obj.venue_name),
+            'ST_DATE': request.data.get('ST_DATE', event_obj.ST_DATE),
+            'END_DATE': request.data.get('END_DATE', event_obj.END_DATE),
+            'ST_TIME': request.data.get('ST_TIME', event_obj.ST_TIME),
+            'END_TIME': request.data.get('END_TIME', event_obj.END_TIME),
+            'online': request.data.get('online', event_obj.online),
+            'CAPACITY': request.data.get('CAPACITY', event_obj.CAPACITY),
+            'STATUS': request.data.get('STATUS', event_obj.STATUS),
+            'image': request.data.get('image', event_obj.image),
+            'image1': request.data.get('image1', event_obj.image1),
+            'image2': request.data.get('image2', event_obj.image2),
+            'image3': request.data.get('image3', event_obj.image3),
+            'image4': request.data.get('image4', event_obj.image4),
+            'image5': request.data.get('image5', event_obj.image5)
+        }
+        event.objects.filter(ID=event_id).update(**data)
+        return Response({'message': 'Event updated successfully'})
+
+
 class MyPagination(PageNumberPagination):
     """
     A custom pagination class that extends the PageNumberPagination class.
@@ -101,6 +188,7 @@ class AllEventListView(APIView):
     # permission_classes = [IsAuthenticated]
     # authentication_classes = [CustomTokenAuthentication]
     pagination_class = MyPagination
+
     def get(self, request, format=None):
         """
         This view should return a paginated list of all the events.
@@ -109,8 +197,8 @@ class AllEventListView(APIView):
         today = date.today()
         past_events = event.objects.filter(ST_DATE__lt=today, STATUS='Live')
         for past_event in past_events:
-           data = {'STATUS': 'Past'}
-           event.objects.filter(ID=past_event.ID).update(**data)
+            data = {'STATUS': 'Past'}
+            event.objects.filter(ID=past_event.ID).update(**data)
             # past_event.save()
         events = event.objects.filter(STATUS='Live')
         paginator = self.pagination_class()
@@ -119,6 +207,7 @@ class AllEventListView(APIView):
         response = paginator.get_paginated_response(serializer.data)
         response['count'] = paginator.page.paginator.count
         return response
+
 
 class EventSearchView(generics.ListAPIView):
     """
@@ -349,84 +438,19 @@ class WeekendEventsView(generics.ListAPIView):
         return queryset
 
 
-class TicketCreateAPIView(generics.CreateAPIView):
-    """
-    This class defines a POST request to create a new ticket for a given event. It uses the TicketC;assSerializer for serialization 
-    and the Ticket model for database queries. The post method first checks if the specified event exists in the database, 
-    then adds the event ID to the ticket data and attempts to create a new ticket using the serializer. If the serializer is 
-    valid, the new ticket is saved and a success response is returned. Otherwise, an error response is returned with the 
-    serializer errors.
-    """
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [CustomTokenAuthentication]
-    queryset = TicketClass.objects.all()
-    serializer_class = TicketClassSerializer
-
-    def post(self, request, event_id):
-        """
-        A POST request to create a ticket object for a given event ID
-        """
-        try:
-            Event = event.objects.get(ID=event_id)
-        except event.DoesNotExist:
-            return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
-        ticket_data = request.data.copy()
-        ticket_data['event'] = Event.ID
-        ticket_data['event_id'] = Event.ID
-        print(Event.ID)
-        ticket_data['user'] = request.user
-        ticket_data['User_id'] = request.user.id
-        
-        # Check if the user creating the ticket is the same user who created the event
-        if str(request.user.id) != str(Event.User_id):
-            return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
-
-        if ticket_data.get('TICKET_TYPE') == 'Free':
-            ticket_data['PRICE'] = 0
-
-        serializer = self.serializer_class(data=ticket_data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-
-class EventTicketPrice(APIView):
-    """
-    This class defines a GET request to retrieve the ticket price for a given event. It uses the event and Ticket models 
-    for database queries. The get method first checks if the specified event exists in the database, then retrieves the 
-    first ticket object associated with the event ID. If the ticket object exists, the ticket price is returned in a 
-    success response. Otherwise, an error response is returned indicating that the ticket was not found.
-    """
-
-    def get(self, request, event_id):
-        """
-        Returns the ticket price for a given event.
-        """
-        try:
-            event_obj = event.objects.get(ID=event_id)
-        except event.DoesNotExist:
-            return Response(status=404, data={'message': 'Event not found'})
-
-        ticket_obj = TicketClass.objects.filter(event_id=event_obj.ID).first()
-        if ticket_obj:
-            ticket_price = ticket_obj.PRICE
-            return Response(status=200, data={'ticket_price': ticket_price})
-        else:
-            return Response(status=404, data={'message': 'Ticket not found'})
-
-
 class FreeTicketEventListView(generics.ListAPIView):
     """
     A viewset for retrieving free events.
     """
     serializer_class = eventSerializer
+
     def get_queryset(self):
         # Get the events that have a ticket class of type "Free"
-        free_ticket_events = TicketClass.objects.filter(TICKET_TYPE='Free').values_list('event_id', flat=True)
+        free_ticket_events = TicketClass.objects.filter(
+            TICKET_TYPE='Free').values_list('event_id', flat=True)
         queryset = event.objects.filter(ID__in=free_ticket_events)
         return queryset
+
 
 class DraftEventsAPIView(APIView):
     """
@@ -453,6 +477,7 @@ class LiveEventsAPIView(APIView):
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def get(self, request):
         """
         This view should return a list of all the draft events of the creator.
@@ -466,6 +491,17 @@ class LiveEventsAPIView(APIView):
 
 
 # followers
+
+"""
+This module contains several view classes for the users and events likes :
+class:FollowEventView: A viewset for make the user could follow an event by event ID.
+class:UserFollowedEvents: A viewset for retrive the events that the user followed.
+class:UserFollowedEventsCount: A viewset for count the events that the user followed.
+class:EventFollowersCount: A viewset for count the users that follow an event by event ID.
+class:UnfollowEventView: A viewset for unfollow an event by event ID.
+"""
+
+
 class FollowEventView(APIView):
     """
     A viewset for make the user could follow an event by event ID.
@@ -540,7 +576,17 @@ class UnfollowEventView(APIView):
             return Response({'status': 'success'})
         else:
             return Response({'status': 'error', 'message': 'Could not unfollow event.'})
+
+
 # likes
+"""
+This module contains several view classes for the users and events likes :
+class:LikeEventView: A viewset for make the user could like an event by event ID.
+class:UserLikedEvents: A viewset for retrive the events that the user liked.
+class:UserLikedEventsCount: A viewset for count the events that the user liked.
+class:EventLikesCount: A viewset for count the users that like an event by event ID.
+class:UnlikeEventView: A viewset for unlike an event by event ID.
+"""
 
 
 class LikeEventView(APIView):
@@ -575,7 +621,7 @@ class UserLikedEvents(APIView):
 
 class UserLikedEventsCount(APIView):
     """
-    A viewset for count the events that the user follow by the user authentication.
+    A viewset for count the events that the user liked by the user authentication.
     """
 
     def get(self, request):
@@ -588,7 +634,7 @@ class UserLikedEventsCount(APIView):
 
 class EventLikesCount(APIView):
     """
-    A viewset for count the users that follow an event by event ID.
+    A viewset for count the users that like an event by event ID.
     """
     serializer_class = EventFollowerSerializer
 
@@ -619,42 +665,60 @@ class UnlikeEventView(APIView):
             return Response({'status': 'error', 'message': 'Could not unfollow event.'})
 
 
-class EventUpdateView(APIView):
+# tickets
+"""
+This module contains several view classes for the tickets:
+class:TicketCreateAPIView: A viewset for create a new ticket for a given event
+class:TicketClassUpdateView: A viewset for Update a Ticket Class.
+class:ALLTicketClassListView: A viewset for retrieving ALL Tickets Classes for a given event.
+class:ATicketClassListView: A viewset for retrieving A Ticket Class by ticket class ID.
+class:DeleteeALLTicketClassView: A viewset for Delete a All Tickets Classes for a given event.
+class:DeleteeATicketClassView: A viewset for Delete a A Ticket Class by ticket class ID.
+class:EventTicketPrice: A viewset for retrieve the ticket price for a given event.
+"""
+
+
+class TicketCreateAPIView(generics.CreateAPIView):
+    """
+    This class defines a POST request to create a new ticket for a given event. It uses the TicketC;assSerializer for serialization 
+    and the Ticket model for database queries. The post method first checks if the specified event exists in the database, 
+    then adds the event ID to the ticket data and attempts to create a new ticket using the serializer. If the serializer is 
+    valid, the new ticket is saved and a success response is returned. Otherwise, an error response is returned with the 
+    serializer errors.
+    """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+    queryset = TicketClass.objects.all()
+    serializer_class = TicketClassSerializer
 
-    def put(self, request, event_id):
+    def post(self, request, event_id):
+        """
+        A POST request to create a ticket object for a given event ID
+        """
         try:
-            event_obj = event.objects.get(ID=event_id)
+            Event = event.objects.get(ID=event_id)
         except event.DoesNotExist:
-            return Response({'error': 'Event does not exist.'}, status=HTTP_404_NOT_FOUND)
-        if str(request.user.id) != str(event_obj.User_id):
-            return Response({'error': 'You are not authorized to update this event.'}, status=HTTP_401_UNAUTHORIZED)
-        data = {
-            'Title': request.data.get('Title', event_obj.Title),
-            'organizer': request.data.get('organizer', event_obj.organizer),
-            'Summery': request.data.get('Summery', event_obj.Summery),
-            'Description': request.data.get('Description', event_obj.Description),
-            'type': request.data.get('type', event_obj.type),
-            'category_name': request.data.get('category_name', event_obj.category_name),
-            'sub_Category': request.data.get('sub_Category', event_obj.sub_Category),
-            'venue_name': request.data.get('venue_name', event_obj.venue_name),
-            'ST_DATE': request.data.get('ST_DATE', event_obj.ST_DATE),
-            'END_DATE': request.data.get('END_DATE', event_obj.END_DATE),
-            'ST_TIME': request.data.get('ST_TIME', event_obj.ST_TIME),
-            'END_TIME': request.data.get('END_TIME', event_obj.END_TIME),
-            'online': request.data.get('online', event_obj.online),
-            'CAPACITY': request.data.get('CAPACITY', event_obj.CAPACITY),
-            'STATUS': request.data.get('STATUS', event_obj.STATUS),
-            'image': request.data.get('image', event_obj.image),
-            'image1': request.data.get('image1', event_obj.image1),
-            'image2': request.data.get('image2', event_obj.image2),
-            'image3': request.data.get('image3', event_obj.image3),
-            'image4': request.data.get('image4', event_obj.image4),
-            'image5': request.data.get('image5', event_obj.image5)
-        }
-        event.objects.filter(ID=event_id).update(**data)
-        return Response({'message': 'Event updated successfully'})
+            return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+        ticket_data = request.data.copy()
+        ticket_data['event'] = Event.ID
+        ticket_data['event_id'] = Event.ID
+        print(Event.ID)
+        ticket_data['user'] = request.user
+        ticket_data['User_id'] = request.user.id
+
+        # Check if the user creating the ticket is the same user who created the event
+        if str(request.user.id) != str(Event.User_id):
+            return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
+
+        if ticket_data.get('TICKET_TYPE') == 'Free':
+            ticket_data['PRICE'] = 0
+
+        serializer = self.serializer_class(data=ticket_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class TicketClassUpdateView(APIView):
@@ -682,6 +746,7 @@ class TicketClassUpdateView(APIView):
         }
         TicketClass.objects.filter(ID=TicketClass_id).update(**data)
         return Response({'message': 'Ticket class updated successfully'})
+
 
 class ALLTicketClassListView(generics.ListAPIView):
     serializer_class = TicketClassSerializer
@@ -745,6 +810,7 @@ class DeleteeATicketClassView(APIView):
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def delete(self, request, TicketClass_id):
         try:
             ticket_classes = TicketClass.objects.filter(ID=TicketClass_id)
@@ -766,6 +832,7 @@ class DeleteeAnEventClassView(APIView):
     """
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
+
     def delete(self, request, event_id):
         try:
             Event = event.objects.get(ID=event_id)
@@ -779,3 +846,28 @@ class DeleteeAnEventClassView(APIView):
             return Response({'status': 'success'})
         else:
             return Response({'status': 'error', 'message': 'Could not delete this event.'})
+
+
+class EventTicketPrice(APIView):
+    """
+    This class defines a GET request to retrieve the ticket price for a given event. It uses the event and Ticket models 
+    for database queries. The get method first checks if the specified event exists in the database, then retrieves the 
+    first ticket object associated with the event ID. If the ticket object exists, the ticket price is returned in a 
+    success response. Otherwise, an error response is returned indicating that the ticket was not found.
+    """
+
+    def get(self, request, event_id):
+        """
+        Returns the ticket price for a given event.
+        """
+        try:
+            event_obj = event.objects.get(ID=event_id)
+        except event.DoesNotExist:
+            return Response(status=404, data={'message': 'Event not found'})
+
+        ticket_obj = TicketClass.objects.filter(event_id=event_obj.ID).first()
+        if ticket_obj:
+            ticket_price = ticket_obj.PRICE
+            return Response(status=200, data={'ticket_price': ticket_price})
+        else:
+            return Response(status=404, data={'message': 'Ticket not found'})

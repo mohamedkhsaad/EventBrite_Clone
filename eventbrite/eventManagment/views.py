@@ -326,14 +326,14 @@ class CheckPasswordAPIView(generics.CreateAPIView):
             publish_info = get_object_or_404(Publish_Info, Event_ID=event_id)
             form = Password_Form(request.POST)
             if form.is_valid() and form.cleaned_data['password'] == publish_info.Audience_Password:
-                return redirect(f"https://127.0.0.1:8000/events/ID/{event_id}/")
+                return redirect(f"https://127.0.0.1:8080/events/ID/{event_id}/")
             else:
                 return Response({'Invalid Password'}, status=HTTP_400_BAD_REQUEST)
 
 
 class ExportEventsAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [CustomTokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    # authentication_classes = [CustomTokenAuthentication]
     def get(self, request):
         # Fetch events created by the specified user
         user_id = self.request.user.id
@@ -644,7 +644,7 @@ def savecsv_orderitems_by_eventid(request, event_id):
         return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
     
     if str(request.user.id) != str(Event.User_id):
-            return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'You are not authorized to view the data of this event.'}, status=HTTP_401_UNAUTHORIZED)
     order_items = OrderItem.objects.filter(event_id=event_id)
     serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
     json_data = serialized_orderitems.data
@@ -680,7 +680,7 @@ def dashboard_orderitems_by_eventid(request, event_id):
         return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
     
     if str(request.user.id) != str(Event.User_id):
-            return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'You are not authorized to view the data of this event.'}, status=HTTP_401_UNAUTHORIZED)
 
     order_items = OrderItem.objects.filter(event_id=event_id)
     serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
