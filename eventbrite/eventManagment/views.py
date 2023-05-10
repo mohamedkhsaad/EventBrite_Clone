@@ -632,15 +632,11 @@ def generate_password(length=8):
 
 
 # Dashboards
+
 @api_view(['GET'])
 @authentication_classes([CustomTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def savecsv_orderitems_by_eventid(request, event_id):
-    '''
-    This is a view function to retrieve all orderitems made by users using event ID 
-    and save them in a csv file for the attendee report.
-    '''
-    
     try:
             Event = event.objects.get(ID=event_id)
             print(request.user.id)
@@ -654,46 +650,25 @@ def savecsv_orderitems_by_eventid(request, event_id):
     json_data = serialized_orderitems.data
     count=len(json_data)
     users = [d['user_id'] for d in json_data]
-    attendees=[]
-    for id in users:
-        user = User.objects.get(id=int(id))
-        user_serializer = userSerializer(user)
-        data = user_serializer.data
-        attendees.append(data)
-
-    emails=[]
-    for d in attendees:
-        emails.append(d['email'])
+    # for id in users:
+    #     user = User.objects.get(id=(id))
+    #     user_serializer = userSerializer(user)
+    #     data = user_serializer.data
     sum=0
     for d in json_data:
         quantity_sold = int(d['quantity'])
         price=d['ticket_price']
         sum+=int(quantity_sold*price)
-    headers = ['Event ID', 'User ID', 'User Email', 'Order ID', 'Order Item ID', 'Ticket Type', 'Ticket Price', 'Quantity']
 
-    # Combine the events and json_data lists
-    rows = []
-    for item in json_data:
-        c=0
-        rows.append([event_id, item['user_id'], emails[c], item['order_id'], item['ticket_class_id'], item['ticket_price'], item['quantity']])
-        c+=1
+    # del json_data[3]
+    write_json_to_csv(json_data,filename='attendee_report.csv')
 
-    # Write the data to a CSV file
-    filename = f'{event_id}_attendee_report.csv'
-    with open(filename, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(headers)
-        writer.writerows(rows)
-
-    return Response({'data': json_data, 'number of order': count,'profit':sum,'user_email':emails},status=status.HTTP_200_OK)
+    return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @authentication_classes([CustomTokenAuthentication])
 @permission_classes([IsAuthenticated])
 def dashboard_orderitems_by_eventid(request, event_id):
-    '''
-    This is a view function to retrieve all orderitems made by users using event ID.
-    '''
     try:
             Event = event.objects.get(ID=event_id)
             print(request.user.id)
@@ -708,22 +683,127 @@ def dashboard_orderitems_by_eventid(request, event_id):
     json_data = serialized_orderitems.data
     count=len(json_data)
     users = [d['user_id'] for d in json_data]
-    attendees=[]
-    for id in users:
-        user = User.objects.get(id=(id))
-        user_serializer = userSerializer(user)
-        data = user_serializer.data
-        attendees.append(data)
-    emails=[]
-    for d in attendees:
-        emails.append(d['email'])
-
-    print(emails)
+    
+    # for id in users:
+    #     user = User.objects.get(id=(id))
+    #     user_serializer = userSerializer(user)
+    #     data = user_serializer.data
     sum=0
     for d in json_data:
         quantity_sold = int(d['quantity'])
         price=d['ticket_price']
         sum+=int((quantity_sold*price))
 
-    return Response({'data':json_data, 'number of order': count,'profit':sum,'user_email':emails},status=status.HTTP_200_OK)
+    return Response({'data': json_data, 'number of order': count,'profit':sum},status=status.HTTP_200_OK)
+
+import csv
+import json
+def write_json_to_csv(json_list, filename):
+    # extract field names from the first JSON object in the list
+    fieldnames = list(json_list[0].keys())
+    
+    # open the CSV file for writing
+    with open(filename, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        # write the header row to the CSV file
+        writer.writeheader()
+
+        # write each JSON object to a row in the CSV file
+        for json_obj in json_list:
+            writer.writerow(json_obj)
+    
+# @api_view(['GET'])
+# @authentication_classes([CustomTokenAuthentication])
+# @permission_classes([IsAuthenticated])
+# def savecsv_orderitems_by_eventid(request, event_id):
+#     '''
+#     This is a view function to retrieve all orderitems made by users using event ID 
+#     and save them in a csv file for the attendee report.
+#     '''
+    
+#     try:
+#             Event = event.objects.get(ID=event_id)
+#             print(request.user.id)
+#     except event.DoesNotExist:
+#         return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+#     if str(request.user.id) != str(Event.User_id):
+#             return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
+#     order_items = OrderItem.objects.filter(event_id=event_id)
+#     serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
+#     json_data = serialized_orderitems.data
+#     count=len(json_data)
+#     users = [d['user_id'] for d in json_data]
+#     attendees=[]
+#     for ff in users:
+#         user = User.objects.get(id=(ff))
+#         user_serializer = userSerializer(user)
+#         data = user_serializer.data
+#         attendees.append(data)
+
+#     emails=[]
+#     for d in attendees:
+#         emails.append(d['email'])
+#     sum=0
+#     for d in json_data:
+#         quantity_sold = int(d['quantity'])
+#         price=d['ticket_price']
+#         sum+=int(quantity_sold*price)
+#     headers = ['Event ID', 'User ID', 'User Email', 'Order ID', 'Order Item ID', 'Ticket Type', 'Ticket Price', 'Quantity']
+
+#     # Combine the events and json_data lists
+#     rows = []
+#     for item in json_data:
+#         c=0
+#         rows.append([event_id, item['user_id'], emails[c], item['order_id'], item['ticket_class_id'], item['ticket_price'], item['quantity']])
+#         c+=1
+
+#     # Write the data to a CSV file
+#     filename = f'{event_id}_attendee_report.csv'
+#     with open(filename, mode='w', newline='') as file:
+#         writer = csv.writer(file)
+#         writer.writerow(headers)
+#         writer.writerows(rows)
+
+#     return Response({'data': json_data, 'number of order': count,'profit':sum,'user_email':emails},status=status.HTTP_200_OK)
+
+# @api_view(['GET'])
+# @authentication_classes([CustomTokenAuthentication])
+# @permission_classes([IsAuthenticated])
+# def dashboard_orderitems_by_eventid(request, event_id):
+#     '''
+#     This is a view function to retrieve all orderitems made by users using event ID.
+#     '''
+#     try:
+#             Event = event.objects.get(ID=event_id)
+#             print(request.user.id)
+#     except event.DoesNotExist:
+#         return Response({'error': f'Event with id {event_id} does not exist.'}, status=HTTP_400_BAD_REQUEST)
+    
+#     if str(request.user.id) != str(Event.User_id):
+#             return Response({'error': 'You are not authorized to create a ticket for this event.'}, status=HTTP_401_UNAUTHORIZED)
+
+#     order_items = OrderItem.objects.filter(event_id=event_id)
+#     serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
+#     json_data = serialized_orderitems.data
+#     count=len(json_data)
+#     users = [d['user_id'] for d in json_data]
+#     attendees=[]
+#     for id in users:
+#         user = User.objects.get(id=(id))
+#         user_serializer = userSerializer(user)
+#         data = user_serializer.data
+#         attendees.append(data)
+#     emails=[]
+#     for d in attendees:
+#         emails.append(d['email'])
+
+#     print(emails)
+#     sum=0
+#     for d in json_data:
+#         quantity_sold = int(d['quantity'])
+#         price=d['ticket_price']
+#         sum+=int((quantity_sold*price))
+
+#     return Response({'data':json_data, 'number of order': count,'profit':sum,'user_email':emails},status=status.HTTP_200_OK)
     
