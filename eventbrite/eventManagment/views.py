@@ -649,7 +649,7 @@ def savecsv_orderitems_by_eventid(request, event_id):
     serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
     json_data = serialized_orderitems.data
     count=len(json_data)
-    users = [d['user_id'] for d in json_data]
+    # users = [d['user_id'] for d in json_data]
     # for id in users:
     #     user = User.objects.get(id=(id))
     #     user_serializer = userSerializer(user)
@@ -683,8 +683,7 @@ def dashboard_orderitems_by_eventid(request, event_id):
     serialized_orderitems = DashboardOrderItemSerializer(order_items, many=True)
     json_data = serialized_orderitems.data
     count=len(json_data)
-    users = [d['user_id'] for d in json_data]
-    
+    # users = [d['user_id'] for d in json_data]    
     # for id in users:
     #     user = User.objects.get(id=(id))
     #     user_serializer = userSerializer(user)
