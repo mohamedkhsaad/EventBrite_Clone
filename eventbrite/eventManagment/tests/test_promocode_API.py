@@ -100,6 +100,6 @@ class PromoCodeCreateAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         promo_code = response.data[0]
-        self.assertEqual(promo_code['EVENT_ID'], str(self.discount.EVENT_ID))
-        self.assertEqual(promo_code['User_ID'], str(self.user.id))
+        self.assertEqual(promo_code['EVENT_ID'], (self.discount.EVENT_ID))
+        self.assertEqual(promo_code['User_ID'], (self.user.id))
         self.assertEqual(promo_code['CODE'], 'TESTCODE')
