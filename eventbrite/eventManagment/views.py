@@ -353,15 +353,20 @@ class EventPublishView(generics.CreateAPIView):
 class CheckPasswordAPIView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [CustomTokenAuthentication]
-    serializer_class = Password_Serializer
+    serializer_class = eventSerializer
     def post(self, request, event_id):
         publish_info = get_object_or_404(Publish_Info, Event_ID=event_id)
+        event_obj = event.objects.get(ID=event_id)
         password = request.data.get('password')
         if not password:
             return Response({'password': ['This field is required.']}, status=status.HTTP_400_BAD_REQUEST)
         if password == publish_info.Audience_Password:
+            # url = reverse('event-list-by-ID', kwargs={'event_ID': event_id})
+            # return Response({'url': request.build_absolute_uri(url)})
+            serializer = self.get_serializer(event_obj)
+            return Response(serializer.data)
             # return redirect(f"https://127.0.0.1:8080/events/ID/{event_id}/")
-            return redirect(f"https://event-us.me:8000/events/ID/{event_id}/")
+            # return redirect(f"https://event-us.me:8000/events/ID/{event_id}/")
         else:
             return Response({'password': ['Incorrect password.']}, status=status.HTTP_400_BAD_REQUEST)
 

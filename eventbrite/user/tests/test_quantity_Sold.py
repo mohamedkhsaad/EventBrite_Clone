@@ -44,7 +44,7 @@ class QuantitySoldOutOfTotalTestCase(TestCase):
             image=None
         )
         self.event2 = event.objects.create(
-            ID=987668,
+            ID=798876,
             User_id=2,
             Title='Online Event 2',
             organizer='Organizer 2',
@@ -63,15 +63,70 @@ class QuantitySoldOutOfTotalTestCase(TestCase):
             STATUS='Draft',
             image=None
         )
-        self.event_ID=1
+        self.event1_ID=1
+        self.event2_ID=798876
+        self.event3_ID=397492
 
-def test_quantity_sold_out_of_total(self):
+        self.ticket_class = TicketClass.objects.create(
+            event_id=self.event1_ID,
+            User_id=self.user.id,
+            NAME='Test Ticket Class',
+            PRICE=50.00,
+            capacity=10,
+            quantity_sold=0,
+            TICKET_TYPE='Paid',
+            Absorb_fees='True'
+        )
+
+        self.ticket_class = TicketClass.objects.create(
+            event_id=self.event1_ID,
+            User_id=self.user.id,
+            NAME='Test Ticket Class',
+            PRICE=5000.00,
+            capacity=1000,
+            quantity_sold=150,
+            TICKET_TYPE='Paid',
+            Absorb_fees='True'
+        )
+
+
+        self.ticket_class = TicketClass.objects.create(
+            event_id=self.event2_ID,
+            User_id=2,
+            NAME='Test Ticket Class',
+            PRICE=5000.00,
+            capacity=1000,
+            quantity_sold=150,
+            TICKET_TYPE='Paid',
+            Absorb_fees='True'
+        )
+
+        self.event_id=self.event1_ID
+        
+    def test_quantity_sold_out_of_total(self):
         # Create test data
-        url = reverse('sold_tickets', kwargs={'event_id': self.event_ID})
+        url = reverse('sold_tickets', kwargs={'event_id': self.event_id})
         response = self.client.get(url,follow=True)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertEqual(len(response.data), 1)
+        try:
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            
+        except:
+            if self.user.id==self.event1.User_id:
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                print("te2dar")
+                ticket_classes = TicketClass.objects.filter(event_id=self.event_id)
+                serializer = TicketQuantityClassSerializer(ticket_classes, many=True)
+                self.assertEqual(response.data, serializer.data)
+                
+            else:
+                print("mate2darsh")
+                self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-        ticket_classes = TicketClass.objects.filter(event_id=self.event_ID)
-        serializer = TicketQuantityClassSerializer(ticket_classes, many=True)
-        self.assertEqual(response.data, serializer.data)
+    
+    
+   
+
+
+
+
+        

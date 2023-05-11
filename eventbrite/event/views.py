@@ -65,7 +65,7 @@ from booking.models import event, TicketClass
 from booking.serializers import *
 from django.db import transaction
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponseRedirect
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from user.authentication import CustomTokenAuthentication
@@ -74,6 +74,7 @@ from django.core.exceptions import PermissionDenied
 from eventManagment.models import*
 from eventManagment.serializers import*
 from django.shortcuts import redirect,render
+from rest_framework.permissions import AllowAny
 
 # events
 
@@ -302,87 +303,9 @@ class OnlineEventsAPIView(APIView):
         return Response(serializer.data)
 
 
-# class EventID(generics.ListAPIView):
-#     """
-#     A viewset for retrieving event instances by ID.
-#     """
-#     serializer_class = eventSerializer
-#     # permission_classes = [IsAuthenticated]
-#     # authentication_classes = [CustomTokenAuthentication]
-
-#     def get_queryset(self):
-#         """
-#         This view should return a list of all the events
-#         for the sub-category specified in the URL parameter.
-#         """
-#         event_sub_ID = self.kwargs['event_ID']
-#         return event.objects.filter(ID=event_sub_ID)
-# class EventID(generics.ListAPIView):
-#     """
-#     A viewset for retrieving event instances by ID.
-#     """
-#     serializer_class = eventSerializer
-#     def get_queryset(self):
-#         eventid = self.kwargs['event_ID']
-#         print(eventid)
-#         try:
-#             publishinfo = Publish_Info.objects.filter(Event_ID=eventid).first()
-#         except Publish_Info.DoesNotExist:
-#             return event.objects.none() 
-        
-#         if publishinfo.Event_Status == 'Public':
-#             return event.objects.filter(ID=eventid,STATUS='Live')
-#         elif publishinfo.Event_Status == 'Private':
-#             return redirect('check_password_view', event_id=eventid)
-#         return event.objects.none()  
-
-
-# from django.urls import reverse
-# from django.shortcuts import redirect
-
-# class EventID(generics.ListAPIView):
-#     """
-#     A viewset for retrieving event instances by ID.
-#     """
-#     serializer_class = eventSerializer
-    
-#     def get_queryset(self):
-#         eventid = self.kwargs['event_ID']
-#         print(eventid)
-#         try:
-#             publishinfo = Publish_Info.objects.filter(Event_ID=eventid).first()
-#         except Publish_Info.DoesNotExist:
-#             return event.objects.none() 
-        
-#         if publishinfo.Event_Status == 'Public':
-#             return event.objects.filter(ID=eventid, STATUS='Live')
-#         elif publishinfo.Event_Status == 'Private':
-#             url = reverse('check_password_view', args=[eventid])
-#             return redirect(url)
-        
-#         return event.objects.none()  
-from django.shortcuts import get_object_or_404
-
-# class EventID(generics.ListAPIView):
-#     """
-#     A viewset for retrieving event instances by ID.
-#     """
-#     serializer_class = eventSerializer
-    
-#     def get_queryset(self):
-#         eventid = self.kwargs['event_ID']
-#         print(eventid)
-#         publishinfo = get_object_or_404(Publish_Info, Event_ID=eventid)
-#         if publishinfo.Event_Status == 'Public':
-#             return event.objects.filter(ID=eventid, STATUS='Live')
-#         elif publishinfo.Event_Status == 'Private':
-#             url = reverse('check_password_view', args=[eventid])
-#             return redirect(url)
-#         return event.objects.none()  
-from rest_framework.renderers import JSONRenderer
-from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import AllowAny
 
+        
 class EventID(generics.RetrieveAPIView):
     """
     A viewset for retrieving event instances by ID.
@@ -391,12 +314,11 @@ class EventID(generics.RetrieveAPIView):
     serializer_class = eventSerializer
     permission_classes = [AllowAny]
     def get(self, request, *args, **kwargs):
-        print("Allowed methods:", self.allowed_methods)
         event_id = kwargs.get('event_ID')
         try:
             event_obj = event.objects.get(ID=event_id)
         except event.DoesNotExist:
-            return Response({"error": "Event not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response([], status=status.HTTP_404_NOT_FOUND)
         try:
             publish_info = Publish_Info.objects.get(Event_ID=event_id)
         except Publish_Info.DoesNotExist:
@@ -404,16 +326,30 @@ class EventID(generics.RetrieveAPIView):
         # Check if the event is private
         if publish_info and publish_info.Event_Status == 'Private':
             # If the user is authenticated and authorized to view the event, return the event details
-            # print("ismail")
             if request.user.is_authenticated:
+                if str(request.user.id) == str(event_obj.User_id):
+                    # User is the creator, no need for password verification
+                    serializer = self.get_serializer(event_obj)
+                    return Response(serializer.data)
+                else:
+                    # return redirect('check_password_view', event_id=event_id)
+                    link = request.build_absolute_uri(reverse('check_password_view', kwargs={'event_id': event_id}))
+                    return Response({'detail': 'This event is private. Please enter the password to view it.', 'link': link})
+            else:
+                link = request.build_absolute_uri(reverse('check_password_view', kwargs={'event_id': event_id}))
+                return Response({'detail': 'This event is private. Please enter the password to view it.', 'link': link})
+                # return redirect('check_password_view', event_id=event_id)
+        else:
+            if event_obj.STATUS == 'Live':
                 serializer = self.get_serializer(event_obj)
                 return Response(serializer.data)
-            # Otherwise, redirect the user to the check password view
+            elif request.user.is_authenticated and str(request.user.id) == str(event_obj.User_id):
+                # User is the creator, can view draft events
+                serializer = self.get_serializer(event_obj)
+                return Response(serializer.data)
             else:
-                return redirect('check_password_view', event_id=event_id)
-        else:
-            serializer = self.get_serializer(event_obj)
-            return Response(serializer.data)
+                return Response([], status=status.HTTP_404_NOT_FOUND)
+        # return Response([], status=status.HTTP_404_NOT_FOUND)
 
 class UserInterestCreateAPIView(CreateAPIView):
     """

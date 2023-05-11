@@ -90,7 +90,7 @@ def check_promocode(request, event_id):
         return Response({'is_valid_promocode': False, "details": "not found"}, status=status.HTTP_200_OK)
     print("discount was found")
 
-    if discount.Quantity_available is not None and discount.Quantity_available <= 0:
+    if discount.Quantity_available is not None and int(discount.Quantity_available) <= 0:
         return Response({'is_valid_promocode': False, "details": "quantity available = 0"}, status=status.HTTP_200_OK)
     print("availble quantity was found")
 

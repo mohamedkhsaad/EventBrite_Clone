@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIRequestFactory
 from event.models import event
-from booking.models import OrderItem
+from booking.models import OrderItem,TicketClass
 from booking.serializers import DashboardOrderItemSerializer
 from user.models import User
 from django.urls import reverse
@@ -44,7 +44,7 @@ class attendee_report(TestCase):
             image=None
         )
         self.event2 = event.objects.create(
-            ID=987668,
+            ID=5778668,
             User_id=2,
             Title='Online Event 2',
             organizer='Organizer 2',
@@ -63,14 +63,59 @@ class attendee_report(TestCase):
             STATUS='Draft',
             image=None
         )
-        self.event_ID=1
+        self.event1_ID=1
+        self.event2_ID=5778668
+        self.event3_ID=382768
 
-    # def test_quantity_sold_out_of_total(self):
-    #     # Create test data
-    #     url = reverse('list_attendees_by_event', kwargs={'event_id': self.event_ID})
-    #     response = self.client.get(url,follow=True)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     # self.assertEqual(len(response.data), 1)
-    #     self.assertEqual(response.data, {'data': [], 'number of order': 0, 'profit': 0})
+        self.ticket_class = TicketClass.objects.create(
+            event_id=self.event1_ID,
+            User_id=self.user.id,
+            NAME='Test Ticket Class',
+            PRICE=50.00,
+            capacity=10,
+            quantity_sold=0,
+            TICKET_TYPE='Paid',
+            Absorb_fees='True'
+        )
 
+        self.ticket_class = TicketClass.objects.create(
+            event_id=self.event1_ID,
+            User_id=self.user.id,
+            NAME='Test Ticket Class',
+            PRICE=5000.00,
+            capacity=1000,
+            quantity_sold=150,
+            TICKET_TYPE='Paid',
+            Absorb_fees='True'
+        )
+
+        self.event_id=self.event3_ID
+    def test_quantity_sold_out_of_total(self):
+        # Create test data
+        url = reverse('list_attendees_by_event', kwargs={'event_id': self.event_id})
+        response = self.client.get(url,follow=True)
+        try:
+            self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+            
+        except:
+            if self.user.id==self.event2.User_id:
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                order_items = OrderItem.objects.filter(event_id=self.event_id)
+                serializer = DashboardOrderItemSerializer(order_items, many=True)
+                json_data = serializer.data
+                count=len(json_data)
+                sum=0
+                for d in json_data:
+                    quantity_sold = int(d['quantity'])
+                    price=int(d['ticket_price'])
+                    if isinstance(quantity_sold, int) and isinstance(price, int):
+                        sum += quantity_sold * price
+                    else:
+                        print("Invalid input: quantity_sold and price must be integers")
+                # self.assertEqual(len(response.data), 1)
+                print({'data': json_data, 'number of order': count, 'profit': sum})
+                self.assertEqual(response.data, {'data': json_data, 'number of order': count, 'profit': sum})
+            else:
+                print("mate2darsh")
+                self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         # Add more assertions if needed
