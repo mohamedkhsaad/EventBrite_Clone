@@ -338,21 +338,36 @@ class EventPublishView(generics.CreateAPIView):
             return Response({'error': error_msgs, 'data': request.data}, status=HTTP_400_BAD_REQUEST)
 
 
+# class CheckPasswordAPIView(generics.CreateAPIView):
+#     serializer_class = Password_Serializer
+#     def post(self, request, event_id):
+#         if request.method == 'POST':
+#             publish_info = get_object_or_404(Publish_Info, Event_ID=event_id)
+#             form = Password_Form(request.POST)
+#             if form.is_valid() and form.cleaned_data['password'] == publish_info.Audience_Password:
+#                 return redirect(f"https://127.0.0.1:8080/events/ID/{event_id}/")
+#             else:
+#                 return Response({'Invalid Password'}, status=HTTP_400_BAD_REQUEST)
+
+
 class CheckPasswordAPIView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
     serializer_class = Password_Serializer
     def post(self, request, event_id):
-        if request.method == 'POST':
-            publish_info = get_object_or_404(Publish_Info, Event_ID=event_id)
-            form = Password_Form(request.POST)
-            if form.is_valid() and form.cleaned_data['password'] == publish_info.Audience_Password:
-                return redirect(f"https://127.0.0.1:8080/events/ID/{event_id}/")
-            else:
-                return Response({'Invalid Password'}, status=HTTP_400_BAD_REQUEST)
-
+        publish_info = get_object_or_404(Publish_Info, Event_ID=event_id)
+        password = request.data.get('password')
+        if not password:
+            return Response({'password': ['This field is required.']}, status=status.HTTP_400_BAD_REQUEST)
+        if password == publish_info.Audience_Password:
+            # return redirect(f"https://127.0.0.1:8080/events/ID/{event_id}/")
+            return redirect(f"https://event-us.me:8000/events/ID/{event_id}/")
+        else:
+            return Response({'password': ['Incorrect password.']}, status=status.HTTP_400_BAD_REQUEST)
 
 class ExportEventsAPIView(APIView):
-    # permission_classes = [IsAuthenticated]
-    # authentication_classes = [CustomTokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [CustomTokenAuthentication]
     def get(self, request):
         # Fetch events created by the specified user
         user_id = self.request.user.id

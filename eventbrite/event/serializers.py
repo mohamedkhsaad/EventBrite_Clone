@@ -24,11 +24,12 @@ class eventSerializer(serializers.ModelSerializer):
         exclude = ['id']
 
     def to_representation(self, instance):
+        if instance is None:
+            return {}
         data = super().to_representation(instance)
-        if instance is not None:
-            data['Title'] = instance.Title or ''
+        data['Title'] = instance.Title or ''
         return data
-    
+
     
     add_image_fields(5)
 

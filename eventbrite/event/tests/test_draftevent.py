@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIRequestFactory
 from rest_framework import status
 from django.contrib.auth.models import User
-from event.views import OnlineEventsAPIView
+from event.views import *
 from event.models import event
 from event.serializers import eventSerializer
 from django.contrib.auth import get_user_model
@@ -10,6 +10,8 @@ from rest_framework.test import APITestCase, APIClient
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
 from rest_framework.test import force_authenticate
+
+
 class DraftEventsAPIViewTestCase(APITestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -63,7 +65,7 @@ class DraftEventsAPIViewTestCase(APITestCase):
     def test_get_draft_events(self):
         request = self.factory.get(self.url)
         force_authenticate(request, user=self.user)
-        response = OnlineEventsAPIView.as_view()(request)
+        response = DraftEventsAPIView.as_view()(request)
         events = event.objects.filter(STATUS='Draft')
         serializer = eventSerializer(events, many=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
