@@ -117,6 +117,7 @@ urlpatterns = [
     path('eventmanagement/<int:discount_id>/delete_promocode/', PromoCodeDeleteView.as_view(), name='delete-promocode'),
 
     path('eventmanagement/<int:event_id>/publish/' ,EventPublishView.as_view(), name='publish_event'),
+    path('eventmanagement/<int:event_id>/check_password/',CheckPasswordAPIView.as_view(), name='check_password_view'),
     path('eventmanagement/event/<int:event_id>/order-items/', list_orderitem_by_event, name='list_orderitem_by_event'),
     path('eventmanagement/<int:event_id>/check_password/',CheckPasswordAPIView.as_view(), name='check_password_view'),
     path('eventmanagement/export_csv/', ExportEventsAPIView.as_view(), name='export_events_api'),
